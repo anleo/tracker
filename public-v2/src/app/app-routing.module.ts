@@ -3,11 +3,17 @@ import {Routes, RouterModule} from "@angular/router";
 import {BlankComponent} from "./blank/blank.component";
 
 const routes: Routes = [
-  {
-    path: 'app',
-    component: BlankComponent
-  }
-];
+    {
+      path: 'app',
+      // component: BlankComponent,
+      children: [
+        {
+          path: 'users', loadChildren: 'app/user-module/user.module#UserModule'
+        }
+      ]
+    }
+  ]
+  ;
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
