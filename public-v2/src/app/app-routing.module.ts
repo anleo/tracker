@@ -1,11 +1,20 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from "@angular/router";
-import {BlankComponent} from "./blank/blank.component";
 
 const routes: Routes = [
   {
-    path: 'app',
-    component: BlankComponent
+    path: 'auth',
+    loadChildren: 'app/auth/auth.module#AuthModule'
+  },
+
+  {
+    path: '',
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'auth/login'
   }
 ];
 

@@ -1,4 +1,5 @@
 module.exports = function (app, passport, flash) {
+    var _ = require('lodash');
 
     var Tokenizer = app.container.get('Tokenizer');
     var Mailer = app.container.get('Mailer');
@@ -16,6 +17,7 @@ module.exports = function (app, passport, flash) {
     );
 
     app.post('/api/users/resetPassword', function (req, res, next) {
+        console.log(req.body, req.query);
 
         Tokenizer.decode(req.query.token, function (err, decoded) {
             if (err) return next(err);
@@ -42,8 +44,12 @@ module.exports = function (app, passport, flash) {
             if (!user) return res.status(403).send(req.flash('loginMessage'));
 
             req.logIn(user, {failureFlash: true}, function (err) {
-                if (err) return next(err);
-                return res.redirect('/api/users/me');
+                if (err) {
+                    return next(err);
+                }
+
+                user.removePrivateFields();
+                res.json(user);
             });
         })(req, res, next);
     });
@@ -89,16 +95,19 @@ module.exports = function (app, passport, flash) {
     });
 
     app.post('/api/resetPassword', function (req, res, next) {
-
         User.findOne({'email': req.body.email}, function (err, user) {
-
-            if (err) return next(err);
+            if (err) {
+                return next(err);
+            }
 
             if (!user) {
                 return res.sendStatus(400);
             }
 
             Tokenizer.encode({userId: user._id}, function (err, token) {
+                if (err) {
+                    return res.sendStatus(400);
+                }
 
                 var mailSettings = {
                     to: user.email,
@@ -106,17 +115,15 @@ module.exports = function (app, passport, flash) {
                     text: Host.getUrl('/#/public/change-password/' + token)
                 };
 
-                if (err) return res.sendStatus(400);
-
                 Mailer.send(mailSettings, function (err) {
-                    if (err) next(err);
+                    if (err) {
+                        return next(err);
+                    }
+
                     res.sendStatus(200);
                 });
-
-
             });
         });
-
     });
 
     app.post('/api/register', function (req, res, next) {
@@ -142,8 +149,12 @@ module.exports = function (app, passport, flash) {
 
                 user.save(function (err) {
                     req.login(user, function (err) {
-                        if (err) return next(err);
-                        res.redirect('/api/users/me');
+                        if (err) {
+                            return next(err);
+                        }
+
+                        user.removePrivateFields();
+                        res.json(user);
                     });
                 });
             } else {
@@ -162,6 +173,7 @@ module.exports = function (app, passport, flash) {
     });
 
     app.get('/api/users/me', function (req, res) {
+        req.user.removePrivateFields();
         res.json(req.user);
     });
 

@@ -28,6 +28,7 @@ module.exports = function (passport) {
             failureFlash: true
         },
         function (req, username, password, done) {
+            console.log('passport', arguments);
 
             var query = {
                 $or: [
@@ -96,7 +97,7 @@ module.exports = function (passport) {
                 req.user.google.id = profile.id;
                 req.user.google.token = accessToken;
                 req.user.google.email = profile.emails[0].value;
-                req.user.email = req.user.email ||  profile.emails[0].value;
+                req.user.email = req.user.email || profile.emails[0].value;
                 req.user.first = req.user.first || profile.displayName.split(' ')[0];
                 req.user.last = req.user.last || profile.displayName.split(' ')[1];
                 req.user.save(function (err) {
@@ -155,7 +156,7 @@ module.exports = function (passport) {
                 req.user.facebook.id = profile.id;
                 req.user.facebook.token = accessToken;
                 req.user.facebook.email = profile.emails[0].value;
-                req.user.email = req.user.email ||  profile.emails[0].value;
+                req.user.email = req.user.email || profile.emails[0].value;
                 req.user.first = req.user.first || profile.displayName.split(' ')[0];
                 req.user.last = req.user.last || profile.displayName.split(' ')[1];
 
