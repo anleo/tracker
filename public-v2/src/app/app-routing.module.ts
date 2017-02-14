@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: 'app',
     component: BlankComponent
+  },
+  {
+    path: 'tracker',
+    loadChildren: './tracker/tracker.module#TrackerModule'
   }
 ];
 
