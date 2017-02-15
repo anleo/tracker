@@ -3,7 +3,8 @@ import {User} from "./user";
 import {UserService} from "./user.service";
 
 @Component({
-  template: '<h3>{{user}}</h3>'
+  moduleId: module.id,
+  templateUrl: './profile.html'
 })
 
 export class ProfileComponent implements OnInit {

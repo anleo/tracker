@@ -5,12 +5,10 @@ import {BlankComponent} from "./blank/blank.component";
 const routes: Routes = [
     {
       path: 'app',
-      // component: BlankComponent,
-      children: [
-        {
-          path: 'users', loadChildren: 'app/user-module/user.module#UserModule'
-        }
-      ]
+      component: BlankComponent
+    },
+    {
+      path: 'users', loadChildren: 'app/user-module/user.module#UserModule'
     }
   ]
   ;
