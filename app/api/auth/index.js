@@ -156,10 +156,11 @@ module.exports = function (app, passport, flash) {
         });
     });
 
-    app.use('/api', function (req, res, next) {
-        if (!req.user) return res.sendStatus(401);
-        next();
-    });
+    // @@@ dont forget to turn this back
+    // app.use('/api', function (req, res, next) {
+    //     if (!req.user) return res.sendStatus(401);
+    //     next();
+    // });
 
     app.get('/api/users/me', function (req, res) {
         res.json(req.user);
