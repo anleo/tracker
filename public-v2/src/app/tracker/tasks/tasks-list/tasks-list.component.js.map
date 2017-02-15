@@ -1,0 +1,1 @@
+{"version":3,"file":"tasks-list.component.js","sourceRoot":"","sources":["tasks-list.component.ts"],"names":[],"mappings":";;;;;;;;;;AAAA,sCAAkD;AAOlD,IAAa,kBAAkB;IAE7B;QADA,UAAK,GAAW,EAAE,CAAC;IACH,CAAC;IAEjB,qCAAQ,GAAR;IACA,CAAC;IAEH,yBAAC;AAAD,CAAC,AAPD,IAOC;AAPY,kBAAkB;IAJ9B,gBAAS,CAAC;QACT,QAAQ,EAAE,gBAAgB;QAC1B,WAAW,EAAE,6BAA6B;KAC3C,CAAC;;GACW,kBAAkB,CAO9B;AAPY,gDAAkB"}

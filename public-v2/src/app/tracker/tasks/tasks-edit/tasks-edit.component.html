@@ -1,0 +1,189 @@
+<p>
+  tasks-edit works!
+</p>
+
+<form (submit)="save()" id="form">
+
+  <div class="row">
+    <!--left-side-->
+    <div ng-class="task.title ? 'col-md-6' : 'col-md-12'">
+
+      <!--// @@@ fix taskId snapshot-->
+      <!--<div class="form-group">-->
+        <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
+        <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
+      <!--</div>-->
+
+      <div class="form-group">
+        <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task" id="title"/>
+      </div>
+
+      <div *ngIf="task.title">
+
+        <div class="form-group">
+                <!--<textarea ng-if="showDescription"-->
+                          <!--ng-focus="msd-elastic" msd-elastic-->
+                          <!--ng-model="task.description"-->
+                          <!--class="form-control description-height"-->
+                          <!--placeholder="Task description"-->
+                          <!--rows="1">-->
+                <!--</textarea>-->
+          <textarea name="description" [(ngModel)]="task.description" cols="30" rows="10"></textarea>
+        </div>
+
+        <!--<div uploader files="task.files"></div>-->
+
+        <!--<div ng-if="task.files.length">-->
+          <!--<div files-view files="task.files" on-delete="deleteFile"></div>-->
+        <!--</div>-->
+
+      </div>
+
+    </div>
+
+    <!--right-side-->
+    <div class="col-md-6 tech-info" *ngIf="task.title">
+
+      <!--<hr class="mg hidden-lg hidden-md"/>-->
+
+      <!--<div ng-if="task.simple || task.status == 'accepted'" class="form-group clearfix"> &lt;!&ndash; Status&ndash;&gt;-->
+
+        <!--<div ng-if="task.simple" class="pull-left">-->
+
+          <!--<i class="fa fa-check-square-o fa-md vcenter" uib-tooltip="Status"></i>-->
+
+          <!--<div class="btn-group task-statuses">-->
+            <!--<label ng-repeat="status in statuses" class="btn btn-default btn-sm" ng-model="task.status"-->
+                   <!--uib-btn-radio="status.value" ng-class="{'disabled' : task.archived == true}">{{status.name}}</label>-->
+          <!--</div>-->
+        <!--</div>-->
+
+        <!--<ul ng-if="task.simple" class="task-metrics pull-right edit-panel-metrics-info">-->
+          <!--<li>-->
+            <!--<i class="fa fa-clock-o" uib-tooltip="Time"></i>&nbsp;<span uib-tooltip="Estimated" class="text-right">{{task.estimatedTime| round}}</span>-->
+            <!--/ <span uib-tooltip="Spent" class="text-right">{{task.spenttime| round}}</span>-->
+            <!--/ <span uib-tooltip="TODO" ng-class="{'warning-text' : (task.timeToDo|round) < 0}" class="text-right">{{task.timeToDo| round}}</span>-->
+          <!--</li>-->
+        <!--</ul>-->
+
+      <!--</div>-->
+
+      <!--<hr ng-if="task.simple || task.status == 'accepted'" class="mg"/>-->
+
+      <!--<div ng-if="task.simple" class="form-group" ng-show="task.title"> &lt;!&ndash;Complexity&ndash;&gt;-->
+        <!--<i class="fa fa-puzzle-piece fa-md vcenter" uib-tooltip="Complexity"></i>-->
+
+        <!--<div class="btn-group complexity">-->
+          <!--<label ng-repeat="complexity in complexities" class="btn btn-default btn-sm"-->
+                 <!--ng-model="task.complexity"-->
+                 <!--uib-btn-radio="complexity.value">{{complexity.name}}</label>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="form-group" ng-show="task.title"> &lt;!&ndash; Priority&ndash;&gt;-->
+        <!--<i class="fa fa-bolt fa-md vcenter" uib-tooltip="Priority"></i>-->
+
+        <!--<div class="btn-group priority">-->
+          <!--<label ng-repeat="priority in priorities" class="btn btn-default btn-sm" ng-model="task.priority"-->
+                 <!--uib-btn-radio="priority">{{priority}}</label>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<hr ng-if="task.simple" class="mg"/>-->
+      <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
+      <!--</div>-->
+
+      <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
+        <!--<i class="fa fa-clock-o fa-md vcenter pull-left" uib-tooltip="Spent time"></i>-->
+
+        <!--<div class=" pull-left input-sm text-center spent-time" >-->
+          <!--<strong>{{task.spenttime || 0 | humanizeTime}}</strong>-->
+        <!--</div>-->
+
+        <!--<div class="pull-left input-sm text-left added-spent-time">+{{addedSpentTime| humanizeTime}}</div>-->
+
+        <!--<div class="btn-group m-l-sm pull-left">-->
+          <!--<label ng-click="addTime(time)" ng-repeat="time in addTimeList" class="btn btn-default btn-sm">+{{time.name}}</label>-->
+          <!--<label ng-click="reset()" class="btn btn-default btn-sm ">reset</label>-->
+        <!--</div>-->
+
+      <!--</div>-->
+
+      <!--<hr class="mg"/>-->
+
+      <!--<div ng-if="task.parentTaskId" class="form-group clearfix icon-fix">-->
+        <!--<i class="fa fa-user fa-md vcenter" uib-tooltip="Assigned to..."></i>-->
+        <!--<div class="field-fix">-->
+          <!--<select ng-model="task.developer" ng-options="member._id as member.name for member in team"-->
+                  <!--class="form-control input-sm field-full "></select>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="form-group clearfix icon-fix" ng-if="task.parentTaskId == null" ng-show="task.title">-->
+
+        <!--<i class="fa fa-user-plus fa-md vcenter" uib-tooltip="Shared for..."></i>-->
+        <!--<div class="field-fix">-->
+          <!--<ui-select multiple ng-model="task.team" class="input-sm field-full">-->
+            <!--<ui-select-match placeholder="Share...">{{$item.name}}</ui-select-match>-->
+            <!--<ui-select-choices repeat="user._id as user in users | filter:$select.search">-->
+              <!--{{user.name}}-->
+            <!--</ui-select-choices>-->
+          <!--</ui-select>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<hr class="mg"/>-->
+
+      <!--<div class="form-group clearfix icon-fix">-->
+
+        <!--<i class="fa fa-tags fa-md vcenter" uib-tooltip="Tags"></i>-->
+
+        <!--<div class="field-fix">-->
+          <!--<ui-select tagging tagging-label="(add)"-->
+                     <!--tagging-tokens=",|;" multiple-->
+                     <!--ng-model="task.tags"-->
+                     <!--class="input-sm field-full">-->
+            <!--<ui-select-match placeholder="Add Tags...">{{$item}}</ui-select-match>-->
+
+            <!--<ui-select-choices repeat="tag in tagsList | filter:$select.search">-->
+              <!--{{tag}}-->
+            <!--</ui-select-choices>-->
+          <!--</ui-select>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
+
+  </div>
+
+  <hr *ngIf="task.title" class="mg"/>
+
+  <div class="form-group clearfix" *ngIf="task.title">
+    <div class="">
+      <button class="btn btn-success btn-sm" type="submit">Save</button>
+      <a *ngIf="task._id" class="btn btn-default btn-sm" ng-click="getTasksForMove()">Move</a>
+      <a class="btn btn-default btn-sm" (click)="close()">Close</a>
+      <a *ngIf="task._id && task.status != 'in progress'" class="btn btn-danger btn-sm pull-right"
+         ng-click="delete(task)">Delete</a>
+
+      <!--<div ng-show="task.status == 'accepted'" class="checkbox archive-button" ng-class="{'pull-right': task.simple}">-->
+
+        <!--<input type="button"-->
+               <!--ng-model="task.archived"-->
+               <!--id="archived" />-->
+
+        <!--<label for="archived"-->
+               <!--ng-click="task.archived = !task.archived"-->
+               <!--class="btn btn-sm"-->
+               <!--ng-class="task.archived == true ? 'btn-warning' : 'btn-default' ">-->
+          <!--<i class="fa" ng-class="task.archived == true ? 'fa-check-square-o' : 'fa-square-o' "></i>&nbsp;Archived</label>-->
+      <!--</div>-->
+    </div>
+
+    <!--// @@@ Move-->
+    <!--<div class="row" ng-include="'tracker/modules/task/views/tasks-for-move.html'"-->
+         <!--ng-if="tasksForMove.length"></div>-->
+  </div>
+
+  <hr *ngIf="!task._id && task.title" class="mg"/>
+
+</form>
