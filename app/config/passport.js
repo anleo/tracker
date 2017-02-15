@@ -28,8 +28,6 @@ module.exports = function (passport) {
             failureFlash: true
         },
         function (req, username, password, done) {
-            console.log('passport', arguments);
-
             var query = {
                 $or: [
                     {'email': username},

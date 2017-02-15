@@ -49,9 +49,9 @@ export class AuthService {
       .toPromise();
   }
 
-  changePassword(email: string, token: string): Promise<User> {
+  changePassword(password: string, token: string): Promise<User> {
     return this.authResource
-      .changePassword({email: email, token:token})
+      .changePassword({password: password, token:token})
       .$observable
       .toPromise();
   }

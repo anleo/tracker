@@ -2,20 +2,13 @@ var Mailer = function (config) {
 
     var nodemailer = require('nodemailer');
 
-    // var transporter = nodemailer.createTransport({
-    //     service: 'gmail',
-    //     auth: {
-    //         user: config.get('mailer.sender'),
-    //         pass: config.get('mailer.password')
-    //     }
-    // });
-
-
-    var aws = require('aws-sdk');
     var transporter = nodemailer.createTransport({
-        SES: new aws.SES({apiVersion: '2010-12-01'})
+        service: 'gmail',
+        auth: {
+            user: config.get('mailer.sender'),
+            pass: config.get('mailer.password')
+        }
     });
-
 
     this.send = function (mail, callback) {
         transporter.sendMail({

@@ -1,6 +1,5 @@
 <div class="row">
   <div class="col-md-4 col-md-offset-4">
-
     <form (ngSubmit)="login()">
       <div class="clearfix">
         <h1 class="pull-left">Login</h1>
@@ -13,14 +12,15 @@
       </div>
 
       <div class="form-group">
-        <input [(ngModel)]="user.username" name="username" type="text" class="form-control" placeholder="Login / Email" required>
+        <input [(ngModel)]="user.username" name="username" type="text" class="form-control" placeholder="Login / Email"
+               required>
       </div>
       <div class="form-group">
-        <input [(ngModel)]="user.password" name="password" type="password" class="form-control" placeholder="Password" required>
+        <input [(ngModel)]="user.password" name="password" type="password" class="form-control" placeholder="Password"
+               required>
       </div>
       <button type="submit" class="btn btn-primary pull-left btn-sm">Login</button>
       <a routerLink="/auth/password/reset" class="btn btn-link btn-sm pull-right">Forgot password</a>
     </form>
-
   </div>
 </div>

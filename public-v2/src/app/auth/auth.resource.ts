@@ -45,5 +45,5 @@ export class AuthResource extends Resource {
     path: '/users/resetPassword',
     method: RequestMethod.Post
   })
-  changePassword: ResourceMethod<{email: string, token: string}, any>;
+  changePassword: ResourceMethod<{password: string, token: string}, any>;
 }

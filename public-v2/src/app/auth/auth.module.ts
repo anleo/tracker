@@ -11,11 +11,14 @@ import {AuthRoutingModule} from "./auth.routing.module";
 import {BlankComponent} from "../blank/blank.component";
 import {AuthService} from "./auth.service";
 
+// import {ToastModule} from 'ng2-toastr/ng2-toastr';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    // ToastModule.forRoot()
   ],
   declarations: [
     BlankComponent,

@@ -17,15 +17,13 @@ module.exports = function (app, passport, flash) {
     );
 
     app.post('/api/users/resetPassword', function (req, res, next) {
-        console.log(req.body, req.query);
-
-        Tokenizer.decode(req.query.token, function (err, decoded) {
+        Tokenizer.decode(req.body.token, function (err, decoded) {
             if (err) return next(err);
 
             User.findById(decoded.userId, '-local.passwordHashed -local.passwordSalt', function (err, user) {
                 if (err) return next(err);
 
-                user.local.password = req.query.password;
+                user.local.password = req.body.password;
 
                 user.save(function (err, user) {
                     if (err) return next(err);
@@ -112,7 +110,8 @@ module.exports = function (app, passport, flash) {
                 var mailSettings = {
                     to: user.email,
                     subject: 'Password reset',
-                    text: Host.getUrl('/#/public/change-password/' + token)
+                    // text: Host.getUrl('/#/public/change-password/' + token)
+                    text: 'http://192.168.10.20:4200/auth/password/change/' + token
                 };
 
                 Mailer.send(mailSettings, function (err) {
@@ -120,7 +119,7 @@ module.exports = function (app, passport, flash) {
                         return next(err);
                     }
 
-                    res.sendStatus(200);
+                    res.status(200).send({});
                 });
             });
         });

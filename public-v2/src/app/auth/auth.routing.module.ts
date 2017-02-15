@@ -29,7 +29,7 @@ const routes: Routes = [
             component: PasswordResetComponent
           },
           {
-            path: 'change',
+            path: 'change/:token',
             component: PasswordChangeComponent
           }
         ],
