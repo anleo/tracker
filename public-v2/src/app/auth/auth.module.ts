@@ -7,20 +7,16 @@ import {RegistrationComponent} from './registration/registration.component';
 import {PasswordChangeComponent} from "./password-change/password-change.component";
 import {PasswordResetComponent} from "./password-reset/password-reset.component";
 import {AuthResource} from "./auth.resource";
-import {AuthRoutingModule} from "./auth.routing.module";
+
 import {BlankComponent} from "../blank/blank.component";
 import {AuthService} from "./auth.service";
 import {RouterModule} from "@angular/router";
-
-// import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule,
-    // AuthRoutingModule,
-    // ToastModule.forRoot()
+    RouterModule
   ],
   declarations: [
     BlankComponent,
