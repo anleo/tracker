@@ -36,6 +36,7 @@ module.exports = function (app, passport, flash) {
     });
 
     app.post('/api/login', function (req, res, next) {
+        console.log('>>>>> ', 666, req.body);
         passport.authenticate('local', function (err, user, info) {
             if (err) return next(err);
 
@@ -156,11 +157,10 @@ module.exports = function (app, passport, flash) {
         });
     });
 
-    // @@@ dont forget to turn this back
-    // app.use('/api', function (req, res, next) {
-    //     if (!req.user) return res.sendStatus(401);
-    //     next();
-    // });
+    app.use('/api', function (req, res, next) {
+        if (!req.user) return res.sendStatus(401);
+        next();
+    });
 
     app.get('/api/users/me', function (req, res) {
         res.json(req.user);

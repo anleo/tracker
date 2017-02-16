@@ -3,8 +3,8 @@ import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
 
 @Component({
-  selector: 'app-tasks-edit',
-  templateUrl: './tasks-edit.component.html'
+  selector: 'app-task-edit',
+  templateUrl: 'task-edit.component.html'
 })
 export class TasksEditComponent implements OnInit {
   @Input()
@@ -22,12 +22,10 @@ export class TasksEditComponent implements OnInit {
   }
 
   save() {
-    console.log('>>>>> save');
     this.taskService.save(this.task).subscribe((task) => console.log('>>>>> ', task))
   }
 
   close() {
-    console.log('>>>>> close');
     this.initTask();
   }
 

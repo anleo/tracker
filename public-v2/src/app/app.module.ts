@@ -6,6 +6,7 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {BlankComponent} from './blank/blank.component';
+import {TrackerModule} from "./tracker/tracker.module";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {BlankComponent} from './blank/blank.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    TrackerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

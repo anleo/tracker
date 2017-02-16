@@ -15,13 +15,13 @@ export class Task {
   simple?: boolean;
   estimatedTime?: string;
   timeToDo?: number;
-  owner?: string;
-  developer?: string;
+  owner?: string|any;
+  developer?: string|any;
   team?: [string];
   files?: [string];
   tags?: [string];
   tagsList?: [string];
   archived?: boolean;
   commentsCounter?: number;
-  updatedBy?: string;
+  updatedBy?: string|any;
 }

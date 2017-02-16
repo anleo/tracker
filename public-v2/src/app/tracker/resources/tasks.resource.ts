@@ -22,12 +22,6 @@ export class TaskResource extends Resource {
   })
   save: ResourceMethod<Task, Task>;
 
-  // @ResourceAction({
-  //   path: '/{!postId}',
-  //   method: RequestMethod.Delete
-  // })
-  // remove: ResourceMethod<{postId: string}, Post>;
-
   @ResourceAction({
     path: '/{!taskId}',
     method: RequestMethod.Put
@@ -39,9 +33,4 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getTasks: ResourceMethod<any, Task[]>;
-
-  // @ResourceAction({
-  //   path: '/{!postId}'
-  // })
-  // getPost: ResourceMethod<{postId: string}, Post>;
 }

@@ -1,25 +1,16 @@
-<p>
-  tasks-list works!
-</p>
+<div *ngIf="tasks && tasks.length" class="tasks-list">
+  <!--<div task-panel-->
+       <!--task="task"-->
+       <!--*ngFor="let task of tasks"-->
+       <!--ui-tree-node-->
+       <!--ng-model="list.tasks"-->
+       <!--metrics-details="metricsDetails"-->
+       <!--task-on-edit="edit"-->
+       <!--task-options="taskOptions">-->
+  <!--</div>  -->
+  <div *ngFor="let task of tasks">
+    <app-task-panel [task]="task"></app-task-panel>
+  </div>
 
-<app-tasks-edit></app-tasks-edit>
 
-
-
-
-<!--<div class="row board-view" ng-init="taskOptions = {hideStatus: true}">-->
-  <!--<div class="col-sm-4" ng-repeat="list in tasksList" ui-tree="treeOptions" id="tree-{{$index}}">-->
-    <!--<h3 class="list-name">{{list.name}}</h3>-->
-    <!--<div ui-tree-nodes ng-model="list.tasks" class="tasks-list">-->
-      <!--<div task-panel-->
-           <!--task="task"-->
-           <!--ng-repeat="task in list.tasks"-->
-           <!--ui-tree-node-->
-           <!--ng-model="list.tasks"-->
-           <!--metrics-details="metricsDetails"-->
-           <!--task-on-edit="edit"-->
-           <!--task-options="taskOptions">-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</div>-->
+</div>

@@ -515,17 +515,6 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
     };
 
     this.createTask = function (user, task, next) {
-        // @@@ task
-        task = new Task(task);
-
-        task.save(function (err, task) {
-            if (err) {
-                return next(err);
-            }
-
-            return next(null, task);
-        });
-
         task.developer = task.developer || UserService.getUserId(user);
         task.owner = UserService.getUserId(user);
         task.parentTaskId = task.parentTaskId ? task.parentTaskId : undefined;

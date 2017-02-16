@@ -29,10 +29,11 @@ module.exports = function (app) {
     app.get('/api/tasks', function (req, res, next) {
         var query = {
             parentTaskId: null,
-            $or: [
-                {owner: req.user},
-                {team: req.user}
-            ],
+            // @@@ task
+            // $or: [
+            //     {owner: req.user},
+            //     {team: req.user}
+            // ],
             archived: {$ne: true}
         };
 

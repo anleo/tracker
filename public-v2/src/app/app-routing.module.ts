@@ -5,11 +5,13 @@ import {BlankComponent} from "./blank/blank.component";
 const routes: Routes = [
   {
     path: 'app',
-    component: BlankComponent
-  },
-  {
-    path: 'tracker',
-    loadChildren: './tracker/tracker.module#TrackerModule'
+    component: BlankComponent,
+    children: [
+      {
+        path: 'tasks',
+        loadChildren: './tracker/tracker.module#TrackerModule'
+      }
+    ]
   }
 ];
 

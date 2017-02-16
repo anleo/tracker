@@ -18,7 +18,7 @@
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "styles": [
-        "styles.css", "assets/tracker.css", "../node_modules/bootstrap/dist/css/bootstrap.css"
+        "styles.css", "../node_modules/bootstrap/dist/css/bootstrap.css", "assets/tracker.css"
       ],
       "scripts": [],
       "environments": {
