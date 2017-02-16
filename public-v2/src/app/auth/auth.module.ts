@@ -10,6 +10,7 @@ import {AuthResource} from "./auth.resource";
 import {AuthRoutingModule} from "./auth.routing.module";
 import {BlankComponent} from "../blank/blank.component";
 import {AuthService} from "./auth.service";
+import {RouterModule} from "@angular/router";
 
 // import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
@@ -17,7 +18,8 @@ import {AuthService} from "./auth.service";
   imports: [
     CommonModule,
     FormsModule,
-    AuthRoutingModule,
+    RouterModule,
+    // AuthRoutingModule,
     // ToastModule.forRoot()
   ],
   declarations: [
