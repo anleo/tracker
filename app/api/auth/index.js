@@ -66,11 +66,9 @@ module.exports = function (app, passport, flash) {
 
     //------------------------------------------FACEBOOK------------------------------------------
 
-    app.get('/auth/facebook',
-        passport.authenticate('facebook', {scope: 'email'}));
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
 
-    app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', {failureRedirect: '/'}),
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/'}),
         function (req, res) {
             res.redirect('/#/app/users/me');
         }
@@ -89,7 +87,7 @@ module.exports = function (app, passport, flash) {
 
     app.post('/api/logout', function (req, res) {
         req.logout();
-        res.sendStatus(200);
+        res.status(200).send({});
     });
 
     app.post('/api/resetPassword', function (req, res, next) {

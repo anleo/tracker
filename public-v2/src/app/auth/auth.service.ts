@@ -51,7 +51,7 @@ export class AuthService {
 
   changePassword(password: string, token: string): Promise<User> {
     return this.authResource
-      .changePassword({password: password, token:token})
+      .changePassword({password: password, token: token})
       .$observable
       .toPromise();
   }
