@@ -1,6 +1,6 @@
 import {Component, ViewContainerRef} from '@angular/core';
 import {AuthService} from "../auth.service";
-// import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 @Component({
   selector: 'password-reset',
@@ -10,19 +10,17 @@ export class PasswordResetComponent {
   email: string = null;
 
   constructor(private authService: AuthService,
-              // private toastr: ToastsManager,
-              // private vcr: ViewContainerRef
-  ) {
-    // this.toastr.setRootViewContainerRef(vcr);
+              public toastr: ToastsManager,
+              vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   reset(): void {
     this.authService
       .resetPassword(this.email)
-      .then((res: any) => console.log('email was sent', res))
+      .then((res: any) => this.toastr.success('Request was sent'))
       .catch((err: any) => {
-        // this.toastr.error('This is not good!', 'Oops!');
-        console.log(err)
+        this.toastr.error('Check your e-mail or login');
       });
   }
 }

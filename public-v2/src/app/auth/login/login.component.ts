@@ -25,8 +25,7 @@ export class LoginComponent {
       .login(this.user)
       .then(() => this.router.navigate(['/app/tasks']))
       .catch((err: any) => {
-        this.toastr.error('This is not good!', 'Oops!');
-        console.log(err)
+        this.toastr.error(JSON.parse(err._body)[0]);
       });
   }
 }
