@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import {Task} from '../models/task';
 
 @Pipe({name: 'tasksBoardFilter'})
 export class TasksBoardFilter implements PipeTransform {
-  transform(tasks: any, type: any): any {
+  transform(tasks: Task[], type: any): Task[] {
     let results = [];
 
     tasks.map((task) => {
