@@ -18,7 +18,10 @@ export class UserService {
     if (this.user) {
       return Observable.of(this.user);
     } else {
-      return this.userResource.get().$observable;
+      return this.userResource.get().$observable.map((user) => {
+        this.set(user);
+        return user;
+      });
     }
   }
 

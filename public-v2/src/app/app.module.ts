@@ -12,6 +12,9 @@ import {TrackerModule} from "./tracker/tracker.module";
 import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
 import {HttpService} from "./services/http.service";
+export function useFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
+  return new HttpService(xhrBackend, requestOptions, router);
+}
 
 @NgModule({
   declarations: [
@@ -31,8 +34,7 @@ import {HttpService} from "./services/http.service";
   providers: [
     {
       provide: Http,
-      useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) =>
-        new HttpService(xhrBackend, requestOptions, router),
+      useFactory: useFactory,
       deps: [XHRBackend, RequestOptions, Router]
     },
     HttpService

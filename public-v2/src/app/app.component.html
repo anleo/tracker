@@ -13,7 +13,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand">Tracker</a>
+        <a [routerLink]="['app/tasks']" class="navbar-brand">Tracker</a>
 
       </div>
 
@@ -27,12 +27,14 @@
 
         <ul class="nav navbar-nav navbar-right">
 
-          <li>
-            <a *ngIf="user"><i class="fa fa-user"></i> {{user.username}}Username</a>
+          <li *ngIf="user">
+            <a [routerLink]="['/app/users/me']"><i class="fa fa-user"></i>
+              {{user.first+ ' ' +user.last}}
+            </a>
           </li>
-          <li><a routerLink="/app/login">Login</a></li>
-          <li><a routerLink="/app/register">Register</a></li>
-          <li><a routerLink="/app/logout">Logout</a></li>
+          <li *ngIf="!user"><a [routerLink]="['/app/login']">Login</a></li>
+          <li *ngIf="!user"><a [routerLink]="['/app/register']">Register</a></li>
+          <li *ngIf="user"><a [routerLink]="['/app/logout']">Logout</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>

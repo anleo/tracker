@@ -5,6 +5,7 @@ import {UserRoutingModule} from "./user-routing.module";
 import {ProfileComponent} from "./components/user-profile.component";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import {UserResolver} from "./resolver/UserResolver";
 
 @NgModule({
   declarations: [ProfileComponent],
@@ -15,7 +16,8 @@ import {CommonModule} from "@angular/common";
   ],
   providers: [
     UserResource,
-    UserService]
+    UserService,
+    UserResolver]
 })
 
 export class UserModule {
