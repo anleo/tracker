@@ -3,7 +3,7 @@ import {Routes, RouterModule} from "@angular/router";
 import {ProfileComponent} from "./components/user-profile.component";
 
 const userRoutes: Routes = [
-  {path: '', redirectTo: '/users/me', pathMatch: 'full'},
+  {path: '', redirectTo: '/app/users/me', pathMatch: 'full'},
   {
     path: '',
     children: [

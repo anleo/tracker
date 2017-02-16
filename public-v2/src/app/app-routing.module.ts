@@ -7,7 +7,7 @@ import {PasswordChangeComponent} from "./auth/password-change/password-change.co
 import {BlankComponent} from "./blank/blank.component";
 
 const routes: Routes = [
-   {
+  {
     path: 'app',
     component: BlankComponent,
     children: [
@@ -22,13 +22,16 @@ const routes: Routes = [
       {
         path: 'reset-password',
         component: PasswordResetComponent
+      },
+      {
+        path: 'users', loadChildren: 'app/user-module/user.module#UserModule'
       }
     ]
   },
   {
     path: 'public',
     component: BlankComponent,
-    children:[
+    children: [
       {
         path: 'change-password/:token',
         component: PasswordChangeComponent
@@ -43,10 +46,7 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'app/login'
-  },
-    {
-      path: 'users', loadChildren: 'app/user-module/user.module#UserModule'
-    }
+  }
 ];
 
 @NgModule({
