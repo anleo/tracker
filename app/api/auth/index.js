@@ -156,23 +156,13 @@ module.exports = function (app, passport, flash) {
         });
     });
 
-    // app.use('/api', function (req, res, next) {
-    //     if (!req.user) return res.sendStatus(401);
-    //     next();
-    // });
+    app.use('/api', function (req, res, next) {
+        if (!req.user) return res.sendStatus(401);
+        next();
+    });
 
     app.get('/api/users/me', function (req, res) {
-        // res.json(req.user);
-        var user = {
-            "_id": {"$oid": "5514462ae4eb270b4f115c2c"},
-            "first": "Andy",
-            "last": "Garcia",
-            "email": "mailtotesthere@gmail.com",
-            "local": {
-                "username": "test",
-            }
-        };
-        res.json(user);
+        res.json(req.user);
     });
 
     app.get('/api/users', function (req, res) {

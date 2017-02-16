@@ -1,6 +1,6 @@
 import {NgModule} from "@angular/core";
 import {Routes, RouterModule} from "@angular/router";
-import {ProfileComponent} from "./user-profile.component";
+import {ProfileComponent} from "./components/user-profile.component";
 
 const userRoutes: Routes = [
   {path: '', redirectTo: '/users/me', pathMatch: 'full'},

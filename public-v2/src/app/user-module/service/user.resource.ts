@@ -1,11 +1,11 @@
 import {Injectable, Injector} from "@angular/core";
 import {Http, RequestMethod} from "@angular/http";
 import {Resource, ResourceAction, ResourceParams, ResourceMethod} from "ng2-resource-rest";
-import {User} from "./user";
+import {User} from "../model/user";
+import {Password} from "../model/password";
 
 @Injectable()
 @ResourceParams({
-  // TODO @@@id: check url
   url: 'api/users'
 })
 export class UserResource extends Resource {
@@ -17,8 +17,19 @@ export class UserResource extends Resource {
 
   @ResourceAction({
     method: RequestMethod.Get,
-    port: 3000,
     path: '/me'
   })
-  get: ResourceMethod<null, User>
+  get: ResourceMethod<null, User>;
+
+  @ResourceAction({
+    method: RequestMethod.Put,
+    path: '/me'
+  })
+  save: ResourceMethod<User, User>;
+
+  @ResourceAction({
+    method: RequestMethod.Post,
+    path: '/changePassword/?oldPassword={!oldPassword}&newPassword={!newPassword}'
+  })
+  editPassword: ResourceMethod<Password, any>;
 }
