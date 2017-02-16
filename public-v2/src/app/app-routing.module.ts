@@ -6,6 +6,7 @@ import {PasswordResetComponent} from "./auth/password-reset/password-reset.compo
 import {PasswordChangeComponent} from "./auth/password-change/password-change.component";
 import {BlankComponent} from "./blank/blank.component";
 import {LogoutComponent} from "./auth/logout/logout.component";
+import {UserResolver} from "./user/resolver/UserResolver";
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
       },
       {
         path: 'tasks',
+        resolve: {user: UserResolver},
         loadChildren: './tracker/tracker.module#TrackerModule'
       }
     ]

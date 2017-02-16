@@ -10,6 +10,7 @@ export class UserResolver implements Resolve<User> {
   }
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
+    console.log('resolver');
     return this.UserService.get();
   }
 }
