@@ -8,7 +8,7 @@ import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
-
+import {TrackerModule} from "./tracker/tracker.module";
 import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
 import {HttpService} from "./services/http.service";
@@ -24,6 +24,7 @@ import {HttpService} from "./services/http.service";
     ResourceModule.forRoot(),
     ToastModule.forRoot(),
     AppRoutingModule,
+    TrackerModule,
     AuthModule,
     UserModule
   ],

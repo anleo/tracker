@@ -1,7 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, ViewContainerRef} from '@angular/core';
+import {Router} from "@angular/router";
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+
 import {AuthService} from "../auth.service";
 import {AuthUser} from "../AuthUser";
-import {Router} from "@angular/router";
 import {User} from "../../user/User";
 
 @Component({
@@ -12,7 +14,10 @@ export class RegistrationComponent {
   user: AuthUser = new AuthUser();
 
   constructor(private authService: AuthService,
-  private router: Router) {
+              private router: Router,
+              public toastr: ToastsManager,
+              vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   register(): void {
@@ -20,7 +25,7 @@ export class RegistrationComponent {
       .register(this.user)
       .then((user: User) => this.router.navigate(['/app/tasks']))
       .catch((err: any) => {
-        console.log(err);
+        this.toastr.error(err._body);
       })
   }
 

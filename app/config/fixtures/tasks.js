@@ -144,6 +144,33 @@ exports.tasks = [
         "commentsCounter":0,
         "updatedBy": ObjectId("5514462ae4eb270b4f115c2c"),
         "__v" : 0
+    },
+    {
+
+        "_id" : ObjectId("551540ec210f64444cde23cf"),
+        "description": "Test",
+        "title" : "task 3",
+        "status" : "in progress",
+        "estimatedTime" : 0,
+        "simple" : true,
+        "date" : ISODate("2015-04-27T11:37:16.072Z"),
+        "updatedAt" : ISODate(moment().subtract(1, 'd').toDate()),
+        "parentTaskId" : null,
+        "velocity" : 0,
+        "points" : 2,
+        "complexity" : 2,
+        "spenttime" : null,
+        "priority" : null,
+        "owner":ObjectId("5514462ae4eb270b4f115c2c"),
+        "developer":ObjectId("5514462ae4eb270b4f115c2c"),
+        "team": [],
+        "files": [],
+        "tags": [],
+        "tagsList": [],
+        "archived":  false,
+        "commentsCounter":0,
+        "updatedBy": ObjectId("5514462ae4eb270b4f115c2c"),
+        "__v" : 0
     }
 
 

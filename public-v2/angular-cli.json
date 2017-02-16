@@ -19,9 +19,9 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "assets/tracker.css",
         "../node_modules/bootstrap/dist/css/bootstrap.css",
-        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+        "assets/tracker.css"
       ],
       "scripts": [],
       "environments": {
