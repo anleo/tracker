@@ -5,7 +5,7 @@ var Tokenizer = function (_secret) {
     var secret = _secret || 'tracker';
 
     this.encode = function (data, next) {
-        next(null, jwt.sign(data, secret, {expiresInSeconds: 24*60*60}));
+        next(null, jwt.sign(data, secret, {expiresIn: 24 * 60 * 60}));
     };
 
     this.decode = function (token, next) {

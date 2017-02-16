@@ -18,7 +18,10 @@
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "styles": [
-        "styles.css", "../node_modules/bootstrap/dist/css/bootstrap.css", "assets/tracker.css"
+        "styles.css",
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+        "assets/tracker.css"
       ],
       "scripts": [],
       "environments": {
