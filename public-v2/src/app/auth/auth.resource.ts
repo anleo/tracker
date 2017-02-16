@@ -42,8 +42,8 @@ export class AuthResource extends Resource {
   resetPassword: ResourceMethod<{email: string}, any>;
 
   @ResourceAction({
-    path: '/users/resetPassword',
+    path: '/users/resetPassword?token={!token}&password={!password}',
     method: RequestMethod.Post
   })
-  changePassword: ResourceMethod<{password: string, token: string}, any>;
+  changePassword: ResourceMethod<any, any>;
 }

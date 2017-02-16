@@ -16,13 +16,16 @@ module.exports = function (app, passport, flash) {
     );
 
     app.post('/api/users/resetPassword', function (req, res, next) {
-        Tokenizer.decode(req.body.token, function (err, decoded) {
+        Tokenizer.decode(req.query.token, function (err, decoded) {
             if (err) return next(err);
 
             User.findById(decoded.userId, '-local.passwordHashed -local.passwordSalt', function (err, user) {
                 if (err) return next(err);
+                if (!user) {
+                    return res.status(404);
+                }
 
-                user.local.password = req.body.password;
+                user.local.password = req.query.password;
 
                 user.save(function (err, user) {
                     if (err) return next(err);
@@ -103,7 +106,7 @@ module.exports = function (app, passport, flash) {
                     to: user.email,
                     subject: 'Password reset',
                     // text: Host.getUrl('/#/public/change-password/' + token)
-                    text: 'http://192.168.10.20:4200/auth/password/change/' + token
+                    text: 'http://localhost:4200/public/change-password/' + token
                 };
 
                 if (err) return res.sendStatus(400);
