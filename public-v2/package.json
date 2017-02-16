@@ -23,6 +23,7 @@
     "@angular/router": "^3.3.1",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "jquery": "^3.1.1",
     "ng2-resource-rest": "^1.10.1",
     "ng2-toastr": "^1.4.1",
     "rxjs": "^5.0.1",
