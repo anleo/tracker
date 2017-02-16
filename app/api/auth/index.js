@@ -106,6 +106,7 @@ module.exports = function (app, passport, flash) {
                     to: user.email,
                     subject: 'Password reset',
                     // text: Host.getUrl('/#/public/change-password/' + token)
+                    //@@@@ koralex
                     text: 'http://localhost:4200/public/change-password/' + token
                 };
 
@@ -113,11 +114,13 @@ module.exports = function (app, passport, flash) {
 
                 Mailer.send(mailSettings, function (err) {
                     if (err) return next(err);
-
                     res.status(200).send({});
                 });
+
+
             });
         });
+
     });
 
     app.post('/api/register', function (req, res, next) {
