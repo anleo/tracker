@@ -3,7 +3,7 @@ import {ResourceAction, ResourceMethod, ResourceParams, Resource} from "ng2-reso
 
 import {Http, RequestMethod} from "@angular/http";
 import {AuthUser} from "./AuthUser";
-import {User} from "../user/User";
+import {User} from "../user/model/user";
 
 @Injectable()
 

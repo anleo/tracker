@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import 'rxjs/add/observable/of';
 import {UserResource} from "./user.resource";
 import {User} from "../model/user";
@@ -7,9 +7,11 @@ import {Password} from "../model/password";
 
 @Injectable()
 export class UserService {
-  user: User|undefined;
+  user: User|null = null;
+  user$: Subject<User> = new Subject<User>();
 
   constructor(private userResource: UserResource) {
+    this.user$.subscribe((user) => this.user = user);
   }
 
   get(): Observable<User> {
@@ -21,11 +23,7 @@ export class UserService {
   }
 
   set(user: User): void {
-    this.user = user;
-  }
-
-  unset(): void {
-    this.user = undefined;
+    this.user$.next(user);
   }
 
   save(user: User): Observable<User> {

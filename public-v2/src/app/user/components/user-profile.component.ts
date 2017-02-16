@@ -1,4 +1,5 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import 'rxjs/add/operator/catch'
 import 'rxjs/Rx';
 
@@ -16,7 +17,10 @@ export class ProfileComponent implements OnInit {
   password: Password = new Password();
   changePass: boolean = false;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private toastr: ToastsManager,
+              vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
@@ -27,17 +31,10 @@ export class ProfileComponent implements OnInit {
     this.userService
       .save(this.user)
       .subscribe((user) => {
-        // toaster.pop({
-        //   title: 'Saved'
-        // });
         this.user = user;
+        this.toastr.info('', 'Saved');
       }, (err) => {
-        console.log('err', err.data);
-
-        // toaster.pop({
-        //   type: 'error',
-        //   title: err.data.toString()
-        // });
+        this.toastr.error('', JSON.parse(err._body).toString());
       })
   }
 
@@ -49,24 +46,12 @@ export class ProfileComponent implements OnInit {
       this.userService
         .editPassword(this.password)
         .subscribe(() => {
-          console.log('password was changed')
-          // toaster.pop({
-          //   title: 'Saved'
-          // });
-        })
-      // .catch({
-      // toaster.pop({
-      //   type: 'error',
-      //   title: 'Wrong password'
-      // });
-
-      // });
+          this.toastr.info('', 'Saved');
+        }, () => {
+          this.toastr.error('', 'Wrong password');
+        });
     } else {
-// TODO @@@id: add toster
-//       toaster.pop({
-//         type: 'error',
-//         title: 'Mismatch in new password'
-//       });
+      this.toastr.error('', 'Mismatch in new password');
     }
   }
 }

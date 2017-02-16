@@ -24,7 +24,8 @@ const routes: Routes = [
         component: PasswordResetComponent
       },
       {
-        path: 'users', loadChildren: 'app/user-module/user.module#UserModule'
+        path: 'users',
+        loadChildren: 'app/user/user.module#UserModule'
       },
       {
         path: 'tasks',
