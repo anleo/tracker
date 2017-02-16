@@ -6,7 +6,6 @@ import {Component, OnInit} from '@angular/core';
 export class BlankComponent implements OnInit {
 
   constructor() {
-    console.log('blank!');
   }
 
   ngOnInit() {

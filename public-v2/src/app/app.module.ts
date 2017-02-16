@@ -7,15 +7,13 @@ import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
-import {BlankComponent} from './blank/blank.component';
 import {TrackerModule} from "./tracker/tracker.module";
 import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    BlankComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

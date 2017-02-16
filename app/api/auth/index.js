@@ -38,7 +38,6 @@ module.exports = function (app, passport, flash) {
     });
 
     app.post('/api/login', function (req, res, next) {
-        console.log('>>>>> ', 666, req.body);
         passport.authenticate('local', function (err, user, info) {
             if (err) return next(err);
 
