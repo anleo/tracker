@@ -105,7 +105,8 @@ module.exports = function (app, passport, flash) {
                 var mailSettings = {
                     to: user.email,
                     subject: 'Password reset',
-                    text: Host.getUrl('/#/public/change-password/' + token)
+                    text: Host.getUrl('/public/change-password/' + token)
+                    // text: Host.getUrl('/#/public/change-password/' + token)
                 };
 
                 if (err) return res.sendStatus(400);
