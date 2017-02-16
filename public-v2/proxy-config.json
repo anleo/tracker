@@ -1,6 +1,10 @@
 {
   "/api": {
     "target": "http://192.168.10.20:3000",
-    "secure": false
+    "secure": true
+  },
+  "/auth/facebook": {
+    "target": "http://192.168.10.20:3000",
+    "secure": true
   }
 }

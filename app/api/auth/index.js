@@ -16,12 +16,14 @@ module.exports = function (app, passport, flash) {
     );
 
     app.post('/api/users/resetPassword', function (req, res, next) {
-
         Tokenizer.decode(req.query.token, function (err, decoded) {
             if (err) return next(err);
 
             User.findById(decoded.userId, '-local.passwordHashed -local.passwordSalt', function (err, user) {
                 if (err) return next(err);
+                if (!user) {
+                    return res.status(404);
+                }
 
                 user.local.password = req.query.password;
 
@@ -43,7 +45,7 @@ module.exports = function (app, passport, flash) {
 
             req.logIn(user, {failureFlash: true}, function (err) {
                 if (err) return next(err);
-                return res.redirect('/api/users/me');
+                res.json(user);
             });
         })(req, res, next);
     });
@@ -85,7 +87,7 @@ module.exports = function (app, passport, flash) {
 
     app.post('/api/logout', function (req, res) {
         req.logout();
-        res.sendStatus(200);
+        res.status(200).send({});
     });
 
     app.post('/api/resetPassword', function (req, res, next) {
@@ -109,8 +111,8 @@ module.exports = function (app, passport, flash) {
                 if (err) return res.sendStatus(400);
 
                 Mailer.send(mailSettings, function (err) {
-                    if (err) next(err);
-                    res.sendStatus(200);
+                    if (err) return next(err);
+                    res.status(200).send({});
                 });
 
 
@@ -143,7 +145,7 @@ module.exports = function (app, passport, flash) {
                 user.save(function (err) {
                     req.login(user, function (err) {
                         if (err) return next(err);
-                        res.redirect('/api/users/me');
+                        res.json(user);
                     });
                 });
             } else {
