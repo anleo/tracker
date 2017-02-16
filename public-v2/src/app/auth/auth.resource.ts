@@ -31,7 +31,7 @@ export class AuthResource extends Resource {
 
   @ResourceAction({
     path: '/logout',
-    method: RequestMethod.Get
+    method: RequestMethod.Post
   })
   logout: ResourceMethod<any, any>;
 
