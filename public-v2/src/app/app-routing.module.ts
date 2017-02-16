@@ -22,6 +22,10 @@ const routes: Routes = [
       {
         path: 'reset-password',
         component: PasswordResetComponent
+      },
+      {
+        path: 'tasks',
+        loadChildren: './tracker/tracker.module#TrackerModule'
       }
     ]
   },
