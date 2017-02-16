@@ -1,4 +1,5 @@
 var Tokenizer = function (_secret) {
+
     var jwt = require('jsonwebtoken');
 
     var secret = _secret || 'tracker';
@@ -8,10 +9,11 @@ var Tokenizer = function (_secret) {
     };
 
     this.decode = function (token, next) {
-        jwt.verify(token, secret, function (err, decoded) {
+        jwt.verify(token,secret, function (err, decoded) {
             next(err, decoded)
         });
     };
+
 };
 
 module.exports = Tokenizer;

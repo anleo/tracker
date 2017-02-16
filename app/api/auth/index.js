@@ -1,5 +1,4 @@
 module.exports = function (app, passport, flash) {
-    var _ = require('lodash');
 
     var Tokenizer = app.container.get('Tokenizer');
     var Mailer = app.container.get('Mailer');
@@ -42,11 +41,7 @@ module.exports = function (app, passport, flash) {
             if (!user) return res.status(403).send(req.flash('loginMessage'));
 
             req.logIn(user, {failureFlash: true}, function (err) {
-                if (err) {
-                    return next(err);
-                }
-
-                user.removePrivateFields();
+                if (err) return next(err);
                 res.json(user);
             });
         })(req, res, next);
@@ -66,9 +61,11 @@ module.exports = function (app, passport, flash) {
 
     //------------------------------------------FACEBOOK------------------------------------------
 
-    app.get('/auth/facebook', passport.authenticate('facebook', {scope: 'email'}));
+    app.get('/auth/facebook',
+        passport.authenticate('facebook', {scope: 'email'}));
 
-    app.get('/auth/facebook/callback', passport.authenticate('facebook', {failureRedirect: '/'}),
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {failureRedirect: '/'}),
         function (req, res) {
             res.redirect('/#/app/users/me');
         }
@@ -91,19 +88,16 @@ module.exports = function (app, passport, flash) {
     });
 
     app.post('/api/resetPassword', function (req, res, next) {
+
         User.findOne({'email': req.body.email}, function (err, user) {
-            if (err) {
-                return next(err);
-            }
+
+            if (err) return next(err);
 
             if (!user) {
                 return res.sendStatus(400);
             }
 
             Tokenizer.encode({userId: user._id}, function (err, token) {
-                if (err) {
-                    return res.sendStatus(400);
-                }
 
                 var mailSettings = {
                     to: user.email,
@@ -112,10 +106,10 @@ module.exports = function (app, passport, flash) {
                     text: 'http://192.168.10.20:4200/auth/password/change/' + token
                 };
 
+                if (err) return res.sendStatus(400);
+
                 Mailer.send(mailSettings, function (err) {
-                    if (err) {
-                        return next(err);
-                    }
+                    if (err) return next(err);
 
                     res.status(200).send({});
                 });
@@ -146,11 +140,7 @@ module.exports = function (app, passport, flash) {
 
                 user.save(function (err) {
                     req.login(user, function (err) {
-                        if (err) {
-                            return next(err);
-                        }
-
-                        user.removePrivateFields();
+                        if (err) return next(err);
                         res.json(user);
                     });
                 });
@@ -170,7 +160,6 @@ module.exports = function (app, passport, flash) {
     });
 
     app.get('/api/users/me', function (req, res) {
-        req.user.removePrivateFields();
         res.json(req.user);
     });
 
