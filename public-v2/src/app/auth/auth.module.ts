@@ -11,6 +11,7 @@ import {AuthResource} from "./auth.resource";
 import {BlankComponent} from "../blank/blank.component";
 import {AuthService} from "./auth.service";
 import {RouterModule} from "@angular/router";
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import {RouterModule} from "@angular/router";
     LoginComponent,
     RegistrationComponent,
     PasswordChangeComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    LogoutComponent
   ],
   providers: [
     AuthResource,
