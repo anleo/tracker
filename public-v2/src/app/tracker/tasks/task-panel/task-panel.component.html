@@ -1,0 +1,38 @@
+<div class="panel panel-default"
+     *ngIf="task"
+     ngClass="{
+     'panel-success': task.status == 'accepted',
+     'panel-warning': task.status == 'in progress'">
+
+  <!--"{-->
+  <!--'panel-success': task.status == 'accepted',-->
+  <!--'panel-warning': task.status == 'in progress',-->
+  <!--'task-todo-low-time' : (task.timeToDo|round) < 0,-->
+  <!--'task-not-estimated' : !task.points}"-->
+
+  <div class="panel-heading overflow-hidden">
+    <h4 class="panel-title">
+      <!--<a ui-sref="app.task({taskId: task._id})" data-nodrag>{{task.title}}</a>-->
+      <a [routerLink]="[task._id]">{{task.title}}</a>
+      <span *ngIf="onEdit" class="fa fa-pencil-square-o vcenter pull-right pointer" (click)="edit(task)"></span>
+      <span class="fa fa-arrows vcenter pull-right pointer"></span>
+      <span class="label label-info vcenter pull-right" *ngIf="!task.simple">complex</span>
+    </h4>
+  </div>
+
+  <div class="panel-body" *ngIf="metricsDetails || task.description || task.tags && task.tags.length">
+    <div *ngIf="metricsDetails" (click)="edit(task)" class="fs-sm " style="display: inline-block"></div>
+    <!--<div *ngIf="metricsDetails" (click)="edit(task)" class="fs-sm " task-metrics task="task" task-options="options" metrics-details="metricsDetails" style="display: inline-block"></div>-->
+
+    <div *ngIf="task.description">
+      <hr *ngIf="metricsDetails"/>
+      <!--<div text-extend="task.description" style="overflow: hidden;"></div>-->
+    </div>
+
+    <hr *ngIf="task.tags && task.tags.length && (task.description || metricsDetails > 0)"/>
+
+    <!--<div task-tags task="task"></div>-->
+
+  </div>
+
+</div>

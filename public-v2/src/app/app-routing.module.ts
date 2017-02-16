@@ -25,6 +25,10 @@ const routes: Routes = [
       },
       {
         path: 'users', loadChildren: 'app/user-module/user.module#UserModule'
+      },
+      {
+        path: 'tasks',
+        loadChildren: './tracker/tracker.module#TrackerModule'
       }
     ]
   },
