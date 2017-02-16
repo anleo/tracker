@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Observable, Subject} from "rxjs";
+import {Observable, BehaviorSubject} from "rxjs";
 import 'rxjs/add/observable/of';
 import {UserResource} from "./user.resource";
 import {User} from "../model/user";
@@ -8,7 +8,7 @@ import {Password} from "../model/password";
 @Injectable()
 export class UserService {
   user: User|null = null;
-  user$: Subject<User> = new Subject<User>();
+  user$: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
   constructor(private userResource: UserResource) {
     this.user$.subscribe((user) => this.user = user);
@@ -18,7 +18,8 @@ export class UserService {
     if (this.user) {
       return Observable.of(this.user);
     } else {
-      return this.userResource.get().$observable.map((user) => {
+      return this.userResource.get().$observable
+        .map((user) => {
         this.set(user);
         return user;
       });
@@ -30,7 +31,10 @@ export class UserService {
   }
 
   save(user: User): Observable<User> {
-    return this.userResource.save(user).$observable;
+    return this.userResource.save(user).$observable.map((user) => {
+      this.set(user);
+      return user;
+    });
   }
 
   editPassword(password: Password): Observable<any> {

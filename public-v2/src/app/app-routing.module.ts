@@ -7,6 +7,7 @@ import {PasswordChangeComponent} from "./auth/password-change/password-change.co
 import {BlankComponent} from "./blank/blank.component";
 import {LogoutComponent} from "./auth/logout/logout.component";
 import {UserResolver} from "./user/resolver/UserResolver";
+import {ProfileComponent} from "./user/components/user-profile.component";
 
 const routes: Routes = [
   {
@@ -31,7 +32,13 @@ const routes: Routes = [
       },
       {
         path: 'users',
-        loadChildren: 'app/user/user.module#UserModule'
+        children: [
+          {path: '', redirectTo: '/app/users/me', pathMatch: 'full'},
+          {
+            path: 'me',
+            component: ProfileComponent
+          }
+        ]
       },
       {
         path: 'tasks',
