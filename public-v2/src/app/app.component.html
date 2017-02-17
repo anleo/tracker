@@ -29,7 +29,7 @@
 
           <li *ngIf="user">
             <a [routerLink]="['/app/users/me']"><i class="fa fa-user"></i>
-              {{user.first+ ' ' +user.last}}
+              {{user.first? (user.first+ ' ' +user.last): user.local.username}}
             </a>
           </li>
           <li *ngIf="!user"><a [routerLink]="['/app/login']">Login</a></li>
