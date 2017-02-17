@@ -1,7 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import {HttpModule, Http, XHRBackend, RequestOptions} from '@angular/http';
+import {Router} from "@angular/router";
 import {ResourceModule} from "ng2-resource-rest";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
@@ -10,6 +11,11 @@ import {AppRoutingModule} from "./app-routing.module";
 import {TrackerModule} from "./tracker/tracker.module";
 import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
+import {HttpService} from "./services/http.service";
+
+export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
+  return new HttpService(xhrBackend, requestOptions, router);
+}
 
 @NgModule({
   declarations: [
@@ -26,8 +32,16 @@ import {UserModule} from "./user/user.module";
     AuthModule,
     UserModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: Http,
+      useFactory: httpUseFactory,
+      deps: [XHRBackend, RequestOptions, Router]
+    },
+    HttpService
+  ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }
