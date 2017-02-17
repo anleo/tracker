@@ -33,4 +33,10 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getTasks: ResourceMethod<any, Task[]>;
+
+  @ResourceAction({
+    path: '/report/{!date}',
+    isArray: true
+  })
+  getReportByDate: ResourceMethod<{date: string}, any>
 }

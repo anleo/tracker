@@ -10,12 +10,16 @@ import {TaskResource} from "./resources/tasks.resource";
 import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {TasksBoardFilter} from "./pipes/tasksBoardFilter";
 import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
+import {ReportsComponent} from "./reports/reports.component";
+import { DatepickerModule } from 'ng2-bootstrap/datepicker';
+import {MyDatepickerComponent} from "./reports/my-datepicker.component";
 
 @NgModule({
   imports: [
     CommonModule,
     TrackerRoutingModule,
-    FormsModule
+    FormsModule,
+    DatepickerModule.forRoot()
   ],
   declarations: [
     TasksComponent,
@@ -23,7 +27,9 @@ import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
     TasksEditComponent,
     TasksBoardComponent,
     TasksBoardFilter,
-    TaskPanelComponent
+    TaskPanelComponent,
+    ReportsComponent,
+    MyDatepickerComponent
   ],
   providers: [
     TaskResource,
