@@ -13,8 +13,8 @@
   <div class="panel-heading overflow-hidden">
     <h4 class="panel-title">
       <!--<a ui-sref="app.task({taskId: task._id})" data-nodrag>{{task.title}}</a>-->
-      <a [routerLink]="['/app/tasks/' + task._id]">{{task.title}}</a>
-      <span *ngIf="onEdit" class="fa fa-pencil-square-o vcenter pull-right pointer" (click)="edit(task)"></span>
+      <a [routerLink]="['/app/tasks/', task._id]">{{task.title}}</a>
+      <span class="fa fa-pencil-square-o vcenter pull-right pointer" (click)="edit(task)"></span>
       <span class="fa fa-arrows vcenter pull-right pointer"></span>
       <span class="label label-info vcenter pull-right" *ngIf="!task.simple">complex</span>
     </h4>
@@ -26,6 +26,7 @@
 
     <div *ngIf="task.description">
       <hr *ngIf="metricsDetails"/>
+      <span class="pointer">{{task.description}}</span>
       <!--<div text-extend="task.description" style="overflow: hidden;"></div>-->
     </div>
 
