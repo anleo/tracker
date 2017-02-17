@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AuthResource} from "./auth.resource";
-import {User} from "../user/model/user";
+import {User} from "../user/models/user";
 import {AuthUser} from "./AuthUser";
-import {UserService} from "../user/service/user.service";
+import {UserService} from "../user/services/user.service";
 
 @Injectable()
 export class AuthService {

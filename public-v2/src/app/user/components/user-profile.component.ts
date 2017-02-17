@@ -3,9 +3,9 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import 'rxjs/add/operator/catch'
 import 'rxjs/Rx';
 
-import {User} from "../model/user";
-import {Password} from "../model/password";
-import {UserService} from "../service/user.service";
+import {User} from "../models/user";
+import {Password} from "../models/password";
+import {UserService} from "../services/user.service";
 
 @Component({
   moduleId: module.id,

@@ -33,7 +33,7 @@ const routes: Routes = [
       {
         path: 'users',
         children: [
-          {path: '', redirectTo: '/app/users/me', pathMatch: 'full'},
+          {path: '', redirectTo: 'me', pathMatch: 'full'},
           {
             path: 'me',
             component: ProfileComponent

@@ -2,8 +2,8 @@ import {Injectable} from "@angular/core";
 import {Observable, BehaviorSubject} from "rxjs";
 import 'rxjs/add/observable/of';
 import {UserResource} from "./user.resource";
-import {User} from "../model/user";
-import {Password} from "../model/password";
+import {User} from "../models/user";
+import {Password} from "../models/password";
 
 @Injectable()
 export class UserService {
