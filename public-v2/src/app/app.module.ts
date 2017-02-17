@@ -12,7 +12,8 @@ import {TrackerModule} from "./tracker/tracker.module";
 import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
 import {HttpService} from "./services/http.service";
-export function useFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
+
+export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
   return new HttpService(xhrBackend, requestOptions, router);
 }
 
@@ -34,7 +35,7 @@ export function useFactory(xhrBackend: XHRBackend, requestOptions: RequestOption
   providers: [
     {
       provide: Http,
-      useFactory: useFactory,
+      useFactory: httpUseFactory,
       deps: [XHRBackend, RequestOptions, Router]
     },
     HttpService

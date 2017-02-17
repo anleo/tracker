@@ -11,11 +11,11 @@ export class AppComponent implements OnInit {
   user: User;
 
   constructor(private userService: UserService) {
-    this.userService.user$.subscribe((user) => {
-      this.user = user;
-    });
   };
 
   ngOnInit(): void {
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
+    });
   }
 }
