@@ -13,6 +13,10 @@ import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
 import {HttpService} from "./services/http.service";
 
+export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
+  return new HttpService(xhrBackend, requestOptions, router);
+}
+
 @NgModule({
   declarations: [
     AppComponent
@@ -31,8 +35,7 @@ import {HttpService} from "./services/http.service";
   providers: [
     {
       provide: Http,
-      useFactory: (xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) =>
-        new HttpService(xhrBackend, requestOptions, router),
+      useFactory: httpUseFactory,
       deps: [XHRBackend, RequestOptions, Router]
     },
     HttpService

@@ -4,7 +4,7 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import {AuthService} from "../auth.service";
 import {AuthUser} from "../AuthUser";
-import {User} from "../../user/User";
+import {User} from "../../user/models/user";
 
 @Component({
   selector: 'app-registration',
