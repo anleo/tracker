@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
 
@@ -9,6 +9,7 @@ import {TaskService} from "../../services/task.service";
 export class TasksEditComponent implements OnInit {
   @Input()
   task: Task|null = null;
+  @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
 
   constructor(private taskService: TaskService) {
   }
@@ -22,7 +23,21 @@ export class TasksEditComponent implements OnInit {
   }
 
   save() {
-    this.taskService.save(this.task).subscribe((task) => console.log('>>>>> ', task))
+    if (this.task && this.task.parentTaskId) {
+      this.taskService.saveChildTask(this.task).subscribe((task) => {
+        this.emitUpdate(task);
+        this.initTask();
+      });
+    } else {
+      this.taskService.save(this.task).subscribe((task) => {
+        this.emitUpdate(task);
+        this.initTask();
+      });
+    }
+  }
+
+  emitUpdate(task: Task) {
+    this.onUpdate.emit(task);
   }
 
   close() {

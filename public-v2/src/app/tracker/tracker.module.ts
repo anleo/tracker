@@ -10,12 +10,16 @@ import {TaskResource} from "./resources/tasks.resource";
 import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {TasksBoardFilter} from "./pipes/tasksBoardFilter";
 import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
+import {TaskItemComponent} from "./tasks/task-item/task-item.component";
+import {TaskResolver} from "./resolvers/task.resolver";
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 @NgModule({
   imports: [
     CommonModule,
     TrackerRoutingModule,
-    FormsModule
+    FormsModule,
+    ToastModule.forRoot()
   ],
   declarations: [
     TasksComponent,
@@ -23,9 +27,11 @@ import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
     TasksEditComponent,
     TasksBoardComponent,
     TasksBoardFilter,
-    TaskPanelComponent
+    TaskPanelComponent,
+    TaskItemComponent
   ],
   providers: [
+    TaskResolver,
     TaskResource,
     TaskService
   ]

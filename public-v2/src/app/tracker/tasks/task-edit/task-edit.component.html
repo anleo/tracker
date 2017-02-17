@@ -1,8 +1,8 @@
-<form (submit)="save()" id="form">
+<form (submit)="save()" id="form" *ngIf="task">
 
   <div class="row">
     <!--left-side-->
-    <div ng-class="task.title ? 'col-md-6' : 'col-md-12'">
+    <div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'">
 
       <!--// @@@ fix taskId snapshot-->
       <!--<div class="form-group">-->

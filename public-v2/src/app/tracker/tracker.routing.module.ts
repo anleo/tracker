@@ -1,11 +1,20 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from '@angular/router';
 import {TasksComponent} from "./tasks/tasks.component";
+import {TaskItemComponent} from "./tasks/task-item/task-item.component";
+import {TaskResolver} from "./resolvers/task.resolver";
 
 const routes: Routes = [
   {
     path: '',
     component: TasksComponent
+  },
+  {
+    path: ':taskId',
+    component: TaskItemComponent,
+    resolve: {
+      task: TaskResolver
+    },
   },
   {
     path: '**',

@@ -23,6 +23,12 @@ export class TaskResource extends Resource {
   save: ResourceMethod<Task, Task>;
 
   @ResourceAction({
+    path: '/{!taskId}/tasks',
+    method: RequestMethod.Post
+  })
+  saveChildTask: ResourceMethodStrict<Task, {taskId: string}, Task>;
+
+  @ResourceAction({
     path: '/{!taskId}',
     method: RequestMethod.Put
   })
@@ -33,4 +39,20 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getTasks: ResourceMethod<any, Task[]>;
+
+  @ResourceAction({
+    path: '/{taskId}'
+  })
+  getTask: ResourceMethodStrict<any, {taskId: string}, Task>;
+
+  @ResourceAction({
+    path: '/{taskId}/root'
+  })
+  getRoot: ResourceMethodStrict<any, {taskId: string}, Task>;
+
+  @ResourceAction({
+    path: '/{taskId}/tasks',
+    isArray: true
+  })
+  getChildrenTasks: ResourceMethodStrict<any,  {taskId: string}, Task[]>;
 }
