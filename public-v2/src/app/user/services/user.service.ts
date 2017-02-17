@@ -20,14 +20,15 @@ export class UserService {
     } else {
       return this.userResource.get().$observable
         .map((user) => {
-        this.set(user);
-        return user;
-      });
+          this.set(user);
+          return user;
+        });
     }
   }
 
-  set(user: User): void {
+  set(user: User) {
     this.user$.next(user);
+    return Observable.of(this.user);
   }
 
   save(user: User): Observable<User> {

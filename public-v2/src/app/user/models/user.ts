@@ -1,3 +1,8 @@
+import {Local} from './local';
+import {Facebook} from './facebook';
+import {Twitter} from './twitter';
+import {Google} from './google';
+
 export class User {
   _id: string = '';
   first: string = '';
@@ -8,25 +13,4 @@ export class User {
   twitter: Twitter = new Twitter();
   google: Google = new Google();
   created: string = '';
-}
-
-export class Local {
-  username: string = '';
-}
-
-export class Facebook {
-  id: string = '';
-  email: string = '';
-  token: string = '';
-}
-
-export class Twitter {
-  id: string = '';
-  token: string = '';
-}
-
-export class Google {
-  id: string = '';
-  email: string = '';
-  token: string = '';
 }
