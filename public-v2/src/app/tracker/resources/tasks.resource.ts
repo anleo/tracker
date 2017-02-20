@@ -38,5 +38,5 @@ export class TaskResource extends Resource {
     path: '/report/{!date}',
     isArray: true
   })
-  getReportByDate: ResourceMethod<{date: string}, any>
+  getTaskReportByDate: ResourceMethod<{date: string}, any>
 }

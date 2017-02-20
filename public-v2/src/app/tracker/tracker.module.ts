@@ -12,7 +12,7 @@ import {TasksBoardFilter} from "./pipes/tasksBoardFilter";
 import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
 import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
-import {MyDatepickerComponent} from "./reports/my-datepicker.component";
+import {TaskStatusService} from "./services/task-status.service";
 
 @NgModule({
   imports: [
@@ -28,12 +28,12 @@ import {MyDatepickerComponent} from "./reports/my-datepicker.component";
     TasksBoardComponent,
     TasksBoardFilter,
     TaskPanelComponent,
-    ReportsComponent,
-    MyDatepickerComponent
+    ReportsComponent
   ],
   providers: [
     TaskResource,
-    TaskService
+    TaskService,
+    TaskStatusService
   ]
 })
 export class TrackerModule {

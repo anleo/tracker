@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../services/task.service";
 import {Task} from "../models/task";
+import {TaskStatusService} from "../services/task-status.service";
+import {TaskStatus} from "../models/task-status";
 
 @Component({
   moduleId: module.id,
@@ -8,21 +10,47 @@ import {Task} from "../models/task";
 })
 
 export class ReportsComponent implements OnInit {
-  date: string = 'Thu%20Feb%2016%202017%2016:14:05%20GMT+0200%20(EET)'
+  date: Date | null = new Date;
   tasks: Task[] = [];
-  date3: string = '';
-  showDatepicker: boolean = false;
+  showDatePicker: boolean = false;
+  TaskStatus = TaskStatus;
 
-  constructor(private taskService: TaskService){}
+  constructor(
+    private taskService: TaskService,
+    private taskStatusService: TaskStatusService
+  ) {}
 
   ngOnInit(): void {
     this.taskService
-      .getReportByDate(this.date)
+      .getTaskReportByDate(this.date)
       .subscribe(tasks => this.tasks = tasks);
   }
 
-  toggleDatepicker(): void {
-    this.showDatepicker = !this.showDatepicker;
+  toggleDatePicker(): void {
+    this.showDatePicker = !this.showDatePicker;
+  }
+
+  onClose(): void {
+    this.showDatePicker = false;
+  }
+
+  onChangeDate(date): void {
+      this.date = date;
+      this.taskService
+        .getTaskReportByDate(this.date)
+        .subscribe(tasks => this.tasks = tasks);
+  }
+
+  getStatusById(id: string) {
+    let status: TaskStatus | null = null;
+
+    this.taskStatusService.getById(id)
+      .subscribe(taskStatus => {
+        status = taskStatus;
+        return taskStatus;
+      });
+
+    return status;
   }
 
 }
