@@ -12,6 +12,12 @@ export class TasksEditComponent implements OnInit {
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
 
+  statuses: any[] = [
+    {name: 'New', value: ''},
+    {name: 'In progress', value: 'in progress'},
+    {name: 'Accepted', value: 'accepted'}
+  ];
+
   constructor(private taskService: TaskService) {
     this.taskService.editTask$.subscribe((task) => this.task = task);
   }
@@ -57,4 +63,7 @@ export class TasksEditComponent implements OnInit {
     this.initTask();
   }
 
+  setStatus(status: string): void {
+    this.task.status = status;
+  }
 }
