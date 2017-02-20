@@ -1,7 +1,9 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 
 import {Task} from '../../models/task';
+import {TaskStatus} from '../../models/task-status';
 import {TaskService} from "../../services/task.service";
+import {TaskStatusService} from "../../services/task-status.service";
 
 @Component({
   selector: 'app-task-edit',
@@ -12,18 +14,19 @@ export class TasksEditComponent implements OnInit {
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
 
-  statuses: any[] = [
-    {name: 'New', value: ''},
-    {name: 'In progress', value: 'in progress'},
-    {name: 'Accepted', value: 'accepted'}
-  ];
+  statuses: TaskStatus[] = [];
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService,
+              private taskStatusService: TaskStatusService) {
     this.taskService.editTask$.subscribe((task) => this.task = task);
   }
 
   ngOnInit() {
     this.task = this.task ? this.task : new Task();
+
+    this.taskStatusService
+      .getTaskStatusList()
+      .subscribe(taskStatusList => this.statuses = taskStatusList)
   }
 
   initTask() {
