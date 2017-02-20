@@ -106,6 +106,8 @@ module.exports = function (app, passport, flash) {
                     to: user.email,
                     subject: 'Password reset',
                     text: Host.getUrl('/public/change-password/' + token)
+                    //@@@ # is for angular v1 (html5 mode)
+                    // remove when deployed with angular2 client
                     // text: Host.getUrl('/#/public/change-password/' + token)
                 };
 

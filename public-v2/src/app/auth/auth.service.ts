@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AuthResource} from "./auth.resource";
-import {User} from "../user/User";
+import {User} from "../user/models/user";
 import {AuthUser} from "./AuthUser";
-import {UserService} from "../user/user.service";
+import {UserService} from "../user/services/user.service";
 
 @Injectable()
 export class AuthService {
@@ -16,7 +16,7 @@ export class AuthService {
       .register(user)
       .$observable
       .map((user: User) => {
-        this.userService.setUser(user);
+        this.userService.set(user);
         return user;
       })
       .toPromise()
@@ -28,7 +28,7 @@ export class AuthService {
       .login(user)
       .$observable
       .map((user: User) => {
-        this.userService.setUser(user);
+        this.userService.set(user);
         return user;
       })
       .toPromise();
@@ -38,7 +38,7 @@ export class AuthService {
     return this.authResource
       .logout()
       .$observable
-      .map(() => this.userService.setUser(null))
+      .map(() => this.userService.set(null))
       .toPromise();
   }
 

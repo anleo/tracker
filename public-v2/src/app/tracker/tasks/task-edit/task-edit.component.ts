@@ -1,4 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
 
@@ -7,10 +8,12 @@ import {TaskService} from "../../services/task.service";
   templateUrl: 'task-edit.component.html'
 })
 export class TasksEditComponent implements OnInit {
-  @Input()
   task: Task|null = null;
+  @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
+  @Output() onRemove: EventEmitter<Task> = new EventEmitter();
 
   constructor(private taskService: TaskService) {
+    this.taskService.editTask$.subscribe((task) => this.task = task);
   }
 
   ngOnInit() {
@@ -22,7 +25,32 @@ export class TasksEditComponent implements OnInit {
   }
 
   save() {
-    this.taskService.save(this.task).subscribe((task) => console.log('>>>>> ', task))
+    if (this.task && this.task.parentTaskId) {
+      this.taskService.saveChildTask(this.task).subscribe((task) => {
+        this.emitUpdate(task);
+        this.initTask();
+      });
+    } else {
+      this.taskService.save(this.task).subscribe((task) => {
+        this.emitUpdate(task);
+        this.initTask();
+      });
+    }
+  }
+
+  remove(task: Task) {
+    this.taskService.remove(this.task).subscribe(() => {
+      this.emitRemove(task);
+      this.initTask();
+    });
+  }
+
+  emitUpdate(task: Task) {
+    this.onUpdate.emit(task);
+  }
+
+  emitRemove(task: Task) {
+    this.onRemove.emit(task);
   }
 
   close() {

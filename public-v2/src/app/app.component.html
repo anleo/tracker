@@ -13,26 +13,28 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand">Tracker</a>
+        <a [routerLink]="['/app/tasks']" class="navbar-brand">Tracker</a>
 
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a>Projects</a></li>
+          <li><a [routerLink]="['/app/tasks']">Projects</a></li>
           <li><a>Report</a></li>
           <li><a>My tasks</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
 
-          <li>
-            <a><i class="fa fa-user"></i> Username</a>
+          <li *ngIf="user">
+            <a [routerLink]="['/app/users/me']"><i class="fa fa-user"></i>
+              {{user.first? (user.first+ ' ' +user.last): user.local.username}}
+            </a>
           </li>
-          <li><a>Login</a></li>
-          <li><a>Register</a></li>
-          <li><a>Logout</a></li>
+          <li *ngIf="!user"><a [routerLink]="['/app/login']">Login</a></li>
+          <li *ngIf="!user"><a [routerLink]="['/app/register']">Register</a></li>
+          <li *ngIf="user"><a [routerLink]="['/app/logout']">Logout</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>

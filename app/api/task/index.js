@@ -232,7 +232,7 @@ module.exports = function (app) {
     app.delete('/api/tasks/:taskId', function (req, res, next) {
         TaskService.removeTask(req.user, req.Task, function (err) {
             if (err) return next(err);
-            res.sendStatus(200);
+            res.status(200).send({});
         });
     });
 

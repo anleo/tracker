@@ -5,6 +5,9 @@ import {RegistrationComponent} from "./auth/registration/registration.component"
 import {PasswordResetComponent} from "./auth/password-reset/password-reset.component";
 import {PasswordChangeComponent} from "./auth/password-change/password-change.component";
 import {BlankComponent} from "./blank/blank.component";
+import {LogoutComponent} from "./auth/logout/logout.component";
+import {UserResolver} from "./user/resolver/UserResolver";
+import {ProfileComponent} from "./user/components/user-profile.component";
 
 const routes: Routes = [
   {
@@ -12,8 +15,17 @@ const routes: Routes = [
     component: BlankComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      },
+      {
         path: 'login',
         component: LoginComponent
+      },
+      {
+        path: 'logout',
+        component: LogoutComponent
       },
       {
         path: 'register',
@@ -24,15 +36,30 @@ const routes: Routes = [
         component: PasswordResetComponent
       },
       {
+        path: 'users',
+        children: [
+          {path: '', redirectTo: 'me', pathMatch: 'full'},
+          {
+            path: 'me',
+            component: ProfileComponent
+          }
+        ]
+      },
+      {
         path: 'tasks',
+        resolve: {user: UserResolver},
         loadChildren: './tracker/tracker.module#TrackerModule'
+      },
+      {
+        path: '**',
+        redirectTo: 'login'
       }
     ]
   },
   {
     path: 'public',
     component: BlankComponent,
-    children:[
+    children: [
       {
         path: 'change-password/:token',
         component: PasswordChangeComponent

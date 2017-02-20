@@ -1,13 +1,24 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {UserService} from "./user.service";
+import {UserService} from "./services/user.service";
+import {UserResource} from "./services/user.resource";
+import {ProfileComponent} from "./components/user-profile.component";
+import {FormsModule} from "@angular/forms";
+import {CommonModule} from "@angular/common";
+import {UserResolver} from "./resolver/UserResolver";
 
 @NgModule({
+  declarations: [ProfileComponent],
   imports: [
-    CommonModule
+    FormsModule,
+    CommonModule,
   ],
-  declarations: [],
-  providers: [UserService]
+  exports: [
+    ProfileComponent
+  ],
+  providers: [
+    UserResource,
+    UserService,
+    UserResolver]
 })
 
 export class UserModule {
