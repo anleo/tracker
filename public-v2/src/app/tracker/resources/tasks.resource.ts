@@ -58,4 +58,10 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getChildrenTasks: ResourceMethodStrict<any,  {taskId: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/report/{!date}',
+    isArray: true
+  })
+  getTaskReportByDate: ResourceMethod<{date: string}, any>
 }

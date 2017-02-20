@@ -57,5 +57,14 @@ export class TaskService {
   save(task: Task): Observable<Task> {
     return task && task._id ? this.updateTask(task) : this.saveTask(task);
   }
+
+  getTaskReportByDate(date: Date): Observable <Task[]> {
+    return this.taskResource
+      .getTaskReportByDate({date: date.toString()})
+      .$observable
+      .catch((err) => {
+        return Observable.throw(err);
+      });
+  }
 }
 

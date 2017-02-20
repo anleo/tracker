@@ -1,0 +1,82 @@
+<div class="row">
+
+  <div class="col-md-12">
+
+    <h3>Report</h3>
+    <h5>
+      <a (click)="location.back()"><i class="fa fa-long-arrow-left"></i>
+        Back</a>
+    </h5>
+
+    <div class="pull-right">
+      <!--<i class="fa fa-filter"></i> <strong>Filters:&nbsp;</strong>-->
+      <!--<label>-->
+        <!--<input type="checkbox">-->
+        <!--Status-->
+      <!--</label>-->
+      <!--&nbsp;-->
+      <!--<label>-->
+        <!--<input type="checkbox">-->
+        <!--Metrics-->
+      <!--</label>-->
+    </div>
+
+    <div class="report-page">
+    <div></div>
+
+      <h5 class="clearfix">
+        <div class="date-selector pull-left">
+          <span *ngIf="date">{{date | date:'EEE, y-MM-dd'}}</span>
+          <i class="fa fa-calendar" (click)="toggleDatePicker()"></i>
+
+          <div *ngIf="showDatePicker" style="position: absolute; z-index:10; min-height:290px;">
+            <datepicker
+              [ngModel]="date"
+              (click)="onClose()"
+              (ngModelChange)="onChangeDate($event)"
+              [showWeeks]="false">
+            </datepicker>
+          </div>
+        </div>
+      </h5>
+
+      <div *ngIf="tasks.length" class="result">
+        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_ACCEPTED)).length">
+          <h5>Done:</h5>
+          <ul>
+            <li *ngFor="let task of tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_ACCEPTED)">
+              <span class="status">+</span>{{task.title}}
+              <div></div>
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_IN_PROGRESS)).length">
+          <h5>In Progress:</h5>
+          <ul>
+            <li *ngFor="let task of tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_IN_PROGRESS)">
+              <span class="status">></span>{{task.title}}
+              <div></div>
+            </li>
+          </ul>
+        </div>
+
+        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_NEW)).length">
+          <h5>Plans:</h5>
+          <ul>
+            <li *ngFor="let task of tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_NEW)">
+              <span class="status">&#8226;</span>{{task.title}}
+              <div></div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <p class="p10" *ngIf="!tasks.length">No changes for this day</p>
+    </div>
+
+  </div>
+</div>
+
+

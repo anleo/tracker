@@ -16,13 +16,18 @@ import {TasksListComponent} from './tasks/tasks-list/tasks-list.component';
 import {TasksEditComponent} from './tasks/task-edit/task-edit.component';
 import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
 import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
+import {ReportsComponent} from "./reports/reports.component";
+import { DatepickerModule } from 'ng2-bootstrap/datepicker';
+import {TaskStatusService} from "./services/task-status.service";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     TrackerRoutingModule,
-    ToastModule.forRoot()
+    ToastModule.forRoot(),
+    FormsModule,
+    DatepickerModule.forRoot()
   ],
   declarations: [
     TasksBoardFilter,
@@ -31,12 +36,14 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
     TasksEditComponent,
     TasksBoardComponent,
     TaskPanelComponent,
-    TaskItemComponent
+    TaskItemComponent,
+    ReportsComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
-    TaskService
+    TaskService,
+    TaskStatusService
   ]
 })
 export class TrackerModule {

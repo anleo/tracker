@@ -3,12 +3,17 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TasksComponent} from "./tasks/tasks.component";
+import {ReportsComponent} from "./reports/reports.component";
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
 
 const routes: Routes = [
   {
     path: '',
     component: TasksComponent
+  },
+  {
+    path: 'reports',
+    component: ReportsComponent
   },
   {
     path: ':taskId',

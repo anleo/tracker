@@ -2,6 +2,8 @@ import {Component, OnInit, Input} from '@angular/core';
 
 import {Task} from '../../models/task'
 import {TaskService} from "../../services/task.service";
+import {TaskStatusService} from "../../services/task-status.service";
+import {TaskStatus} from "../../models/task-status";
 
 @Component({
   selector: 'app-tasks-board',
@@ -9,16 +11,16 @@ import {TaskService} from "../../services/task.service";
 })
 export class TasksBoardComponent implements OnInit {
   @Input() tasks: Task[];
-  boardTypes: any[] = [
-    {name: 'New', value: ''},
-    {name: 'In progress', value: 'in progress'},
-    {name: 'Accepted', value: 'accepted'}
-  ];
+  boardTypes: TaskStatus[];
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService,
+              private taskStatusService: TaskStatusService) {
   }
 
   ngOnInit() {
+    this.taskStatusService
+      .getTaskStatusList()
+      .subscribe(taskStatusList => this.boardTypes = taskStatusList);
   }
 
 }
