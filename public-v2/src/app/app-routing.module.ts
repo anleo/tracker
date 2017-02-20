@@ -15,6 +15,11 @@ const routes: Routes = [
     component: BlankComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      },
+      {
         path: 'login',
         component: LoginComponent
       },
@@ -44,6 +49,10 @@ const routes: Routes = [
         path: 'tasks',
         resolve: {user: UserResolver},
         loadChildren: './tracker/tracker.module#TrackerModule'
+      },
+      {
+        path: '**',
+        redirectTo: 'login'
       }
     ]
   },

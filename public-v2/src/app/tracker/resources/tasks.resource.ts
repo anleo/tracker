@@ -1,8 +1,5 @@
-import {Injectable} from '@angular/core';
-import {RequestMethod} from '@angular/http';
-
-import {Injector} from '@angular/core';
-import {Http} from '@angular/http';
+import {Injectable, Injector} from '@angular/core';
+import {RequestMethod, Http} from '@angular/http';
 
 import {Resource, ResourceParams, ResourceAction, ResourceMethod, ResourceMethodStrict} from 'ng2-resource-rest';
 
@@ -23,14 +20,42 @@ export class TaskResource extends Resource {
   save: ResourceMethod<Task, Task>;
 
   @ResourceAction({
+    path: '/{!taskId}/tasks',
+    method: RequestMethod.Post
+  })
+  saveChildTask: ResourceMethodStrict<Task, {taskId: string}, Task>;
+
+  @ResourceAction({
     path: '/{!taskId}',
     method: RequestMethod.Put
   })
   update: ResourceMethodStrict<Task, {taskId: string}, Task>;
 
   @ResourceAction({
+    path: '/{!taskId}',
+    method: RequestMethod.Delete
+  })
+  remove: ResourceMethod<{taskId: string}, null>;
+
+  @ResourceAction({
     path: '/',
     isArray: true
   })
   getTasks: ResourceMethod<any, Task[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}'
+  })
+  getTask: ResourceMethodStrict<any, {taskId: string}, Task>;
+
+  @ResourceAction({
+    path: '/{!taskId}/root'
+  })
+  getRoot: ResourceMethodStrict<any, {taskId: string}, Task>;
+
+  @ResourceAction({
+    path: '/{!taskId}/tasks',
+    isArray: true
+  })
+  getChildrenTasks: ResourceMethodStrict<any,  {taskId: string}, Task[]>;
 }
