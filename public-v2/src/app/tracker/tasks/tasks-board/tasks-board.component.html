@@ -2,6 +2,6 @@
   <div class="col-sm-4" *ngFor="let board of boardTypes">
     <h3 class="list-name">{{board.name}}</h3>
 
-    <app-tasks-list [tasks]="tasks | tasksBoard: board" [board]="board"></app-tasks-list>
+    <app-tasks-list [tasks]="tasks | tasksBoardFilter: board" [board]="board"></app-tasks-list>
   </div>
 </div>

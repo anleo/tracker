@@ -8,7 +8,7 @@ import {TaskService} from "./services/task.service";
 import {TaskResource} from "./resources/tasks.resource";
 import {TrackerRoutingModule} from "./tracker.routing.module";
 
-import {TasksBoard} from "./pipes/tasks-board.pipe";
+import {TasksBoardFilter} from "./pipes/tasks-board.pipe";
 
 import {TasksComponent} from './tasks/tasks.component';
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
@@ -30,7 +30,7 @@ import {TaskStatusService} from "./services/task-status.service";
     DatepickerModule.forRoot()
   ],
   declarations: [
-    TasksBoard,
+    TasksBoardFilter,
     TasksComponent,
     TasksListComponent,
     TasksEditComponent,
