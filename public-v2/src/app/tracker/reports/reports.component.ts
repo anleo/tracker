@@ -3,6 +3,7 @@ import {TaskService} from "../services/task.service";
 import {Task} from "../models/task";
 import {TaskStatusService} from "../services/task-status.service";
 import {TaskStatus} from "../models/task-status";
+import {Location} from "@angular/common";
 
 @Component({
   moduleId: module.id,
@@ -17,7 +18,8 @@ export class ReportsComponent implements OnInit {
 
   constructor(
     private taskService: TaskService,
-    private taskStatusService: TaskStatusService
+    private taskStatusService: TaskStatusService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
