@@ -4,7 +4,7 @@ export class Task {
   description?: string;
   user?: string;
   priority?: number;
-  status?: string;
+  status?: string = '';
   spenttime?: number;
   complexity?: number;
   points?: number;
@@ -12,7 +12,7 @@ export class Task {
   parentTaskId?: string;
   date?: string;
   updatedAt?: string;
-  simple?: boolean;
+  simple?: boolean = true;
   estimatedTime?: string;
   timeToDo?: number;
   owner?: string|any;

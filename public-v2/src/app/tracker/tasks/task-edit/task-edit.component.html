@@ -40,19 +40,22 @@
     <!--right-side-->
     <div class="col-md-6 tech-info" *ngIf="task.title">
 
-      <!--<hr class="mg hidden-lg hidden-md"/>-->
+      <hr class="mg hidden-lg hidden-md"/>
 
-      <!--<div ng-if="task.simple || task.status == 'accepted'" class="form-group clearfix"> &lt;!&ndash; Status&ndash;&gt;-->
+      <div *ngIf="task.simple || task.status == 'accepted'" class="form-group clearfix"> <!-- Status-->
 
-        <!--<div ng-if="task.simple" class="pull-left">-->
+        <div *ngIf="task.simple" class="pull-left">
 
-          <!--<i class="fa fa-check-square-o fa-md vcenter" uib-tooltip="Status"></i>-->
+          <i class="fa fa-check-square-o fa-md vcenter" uib-tooltip="Status"></i>
 
-          <!--<div class="btn-group task-statuses">-->
-            <!--<label ng-repeat="status in statuses" class="btn btn-default btn-sm" ng-model="task.status"-->
-                   <!--uib-btn-radio="status.value" ng-class="{'disabled' : task.archived == true}">{{status.name}}</label>-->
-          <!--</div>-->
-        <!--</div>-->
+          <div class="btn-group task-statuses">
+            <label *ngFor="let status of statuses"
+                   class="btn btn-default btn-sm"
+                   [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
+                   (click)="setStatus(status.value)"
+            >{{status.name}}</label>
+          </div>
+        </div>
 
         <!--<ul ng-if="task.simple" class="task-metrics pull-right edit-panel-metrics-info">-->
           <!--<li>-->
@@ -62,9 +65,9 @@
           <!--</li>-->
         <!--</ul>-->
 
-      <!--</div>-->
+      </div>
 
-      <!--<hr ng-if="task.simple || task.status == 'accepted'" class="mg"/>-->
+      <hr *ngIf="task.simple || task.status == 'accepted'" class="mg"/>
 
       <!--<div ng-if="task.simple" class="form-group" ng-show="task.title"> &lt;!&ndash;Complexity&ndash;&gt;-->
         <!--<i class="fa fa-puzzle-piece fa-md vcenter" uib-tooltip="Complexity"></i>-->
