@@ -12,15 +12,15 @@ const routes: Routes = [
     component: TasksComponent
   },
   {
+    path: 'reports',
+    component: ReportsComponent
+  },
+  {
     path: ':taskId',
     component: TaskItemComponent,
     resolve: {
       task: TaskResolver
     },
-  },
-  {
-    path: 'reports',
-    component: ReportsComponent
   },
   {
     path: '**',
