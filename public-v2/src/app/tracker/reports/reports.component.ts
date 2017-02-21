@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {TaskService} from "../services/task.service";
 import {Task} from "../models/task";
 import {TaskStatusService} from "../services/task-status.service";
 import {TaskStatus} from "../models/task-status";
 import {Location} from "@angular/common";
+import {RootTaskService} from "../tracker.tokens";
 
 @Component({
   moduleId: module.id,
-  templateUrl: 'reports.component.html'
+  templateUrl: 'reports.component.html',
+  providers:[TaskService]
 })
 
 export class ReportsComponent implements OnInit {
@@ -16,16 +18,20 @@ export class ReportsComponent implements OnInit {
   showDatePicker: boolean = false;
   TaskStatus = TaskStatus;
 
-  constructor(
-    private taskService: TaskService,
-    private taskStatusService: TaskStatusService,
-    private location: Location
-  ) {}
+  constructor(@Inject(RootTaskService) private taskService,
+              // private taskService: TaskService,
+              private contextTaskService: TaskService,
+              private taskStatusService: TaskStatusService,
+              private location: Location) {
+  }
 
   ngOnInit(): void {
     this.taskService
       .getTaskReportByDate(this.date)
-      .subscribe(tasks => this.tasks = tasks);
+      .subscribe(tasks => {
+        this.contextTaskService.setTasks(tasks);
+        return this.tasks = tasks;
+      });
   }
 
   toggleDatePicker(): void {
@@ -37,10 +43,13 @@ export class ReportsComponent implements OnInit {
   }
 
   onChangeDate(date): void {
-      this.date = date;
-      this.taskService
-        .getTaskReportByDate(this.date)
-        .subscribe(tasks => this.tasks = tasks);
+    this.date = date;
+    this.taskService
+      .getTaskReportByDate(this.date)
+      .subscribe(tasks => {
+        this.contextTaskService.setTasks(tasks);
+        return this.tasks = tasks;
+      });
   }
 
   getStatusById(id: string) {
