@@ -16,7 +16,6 @@ export class TasksEditComponent implements OnInit {
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
 
   statuses: TaskStatus[] = [];
-  // complexities: TaskComplexity;
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
@@ -70,5 +69,9 @@ export class TasksEditComponent implements OnInit {
 
   setStatus(status: string): void {
     this.task.status = status;
+  }
+
+  setComplexity(complexity: TaskComplexity): void {
+    this.task.complexity = complexity.value;
   }
 }
