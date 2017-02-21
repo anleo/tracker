@@ -24,8 +24,8 @@
   </li>
   <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity}}</li>
 
-  <li *ngIf="task.owner" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>&nbsp;{{task.owner.local.username}}</li>
-  <li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>&nbsp;{{task.developer.local.username}}</li>
+  <!--<li *ngIf="task.owner" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>&nbsp;{{task.owner.local.username}}</li>-->
+  <!--<li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>&nbsp;{{task.developer.local.username}}</li>-->
 
   <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt }}</li>
   <!--<li ng-if="metricsDetails == 2 && task.files.length > 0" uib-tooltip="Attachments"><i class="fa fa-paperclip"></i>&nbsp;{{task.files.length}}</li>-->
