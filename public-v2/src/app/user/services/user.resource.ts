@@ -32,4 +32,11 @@ export class UserResource extends Resource {
     path: '/changePassword/?oldPassword={!oldPassword}&newPassword={!newPassword}'
   })
   editPassword: ResourceMethod<Password, any>;
+
+  @ResourceAction({
+    path: '/',
+    method: RequestMethod.Get,
+    isArray: true,
+  })
+  getUsers: ResourceMethod <any, User[]>;
 }

@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {SelectModule} from 'ng2-select';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -19,6 +20,7 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
+import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
 
 @NgModule({
   imports: [
@@ -27,7 +29,8 @@ import {TaskStatusService} from "./services/task-status.service";
     TrackerRoutingModule,
     ToastModule.forRoot(),
     FormsModule,
-    DatepickerModule.forRoot()
+    DatepickerModule.forRoot(),
+    SelectModule
   ],
   declarations: [
     TasksBoardFilter,
@@ -37,7 +40,8 @@ import {TaskStatusService} from "./services/task-status.service";
     TasksBoardComponent,
     TaskPanelComponent,
     TaskItemComponent,
-    ReportsComponent
+    ReportsComponent,
+    TaskTeamComponent
   ],
   providers: [
     TaskResolver,

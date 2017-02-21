@@ -69,4 +69,8 @@ export class TasksEditComponent implements OnInit {
   setStatus(status: string): void {
     this.task.status = status;
   }
+
+  taskChangeHandler(task: Task): void {
+    this.task = task;
+  }
 }
