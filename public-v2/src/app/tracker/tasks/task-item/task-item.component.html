@@ -23,10 +23,7 @@
       {{parentTask.title}}</a>
   </h5>
 
-  <!--<div ng-hide="task._id == newTask._id" -->
-  <!--class="pull-left" ng-click="edit(task)" task-metrics metrics-details="2" task="task" ></div>-->
-
-  <button class="btn btn-sm btn-default" (click)="edit(task)">Edit Task</button>
+  <app-task-metrics [task]="task" (click)="edit(task)" class="pull-left" ></app-task-metrics>
 
   <a class="btn btn-sm btn-link pull-right" (click)="toggleTaskHistory()">Details</a>
   <div class="clearfix"></div>
