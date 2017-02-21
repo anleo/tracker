@@ -19,6 +19,8 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
+import { TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
+import {TooltipModule} from "ng2-bootstrap";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 
 @NgModule({
@@ -28,7 +30,8 @@ import {TaskComplexityComponent} from "./tasks/components/complexity/task-comple
     TrackerRoutingModule,
     ToastModule.forRoot(),
     FormsModule,
-    DatepickerModule.forRoot()
+    DatepickerModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   declarations: [
     TasksBoardFilter,
@@ -39,7 +42,8 @@ import {TaskComplexityComponent} from "./tasks/components/complexity/task-comple
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
-    TaskComplexityComponent
+    TaskComplexityComponent,
+    TaskMetricsComponent
   ],
   providers: [
     TaskResolver,

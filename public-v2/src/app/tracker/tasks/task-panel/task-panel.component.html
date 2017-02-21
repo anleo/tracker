@@ -1,8 +1,8 @@
 <div class="panel panel-default"
      *ngIf="task"
-     ngClass="{
+     [ngClass]="{
      'panel-success': task.status == 'accepted',
-     'panel-warning': task.status == 'in progress'">
+     'panel-warning': task.status == 'in progress'}">
 
   <!--"{-->
   <!--'panel-success': task.status == 'accepted',-->
@@ -20,9 +20,9 @@
     </h4>
   </div>
 
-  <div class="panel-body" *ngIf="metricsDetails || task.description || task.tags && task.tags.length">
-    <div *ngIf="metricsDetails" (click)="edit(task)" class="fs-sm " style="display: inline-block"></div>
-    <!--<div *ngIf="metricsDetails" (click)="edit(task)" class="fs-sm " task-metrics task="task" task-options="options" metrics-details="metricsDetails" style="display: inline-block"></div>-->
+  <!--<div class="panel-body" *ngIf="metricsDetails || task.description || task.tags && task.tags.length">-->
+  <div class="panel-body">
+    <app-task-metrics [task]="task" (click)="edit(task)" class="fs-sm " style="display: inline-block"></app-task-metrics>
 
     <div *ngIf="task.description">
       <hr *ngIf="metricsDetails"/>

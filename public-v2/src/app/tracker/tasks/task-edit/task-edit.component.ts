@@ -5,6 +5,7 @@ import {TaskStatus} from '../../models/task-status';
 import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskComplexity} from "../../models/task-complexity";
+import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 
 @Component({
   selector: 'app-task-edit',
@@ -12,6 +13,7 @@ import {TaskComplexity} from "../../models/task-complexity";
 })
 export class TasksEditComponent implements OnInit {
   task: Task|null = null;
+  priorities: number[] = TaskPrioritiesMock;
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
 
@@ -67,8 +69,8 @@ export class TasksEditComponent implements OnInit {
     this.initTask();
   }
 
-  setStatus(status: string): void {
-    this.task.status = status;
+  setField(key:string, value: string): void {
+    this.task[key] = value;
   }
 
   setComplexity(complexity: TaskComplexity): void {
