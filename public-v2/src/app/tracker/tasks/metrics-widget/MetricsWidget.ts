@@ -1,5 +1,4 @@
-export class MetricsWidget{
-  counter: number = 0;
+export class MetricsWidget {
   estimatedTime: number = 0;
   points: number = 0;
   timeToDo: number = 0;

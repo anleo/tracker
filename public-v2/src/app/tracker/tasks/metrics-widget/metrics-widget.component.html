@@ -1,8 +1,8 @@
-<ul class="detail-line task-metrics-widget" *ngIf="metricsWidget.counter > 0">
-  <li><i class="fa fa-tasks"></i>&nbsp;{{metricsWidget.counter}} tasks</li>
-  <li><i class="fa fa-clock-o"></i>&nbsp;<span tooltip="Estimated time" placement="top">{{metricsWidget.estimatedTime }}</span>&nbsp;/&nbsp;
-    <span tooltip="Spent time" placement="top">{{(metricsWidget.estimatedTime - metricsWidget.timeToDo)}}</span>&nbsp;/&nbsp;
-    <span tooltip="TODO" placement="top">{{metricsWidget.timeToDo}}</span>&nbsp;hours
+<ul class="detail-line task-metrics-widget" *ngIf="counter > 0">
+  <li><i class="fa fa-tasks"></i>&nbsp;{{counter}} tasks</li>
+  <li><i class="fa fa-clock-o"></i>&nbsp;<span tooltip="Estimated time" placement="top">{{metricsWidget.estimatedTime||0 }}</span>&nbsp;/&nbsp;
+    <span tooltip="Spent time" placement="top">{{(metricsWidget.estimatedTime - metricsWidget.timeToDo)||0}}</span>&nbsp;/&nbsp;
+    <span tooltip="TODO" placement="top">{{metricsWidget.timeToDo||0}}</span>&nbsp;hours
   </li>
-  <li><span tooltip="Complexity" placement="top"><i class="fa fa-puzzle-piece"></i>&nbsp;{{metricsWidget.points}}</span>&nbsp;points</li>
+  <li><span tooltip="Complexity" placement="top"><i class="fa fa-puzzle-piece"></i>&nbsp;{{metricsWidget.points||0}}</span>&nbsp;points</li>
 </ul>

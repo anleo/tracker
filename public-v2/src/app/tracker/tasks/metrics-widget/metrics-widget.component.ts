@@ -7,16 +7,18 @@ import {MetricsWidget} from "./MetricsWidget";
   templateUrl: './metrics-widget.component.html'
 })
 export class MetricsWidgetComponent implements OnInit {
-  @Input()
-  tasks: Task[] = [];
-  simpleOnly: boolean;
   metricsWidget: MetricsWidget;
+  counter: number = 0;
+  @Input()
+  tasks: Task[];
+  simpleOnly: boolean = false;
 
   constructor() {
   }
 
-  ngOnInit() {
-    this.tasks.forEach(function (task) {
+  getMetrics() {
+    this.metricsWidget = new MetricsWidget();
+    this.tasks.forEach((task) => {
       if (this.simpleOnly && task.simple || !this.simpleOnly) {
         if (task.estimatedTime) {
           this.metricsWidget.estimatedTime += task.estimatedTime;
@@ -28,7 +30,15 @@ export class MetricsWidgetComponent implements OnInit {
           this.metricsWidget.timeToDo += task.timeToDo;
         }
       }
-    })
+      return this.metricsWidget;
+    });
+    return this.metricsWidget;
+  }
+
+
+  ngOnInit() {
+    this.counter = this.tasks.length;
+    this.getMetrics();
   }
 
 }
