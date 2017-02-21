@@ -21,6 +21,10 @@ export class TaskService {
     this.editTask$.next(task);
   }
 
+  getTags(task: Task): Observable<string[]> {
+    return this.taskResource.getTags({taskId: task._id}).$observable;
+  }
+
   getChildrenTasks(taskId: string): Observable<Task[]> {
     return this.taskResource.getChildrenTasks({}, {taskId: taskId}).$observable;
   }
