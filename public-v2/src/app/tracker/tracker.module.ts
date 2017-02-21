@@ -19,8 +19,9 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
-import { TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
+import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
 import {TooltipModule} from "ng2-bootstrap";
+import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import {TooltipModule} from "ng2-bootstrap";
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
-    TaskMetricsComponent
+    TaskMetricsComponent,
+    MetricsWidgetComponent
   ],
   providers: [
     TaskResolver,
