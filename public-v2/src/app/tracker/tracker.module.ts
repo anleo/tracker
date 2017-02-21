@@ -9,7 +9,7 @@ import {TaskService} from "./services/task.service";
 import {TaskResource} from "./resources/tasks.resource";
 import {TrackerRoutingModule} from "./tracker.routing.module";
 
-import {TasksBoardFilter} from "./pipes/tasksBoardFilter";
+import {TasksBoardFilter} from "./pipes/tasks-board.pipe";
 
 import {TasksComponent} from './tasks/tasks.component';
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
@@ -20,6 +20,8 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
+import { TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
+import {TooltipModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
 
 @NgModule({
@@ -30,7 +32,8 @@ import {TaskTeamComponent} from "./tasks/components/task-team/task-team.componen
     ToastModule.forRoot(),
     FormsModule,
     DatepickerModule.forRoot(),
-    SelectModule
+    SelectModule,
+    TooltipModule.forRoot()
   ],
   declarations: [
     TasksBoardFilter,
@@ -41,6 +44,7 @@ import {TaskTeamComponent} from "./tasks/components/task-team/task-team.componen
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
+    TaskMetricsComponent,
     TaskTeamComponent
   ],
   providers: [
