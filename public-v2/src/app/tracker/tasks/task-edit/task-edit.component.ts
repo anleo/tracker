@@ -13,6 +13,7 @@ import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 })
 export class TasksEditComponent implements OnInit {
   task: Task|null = null;
+  parentTaskId: string|null = null;
   priorities: number[] = TaskPrioritiesMock;
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
@@ -21,7 +22,12 @@ export class TasksEditComponent implements OnInit {
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
-    this.taskService.editTask$.subscribe((task) => this.task = task);
+    this.taskService.editTask$.subscribe((task) => {
+      this.task = task;
+      if (task && task.parentTaskId) {
+        this.parentTaskId = task.parentTaskId;
+      }
+    });
   }
 
   ngOnInit() {
@@ -34,6 +40,7 @@ export class TasksEditComponent implements OnInit {
 
   initTask() {
     this.task = new Task();
+    this.task.parentTaskId = this.parentTaskId;
   }
 
   save() {
@@ -75,5 +82,9 @@ export class TasksEditComponent implements OnInit {
 
   setComplexity(complexity: TaskComplexity): void {
     this.task.complexity = complexity.value;
+  }
+
+  taskChangeHandler(task: Task): void {
+    this.task = task;
   }
 }
