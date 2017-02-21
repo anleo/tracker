@@ -76,12 +76,8 @@ export class TasksEditComponent implements OnInit {
     this.initTask();
   }
 
-  setField(key:string, value: string): void {
+  setField(key: string, value: string): void {
     this.task[key] = value;
-  }
-
-  setComplexity(complexity: TaskComplexity): void {
-    this.task.complexity = complexity.value;
   }
 
   taskChangeHandler(task: Task): void {

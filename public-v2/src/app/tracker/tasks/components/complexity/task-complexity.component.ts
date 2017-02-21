@@ -9,7 +9,7 @@ import {Task} from '../../../models/task';
 })
 export class TaskComplexityComponent implements OnInit {
   @Input() task: Task|null;
-  @Output() updateTask: EventEmitter<Task> = new EventEmitter();
+  @Output() updatedComplexity: EventEmitter<Task> = new EventEmitter();
   complexities = TaskComplexities;
   complexityValue: number|null;
 
@@ -21,7 +21,7 @@ export class TaskComplexityComponent implements OnInit {
 
   setValue(complexity: TaskComplexity): void {
     this.task.complexity = complexity.value;
-    this.updateTask.emit(this.task);
+    this.updatedComplexity.emit(this.task);
     this.complexityValue = complexity.value;
   }
 
