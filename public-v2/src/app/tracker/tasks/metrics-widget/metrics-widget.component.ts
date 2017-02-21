@@ -10,8 +10,8 @@ import {TaskService} from "../../services/task.service";
 export class MetricsWidgetComponent implements OnInit {
   metricsWidget: MetricsWidget;
   counter: number = 0;
-  @Input()
   tasks: Task[];
+  @Input()
   simpleOnly: boolean = false;
 
   constructor(private taskService: TaskService) {
