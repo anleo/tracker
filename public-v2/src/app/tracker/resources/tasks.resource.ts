@@ -70,6 +70,11 @@ export class TaskResource extends Resource {
     path: '/{!taskId}/team',
     isArray: true
   })
-  getTaskTeam: ResourceMethod<{taskId: string}, User[]>
+  getTaskTeam: ResourceMethod<{taskId: string}, User[]>;
 
+  @ResourceAction({
+    path: '/{!taskId}/tags/tagsList',
+    isArray: true
+  })
+  getTags: ResourceMethod<{taskId: string}, string[]>;
 }
