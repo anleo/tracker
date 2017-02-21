@@ -4,6 +4,7 @@ import {RequestMethod, Http} from '@angular/http';
 import {Resource, ResourceParams, ResourceAction, ResourceMethod, ResourceMethodStrict} from 'ng2-resource-rest';
 
 import {Task} from '../models/task';
+import {User} from "../../user/models/user";
 
 @Injectable()
 @ResourceParams({
@@ -63,5 +64,12 @@ export class TaskResource extends Resource {
     path: '/report/{!date}',
     isArray: true
   })
-  getTaskReportByDate: ResourceMethod<{date: string}, any>
+  getTaskReportByDate: ResourceMethod<{date: string}, any>;
+
+  @ResourceAction({
+    path: '/{!taskId}/team',
+    isArray: true
+  })
+  getTaskTeam: ResourceMethod<{taskId: string}, User[]>
+
 }

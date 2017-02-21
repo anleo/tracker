@@ -4,6 +4,7 @@ import {BehaviorSubject} from "rxjs";
 
 import {Task} from '../models/task';
 import {TaskResource} from "../resources/tasks.resource";
+import {User} from "../../user/models/user";
 
 @Injectable()
 export class TaskService {
@@ -65,6 +66,12 @@ export class TaskService {
       .catch((err) => {
         return Observable.throw(err);
       });
+  }
+
+  getTaskTeam(taskId: string): Observable <User[]> {
+    return this.taskResource
+      .getTaskTeam({taskId: taskId})
+      .$observable;
   }
 }
 

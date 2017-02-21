@@ -17,7 +17,7 @@ export class Task {
   timeToDo?: number;
   owner?: string|any;
   developer?: string|any;
-  team?: [string];
+  team?: Array<string>;
   files?: [string];
   tags?: [string];
   tagsList?: [string];

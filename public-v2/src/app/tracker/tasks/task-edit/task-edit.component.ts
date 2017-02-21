@@ -78,4 +78,8 @@ export class TasksEditComponent implements OnInit {
   setField(key:string, value: string): void {
     this.task[key] = value;
   }
+
+  taskChangeHandler(task: Task): void {
+    this.task = task;
+  }
 }

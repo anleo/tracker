@@ -7,6 +7,7 @@ export class User {
   _id: string = '';
   first: string = '';
   last: string = '';
+  name: string = '';
   email: string = '';
   local: Local = new Local();
   facebook: Facebook = new Facebook();
