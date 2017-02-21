@@ -1,7 +1,5 @@
 <div class="form-group clearfix icon-fix" *ngIf="task.parentTaskId == null">
-  <!--TODO: @dr - add tooltip-->
-  <i class="fa fa-user-plus fa-md vcenter" ></i>
-  <!--<i class="fa fa-user-plus fa-md vcenter" uib-tooltip="Shared for..."></i>-->
+  <i class="fa fa-user-plus fa-md vcenter" tooltip="Shared for..."></i>
 
   <div class="field-fix">
     <ng-select  [multiple]="true"

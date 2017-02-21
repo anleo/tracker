@@ -24,12 +24,12 @@ export class TaskTeamComponent implements OnInit {
   ngOnInit(): void {
     this.userService
       .getUsers()
-      .map(users => this.convertUserForSelect(users))
+      .map(users => this.convertUserForNgSelect(users))
       .subscribe(users => this.users = users);
 
     this.taskService
       .getTaskTeam(this.task._id)
-      .map(team => this.convertUserForSelect(team))
+      .map(team => this.convertUserForNgSelect(team))
       .subscribe(team => {
         team.map(member => this.team.push(member.id));
 
@@ -51,8 +51,7 @@ export class TaskTeamComponent implements OnInit {
     });
   }
 
-  //TODO: @dr - rename method
-  protected convertUserForSelect(users: User[]): Array<{id: string, text: string}> {
+  protected convertUserForNgSelect(users: User[]): Array<{id: string, text: string}> {
     let userList = [];
     users.forEach((user) => userList.push({id: user._id, text: user.name}));
 
