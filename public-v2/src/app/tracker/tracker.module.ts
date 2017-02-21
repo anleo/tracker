@@ -24,6 +24,7 @@ import { TaskMetricsComponent } from './tasks/task-metrics/task-metrics.componen
 import {TooltipModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
+import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.componen
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
+    TaskComplexityComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskTagsComponent
