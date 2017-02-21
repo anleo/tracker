@@ -52,7 +52,7 @@
             <label *ngFor="let status of statuses"
                    class="btn btn-default btn-sm"
                    [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
-                   (click)="setStatus(status.value)"
+                   (click)="setField('status', status.value)"
             >{{status.name}}</label>
           </div>
         </div>
@@ -79,14 +79,16 @@
         <!--</div>-->
       <!--</div>-->
 
-      <!--<div class="form-group" ng-show="task.title"> &lt;!&ndash; Priority&ndash;&gt;-->
-        <!--<i class="fa fa-bolt fa-md vcenter" uib-tooltip="Priority"></i>-->
+      <div class="form-group" *ngIf="task.title"> <!-- Priority-->
+        <i class="fa fa-bolt fa-md vcenter"></i>
 
-        <!--<div class="btn-group priority">-->
-          <!--<label ng-repeat="priority in priorities" class="btn btn-default btn-sm" ng-model="task.priority"-->
-                 <!--uib-btn-radio="priority">{{priority}}</label>-->
-        <!--</div>-->
-      <!--</div>-->
+        <div class="btn-group priority">
+          <label *ngFor="let priority of priorities"
+                 class="btn btn-default btn-sm"
+                 [ngClass]="{'active': task.priority === priority}"
+                 (click)="setField('priority', priority)">{{priority}}</label>
+        </div>
+      </div>
 
       <!--<hr ng-if="task.simple" class="mg"/>-->
       <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->

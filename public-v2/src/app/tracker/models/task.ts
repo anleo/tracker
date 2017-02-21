@@ -3,7 +3,7 @@ export class Task {
   title: string;
   description?: string;
   user?: string;
-  priority?: number;
+  priority?: number = 5;
   status?: string = '';
   spenttime?: number;
   complexity?: number;
