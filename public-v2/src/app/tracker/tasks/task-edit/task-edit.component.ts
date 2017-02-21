@@ -4,6 +4,7 @@ import {Task} from '../../models/task';
 import {TaskStatus} from '../../models/task-status';
 import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
+import {TaskComplexity} from "../../models/task-complexity";
 
 @Component({
   selector: 'app-task-edit',
@@ -15,6 +16,7 @@ export class TasksEditComponent implements OnInit {
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
 
   statuses: TaskStatus[] = [];
+  // complexities: TaskComplexity;
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {

@@ -1,0 +1,7 @@
+<i class="fa fa-puzzle-piece fa-md vcenter" uib-tooltip="Complexity"></i>
+
+<div class="btn-group complexity">
+  <label *ngFor="let complexity of complexities" class="btn btn-default btn-sm"
+         uib-btn-radio="complexity.value">{{complexity.name}}</label>
+</div>
+<!--ng-model="task.complexity"-->

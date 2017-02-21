@@ -19,6 +19,7 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
+import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import {TaskStatusService} from "./services/task-status.service";
     TasksBoardComponent,
     TaskPanelComponent,
     TaskItemComponent,
-    ReportsComponent
+    ReportsComponent,
+    TaskComplexityComponent
   ],
   providers: [
     TaskResolver,
