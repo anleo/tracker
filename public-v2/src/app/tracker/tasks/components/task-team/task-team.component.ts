@@ -27,14 +27,17 @@ export class TaskTeamComponent implements OnInit {
       .map(users => this.convertUserForNgSelect(users))
       .subscribe(users => this.users = users);
 
-    this.taskService
-      .getTaskTeam(this.task._id)
-      .map(team => this.convertUserForNgSelect(team))
-      .subscribe(team => {
-        team.map(member => this.team.push(member.id));
+    if(this.task._id){
+      this.taskService
+        .getTaskTeam(this.task._id)
+        .map(team => this.convertUserForNgSelect(team))
+        .subscribe(team => {
+          team.map(member => this.team.push(member.id));
 
-        return this.teamFull = team;
-      });
+          return this.teamFull = team;
+        });
+    }
+
   }
 
   public selected(user: {id: string, text: string}): void {
