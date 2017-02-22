@@ -4,7 +4,7 @@ import {MetricsWidget} from "./MetricsWidget";
 import {TaskService} from "../../services/task.service";
 
 @Component({
-  selector: 'app-metrics-widget',
+  selector: 'metrics-widget',
   templateUrl: './metrics-widget.component.html'
 })
 export class MetricsWidgetComponent implements OnInit {
