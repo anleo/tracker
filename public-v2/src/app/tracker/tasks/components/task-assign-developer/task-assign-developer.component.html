@@ -1,0 +1,10 @@
+<div class="form-group clearfix icon-fix">
+  <i class="fa fa-user fa-md vcenter" tooltip="Assigned to..."></i>
+
+  <div class="field-fix">
+    <ng-select  [items]="teamFull"
+                [active]="assignedTo"
+                (selected)="selected($event)">
+    </ng-select>
+  </div>
+</div>
