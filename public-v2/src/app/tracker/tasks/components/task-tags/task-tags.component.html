@@ -16,7 +16,7 @@
              (keydown)="onKey($event)"
              placeholder="Add new tag...">
       <span class="input-group-btn">
-        <button class="btn btn-success" type="button" (click)="addTag(tag)">Add</button>
+        <button class="btn btn-success" type="button" (click)="addTag()">Add</button>
       </span>
     </div>
     <div *ngIf="alreadyIn" class="text-danger">Already in tag list!</div>
