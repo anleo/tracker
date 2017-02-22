@@ -65,7 +65,12 @@ export class TaskItemComponent implements OnInit {
       this.task = task;
     } else {
       if (taskFound) {
-        taskFound = task;
+        tasks = tasks.map((_task) => {
+          if (_task._id === task._id) {
+            _task = task;
+          }
+          return _task;
+        });
       } else {
         tasks.push(task);
       }
