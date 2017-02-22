@@ -30,6 +30,11 @@ export class TaskService {
   setEditTask(task: Task) {
     this.editTask$.next(task);
   }
+
+  getTags(task: Task): Observable<string[]> {
+    return this.taskResource.getTags({taskId: task._id}).$observable;
+  }
+
   getChildrenTasks(taskId: string): Observable<Task[]> {
     return this.taskResource.getChildrenTasks({}, {taskId: taskId}).$observable;
   }
@@ -75,6 +80,12 @@ export class TaskService {
       .catch((err) => {
         return Observable.throw(err);
       });
+  }
+
+  getTaskTeam(taskId: string): Observable <User[]> {
+    return this.taskResource
+      .getTaskTeam({taskId: taskId})
+      .$observable;
   }
 }
 
