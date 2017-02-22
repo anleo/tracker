@@ -22,7 +22,6 @@ import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
 import {TooltipModule} from "ng2-bootstrap";
 import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
-import {RootTaskService} from "./tracker.tokens";
 
 @NgModule({
   imports: [
@@ -50,7 +49,6 @@ import {RootTaskService} from "./tracker.tokens";
     TaskResolver,
     TaskResource,
     TaskService,
-    { provide: RootTaskService, useExisting: TaskService },
     TaskStatusService,
 
   ]
