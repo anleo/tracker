@@ -46,7 +46,7 @@ export class TaskTagsComponent implements OnInit {
     this.pushTagToField(this.selectedTags, tag.text);
     this.pushTagToField(this.tags, tag);
     this.task.tags = this.selectedTags;
-    setTimeout(() => this.tasksUpdated.emit(this.task), 1);
+    this.tasksUpdated.emit(this.task);
   }
 
   private pushTagToField(field, tag): void {
