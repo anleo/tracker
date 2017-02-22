@@ -93,15 +93,17 @@
 
       <hr class="mg"/>
 
-      <!--<div ng-if="task.parentTaskId" class="form-group clearfix icon-fix">-->
-        <!--<i class="fa fa-user fa-md vcenter" uib-tooltip="Assigned to..."></i>-->
-        <!--<div class="field-fix">-->
-          <!--<select ng-model="task.developer" ng-options="member._id as member.name for member in team"-->
-                  <!--class="form-control input-sm field-full "></select>-->
-        <!--</div>-->
-      <!--</div>-->
+      <task-assign-developer
+        *ngIf="task.parentTaskId"
+        [task]="task"
+        (developerAssigned)="taskChangeHandler($event)">
+      </task-assign-developer>
 
-      <task-team-select [task]="task" (teamUpdated)="taskChangeHandler($event)"></task-team-select>
+      <task-team-select
+        *ngIf="!task.parentTaskId"
+        [task]="task"
+        (teamUpdated)="taskChangeHandler($event)">
+      </task-team-select>
 
       <hr class="mg"/>
 

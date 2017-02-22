@@ -1,3 +1,4 @@
+import {User} from "../../user/models/user";
 export class Task {
   _id?: string;
   title: string;
@@ -16,7 +17,7 @@ export class Task {
   estimatedTime?: number;
   timeToDo?: number;
   owner?: string|any;
-  developer?: string|any;
+  developer?: User;
   team?: Array<string>;
   files?: string[];
   tags?: Array<string>;

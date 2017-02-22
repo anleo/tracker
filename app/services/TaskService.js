@@ -520,6 +520,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         task.parentTaskId = task.parentTaskId ? task.parentTaskId : undefined;
 
         task = new Task(task);
+        task.developer = user;
 
         self.calculate(task, function (err, task) {
             if (err) {

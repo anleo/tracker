@@ -23,6 +23,7 @@ import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
 import {TooltipModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
+import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-developer/task-assign-developer.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
@@ -49,18 +50,19 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     TaskItemComponent,
     ReportsComponent,
     TaskMetricsComponent,
+    TaskTeamComponent,
+    TaskAssignDeveloperComponent,
     MetricsWidgetComponent,
     TaskComplexityComponent,
     TaskSpentTimeComponent,
-    TaskTeamComponent,
+    TaskMetricsComponent,
     TaskTagsComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService,
-
+    TaskStatusService
   ]
 })
 export class TrackerModule {
