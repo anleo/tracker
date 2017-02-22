@@ -5,7 +5,7 @@ export class Task {
   user?: string;
   priority?: number = 5;
   status?: string = '';
-  spenttime?: number;
+  spenttime?: number = 0;
   complexity?: number;
   points?: number;
   velocity?: number;
