@@ -10,12 +10,11 @@ import {TaskService} from "../../../services/task.service";
 export class TaskTagsComponent implements OnInit {
   @Input() task: Task;
 
+  tag: string|null = null;
   tags: Array <{id: string, text: string}> = [];
   tagsList: Array <{id: string, text: string}> = [];
   selectedTags: Array <string> = [];
-
-  addButton: boolean = false;
-  tagToAdd: string|null = null;
+  alreadyIn: boolean = false;
 
   @Output() tasksUpdated = new EventEmitter();
 
@@ -24,44 +23,51 @@ export class TaskTagsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTagsList();
+    this.initSelectedTags();
   };
 
-  loadTagsList():void {
+  initSelectedTags() {
+    this.selectedTags = this.task.tags;
+    this.tags = this.task.tags.map((tag) => {
+      if (tag) {
+        return this.convertTextToTags(tag);
+      }
+    });
+  }
+
+  private loadTagsList(): void {
     this.taskService
       .getTags(this.task)
       .map(tags => this.prepareTags(tags))
-      .subscribe(tags => {
-        tags.map(tag => this.selectedTags.push(tag.text));
-
-        this.tagsList = tags;
-      });
+      .subscribe(tags => this.tagsList = tags);
   }
 
-  public selected(tag:  {id: string, text: string}): void {
-    this.selectedTags.push(tag.text);
+  public selected(tag: {id: string, text: string}): void {
+    this.pushTagToField(this.selectedTags, tag.text);
+    this.pushTagToField(this.tags, tag);
     this.task.tags = this.selectedTags;
     this.tasksUpdated.emit(this.task);
   }
 
-  public removed(tag): void {
-    this.tags.filter((_tag, index) => {
-      if (_tag === tag) {
-        delete this.task.tags[index];
-      }
-    });
-    this.tasksUpdated.emit(this.task);
+  private pushTagToField(field, tag): void {
+    let tagFound = field.find((_tag) => tag && tag.text ? _tag.text === tag.text : _tag === tag.text);
+    if (!tagFound) {
+      field.push(tag);
+    }
   }
 
-  public addTag() {
-    if (this.tagToAdd) {
-      this.task.tags.push(this.tagToAdd);
-      this.taskService.save(this.task).subscribe((task) => {
-        this.task = task;
-        this.loadTagsList();
-        this.tasksUpdated.emit(this.task);
-      });
-      this.tagToAdd = null;
+  private findAndRemoveTag(field, tag): void {
+    let foundTag = field.find((_tag) => (_tag && _tag.text) ? _tag.text === tag.text : _tag === tag.text);
+    let index = field.indexOf(foundTag);
+    if (index > -1) {
+      field.splice(index, 1);
     }
+  }
+
+  public removed(tag): void {
+    this.findAndRemoveTag(this.task.tags, tag);
+    this.findAndRemoveTag(this.tags, tag);
+    this.tasksUpdated.emit(this.task);
   }
 
   protected prepareTags(tags): Array<{id: string, text: string}> {
@@ -71,16 +77,33 @@ export class TaskTagsComponent implements OnInit {
     return tagsList;
   }
 
-  public checkTag(tag):void {
-    let foundTag = this.tagsList.find((_tag) => tag === _tag.text);
-
-    if (!foundTag) {
-      this.tagToAdd = tag;
-      this.addButton = true;
-    } else {
-      this.tagToAdd = null;
-      this.addButton = true;
-    }
+  private convertTextToTags(tag: string) {
+    return {id: tag, text: tag};
   }
 
+  public addTag() {
+    let tagFound = this.task.tagsList.find((tag) => tag === this.tag);
+    if (!tagFound) {
+      this.task.tagsList.push(this.tag);
+    } else {
+      this.alreadyIn = true;
+      setTimeout(() => this.alreadyIn = false, 2000);
+    }
+
+    this.taskService.save(this.task).subscribe((task) => {
+      this.task = task;
+      this.loadTagsList();
+      this.initSelectedTags();
+      this.tasksUpdated.emit(this.task);
+    });
+    this.tag = null;
+  }
+
+  public onKey($event) {
+    if ($event.key === 'Enter') {
+      $event.preventDefault();
+      $event.stopPropagation();
+      this.addTag();
+    }
+  }
 }
