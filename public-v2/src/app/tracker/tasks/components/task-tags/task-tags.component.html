@@ -1,4 +1,4 @@
-<div class="form-group clearfix icon-fix">
+<div class="form-group clearfix icon-fix" *ngIf="task">
 
   <i class="fa fa-tags fa-md vcenter" tooltip="Tags"></i>
 
@@ -8,10 +8,18 @@
                 [active]="tags"
                 (selected)="selected($event)"
                 (removed)="removed($event)"
-                (typed)="checkTag($event)"
+                (data)="onChange($event)"
                 placeholder="Select tag...">
     </ng-select>
-    <a class="btn btn-sm btn-success" *ngIf="addButton" (click)="addTag(tag)">
-      <i class="fa fa-plus"></i>Add tag</a>
+    <br>
+    <div class="input-group">
+      <input type="text" [(ngModel)]="tag" class="form-control"
+             (keydown)="onKey($event)"
+             placeholder="Add new tag...">
+      <span class="input-group-btn">
+        <button class="btn btn-success" type="button" (click)="addTag(tag)">Add</button>
+      </span>
+    </div>
+    <div *ngIf="alreadyIn" class="text-danger">Already in tag list!</div>
   </div>
 </div>
