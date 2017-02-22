@@ -11,7 +11,7 @@ import {TaskTime} from "../../../models/task-time";
 export class TaskSpentTimeComponent implements OnInit {
   @Input() task: Task|null;
   @Output() updatedSpentTime: EventEmitter<TaskTime> = new EventEmitter();
-  times = TaskTimes;
+  spentTimeValues = TaskTimes;
   oldSpentTime: number = 0;
   addedSpentTime: number = 0;
 
