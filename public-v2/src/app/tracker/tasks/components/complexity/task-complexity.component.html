@@ -1,0 +1,8 @@
+<i class="fa fa-puzzle-piece fa-md vcenter" tooltip="Complexity"></i>
+
+<div class="btn-group complexity">
+  <label *ngFor="let complexity of complexities; let i = index"
+         class="btn btn-default btn-sm"
+         [ngClass]="{active: complexity.value === task.complexity}"
+         (click)="setValue(complexity)">{{complexity.name}}</label>
+</div>
