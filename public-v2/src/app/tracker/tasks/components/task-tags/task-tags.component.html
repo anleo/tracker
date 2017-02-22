@@ -1,0 +1,17 @@
+<div class="form-group clearfix icon-fix">
+
+  <i class="fa fa-tags fa-md vcenter" tooltip="Tags"></i>
+
+  <div class="field-fix">
+    <ng-select  [multiple]="true"
+                [items]="tagsList"
+                [active]="tags"
+                (selected)="selected($event)"
+                (removed)="removed($event)"
+                (typed)="checkTag($event)"
+                placeholder="Select tag...">
+    </ng-select>
+    <a class="btn btn-sm btn-success" *ngIf="addButton" (click)="addTag(tag)">
+      <i class="fa fa-plus"></i>Add tag</a>
+  </div>
+</div>

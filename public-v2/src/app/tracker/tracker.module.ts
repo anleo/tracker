@@ -18,13 +18,15 @@ import {TasksEditComponent} from './tasks/task-edit/task-edit.component';
 import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
 import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {ReportsComponent} from "./reports/reports.component";
-import { DatepickerModule } from 'ng2-bootstrap/datepicker';
+import {DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
-import { TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
+import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
 import {TooltipModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
+import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
+import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
 
 @NgModule({
   imports: [
@@ -46,16 +48,19 @@ import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-sp
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
+    TaskMetricsComponent,
+    MetricsWidgetComponent,
     TaskComplexityComponent,
     TaskSpentTimeComponent,
-    TaskMetricsComponent,
-    TaskTeamComponent
+    TaskTeamComponent,
+    TaskTagsComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService
+    TaskStatusService,
+
   ]
 })
 export class TrackerModule {

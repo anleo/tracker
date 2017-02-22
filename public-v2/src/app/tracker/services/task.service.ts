@@ -9,16 +9,30 @@ import {User} from "../../user/models/user";
 @Injectable()
 export class TaskService {
   editTask: Task|null = null;
+  tasks: Task[]|null = null;
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   constructor(private taskResource: TaskResource) {
     this.editTask$.subscribe((task) => {
       this.editTask = task;
     });
+
+    this.tasks$.subscribe((tasks) => {
+      this.tasks = tasks;
+    });
+  }
+
+  setTasks(tasks: Task[]) {
+    this.tasks$.next(tasks);
   }
 
   setEditTask(task: Task) {
     this.editTask$.next(task);
+  }
+
+  getTags(task: Task): Observable<string[]> {
+    return this.taskResource.getTags({taskId: task._id}).$observable;
   }
 
   getChildrenTasks(taskId: string): Observable<Task[]> {

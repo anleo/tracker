@@ -31,7 +31,7 @@ exports.tasks = [
         "team": [],
         "files": [],
         "tags": [],
-        "tagsList": [],
+        "tagsList": ['aaa', 'bbb', 'ccc'],
         "archived":  false,
         "commentsCounter":0,
         "updatedBy": ObjectId("5514462ae4eb270b4f115c2c"),
