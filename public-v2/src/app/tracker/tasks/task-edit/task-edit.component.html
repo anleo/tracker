@@ -17,14 +17,10 @@
       <div *ngIf="task.title">
 
         <div class="form-group">
-                <!--<textarea ng-if="showDescription"-->
-                          <!--ng-focus="msd-elastic" msd-elastic-->
-                          <!--ng-model="task.description"-->
-                          <!--class="form-control description-height"-->
-                          <!--placeholder="Task description"-->
-                          <!--rows="1">-->
-                <!--</textarea>-->
-          <textarea name="description" [(ngModel)]="task.description" cols="30" rows="10"></textarea>
+          <task-description-editor
+            [task]="task"
+            (descriptionUpdated)="taskChangeHandler($event)">
+          </task-description-editor>
         </div>
 
         <!--<div uploader files="task.files"></div>-->

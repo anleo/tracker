@@ -26,8 +26,7 @@
 
     <div *ngIf="task.description">
       <hr *ngIf="metricsDetails"/>
-      <span class="pointer">{{task.description}}</span>
-      <!--<div text-extend="task.description" style="overflow: hidden;"></div>-->
+      <task-description-viewer [description]="task.description"></task-description-viewer>
     </div>
 
     <hr *ngIf="task.tags && task.tags.length && (task.description || metricsDetails > 0)"/>

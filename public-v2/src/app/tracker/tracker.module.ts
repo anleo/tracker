@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
+import { ElasticModule } from 'angular2-elastic';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -27,6 +28,8 @@ import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-devel
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
+import {TaskDescriptionEditor} from "./tasks/components/task-description-editor/task-description-editor.component";
+import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/task-description-viewer.component";
 
 @NgModule({
   imports: [
@@ -37,7 +40,8 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    ElasticModule
   ],
   declarations: [
     TasksBoardFilter,
@@ -54,7 +58,9 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     MetricsWidgetComponent,
     TaskComplexityComponent,
     TaskMetricsComponent,
-    TaskTagsComponent
+    TaskTagsComponent,
+    TaskDescriptionEditor,
+    TaskDescriptionViewer
   ],
   providers: [
     TaskResolver,
