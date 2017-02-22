@@ -20,11 +20,12 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
-import { TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
+import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
 import {TooltipModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
+import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
 
 @NgModule({
   imports: [
@@ -46,6 +47,8 @@ import {TaskComplexityComponent} from "./tasks/components/complexity/task-comple
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
+    TaskMetricsComponent,
+    MetricsWidgetComponent,
     TaskComplexityComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
@@ -55,7 +58,8 @@ import {TaskComplexityComponent} from "./tasks/components/complexity/task-comple
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService
+    TaskStatusService,
+
   ]
 })
 export class TrackerModule {
