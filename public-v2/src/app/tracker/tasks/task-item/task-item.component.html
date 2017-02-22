@@ -3,7 +3,6 @@
   <!--<h2 ng-hide="task._id == newTask._id" class="clearfix">-->
   <h2 class="clearfix">
     {{task.title}}
-    <!--<div class="pull-right" ng-controller="gotoRootTaskCtrl" *ngIf="task && task.parentTaskId">-->
     <div class="pull-right" *ngIf="task && task.parentTaskId">
       <a *ngIf="root" class="btn btn-sm btn-default"
          [routerLink]="'/app/tasks/' + root._id"
