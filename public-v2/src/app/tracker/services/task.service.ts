@@ -30,7 +30,6 @@ export class TaskService {
   setEditTask(task: Task) {
     this.editTask$.next(task);
   }
-
   getChildrenTasks(taskId: string): Observable<Task[]> {
     return this.taskResource.getChildrenTasks({}, {taskId: taskId}).$observable;
   }
