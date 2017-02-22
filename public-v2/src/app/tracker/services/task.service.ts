@@ -8,10 +8,8 @@ import {TaskResource} from "../resources/tasks.resource";
 @Injectable()
 export class TaskService {
   editTask: Task|null = null;
-  task: Task|null = null;
   tasks: Task[]|null = null;
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
-  task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   constructor(private taskResource: TaskResource) {
@@ -22,10 +20,6 @@ export class TaskService {
     this.tasks$.subscribe((tasks) => {
       this.tasks = tasks;
     });
-  }
-
-  setTask(task: Task) {
-    this.task$.next(task);
   }
 
   setTasks(tasks: Task[]) {
