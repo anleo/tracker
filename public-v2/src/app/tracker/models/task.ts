@@ -17,10 +17,10 @@ export class Task {
   timeToDo?: number;
   owner?: string|any;
   developer?: string|any;
-  team?: [string];
-  files?: [string];
-  tags?: [string];
-  tagsList?: [string];
+  team?: Array<string>;
+  files?: string[];
+  tags?: Array<string>;
+  tagsList?: Array<string>;
   archived?: boolean;
   commentsCounter?: number;
   updatedBy?: string|any;

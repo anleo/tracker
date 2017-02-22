@@ -41,4 +41,10 @@ export class UserService {
   editPassword(password: Password): Observable<any> {
     return this.userResource.editPassword(password).$observable;
   }
+
+  getUsers(): Observable <User[]> {
+    return this.userResource
+      .getUsers()
+      .$observable;
+  }
 }

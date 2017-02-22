@@ -4,6 +4,7 @@ import {BehaviorSubject} from "rxjs";
 
 import {Task} from '../models/task';
 import {TaskResource} from "../resources/tasks.resource";
+import {User} from "../../user/models/user";
 
 @Injectable()
 export class TaskService {
@@ -29,6 +30,7 @@ export class TaskService {
   setEditTask(task: Task) {
     this.editTask$.next(task);
   }
+
   getChildrenTasks(taskId: string): Observable<Task[]> {
     return this.taskResource.getChildrenTasks({}, {taskId: taskId}).$observable;
   }

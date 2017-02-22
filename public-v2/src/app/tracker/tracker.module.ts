@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {SelectModule} from 'ng2-select';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -21,6 +22,9 @@ import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
 import {TooltipModule} from "ng2-bootstrap";
+import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
+import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
+import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
 
 @NgModule({
@@ -31,6 +35,7 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     ToastModule.forRoot(),
     FormsModule,
     DatepickerModule.forRoot(),
+    SelectModule,
     TooltipModule.forRoot()
   ],
   declarations: [
@@ -43,7 +48,11 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     TaskItemComponent,
     ReportsComponent,
     TaskMetricsComponent,
-    MetricsWidgetComponent
+    MetricsWidgetComponent,
+    TaskComplexityComponent,
+    TaskMetricsComponent,
+    TaskTeamComponent,
+    TaskTagsComponent
   ],
   providers: [
     TaskResolver,
