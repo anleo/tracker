@@ -24,9 +24,7 @@
 
   <div class="clearfix"></div>
 
-  <!--<div ng-hide="task._id == newTask._id" *ngIf="task.description" class="mg" text-extend="task.description"-->
-  <!--text-limit="170"></div>  -->
-  <div *ngIf="task.description" class="mg">{{task.description}}</div>
+  <task-description-viewer [description]="task.description" [limit]="170"></task-description-viewer>
 
   <!--<div ng-hide="task._id == newTask._id" files-view *ngIf="task.files.length" files="task.files"></div>-->
 

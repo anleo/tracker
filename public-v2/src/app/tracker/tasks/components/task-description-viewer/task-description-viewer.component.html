@@ -1,0 +1,17 @@
+<div class="mg" style="overflow: hidden">
+  <span
+    class="pointer"
+    *ngIf="!showMore"
+    (click)="toggleShowMore()">
+    {{description | slice: 0:limit}}
+    <span *ngIf="description.length > limit">...</span>
+  </span>
+
+  <span
+    class="pointer"
+    *ngIf="showMore"
+    [innerHtml]="description"
+    (click)="toggleShowMore()">
+  </span>
+
+</div>
