@@ -1,0 +1,13 @@
+<i class="fa fa-clock-o fa-md vcenter pull-left" tooltip="Spent time"></i>
+
+<div class="pull-left input-sm text-center spent-time">
+  <strong>{{task.spenttime ||0 |humanizeTime}}</strong>
+</div>
+<div class="pull-left input-sm text-left added-spent-time">+{{addedSpentTime|humanizeTime}}</div>
+
+<div class="btn-group m-l-sm pull-left">
+  <label *ngFor="let time of spentTimeValues"
+         (click)="addTime(time)"
+         class="btn btn-default btn-sm">+{{time.name}}</label>
+  <label (click)="resetTime()" class="btn btn-default btn-sm ">reset</label>
+</div>

@@ -4,7 +4,6 @@ import {Task} from '../../models/task';
 import {TaskStatus} from '../../models/task-status';
 import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
-import {TaskComplexity} from "../../models/task-complexity";
 import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 
 @Component({

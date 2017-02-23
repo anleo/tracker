@@ -1,10 +1,10 @@
 <div class="row profile">
-  <div class="pull-right login-social-link">
-    <p>Link your social account</p>
-    <a href="/auth/twitter"><i class="fa fa-twitter"></i></a>
-    <a href="/auth/facebook"><i class="fa fa-facebook-square"></i></a>
-    <a href="/auth/google"><i class="fa fa-google"></i></a>
-  </div>
+  <!--<div class="pull-right login-social-link">-->
+    <!--<p>Link your social account</p>-->
+    <!--<a href="/auth/twitter"><i class="fa fa-twitter"></i></a>-->
+    <!--<a href="/auth/facebook"><i class="fa fa-facebook-square"></i></a>-->
+    <!--<a href="/auth/google"><i class="fa fa-google"></i></a>-->
+  <!--</div>-->
   <div class="col-md-6 col-md-offset-3">
     <form (submit)="save()" class="form-horizontal myprofile">
       <ul>
@@ -78,6 +78,7 @@
                    class="form-control input-sm"
                    [(ngModel)]="password.oldPassword"
                    name="oldPassword"
+                   required
                    type="text"
                    placeholder="Old Password"/>
           </div>
@@ -90,6 +91,7 @@
                    class="form-control input-sm"
                    [(ngModel)]="password.newPassword"
                    name="newPassword"
+                   required
                    type="text"
                    placeholder="New Password"/>
           </div>
@@ -102,6 +104,7 @@
                    class="form-control input-sm"
                    [(ngModel)]="password.newPasswordConfirm"
                    name="newPasswordConfirm"
+                   required
                    type="text"
                    placeholder="Confirm Password"/>
           </div>

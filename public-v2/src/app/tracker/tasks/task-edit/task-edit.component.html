@@ -6,8 +6,8 @@
 
       <!--// @@@ fix taskId snapshot-->
       <!--<div class="form-group">-->
-      <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
-      <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
+        <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
+        <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
       <!--</div>-->
 
       <div class="form-group">
@@ -18,23 +18,14 @@
       <div *ngIf="task.title">
 
         <div class="form-group">
-          <!--<textarea ng-if="showDescription"-->
-          <!--ng-focus="msd-elastic" msd-elastic-->
-          <!--ng-model="task.description"-->
-          <!--class="form-control description-height"-->
-          <!--placeholder="Task description"-->
-          <!--rows="1">-->
-          <!--</textarea>-->
-          <textarea name="description" [(ngModel)]="task.description" cols="30" rows="10"></textarea>
+          <task-description-editor
+            [task]="task"
+            (descriptionUpdated)="taskChangeHandler($event)">
+          </task-description-editor>
         </div>
         <uploader (onUpload)="handleOnUpload($event)"></uploader>
         <file-viewer [deletion]="true"  (onDelete)="handleOnDelete($event)" *ngIf="task.files.length" [files]="task.files"></file-viewer>
 
-        <!--<div uploader files="task.files"></div>-->
-
-        <!--<div ng-if="task.files.length">-->
-        <!--<div files-view files="task.files" on-delete="deleteFile"></div>-->
-        <!--</div>-->
 
       </div>
 
@@ -89,33 +80,23 @@
       <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
       <!--</div>-->
 
-      <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
-      <!--<i class="fa fa-clock-o fa-md vcenter pull-left" uib-tooltip="Spent time"></i>-->
+      <div class="form-group clearfix" *ngIf="task.simple">
+        <spent-time [task]="task" (updatedSpentTime)="taskChangeHandler($event)"></spent-time>
+      </div>
 
-      <!--<div class=" pull-left input-sm text-center spent-time" >-->
-      <!--<strong>{{task.spenttime || 0 | humanizeTime}}</strong>-->
-      <!--</div>-->
+      <hr class="mg"/>
 
-      <!--<div class="pull-left input-sm text-left added-spent-time">+{{addedSpentTime| humanizeTime}}</div>-->
+      <task-assign-developer
+        *ngIf="task.parentTaskId"
+        [task]="task"
+        (developerAssigned)="taskChangeHandler($event)">
+      </task-assign-developer>
 
-      <!--<div class="btn-group m-l-sm pull-left">-->
-      <!--<label ng-click="addTime(time)" ng-repeat="time in addTimeList" class="btn btn-default btn-sm">+{{time.name}}</label>-->
-      <!--<label ng-click="reset()" class="btn btn-default btn-sm ">reset</label>-->
-      <!--</div>-->
-
-      <!--</div>-->
-
-      <!--<hr class="mg"/>-->
-
-      <!--<div ng-if="task.parentTaskId" class="form-group clearfix icon-fix">-->
-      <!--<i class="fa fa-user fa-md vcenter" uib-tooltip="Assigned to..."></i>-->
-      <!--<div class="field-fix">-->
-      <!--<select ng-model="task.developer" ng-options="member._id as member.name for member in team"-->
-      <!--class="form-control input-sm field-full "></select>-->
-      <!--</div>-->
-      <!--</div>-->
-
-      <task-team-select [task]="task" (teamUpdated)="taskChangeHandler($event)"></task-team-select>
+      <task-team-select
+        *ngIf="!task.parentTaskId"
+        [task]="task"
+        (teamUpdated)="taskChangeHandler($event)">
+      </task-team-select>
 
       <hr class="mg"/>
 
