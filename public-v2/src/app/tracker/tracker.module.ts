@@ -22,8 +22,6 @@ import {ReportsComponent} from "./reports/reports.component";
 import {DatepickerModule} from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent} from './tasks/task-metrics/task-metrics.component';
-import {TooltipModule} from "ng2-bootstrap";
-import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
 import {TooltipModule, ProgressbarModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
 import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-developer/task-assign-developer.component";
@@ -35,7 +33,6 @@ import { NgUploaderModule } from 'ngx-uploader';
 import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
 import {FileResourse} from "./resources/file.resource";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
-import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.component';
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
 import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
@@ -54,7 +51,8 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     SelectModule,
     TooltipModule.forRoot(),
     NgUploaderModule,
-    ProgressbarModule.forRoot()
+    ProgressbarModule.forRoot(),
+    ElasticModule
   ],
   declarations: [
     TasksBoardFilter,
@@ -68,7 +66,6 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
-    TaskMetricsComponent,
     TaskTeamComponent,
     TaskAssignDeveloperComponent,
     MetricsWidgetComponent,
@@ -77,7 +74,7 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     TaskTagsComponent,
     TaskDescriptionEditor,
     TaskDescriptionViewer,
-    TaskTagsPanelComponent
+    TaskTagsPanelComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskTagsComponent,
@@ -89,7 +86,7 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     TaskResource,
     TaskService,
     TaskStatusService,
-    FileResourse
+    FileResourse,
     TaskStatusService
   ]
 })
