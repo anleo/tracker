@@ -15,17 +15,17 @@
 
   <li>
     <i class="fa fa-clock-o" tooltip="Time" placement="top"></i>&nbsp;<span tooltip="Estimated {{task.estimatedTime|humanizeTime}}">{{task.estimatedTime|round}}</span>
-    / <span tooltip="Spent {{task.spenttime|humanizeTime }}" placement="top">{{task.spenttime}}</span>
-    / <span tooltip="TODO {{task.timeToDo}}" [ngClass]="{'warning-text' : (task.timeToDo) < 0}" placement="top">{{task.timeToDo}}</span>
+    / <span tooltip="Spent {{task.spenttime|humanizeTime }}" placement="top">{{task.spenttime|round}}</span>
+    / <span tooltip="TODO {{task.timeToDo}}" [ngClass]="{'warning-text' : (task.timeToDo) < 0}" placement="top">{{task.timeToDo|round}}</span>
   </li>
 
   <li tooltip="Complexity / Points" placement="top">
     <i class="fa fa-puzzle-piece"></i>&nbsp;<span *ngIf="task.simple">{{(task.complexity) || 0}} / </span><span>{{task.points}}p</span>
   </li>
-  <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity}}</li>
+  <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity|round}}</li>
 
-  <!--<li *ngIf="task.owner" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>&nbsp;{{task.owner.local.username}}</li>-->
-  <!--<li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>&nbsp;{{task.developer.local.username}}</li>-->
+  <li *ngIf="task.owner" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>{{task.owner.local.username}}</li>
+  <li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>{{task.developer.local.username}}</li>
 
   <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt }}</li>
   <li *ngIf="task.files.length > 0" tooltip="Attachments"><i class="fa fa-paperclip"></i>{{task.files.length}}</li>
