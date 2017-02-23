@@ -20,7 +20,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a [routerLink]="['/app/tasks']">Projects</a></li>
+          <li *ngIf="user"><a [routerLink]="['/app/tasks']">Projects</a></li>
           <!--<li><a [routerLink]="['/app/tasks/reports']">Report</a></li>-->
           <!--<li><a>My tasks</a></li>-->
         </ul>
