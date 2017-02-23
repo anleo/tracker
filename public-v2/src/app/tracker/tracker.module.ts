@@ -31,6 +31,8 @@ import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.comp
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
 import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
+import {TaskSearchPipe} from "./pipes/task-search.pipe";
+import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
 
 @NgModule({
   imports: [
@@ -62,7 +64,9 @@ import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
     TaskComplexityComponent,
     TaskSpentTimeComponent,
     TaskMetricsComponent,
-    TaskTagsComponent
+    TaskTagsComponent,
+    TaskSearchPipe,
+    TaskMoveComponent
   ],
   providers: [
     TaskResolver,

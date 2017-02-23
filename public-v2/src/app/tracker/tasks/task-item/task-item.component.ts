@@ -30,22 +30,28 @@ export class TaskItemComponent implements OnInit {
         }
       })
       .subscribe(task => {
-        this.parentTask = null;
-        this.root = null;
-        this.tasks = [];
-
-        this.task = task;
-        let taskId = task && task._id ? task._id : null;
-
-        this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
-        taskId && this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
-
-        if (task && task.parentTaskId) {
-          this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
-        }
-
-        this.initTask();
+        this.taskService.taskMoved$
+          .subscribe(task => this.onTaskMoved(task));
+        this.init(task);
       });
+  }
+
+  init(task) {
+    this.parentTask = null;
+    this.root = null;
+    this.tasks = [];
+
+    this.task = task;
+    let taskId = task && task._id ? task._id : null;
+
+    this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
+    taskId && this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
+
+    if (task && task.parentTaskId) {
+      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
+    }
+
+    this.initEditTask();
   }
 
   loadTasks(taskId: string): Observable<Task[]> {
@@ -78,7 +84,7 @@ export class TaskItemComponent implements OnInit {
 
     setTimeout(() => {
       this.tasks = tasks;
-      this.initTask();
+      this.initEditTask();
     }, 0)
   }
 
@@ -101,7 +107,7 @@ export class TaskItemComponent implements OnInit {
 
     setTimeout(() => {
       this.tasks = tasks;
-      this.initTask();
+      this.initEditTask();
     }, 0);
   }
 
@@ -109,7 +115,7 @@ export class TaskItemComponent implements OnInit {
     this.taskService.setEditTask(task);
   }
 
-  initTask() {
+  initEditTask() {
     let editTask = new Task();
 
     if (this.task && this.task._id) {
@@ -117,6 +123,12 @@ export class TaskItemComponent implements OnInit {
     }
 
     this.taskService.setEditTask(editTask);
+  }
+
+  onTaskMoved(task) {
+    if (task) {
+      this.tasks = this.tasks.filter(item => item._id !== task._id);
+    }
   }
 
 }

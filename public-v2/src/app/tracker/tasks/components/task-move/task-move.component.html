@@ -1,0 +1,19 @@
+<hr/>
+<div class="col-md-5 move-view">
+  <div class="form-group">
+    <input type="text"
+           class="form-control"
+           [(ngModel)]="search"
+           placeholder="Search"/>
+  </div>
+
+  <ul class="list-group">
+    <li class="list-group-item"
+        *ngFor="let task of tasks | taskSearch: search">
+      <a (click)="moveToTask(task)" style="cursor: pointer">
+      {{task.title}}
+    </a>
+    </li>
+  </ul>
+</div>
+

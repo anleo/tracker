@@ -118,7 +118,7 @@
   <div class="form-group clearfix" *ngIf="task.title">
     <div class="">
       <button class="btn btn-success btn-sm" type="submit">Save</button>
-      <a *ngIf="task._id" class="btn btn-default btn-sm" ng-click="getTasksForMove()">Move</a>
+      <a *ngIf="task._id" class="btn btn-default btn-sm" (click)="showTaskMove()">Move</a>
       <a class="btn btn-default btn-sm" (click)="close()">Close</a>
       <a *ngIf="task._id && task.status != 'in progress'" class="btn btn-danger btn-sm pull-right"
          (click)="remove(task)">Delete</a>
@@ -137,9 +137,12 @@
       <!--</div>-->
     </div>
 
-    <!--// @@@ Move-->
-    <!--<div class="row" ng-include="'tracker/modules/task/views/tasks-for-move.html'"-->
-         <!--ng-if="tasksForMove.length"></div>-->
+    <div class="row">
+      <task-move
+        *ngIf="taskMoveToggle"
+        [task]="task"
+        (onMoved)="close()"></task-move>
+    </div>
   </div>
 
   <hr *ngIf="!task._id && task.title" class="mg"/>
