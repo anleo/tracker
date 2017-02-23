@@ -9,18 +9,19 @@ import {User} from "../../user/models/user";
 @Injectable()
 export class TaskService {
   editTask: Task|null = null;
+  movedTask: Task|null = null;
   tasks: Task[]|null = null;
+
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
+  taskMoved$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
 
   constructor(private taskResource: TaskResource) {
-    this.editTask$.subscribe((task) => {
-      this.editTask = task;
-    });
+    this.editTask$.subscribe((task) => this.editTask = task);
 
-    this.tasks$.subscribe((tasks) => {
-      this.tasks = tasks;
-    });
+    this.tasks$.subscribe((tasks) => this.tasks = tasks);
+
+    this.taskMoved$.subscribe(task => this.movedTask = task);
   }
 
   setTasks(tasks: Task[]) {
@@ -29,6 +30,10 @@ export class TaskService {
 
   setEditTask(task: Task) {
     this.editTask$.next(task);
+  }
+
+  setMovedTask(task: Task) {
+    this.taskMoved$.next(task);
   }
 
   getTags(task: Task): Observable<string[]> {
@@ -85,6 +90,18 @@ export class TaskService {
   getTaskTeam(taskId: string): Observable <User[]> {
     return this.taskResource
       .getTaskTeam({taskId: taskId})
+      .$observable;
+  }
+
+  getTasksForMove(taskId: string): Observable<Task[]> {
+    return this.taskResource
+      .getTasksForMove({taskId: taskId})
+      .$observable;
+  }
+
+  moveTask(taskId: string, toTaskId: string): Observable <Task> {
+    return this.taskResource
+      .moveTask({taskId: taskId, toTaskId: toTaskId})
       .$observable;
   }
 }

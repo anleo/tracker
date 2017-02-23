@@ -14,10 +14,11 @@ export class TasksEditComponent implements OnInit {
   task: Task|null = null;
   parentTaskId: string|null = null;
   priorities: number[] = TaskPrioritiesMock;
+  taskMoveToggle: boolean = false;
+  statuses: TaskStatus[] = [];
+
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
-
-  statuses: TaskStatus[] = [];
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
@@ -81,5 +82,9 @@ export class TasksEditComponent implements OnInit {
 
   taskChangeHandler(task: Task): void {
     this.task = task;
+  }
+
+  showTaskMove(): void {
+    this.taskMoveToggle = !this.taskMoveToggle;
   }
 }
