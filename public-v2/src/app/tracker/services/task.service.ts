@@ -14,6 +14,7 @@ export class TaskService {
   tasks: Task[]|null = null;
 
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  editTaskModal$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
   taskMoved$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
 
@@ -21,9 +22,11 @@ export class TaskService {
               private fileResource: FileResourse) {
     this.editTask$.subscribe((task) => this.editTask = task);
 
+    this.editTaskModal$.subscribe((task) => this.editTask = task);
+
     this.tasks$.subscribe((tasks) => this.tasks = tasks);
 
-    this.taskMoved$.subscribe(task => this.movedTask = task);
+    this.taskMoved$.subscribe(task => this.movedTask = task)
   }
 
   setTasks(tasks: Task[]) {
@@ -32,6 +35,10 @@ export class TaskService {
 
   setEditTask(task: Task) {
     this.editTask$.next(task);
+  }
+
+  setEditTaskModal(task: Task) {
+    this.editTaskModal$.next(task);
   }
 
   setMovedTask(task: Task) {
