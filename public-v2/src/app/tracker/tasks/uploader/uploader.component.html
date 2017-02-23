@@ -1,0 +1,27 @@
+<div class="upload-form">
+  <div class="row">
+    <div class="col-md-4">
+      <a class="btn btn-default mg "><i
+        class="fa fa-upload"></i>
+        <label class="upload-button" style="margin: 0">
+          <input type="file"
+                 class="hidden"
+                 ngFileSelect
+                 [options]="options"
+                 (onUpload)="handleUpload($event)">
+          Upload
+        </label>
+      </a>
+    </div>
+    <div class="col-md-8" *ngIf="uploading">
+      <div class="total-progress">
+        <div class="progress">
+          <progressbar [animate]="false" [value]="dynamic" type="success"><b></b></progressbar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
