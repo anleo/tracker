@@ -86,8 +86,7 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     TaskResource,
     TaskService,
     TaskStatusService,
-    FileResourse,
-    TaskStatusService
+    FileResourse
   ]
 })
 export class TrackerModule {

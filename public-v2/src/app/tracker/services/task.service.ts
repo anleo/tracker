@@ -91,7 +91,7 @@ export class TaskService {
       .$observable;
   }
 
-  deleteFile(file: File, task: Task):Observable <any> {
+  deleteFile(file: File, task: Task): Observable <any> {
     return this.fileResource.delete({taskId: task._id, fileId: file._id})
       .$observable;
   }
