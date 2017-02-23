@@ -3,7 +3,8 @@
   <i class="fa fa-tags fa-md vcenter" tooltip="Tags"></i>
 
   <div class="field-fix">
-    <ng-select  [multiple]="true"
+    <ng-select class="ng-select"
+                [multiple]="true"
                 [items]="tagsList"
                 [active]="tags"
                 (selected)="selected($event)"
@@ -20,5 +21,6 @@
       </span>
     </div>
     <div *ngIf="alreadyIn" class="text-danger">Already in tag list!</div>
+    <div *ngIf="addedTag" class="text-success">Tag added!</div>
   </div>
 </div>
