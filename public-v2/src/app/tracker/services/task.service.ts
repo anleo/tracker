@@ -6,7 +6,6 @@ import {Task} from '../models/task';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
 import {FileResourse} from "../resources/file.resource";
-import {File} from "../models/File";
 
 @Injectable()
 export class TaskService {
@@ -96,7 +95,7 @@ export class TaskService {
       .$observable;
   }
 
-  deleteFile(file: File, task: Task): Observable <any> {
+  deleteFile(file: any, task: Task): Observable <any> {
     return this.fileResource.delete({taskId: task._id, fileId: file._id})
       .$observable;
   }
