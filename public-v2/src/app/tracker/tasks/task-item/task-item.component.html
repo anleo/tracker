@@ -37,9 +37,6 @@
   <app-task-edit (onUpdate)="onUpdate($event)" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>
   <app-task-edit-modal class="edit-form"></app-task-edit-modal>
 
-  <!--<div *ngIf="!newTask._id" task-editor task="newTask" task-on-complete="init"-->
-  <!--class="edit-form"></div>-->
-
   <div>
     <div *ngIf="task && task._id" class="pull-right board-buttons btn-group" role="group">
       <!--<a *ngIf="tasks && tasks.length" class="btn btn-sm btn-default" ui-sref="app.tags-page({taskId: task._id})">Tags</a>-->

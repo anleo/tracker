@@ -25,13 +25,12 @@ export class TasksEditComponent implements OnInit {
               private taskStatusService: TaskStatusService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.taskService.editTask$.subscribe((task) => {
       this.task = this.task ? this.task : new Task();
       if (task && task.parentTaskId) {
         this.parentTaskId = task.parentTaskId;
       }
-
 
       this.taskStatusService
         .getTaskStatusList()
@@ -39,12 +38,12 @@ export class TasksEditComponent implements OnInit {
     });
   }
 
-  initTask() {
+  initTask(): void {
     this.task = new Task();
     this.task.parentTaskId = this.parentTaskId;
   }
 
-  save() {
+  save(): void {
     if (this.task && this.task.parentTaskId) {
       this.taskService.saveChildTask(this.task).subscribe((task) => this.reinitTask(task));
     } else {
@@ -52,29 +51,25 @@ export class TasksEditComponent implements OnInit {
     }
   }
 
-  reinitTask(task) {
+  reinitTask(task: Task): void {
     this.emitUpdate(task);
     this.initTask();
     this.onClose.emit(null);
   }
 
-  remove(task: Task) {
-    this.taskService.remove(this.task).subscribe(() => {
-      this.emitRemove(task);
-      this.initTask();
-      this.onClose.emit(null);
-    });
+  remove(task: Task): void {
+    this.taskService.remove(this.task).subscribe(() => this.reinitTask(task));
   }
 
-  emitUpdate(task: Task) {
+  emitUpdate(task: Task): void {
     this.onUpdate.emit(task);
   }
 
-  emitRemove(task: Task) {
+  emitRemove(task: Task): void {
     this.onRemove.emit(task);
   }
 
-  close() {
+  close(): void {
     this.initTask();
     this.onClose.emit(null);
   }
