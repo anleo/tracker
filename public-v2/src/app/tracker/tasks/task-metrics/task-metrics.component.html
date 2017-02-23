@@ -14,8 +14,8 @@
   <li *ngIf="task.priority" tooltip="Priority"><i class="fa fa-bolt"></i>&nbsp;{{task.priority}}</li>
 
   <li>
-    <i class="fa fa-clock-o" tooltip="Time" placement="top"></i>&nbsp;<span tooltip="Estimated {{task.estimatedTime}}">{{task.estimatedTime}}</span>
-    / <span tooltip="Spent {{task.spenttime }}" placement="top">{{task.spenttime}}</span>
+    <i class="fa fa-clock-o" tooltip="Time" placement="top"></i>&nbsp;<span tooltip="Estimated {{task.estimatedTime|humanizeTime}}">{{task.estimatedTime|round}}</span>
+    / <span tooltip="Spent {{task.spenttime|humanizeTime }}" placement="top">{{task.spenttime}}</span>
     / <span tooltip="TODO {{task.timeToDo}}" [ngClass]="{'warning-text' : (task.timeToDo) < 0}" placement="top">{{task.timeToDo}}</span>
   </li>
 
@@ -28,7 +28,7 @@
   <!--<li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>&nbsp;{{task.developer.local.username}}</li>-->
 
   <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt }}</li>
-  <li  *ngIf="task.files.length > 0" tooltip="Attachments"><i class="fa fa-paperclip"></i>&nbsp;{{task.files.length}}</li>
+  <li *ngIf="task.files.length > 0" tooltip="Attachments"><i class="fa fa-paperclip"></i>{{task.files.length}}</li>
   <!--<li ng-if=" task.commentsCounter" ng-click="$event.stopPropagation();"><i class="fa fa-comment"></i>&nbsp;<span uib-tooltip="Comments">{{task.commentsCounter ||0}}</span></li>-->
 </ul>
 
