@@ -29,6 +29,9 @@ import {TaskComplexityComponent} from "./tasks/components/complexity/task-comple
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
 import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
+import {RoundPipe} from "./pipes/round.pipe";
+import {TextLimitPipe} from "./pipes/text-limit.pipe";
+import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
 
 @NgModule({
   imports: [
@@ -43,6 +46,9 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
   ],
   declarations: [
     TasksBoardFilter,
+    RoundPipe,
+    TextLimitPipe,
+    HumanizeTimePipe,
     TasksComponent,
     TasksListComponent,
     TasksEditComponent,
