@@ -28,6 +28,7 @@ import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.componen
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
+import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     TaskComplexityComponent,
     TaskSpentTimeComponent,
     TaskMetricsComponent,
-    TaskTagsComponent
+    TaskTagsComponent,
+    TaskTagsPanelComponent
   ],
   providers: [
     TaskResolver,
