@@ -5,6 +5,7 @@ import {BehaviorSubject} from "rxjs";
 import {Task} from '../models/task';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
+import {FileResourse} from "../resources/file.resource";
 
 @Injectable()
 export class TaskService {
@@ -16,7 +17,8 @@ export class TaskService {
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
   taskMoved$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
 
-  constructor(private taskResource: TaskResource) {
+  constructor(private taskResource: TaskResource,
+              private fileResource: FileResourse) {
     this.editTask$.subscribe((task) => this.editTask = task);
 
     this.tasks$.subscribe((tasks) => this.tasks = tasks);
@@ -90,6 +92,11 @@ export class TaskService {
   getTaskTeam(taskId: string): Observable <User[]> {
     return this.taskResource
       .getTaskTeam({taskId: taskId})
+      .$observable;
+  }
+
+  deleteFile(file: any, task: Task): Observable <any> {
+    return this.fileResource.delete({taskId: task._id, fileId: file._id})
       .$observable;
   }
 

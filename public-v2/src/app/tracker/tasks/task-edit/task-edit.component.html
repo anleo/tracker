@@ -11,7 +11,8 @@
       <!--</div>-->
 
       <div class="form-group">
-        <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task" id="title"/>
+        <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task"
+               id="title"/>
       </div>
 
       <div *ngIf="task.title">
@@ -22,12 +23,9 @@
             (descriptionUpdated)="taskChangeHandler($event)">
           </task-description-editor>
         </div>
+        <uploader (onUpload)="handleOnUpload($event)"></uploader>
+        <file-viewer [deletion]="true"  (onDelete)="handleOnDelete($event)" *ngIf="task.files.length" [files]="task.files"></file-viewer>
 
-        <!--<div uploader files="task.files"></div>-->
-
-        <!--<div ng-if="task.files.length">-->
-          <!--<div files-view files="task.files" on-delete="deleteFile"></div>-->
-        <!--</div>-->
 
       </div>
 
@@ -42,7 +40,7 @@
 
         <div *ngIf="task.simple" class="pull-left">
 
-          <i class="fa fa-check-square-o fa-md vcenter" uib-tooltip="Status"></i>
+          <i class="fa fa-check-square-o fa-md vcenter" tooltip="Status"></i>
 
           <div class="btn-group task-statuses">
             <label *ngFor="let status of statuses"
@@ -121,15 +119,15 @@
 
       <!--<div ng-show="task.status == 'accepted'" class="checkbox archive-button" ng-class="{'pull-right': task.simple}">-->
 
-        <!--<input type="button"-->
-               <!--ng-model="task.archived"-->
-               <!--id="archived" />-->
+      <!--<input type="button"-->
+      <!--ng-model="task.archived"-->
+      <!--id="archived" />-->
 
-        <!--<label for="archived"-->
-               <!--ng-click="task.archived = !task.archived"-->
-               <!--class="btn btn-sm"-->
-               <!--ng-class="task.archived == true ? 'btn-warning' : 'btn-default' ">-->
-          <!--<i class="fa" ng-class="task.archived == true ? 'fa-check-square-o' : 'fa-square-o' "></i>&nbsp;Archived</label>-->
+      <!--<label for="archived"-->
+      <!--ng-click="task.archived = !task.archived"-->
+      <!--class="btn btn-sm"-->
+      <!--ng-class="task.archived == true ? 'btn-warning' : 'btn-default' ">-->
+      <!--<i class="fa" ng-class="task.archived == true ? 'fa-check-square-o' : 'fa-square-o' "></i>&nbsp;Archived</label>-->
       <!--</div>-->
     </div>
 
