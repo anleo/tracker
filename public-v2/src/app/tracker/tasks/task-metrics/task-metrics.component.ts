@@ -10,9 +10,6 @@ export class TaskMetricsComponent {
   metricsDetails: number;
   options:any;
 
-  constructor() {
-  }
-
   public setLabelClass(): string {
     let className = 'label-info';
 
