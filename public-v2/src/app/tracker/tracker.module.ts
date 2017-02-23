@@ -45,7 +45,8 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    ElasticModule
   ],
   declarations: [
     TasksBoardFilter,

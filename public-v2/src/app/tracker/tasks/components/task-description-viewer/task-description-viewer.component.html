@@ -3,14 +3,14 @@
     class="pointer"
     *ngIf="!showMore"
     (click)="toggleShowMore()">
-    {{description | slice: 0:limit}}
+    {{shortDescription | slice: 0:limit}}
     <span *ngIf="description.length > limit">...</span>
   </span>
 
   <span
     class="pointer"
     *ngIf="showMore"
-    [innerHtml]="description"
+    [innerHtml]="fullDescription"
     (click)="toggleShowMore()">
   </span>
 
