@@ -47,7 +47,8 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
     FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    ElasticModule
   ],
   declarations: [
     TasksBoardFilter,

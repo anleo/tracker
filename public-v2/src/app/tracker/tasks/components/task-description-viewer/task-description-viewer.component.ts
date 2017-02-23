@@ -9,10 +9,14 @@ export class TaskDescriptionViewer implements OnInit {
   @Input() description: string;
   @Input() limit: number = 80;
 
+  private shortDescription: string = '';
+  private fullDescription: string = '';
+
   showMore: boolean = false;
 
   ngOnInit(): void {
-    this.description = this.parseText(this.description) || '';
+    this.shortDescription = this.description;
+    this.fullDescription = this.parseText(this.description);
   }
 
   toggleShowMore(): void {
