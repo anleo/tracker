@@ -21,11 +21,15 @@ import {ReportsComponent} from "./reports/reports.component";
 import { DatepickerModule } from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent } from './tasks/task-metrics/task-metrics.component';
-import {TooltipModule} from "ng2-bootstrap";
+import {TooltipModule, ProgressbarModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
 import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
+import { UploaderComponent } from './tasks/uploader/uploader.component';
+import { NgUploaderModule } from 'ngx-uploader';
+import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
+import {FileResourse} from "./resources/file.resource";
 
 @NgModule({
   imports: [
@@ -36,7 +40,9 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    NgUploaderModule,
+    ProgressbarModule.forRoot()
   ],
   declarations: [
     TasksBoardFilter,
@@ -52,14 +58,16 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
     TaskComplexityComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
-    TaskTagsComponent
+    TaskTagsComponent,
+    UploaderComponent,
+    FileViewerComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
     TaskStatusService,
-
+    FileResourse
   ]
 })
 export class TrackerModule {

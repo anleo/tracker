@@ -32,7 +32,7 @@
   <!--text-limit="170"></div>  -->
   <div *ngIf="task.description" class="mg">{{task.description}}</div>
 
-  <!--<div ng-hide="task._id == newTask._id" files-view *ngIf="task.files.length" files="task.files"></div>-->
+  <file-viewer *ngIf="task.files.length" [files]="task.files"></file-viewer>
 
   <!--<div task-tags task="task" ng-hide="task._id == newTask._id"></div>-->
 </div>

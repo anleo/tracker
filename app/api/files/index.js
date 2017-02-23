@@ -8,7 +8,6 @@ module.exports = function (app) {
     }}));
 
     app.post('/api/files', function (req, res, next) {
-
         var file = req.files.file;
 
         GridFS.save(file.path, {

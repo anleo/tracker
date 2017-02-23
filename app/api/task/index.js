@@ -218,6 +218,7 @@ module.exports = function (app) {
     });
 
     app.delete('/api/tasks/:taskId/files/:fileId', function (req, res, next) {
+
         TaskService.removeFileById(req.Task, req.params.fileId, function (err) {
             if (err) {
                 return next(err);
@@ -225,7 +226,7 @@ module.exports = function (app) {
 
             FileService.removeFile(req.params.fileId);
 
-            res.sendStatus(200);
+            res.json({});
         });
     });
 

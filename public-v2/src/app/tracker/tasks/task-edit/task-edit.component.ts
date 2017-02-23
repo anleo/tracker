@@ -83,4 +83,14 @@ export class TasksEditComponent implements OnInit {
   taskChangeHandler(task: Task): void {
     this.task = task;
   }
+
+  handleOnUpload(file: any): void {
+    this.task.files.push(file);
+  }
+
+  handleOnDelete(file: any): void {
+    this.taskService.deleteFile(file, this.task)
+      .subscribe(() => this.task.files.splice(this.task.files.indexOf(file), 1))
+  }
+
 }
