@@ -22,7 +22,7 @@
 
   <task-description-viewer [description]="task.description" [limit]="170"></task-description-viewer>
 
-  <!--<div ng-hide="task._id == newTask._id" files-view *ngIf="task.files.length" files="task.files"></div>-->
+  <file-viewer *ngIf="task.files.length" [files]="task.files"></file-viewer>
 
   <task-tags-panel [task]="task" *ngIf="task.tags && task.tags.length"></task-tags-panel>
 </div>
