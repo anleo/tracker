@@ -5,10 +5,12 @@ import {TaskComplexities} from "../tasks/components/complexity/task-complexities
 export class HumanizeComplexityPipe implements PipeTransform {
 
   transform(value: number): string {
+    let result = '';
     TaskComplexities.forEach(function (complexity) {
       if (value == complexity.value) {
-        return complexity.name;
+        result = complexity.name;
       }
-    })
+    });
+    return result;
   }
 }

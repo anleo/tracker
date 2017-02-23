@@ -41,6 +41,8 @@ import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/
 import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
 import {TaskSearchPipe} from "./pipes/task-search.pipe";
 import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
+import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
+import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
 
 @NgModule({
   imports: [
@@ -84,7 +86,9 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
     TaskTeamComponent,
     TaskTagsComponent,
     UploaderComponent,
-    FileViewerComponent
+    FileViewerComponent,
+    HumanizeComplexityPipe,
+    TimeFromNowPipe
   ],
   providers: [
     TaskResolver,

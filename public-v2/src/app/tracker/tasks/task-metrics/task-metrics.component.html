@@ -1,33 +1,39 @@
 <ul class="detail-line task-metrics">
 
   <!--<li tooltip="Status" class="nobg" placement="top">-->
-        <!--<span class="label" task-status="task.status">-->
-            <!--{{task.status || 'new'}}-->
-        <!--</span>-->
+  <!--<span class="label" task-status="task.status">-->
+  <!--{{task.status || 'new'}}-->
+  <!--</span>-->
   <!--</li>-->
   <!--<li ng-if="task.archived" class="nobg">-->
-        <!--<span class="label label-default">-->
-            <!--Archived-->
-        <!--</span>-->
+  <!--<span class="label label-default">-->
+  <!--Archived-->
+  <!--</span>-->
   <!--</li>-->
 
   <li *ngIf="task.priority" tooltip="Priority"><i class="fa fa-bolt"></i>&nbsp;{{task.priority}}</li>
 
   <li>
-    <i class="fa fa-clock-o" tooltip="Time" placement="top"></i>&nbsp;<span tooltip="Estimated {{task.estimatedTime|humanizeTime}}">{{task.estimatedTime|round}}</span>
-    / <span tooltip="Spent {{task.spenttime|humanizeTime }}" placement="top">{{task.spenttime|round}}</span>
+    <i class="fa fa-clock-o" tooltip="Time" placement="top"></i>&nbsp;<span
+    tooltip="Estimated {{task.estimatedTime | humanizeTime}}">{{task.estimatedTime | round}}</span>
+    / <span tooltip="Spent {{task.spenttime | humanizeTime }}" placement="top">{{task.spenttime | round}}</span>
     / <span tooltip="TODO {{task.timeToDo}}" [ngClass]="{'warning-text' : (task.timeToDo) < 0}" placement="top">{{task.timeToDo|round}}</span>
   </li>
 
   <li tooltip="Complexity / Points" placement="top">
-    <i class="fa fa-puzzle-piece"></i>&nbsp;<span *ngIf="task.simple">{{(task.complexity) || 0}} / </span><span>{{task.points}}p</span>
+    <i class="fa fa-puzzle-piece"></i>&nbsp;<span
+    *ngIf="task.simple">{{(task.complexity | humanizeComplexity) || 0}} / </span><span>{{task.points}}p</span>
   </li>
-  <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity|round}}</li>
+  <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity|round}}
+  </li>
 
-  <li *ngIf="task.owner" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>{{task.owner.local.username}}</li>
-  <li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>{{task.developer.local.username}}</li>
+  <li *ngIf="task.owner" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>{{task.owner.local.username}}
+  </li>
+  <li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>{{task.developer.local.username}}
+  </li>
 
-  <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt }}</li>
+  <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt | date:'yyyy/MM/dd HH:mm:ss'}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt | fromNow }}
+  </li>
   <li *ngIf="task.files.length > 0" tooltip="Attachments"><i class="fa fa-paperclip"></i>{{task.files.length}}</li>
   <!--<li ng-if=" task.commentsCounter" ng-click="$event.stopPropagation();"><i class="fa fa-comment"></i>&nbsp;<span uib-tooltip="Comments">{{task.commentsCounter ||0}}</span></li>-->
 </ul>
