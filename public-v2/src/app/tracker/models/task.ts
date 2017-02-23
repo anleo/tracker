@@ -1,11 +1,12 @@
+import {User} from "../../user/models/user";
 export class Task {
   _id?: string;
   title: string;
   description?: string;
   user?: string;
-  priority?: number;
+  priority?: number = 5;
   status?: string = '';
-  spenttime?: number;
+  spenttime?: number = 0;
   complexity?: number;
   points?: number;
   velocity?: number;
@@ -13,14 +14,14 @@ export class Task {
   date?: string;
   updatedAt?: string;
   simple?: boolean = true;
-  estimatedTime?: string;
+  estimatedTime?: number;
   timeToDo?: number;
   owner?: string|any;
-  developer?: string|any;
-  team?: [string];
-  files?: [string];
-  tags?: [string];
-  tagsList?: [string];
+  developer?: User;
+  team?: Array<string>;
+  files?: string[];
+  tags?: Array<string> = [];
+  tagsList?: Array<string> = [];
   archived?: boolean;
   commentsCounter?: number;
   updatedBy?: string|any;

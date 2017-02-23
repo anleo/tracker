@@ -20,7 +20,7 @@
   </li>
 
   <li tooltip="Complexity / Points" placement="top">
-    <i class="fa fa-puzzle-piece"></i>&nbsp;<span ng-if="task.simple">{{(task.complexity) || 0}} / </span><span>{{task.points}}p</span>
+    <i class="fa fa-puzzle-piece"></i>&nbsp;<span *ngIf="task.simple">{{(task.complexity) || 0}} / </span><span>{{task.points}}p</span>
   </li>
   <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity}}</li>
 

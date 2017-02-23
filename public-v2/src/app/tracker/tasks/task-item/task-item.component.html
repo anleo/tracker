@@ -3,14 +3,11 @@
   <!--<h2 ng-hide="task._id == newTask._id" class="clearfix">-->
   <h2 class="clearfix">
     {{task.title}}
-    <div class="pull-right" ng-controller="gotoRootTaskCtrl" *ngIf="task && task.parentTaskId">
-      <!--<a uib-tooltip="Project: {{root.title | limitTo: 15}}" *ngIf="root" class="btn btn-sm btn-default"-->
-      <!--ui-sref="app.task({taskId: root._id})"><i-->
-      <!--class="fa fa-long-arrow-up"></i>&nbsp;{{root.title | limitTo: 15}}-->
-      <!--<span *ngIf="root.title.length > 10">...</span>-->
-      <!--</a>      -->
+    <div class="pull-right" *ngIf="task && task.parentTaskId">
       <a *ngIf="root" class="btn btn-sm btn-default"
-         [routerLink]="'/app/tasks/' + root._id"><i class="fa fa-long-arrow-up"></i>&nbsp;{{root.title}}
+         [routerLink]="'/app/tasks/' + root._id"
+         tooltip="Project: {{root.title | textLimit: 15}}">
+        <i class="fa fa-long-arrow-up"></i>&nbsp;{{root.title|textLimit: 10}}
         <span *ngIf="root.title && root.title.length > 10">...</span>
       </a>
     </div>
@@ -25,16 +22,13 @@
 
   <app-task-metrics [task]="task" (click)="edit(task)" class="pull-left" ></app-task-metrics>
 
-  <a class="btn btn-sm btn-link pull-right" (click)="toggleTaskHistory()">Details</a>
   <div class="clearfix"></div>
 
-  <!--<div ng-hide="task._id == newTask._id" *ngIf="task.description" class="mg" text-extend="task.description"-->
-  <!--text-limit="170"></div>  -->
-  <div *ngIf="task.description" class="mg">{{task.description}}</div>
+  <task-description-viewer [description]="task.description" [limit]="170"></task-description-viewer>
 
   <!--<div ng-hide="task._id == newTask._id" files-view *ngIf="task.files.length" files="task.files"></div>-->
 
-  <!--<div task-tags task="task" ng-hide="task._id == newTask._id"></div>-->
+  <task-tags-panel [task]="task" *ngIf="task.tags && task.tags.length"></task-tags-panel>
 </div>
 
 <!--<div *ngIf="openHistory" task-history task="task" ></div>-->

@@ -17,14 +17,10 @@
       <div *ngIf="task.title">
 
         <div class="form-group">
-                <!--<textarea ng-if="showDescription"-->
-                          <!--ng-focus="msd-elastic" msd-elastic-->
-                          <!--ng-model="task.description"-->
-                          <!--class="form-control description-height"-->
-                          <!--placeholder="Task description"-->
-                          <!--rows="1">-->
-                <!--</textarea>-->
-          <textarea name="description" [(ngModel)]="task.description" cols="30" rows="10"></textarea>
+          <task-description-editor
+            [task]="task"
+            (descriptionUpdated)="taskChangeHandler($event)">
+          </task-description-editor>
         </div>
 
         <!--<div uploader files="task.files"></div>-->
@@ -52,7 +48,7 @@
             <label *ngFor="let status of statuses"
                    class="btn btn-default btn-sm"
                    [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
-                   (click)="setStatus(status.value)"
+                   (click)="setField('status', status.value)"
             >{{status.name}}</label>
           </div>
         </div>
@@ -68,88 +64,47 @@
       </div>
 
       <hr *ngIf="task.simple || task.status == 'accepted'" class="mg"/>
+      <div *ngIf="task.simple" class="form-group">
+        <complexity [task]="task" (updatedComplexity)="taskChangeHandler($event)"></complexity>
+      </div>
 
-      <!--<div ng-if="task.simple" class="form-group" ng-show="task.title"> &lt;!&ndash;Complexity&ndash;&gt;-->
-        <!--<i class="fa fa-puzzle-piece fa-md vcenter" uib-tooltip="Complexity"></i>-->
+      <div class="form-group" *ngIf="task.title"> <!-- Priority-->
+        <i class="fa fa-bolt fa-md vcenter"></i>
 
-        <!--<div class="btn-group complexity">-->
-          <!--<label ng-repeat="complexity in complexities" class="btn btn-default btn-sm"-->
-                 <!--ng-model="task.complexity"-->
-                 <!--uib-btn-radio="complexity.value">{{complexity.name}}</label>-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<div class="form-group" ng-show="task.title"> &lt;!&ndash; Priority&ndash;&gt;-->
-        <!--<i class="fa fa-bolt fa-md vcenter" uib-tooltip="Priority"></i>-->
-
-        <!--<div class="btn-group priority">-->
-          <!--<label ng-repeat="priority in priorities" class="btn btn-default btn-sm" ng-model="task.priority"-->
-                 <!--uib-btn-radio="priority">{{priority}}</label>-->
-        <!--</div>-->
-      <!--</div>-->
+        <div class="btn-group priority">
+          <label *ngFor="let priority of priorities"
+                 class="btn btn-default btn-sm"
+                 [ngClass]="{'active': task.priority === priority}"
+                 (click)="setField('priority', priority)">{{priority}}</label>
+        </div>
+      </div>
 
       <!--<hr ng-if="task.simple" class="mg"/>-->
       <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
       <!--</div>-->
 
-      <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
-        <!--<i class="fa fa-clock-o fa-md vcenter pull-left" uib-tooltip="Spent time"></i>-->
+      <div class="form-group clearfix" *ngIf="task.simple">
+        <spent-time [task]="task" (updatedSpentTime)="taskChangeHandler($event)"></spent-time>
+      </div>
 
-        <!--<div class=" pull-left input-sm text-center spent-time" >-->
-          <!--<strong>{{task.spenttime || 0 | humanizeTime}}</strong>-->
-        <!--</div>-->
+      <hr class="mg"/>
 
-        <!--<div class="pull-left input-sm text-left added-spent-time">+{{addedSpentTime| humanizeTime}}</div>-->
+      <task-assign-developer
+        *ngIf="task.parentTaskId"
+        [task]="task"
+        (developerAssigned)="taskChangeHandler($event)">
+      </task-assign-developer>
 
-        <!--<div class="btn-group m-l-sm pull-left">-->
-          <!--<label ng-click="addTime(time)" ng-repeat="time in addTimeList" class="btn btn-default btn-sm">+{{time.name}}</label>-->
-          <!--<label ng-click="reset()" class="btn btn-default btn-sm ">reset</label>-->
-        <!--</div>-->
+      <task-team-select
+        *ngIf="!task.parentTaskId"
+        [task]="task"
+        (teamUpdated)="taskChangeHandler($event)">
+      </task-team-select>
 
-      <!--</div>-->
+      <hr class="mg"/>
 
-      <!--<hr class="mg"/>-->
+      <task-tags [task]="task" (tasksUpdated)="taskChangeHandler($event)"></task-tags>
 
-      <!--<div ng-if="task.parentTaskId" class="form-group clearfix icon-fix">-->
-        <!--<i class="fa fa-user fa-md vcenter" uib-tooltip="Assigned to..."></i>-->
-        <!--<div class="field-fix">-->
-          <!--<select ng-model="task.developer" ng-options="member._id as member.name for member in team"-->
-                  <!--class="form-control input-sm field-full "></select>-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<div class="form-group clearfix icon-fix" ng-if="task.parentTaskId == null" ng-show="task.title">-->
-
-        <!--<i class="fa fa-user-plus fa-md vcenter" uib-tooltip="Shared for..."></i>-->
-        <!--<div class="field-fix">-->
-          <!--<ui-select multiple ng-model="task.team" class="input-sm field-full">-->
-            <!--<ui-select-match placeholder="Share...">{{$item.name}}</ui-select-match>-->
-            <!--<ui-select-choices repeat="user._id as user in users | filter:$select.search">-->
-              <!--{{user.name}}-->
-            <!--</ui-select-choices>-->
-          <!--</ui-select>-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<hr class="mg"/>-->
-
-      <!--<div class="form-group clearfix icon-fix">-->
-
-        <!--<i class="fa fa-tags fa-md vcenter" uib-tooltip="Tags"></i>-->
-
-        <!--<div class="field-fix">-->
-          <!--<ui-select tagging tagging-label="(add)"-->
-                     <!--tagging-tokens=",|;" multiple-->
-                     <!--ng-model="task.tags"-->
-                     <!--class="input-sm field-full">-->
-            <!--<ui-select-match placeholder="Add Tags...">{{$item}}</ui-select-match>-->
-
-            <!--<ui-select-choices repeat="tag in tagsList | filter:$select.search">-->
-              <!--{{tag}}-->
-            <!--</ui-select-choices>-->
-          <!--</ui-select>-->
-        <!--</div>-->
-      <!--</div>-->
     </div>
 
   </div>
