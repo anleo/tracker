@@ -1,4 +1,4 @@
-<div *ngIf="task" class="task-info">
+<div *ngIf="task && !editModalMode && !editMode" class="task-info">
   <h2 class="clearfix">
     {{task.title}}
     <div class="pull-right" *ngIf="task && task.parentTaskId">
@@ -30,7 +30,7 @@
 <!--<div *ngIf="openHistory" task-history task="task" ></div>-->
 
 <div *ngIf="!openHistory">
-  <app-task-edit (onUpdate)="onUpdate($event)" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>
+  <app-task-edit (onUpdate)="onUpdate($event)" *ngIf="!editModalMode" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>
   <app-task-edit-modal class="edit-form"></app-task-edit-modal>
 
   <div>

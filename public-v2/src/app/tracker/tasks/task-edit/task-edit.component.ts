@@ -27,7 +27,7 @@ export class TasksEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskService.editTask$.subscribe((task) => {
-      this.task = this.task ? this.task : new Task();
+      this.task = task ? task : new Task();
       if (task && task.parentTaskId) {
         this.parentTaskId = task.parentTaskId;
       }
@@ -35,6 +35,13 @@ export class TasksEditComponent implements OnInit {
       this.taskStatusService
         .getTaskStatusList()
         .subscribe(taskStatusList => this.statuses = taskStatusList);
+    });
+
+    this.taskService.editTaskModal$.subscribe((task) => {
+      this.task = task ? task : new Task();
+      if (task && task.parentTaskId) {
+        this.parentTaskId = task.parentTaskId;
+      }
     });
   }
 
@@ -53,15 +60,17 @@ export class TasksEditComponent implements OnInit {
 
   reinitTask(task: Task): void {
     this.emitUpdate(task);
-    this.initTask();
+    this.taskService.editTaskClose$.next(true);
     this.onClose.emit(null);
+    setTimeout(() => this.initTask(), 0);
   }
 
   remove(task: Task): void {
     this.taskService.remove(this.task).subscribe(() => {
       this.emitRemove(task);
-      this.initTask();
+      this.taskService.editTaskClose$.next(true);
       this.onClose.emit(null);
+      setTimeout(() => this.initTask(), 0);
     });
   }
 
@@ -74,8 +83,10 @@ export class TasksEditComponent implements OnInit {
   }
 
   close(): void {
-    this.initTask();
+    this.taskService.editTaskClose$.next(true);
+    this.taskService.editTaskModal$.next(null);
     this.onClose.emit(null);
+    setTimeout(() => this.initTask(), 0);
   }
 
   setField(key: string, value: string): void {

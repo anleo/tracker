@@ -24,6 +24,7 @@ export class TasksEditModalComponent implements OnInit {
   }
 
   onClose(): void {
+    this.taskService.editTaskClose$.next(true);
     this.task = null;
   }
 }

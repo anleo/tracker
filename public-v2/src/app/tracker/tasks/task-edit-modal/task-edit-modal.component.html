@@ -2,7 +2,7 @@
   <div class="overlay" (click)="onClose()"></div>
   <div class="modal">
     <div style="padding: 20px;">
-      <app-task-edit [(task)]="task" (onClose)="onClose($event)"></app-task-edit>
+      <app-task-edit (onClose)="onClose($event)"></app-task-edit>
     </div>
   </div>
 </div>
