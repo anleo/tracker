@@ -32,6 +32,7 @@ export class TaskItemComponent implements OnInit {
       .subscribe(task => {
         this.taskService.taskMoved$
           .subscribe(task => this.onTaskMoved(task));
+
         this.init(task);
       });
   }

@@ -20,7 +20,6 @@ export class TasksEditComponent implements OnInit {
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
 
-
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
     this.taskService.editTask$.subscribe((task) => {

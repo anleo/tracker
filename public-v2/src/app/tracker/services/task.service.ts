@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 import {Task} from '../models/task';
 import {TaskResource} from "../resources/tasks.resource";
@@ -11,22 +11,17 @@ export class TaskService {
   editTask: Task|null = null;
   movedTask: Task|null = null;
   tasks: Task[]|null = null;
+
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
   taskMoved$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
 
   constructor(private taskResource: TaskResource) {
-    this.editTask$.subscribe((task) => {
-      this.editTask = task;
-    });
+    this.editTask$.subscribe((task) => this.editTask = task);
 
-    this.tasks$.subscribe((tasks) => {
-      this.tasks = tasks;
-    });
+    this.tasks$.subscribe((tasks) => this.tasks = tasks);
 
-    this.taskMoved$.subscribe(task => {
-      this.movedTask = task;
-    });
+    this.taskMoved$.subscribe(task => this.movedTask = task);
   }
 
   setTasks(tasks: Task[]) {
