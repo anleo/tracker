@@ -77,4 +77,16 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getTags: ResourceMethod<{taskId: string}, string[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/move',
+    isArray: true
+  })
+  getTasksForMove: ResourceMethod<{taskId: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/move/{!toTaskId}',
+    method: RequestMethod.Put
+  })
+  moveTask: ResourceMethod<{taskId: string, toTaskId: string}, Task>
 }
