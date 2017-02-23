@@ -14,10 +14,11 @@ export class TasksEditComponent implements OnInit {
   task: Task|null = null;
   parentTaskId: string|null = null;
   priorities: number[] = TaskPrioritiesMock;
+  taskMoveToggle: boolean = false;
+  statuses: TaskStatus[] = [];
+
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
-
-  statuses: TaskStatus[] = [];
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
@@ -90,5 +91,9 @@ export class TasksEditComponent implements OnInit {
   handleOnDelete(file: any): void {
     this.taskService.deleteFile(file, this.task)
       .subscribe(() => this.task.files.splice(this.task.files.indexOf(file), 1))
+  }
+
+  showTaskMove(): void {
+    this.taskMoveToggle = !this.taskMoveToggle;
   }
 }
