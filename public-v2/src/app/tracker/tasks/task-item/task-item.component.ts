@@ -63,7 +63,7 @@ export class TaskItemComponent implements OnInit {
   }
 
   onUpdate(task: Task) {
-    let tasks = this.tasks;
+    let tasks = this.tasks || [];
     this.tasks = [];
     let taskFound = tasks.find((_task) => _task._id === task._id);
 

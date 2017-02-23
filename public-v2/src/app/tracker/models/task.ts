@@ -20,8 +20,8 @@ export class Task {
   developer?: User;
   team?: Array<string>;
   files?: string[];
-  tags?: Array<string>;
-  tagsList?: Array<string>;
+  tags?: Array<string> = [];
+  tagsList?: Array<string> = [];
   archived?: boolean;
   commentsCounter?: number;
   updatedBy?: string|any;

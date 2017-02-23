@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
+import { ElasticModule } from 'angular2-elastic';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -31,6 +32,9 @@ import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.comp
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
 import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
+import {TaskDescriptionEditor} from "./tasks/components/task-description-editor/task-description-editor.component";
+import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/task-description-viewer.component";
+import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
 import {TaskSearchPipe} from "./pipes/task-search.pipe";
 import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
 
@@ -66,7 +70,10 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
     TaskMetricsComponent,
     TaskTagsComponent,
     TaskSearchPipe,
-    TaskMoveComponent
+    TaskMoveComponent,
+    TaskDescriptionEditor,
+    TaskDescriptionViewer,
+    TaskTagsPanelComponent
   ],
   providers: [
     TaskResolver,
