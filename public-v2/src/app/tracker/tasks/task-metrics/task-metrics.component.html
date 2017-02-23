@@ -28,7 +28,7 @@
   <!--<li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>&nbsp;{{task.developer.local.username}}</li>-->
 
   <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt }}</li>
-  <!--<li ng-if="metricsDetails == 2 && task.files.length > 0" uib-tooltip="Attachments"><i class="fa fa-paperclip"></i>&nbsp;{{task.files.length}}</li>-->
+  <li  *ngIf="task.files.length > 0" tooltip="Attachments"><i class="fa fa-paperclip"></i>&nbsp;{{task.files.length}}</li>
   <!--<li ng-if=" task.commentsCounter" ng-click="$event.stopPropagation();"><i class="fa fa-comment"></i>&nbsp;<span uib-tooltip="Comments">{{task.commentsCounter ||0}}</span></li>-->
 </ul>
 
