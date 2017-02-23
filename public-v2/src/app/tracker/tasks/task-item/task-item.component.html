@@ -35,6 +35,7 @@
 
 <div *ngIf="!openHistory">
   <app-task-edit (onUpdate)="onUpdate($event)" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>
+  <app-task-edit-modal class="edit-form"></app-task-edit-modal>
 
   <!--<div *ngIf="!newTask._id" task-editor task="newTask" task-on-complete="init"-->
   <!--class="edit-form"></div>-->

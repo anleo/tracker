@@ -35,6 +35,7 @@ import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
 import {TaskDescriptionEditor} from "./tasks/components/task-description-editor/task-description-editor.component";
 import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/task-description-viewer.component";
 import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
+import {TasksEditModalComponent} from "./tasks/task-edit-modal/task-edit-modal.component";
 
 @NgModule({
   imports: [
@@ -68,7 +69,8 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     TaskTagsComponent,
     TaskDescriptionEditor,
     TaskDescriptionViewer,
-    TaskTagsPanelComponent
+    TaskTagsPanelComponent,
+    TasksEditModalComponent
   ],
   providers: [
     TaskResolver,

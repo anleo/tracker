@@ -11,10 +11,15 @@ export class TaskService {
   editTask: Task|null = null;
   tasks: Task[]|null = null;
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  editTaskModal$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   constructor(private taskResource: TaskResource) {
     this.editTask$.subscribe((task) => {
+      this.editTask = task;
+    });
+
+    this.editTaskModal$.subscribe((task) => {
       this.editTask = task;
     });
 
@@ -29,6 +34,10 @@ export class TaskService {
 
   setEditTask(task: Task) {
     this.editTask$.next(task);
+  }
+
+  setEditTaskModal(task: Task) {
+    this.editTaskModal$.next(task);
   }
 
   getTags(task: Task): Observable<string[]> {

@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 
 import {Task} from '../../models/task';
 import {TaskStatus} from '../../models/task-status';
@@ -11,30 +11,31 @@ import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
   templateUrl: 'task-edit.component.html'
 })
 export class TasksEditComponent implements OnInit {
-  task: Task|null = null;
+  @Input() task: Task|null = null;
   parentTaskId: string|null = null;
   priorities: number[] = TaskPrioritiesMock;
   @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
   @Output() onRemove: EventEmitter<Task> = new EventEmitter();
+  @Output() onClose: EventEmitter<Task> = new EventEmitter();
 
   statuses: TaskStatus[] = [];
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
-    this.taskService.editTask$.subscribe((task) => {
-      this.task = task;
-      if (task && task.parentTaskId) {
-        this.parentTaskId = task.parentTaskId;
-      }
-    });
   }
 
   ngOnInit() {
-    this.task = this.task ? this.task : new Task();
+    this.taskService.editTask$.subscribe((task) => {
+      this.task = this.task ? this.task : new Task();
+      if (task && task.parentTaskId) {
+        this.parentTaskId = task.parentTaskId;
+      }
 
-    this.taskStatusService
-      .getTaskStatusList()
-      .subscribe(taskStatusList => this.statuses = taskStatusList)
+
+      this.taskStatusService
+        .getTaskStatusList()
+        .subscribe(taskStatusList => this.statuses = taskStatusList);
+    });
   }
 
   initTask() {
@@ -44,22 +45,23 @@ export class TasksEditComponent implements OnInit {
 
   save() {
     if (this.task && this.task.parentTaskId) {
-      this.taskService.saveChildTask(this.task).subscribe((task) => {
-        this.emitUpdate(task);
-        this.initTask();
-      });
+      this.taskService.saveChildTask(this.task).subscribe((task) => this.reinitTask(task));
     } else {
-      this.taskService.save(this.task).subscribe((task) => {
-        this.emitUpdate(task);
-        this.initTask();
-      });
+      this.taskService.save(this.task).subscribe((task) => this.reinitTask(task));
     }
+  }
+
+  reinitTask(task) {
+    this.emitUpdate(task);
+    this.initTask();
+    this.onClose.emit(null);
   }
 
   remove(task: Task) {
     this.taskService.remove(this.task).subscribe(() => {
       this.emitRemove(task);
       this.initTask();
+      this.onClose.emit(null);
     });
   }
 
@@ -73,6 +75,7 @@ export class TasksEditComponent implements OnInit {
 
   close() {
     this.initTask();
+    this.onClose.emit(null);
   }
 
   setField(key: string, value: string): void {
