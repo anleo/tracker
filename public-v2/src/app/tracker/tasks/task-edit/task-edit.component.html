@@ -11,7 +11,8 @@
       <!--</div>-->
 
       <div class="form-group">
-        <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task" id="title"/>
+        <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task"
+               id="title"/>
       </div>
 
       <div *ngIf="task.title">
@@ -22,12 +23,9 @@
             (descriptionUpdated)="taskChangeHandler($event)">
           </task-description-editor>
         </div>
+        <uploader (onUpload)="handleOnUpload($event)"></uploader>
+        <file-viewer [deletion]="true"  (onDelete)="handleOnDelete($event)" *ngIf="task.files.length" [files]="task.files"></file-viewer>
 
-        <!--<div uploader files="task.files"></div>-->
-
-        <!--<div ng-if="task.files.length">-->
-          <!--<div files-view files="task.files" on-delete="deleteFile"></div>-->
-        <!--</div>-->
 
       </div>
 
@@ -42,7 +40,7 @@
 
         <div *ngIf="task.simple" class="pull-left">
 
-          <i class="fa fa-check-square-o fa-md vcenter" uib-tooltip="Status"></i>
+          <i class="fa fa-check-square-o fa-md vcenter" tooltip="Status"></i>
 
           <div class="btn-group task-statuses">
             <label *ngFor="let status of statuses"
@@ -112,30 +110,33 @@
   <hr *ngIf="task.title" class="mg"/>
 
   <div class="form-group clearfix" *ngIf="task.title">
-    <div class="">
+    <div >
       <button class="btn btn-success btn-sm" type="submit">Save</button>
-      <a *ngIf="task._id" class="btn btn-default btn-sm" ng-click="getTasksForMove()">Move</a>
+      <a *ngIf="task._id" class="btn btn-default btn-sm" (click)="showTaskMove()">Move</a>
       <a class="btn btn-default btn-sm" (click)="close()">Close</a>
       <a *ngIf="task._id && task.status != 'in progress'" class="btn btn-danger btn-sm pull-right"
          (click)="remove(task)">Delete</a>
 
       <!--<div ng-show="task.status == 'accepted'" class="checkbox archive-button" ng-class="{'pull-right': task.simple}">-->
 
-        <!--<input type="button"-->
-               <!--ng-model="task.archived"-->
-               <!--id="archived" />-->
+      <!--<input type="button"-->
+      <!--ng-model="task.archived"-->
+      <!--id="archived" />-->
 
-        <!--<label for="archived"-->
-               <!--ng-click="task.archived = !task.archived"-->
-               <!--class="btn btn-sm"-->
-               <!--ng-class="task.archived == true ? 'btn-warning' : 'btn-default' ">-->
-          <!--<i class="fa" ng-class="task.archived == true ? 'fa-check-square-o' : 'fa-square-o' "></i>&nbsp;Archived</label>-->
+      <!--<label for="archived"-->
+      <!--ng-click="task.archived = !task.archived"-->
+      <!--class="btn btn-sm"-->
+      <!--ng-class="task.archived == true ? 'btn-warning' : 'btn-default' ">-->
+      <!--<i class="fa" ng-class="task.archived == true ? 'fa-check-square-o' : 'fa-square-o' "></i>&nbsp;Archived</label>-->
       <!--</div>-->
     </div>
 
-    <!--// @@@ Move-->
-    <!--<div class="row" ng-include="'tracker/modules/task/views/tasks-for-move.html'"-->
-         <!--ng-if="tasksForMove.length"></div>-->
+    <div class="row">
+      <task-move
+        *ngIf="taskMoveToggle"
+        [task]="task"
+        (onMoved)="close()"></task-move>
+    </div>
   </div>
 
   <hr *ngIf="!task._id && task.title" class="mg"/>

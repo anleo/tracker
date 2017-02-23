@@ -892,3 +892,7 @@ hr {
 .history-message {
     padding-top: 7px;
 }
+
+.progress-bar{
+  transition: width 3s ease!important;
+}

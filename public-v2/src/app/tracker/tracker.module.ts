@@ -22,19 +22,25 @@ import {ReportsComponent} from "./reports/reports.component";
 import {DatepickerModule} from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent} from './tasks/task-metrics/task-metrics.component';
-import {TooltipModule} from "ng2-bootstrap";
+import {TooltipModule, ProgressbarModule} from "ng2-bootstrap";
 import {TaskTeamComponent} from "./tasks/components/task-team/task-team.component";
 import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-developer/task-assign-developer.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
+import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
+import { UploaderComponent } from './tasks/uploader/uploader.component';
+import { NgUploaderModule } from 'ngx-uploader';
+import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
+import {FileResourse} from "./resources/file.resource";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
-import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.component';
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
 import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
 import {TaskDescriptionEditor} from "./tasks/components/task-description-editor/task-description-editor.component";
 import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/task-description-viewer.component";
 import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
+import {TaskSearchPipe} from "./pipes/task-search.pipe";
+import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
 
 @NgModule({
   imports: [
@@ -45,7 +51,10 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    NgUploaderModule,
+    ProgressbarModule.forRoot(),
+    ElasticModule
   ],
   declarations: [
     TasksBoardFilter,
@@ -66,15 +75,23 @@ import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-ta
     TaskComplexityComponent,
     TaskSpentTimeComponent,
     TaskTagsComponent,
+    TaskSearchPipe,
+    TaskMoveComponent,
     TaskDescriptionEditor,
     TaskDescriptionViewer,
-    TaskTagsPanelComponent
+    TaskTagsPanelComponent,
+    TaskMetricsComponent,
+    TaskTeamComponent,
+    TaskTagsComponent,
+    UploaderComponent,
+    FileViewerComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService
+    TaskStatusService,
+    FileResourse
   ]
 })
 export class TrackerModule {
