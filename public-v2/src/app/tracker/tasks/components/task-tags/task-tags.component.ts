@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from "@angular/core";
+import {Component, Input, OnInit, Output, EventEmitter, ElementRef} from "@angular/core";
 import {Task} from "../../../models/task";
 import {TaskService} from "../../../services/task.service";
 
@@ -15,31 +15,48 @@ export class TaskTagsComponent implements OnInit {
   tagsList: Array <{id: string, text: string}> = [];
   selectedTags: Array <string> = [];
   alreadyIn: boolean = false;
+  addedTag: boolean = false;
 
   @Output() tasksUpdated = new EventEmitter();
 
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService,
+              private elementRef : ElementRef) {
   }
 
   ngOnInit(): void {
+    let parentTaskId = this.task && this.task.parentTaskId;
+    if (parentTaskId) {
+      this.task.parentTaskId = parentTaskId;
+    }
+
     this.loadTagsList();
     this.initSelectedTags();
   };
 
-  initSelectedTags() {
-    this.selectedTags = this.task.tags;
-    this.tags = this.task.tags.map((tag) => {
-      if (tag) {
-        return this.convertTextToTags(tag);
-      }
-    });
+  private initSelectedTags() {
+    this.selectedTags = this.task && this.task.tags || [];
+    this.tags = this.task.tags && this.task.tags.map((tag) => {
+        if (tag) {
+          return this.convertTextToTags(tag);
+        }
+      });
   }
 
   private loadTagsList(): void {
-    this.taskService
-      .getTags(this.task)
-      .map(tags => this.prepareTags(tags))
-      .subscribe(tags => this.tagsList = tags);
+    let _root = (this.task && this.task._id) || (this.task && this.task.parentTaskId);
+
+    if (this.task && this.task._id) {
+      this.taskService
+        .getTags(this.task)
+        .map(tags => this.prepareTags(tags))
+        .subscribe(tags => this.tagsList = tags);
+    } else {
+      this.taskService
+        .getRoot(_root)
+        .map((root) => root.tagsList || [])
+        .map(tags => this.prepareTags(tags))
+        .subscribe(tags => this.tagsList = tags);
+    }
   }
 
   public selected(tag: {id: string, text: string}): void {
@@ -50,14 +67,14 @@ export class TaskTagsComponent implements OnInit {
   }
 
   private pushTagToField(field, tag): void {
-    let tagFound = field.find((_tag) => tag && tag.text ? _tag.text === tag.text : _tag === tag.text);
+    let tagFound = field && field.find((_tag) => tag && tag.text ? _tag.text === tag.text : _tag === tag.text);
     if (!tagFound) {
       field.push(tag);
     }
   }
 
   private findAndRemoveTag(field, tag): void {
-    let foundTag = field.find((_tag) => (_tag && _tag.text) ? _tag.text === tag.text : _tag === tag.text);
+    let foundTag = field && field.find((_tag) => (_tag && _tag.text) ? _tag.text === tag.text : _tag === tag.text);
     let index = field.indexOf(foundTag);
     if (index > -1) {
       field.splice(index, 1);
@@ -82,21 +99,26 @@ export class TaskTagsComponent implements OnInit {
   }
 
   public addTag() {
-    let tagFound = this.task.tagsList.find((tag) => tag === this.tag);
-    if (!tagFound) {
-      this.task.tagsList.push(this.tag);
-    } else {
-      this.alreadyIn = true;
-      setTimeout(() => this.alreadyIn = false, 2000);
-    }
+    let root = (this.task && this.task._id) || (this.task && this.task.parentTaskId);
 
-    this.taskService.save(this.task).subscribe((task) => {
-      this.task = task;
-      this.loadTagsList();
-      this.initSelectedTags();
-      this.tasksUpdated.emit(this.task);
-    });
-    this.tag = null;
+    this.taskService.getRoot(root)
+      .subscribe((root) => {
+        let tagFound = root.tagsList && root.tagsList.find((tag) => tag === this.tag);
+        if (!tagFound) {
+          root.tagsList && root.tagsList.push(this.tag);
+          this.taskService.save(root).subscribe(() => {
+            this.addedTag = true;
+            this.loadTagsList();
+            this.initSelectedTags();
+            this.tag = null;
+            this.elementRef.nativeElement.querySelector('.ng-select input').focus();
+            setTimeout(() => this.addedTag = false, 2000);
+          });
+        } else {
+          this.alreadyIn = true;
+          setTimeout(() => this.alreadyIn = false, 2000);
+        }
+      });
   }
 
   public onKey($event) {
