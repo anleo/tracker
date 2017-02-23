@@ -58,7 +58,11 @@ export class TasksEditComponent implements OnInit {
   }
 
   remove(task: Task): void {
-    this.taskService.remove(this.task).subscribe(() => this.reinitTask(task));
+    this.taskService.remove(this.task).subscribe(() => {
+      this.emitRemove(task);
+      this.initTask();
+      this.onClose.emit(null);
+    });
   }
 
   emitUpdate(task: Task): void {
