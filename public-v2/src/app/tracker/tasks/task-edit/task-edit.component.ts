@@ -91,5 +91,4 @@ export class TasksEditComponent implements OnInit {
     this.taskService.deleteFile(file, this.task)
       .subscribe(() => this.task.files.splice(this.task.files.indexOf(file), 1))
   }
-
 }
