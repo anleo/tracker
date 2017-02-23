@@ -39,6 +39,7 @@ import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
 import {TaskDescriptionEditor} from "./tasks/components/task-description-editor/task-description-editor.component";
 import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/task-description-viewer.component";
 import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
+import {TasksEditModalComponent} from "./tasks/task-edit-modal/task-edit-modal.component";
 import {TaskSearchPipe} from "./pipes/task-search.pipe";
 import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
@@ -82,6 +83,7 @@ import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
     TaskDescriptionEditor,
     TaskDescriptionViewer,
     TaskTagsPanelComponent,
+    TasksEditModalComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskTagsComponent,

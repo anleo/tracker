@@ -10,7 +10,17 @@ export class TaskMetricsComponent {
   metricsDetails: number;
   options:any;
 
-  constructor() {
-  }
+  public setLabelClass(): string {
+    let className = 'label-info';
 
+    if (this.task.status === 'accepted') {
+      className = 'label-success';
+    }
+
+    if (this.task.status === 'in progress') {
+      className = 'label-warning'
+    }
+
+    return className;
+  }
 }

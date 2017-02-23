@@ -19,7 +19,7 @@ export class Task {
   owner?: string|any;
   developer?: User;
   team?: Array<string>;
-  files?: string[];
+  files?: string[] = [];
   tags?: Array<string> = [];
   tagsList?: Array<string> = [];
   archived?: boolean;
