@@ -1,12 +1,9 @@
 <i class="fa fa-clock-o fa-md vcenter pull-left" tooltip="Spent time"></i>
 
 <div class="pull-left input-sm text-center spent-time">
-  <!--<strong>{{task.spenttime || 0 | humanizeTime}}</strong>-->
-  <strong>{{task.spenttime > 0 ? task.spenttime: '00:00'}}</strong>
+  <strong>{{task.spenttime ||0 |humanizeTime}}</strong>
 </div>
-
-<!--<div class="pull-left input-sm text-left added-spent-time">+{{addedSpentTime| humanizeTime}}</div>-->
-<div class="pull-left input-sm text-left added-spent-time">+{{addedSpentTime||'00:00'}}</div>
+<div class="pull-left input-sm text-left added-spent-time">+{{addedSpentTime|humanizeTime}}</div>
 
 <div class="btn-group m-l-sm pull-left">
   <label *ngFor="let time of spentTimeValues"
