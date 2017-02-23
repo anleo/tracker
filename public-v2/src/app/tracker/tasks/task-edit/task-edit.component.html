@@ -24,7 +24,7 @@
           </task-description-editor>
         </div>
         <uploader (onUpload)="handleOnUpload($event)"></uploader>
-        <file-viewer [deletion]="true"  (onDelete)="handleOnDelete($event)" *ngIf="task.files.length" [files]="task.files"></file-viewer>
+        <file-viewer [deletion]="true"  (onDelete)="handleOnDelete($event)" *ngIf="task.files && task.files.length" [files]="task.files"></file-viewer>
 
 
       </div>
