@@ -48,13 +48,7 @@
                     </div>
                 </div>
 
-                <ul ng-if="task.simple" class="task-metrics pull-right edit-panel-metrics-info">
-                    <li>
-                        <i class="fa fa-clock-o" uib-tooltip="Time"></i>&nbsp;<span uib-tooltip="Estimated" class="text-right">{{task.estimatedTime| round}}</span>
-                        / <span uib-tooltip="Spent" class="text-right">{{task.spenttime| round}}</span>
-                        / <span uib-tooltip="TODO" ng-class="{'warning-text' : (task.timeToDo|round) < 0}" class="text-right">{{task.timeToDo| round}}</span>
-                    </li>
-                </ul>
+
 
             </div>
 
