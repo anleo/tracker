@@ -60,6 +60,7 @@ export class TasksEditComponent implements OnInit {
 
   reinitTask(task: Task): void {
     this.emitUpdate(task);
+    this.taskService.editTaskUpdated$.next(task);
     this.taskService.editTaskModal$.next(null);
     this.taskService.editTaskClose$.next(true);
     this.onClose.emit(null);
@@ -69,6 +70,7 @@ export class TasksEditComponent implements OnInit {
   remove(task: Task): void {
     this.taskService.remove(this.task).subscribe(() => {
       this.emitRemove(task);
+      this.taskService.editTaskRemoved$.next(task);
       this.taskService.editTaskModal$.next(null);
       this.taskService.editTaskClose$.next(true);
       this.onClose.emit(null);
