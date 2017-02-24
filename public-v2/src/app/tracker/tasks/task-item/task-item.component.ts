@@ -49,7 +49,19 @@ export class TaskItemComponent implements OnInit {
         this.editModalMode = false;
         this.editMode = false;
       }
-    })
+    });
+
+    this.taskService.editTaskUpdated$.subscribe((task) => {
+      if (task) {
+        this.onUpdate(task);
+      }
+    });
+
+    this.taskService.editTaskRemoved$.subscribe((task) => {
+      if (task) {
+        this.onRemove(task);
+      }
+    });
   }
 
   init(task) {
