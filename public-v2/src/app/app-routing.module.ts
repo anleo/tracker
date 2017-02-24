@@ -8,6 +8,7 @@ import {BlankComponent} from "./blank/blank.component";
 import {LogoutComponent} from "./auth/logout/logout.component";
 import {UserResolver} from "./user/resolver/UserResolver";
 import {ProfileComponent} from "./user/components/user-profile.component";
+import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [CanActivatePublicGuard]
       },
       {
         path: 'logout',
@@ -29,11 +31,13 @@ const routes: Routes = [
       },
       {
         path: 'register',
-        component: RegistrationComponent
+        component: RegistrationComponent,
+        canActivate: [CanActivatePublicGuard]
       },
       {
         path: 'reset-password',
-        component: PasswordResetComponent
+        component: PasswordResetComponent,
+        canActivate: [CanActivatePublicGuard]
       },
       {
         path: 'users',
