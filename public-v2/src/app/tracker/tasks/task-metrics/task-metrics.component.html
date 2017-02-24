@@ -27,9 +27,9 @@
   <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity|round}}
   </li>
 
-  <li *ngIf="task.owner" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>{{task.owner.local.username}}
-  </li>
-  <li *ngIf="task.developer" tooltip="Developer" placement="top"><i class="fa fa-user"></i>{{task.developer.local.username}}
+  <!--<li *ngIf="task.owner && task.developer.local && task.owner.local.username" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>{{task.owner.local.username}}-->
+  <!--</li>-->
+  <li *ngIf="task.developer && task.developer.local && task.developer.local.username" tooltip="Developer" placement="top"><i class="fa fa-user"></i>{{task.developer.local.username}}
   </li>
 
   <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt | date:'yyyy/MM/dd HH:mm:ss'}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt | fromNow }}
