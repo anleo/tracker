@@ -16,6 +16,7 @@ export class TaskItemComponent implements OnInit {
   tasks: Task[] = [];
   editModalMode: boolean = false;
   editMode: boolean = false;
+  showHistory: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -162,4 +163,7 @@ export class TaskItemComponent implements OnInit {
     }
   }
 
+  toggleTaskHistory(): void {
+    this.showHistory = !this.showHistory;
+  }
 }

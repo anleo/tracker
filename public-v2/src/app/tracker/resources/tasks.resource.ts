@@ -5,6 +5,7 @@ import {Resource, ResourceParams, ResourceAction, ResourceMethod, ResourceMethod
 
 import {Task} from '../models/task';
 import {User} from "../../user/models/user";
+import {HistoryMessage} from "../models/historyMessage";
 
 @Injectable()
 @ResourceParams({
@@ -88,5 +89,18 @@ export class TaskResource extends Resource {
     path: '/{!taskId}/move/{!toTaskId}',
     method: RequestMethod.Put
   })
-  moveTask: ResourceMethod<{taskId: string, toTaskId: string}, Task>
+  moveTask: ResourceMethod<{taskId: string, toTaskId: string}, Task>;
+
+  @ResourceAction({
+    path: '/{!taskId}/history',
+    // method: RequestMethod.Get,
+    isArray: true
+  })
+  getTaskHistory: ResourceMethod<{taskId: string}, HistoryMessage[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/history/comments',
+    method: RequestMethod.Post
+  })
+  createCommnent: ResourceMethodStrict< HistoryMessage, {taskId: string}, HistoryMessage>;
 }

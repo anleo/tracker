@@ -17,6 +17,7 @@
   </h5>
 
   <app-task-metrics [task]="task" (click)="edit(task)" class="pull-left" ></app-task-metrics>
+  <!--<a class="btn btn-sm btn-link pull-right" (click)="toggleTaskHistory()">Details</a>-->
 
   <div class="clearfix"></div>
 
@@ -28,6 +29,7 @@
 </div>
 
 <!--<div *ngIf="openHistory" task-history task="task" ></div>-->
+<comments [task]="task"></comments>
 
 <div *ngIf="!openHistory">
   <app-task-edit (onUpdate)="onUpdate($event)" *ngIf="!editModalMode" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>

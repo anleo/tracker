@@ -6,6 +6,7 @@ import {Task} from '../models/task';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
 import {FileResourse} from "../resources/file.resource";
+import {HistoryMessage} from "../models/historyMessage";
 
 @Injectable()
 export class TaskService {
@@ -122,6 +123,18 @@ export class TaskService {
   moveTask(taskId: string, toTaskId: string): Observable <Task> {
     return this.taskResource
       .moveTask({taskId: taskId, toTaskId: toTaskId})
+      .$observable;
+  }
+
+  getHistory(task: Task): Observable <HistoryMessage[]> {
+    return this.taskResource
+      .getTaskHistory({taskId: task._id})
+      .$observable;
+  }
+
+  createComment(task: Task, comment:HistoryMessage): Observable <HistoryMessage> {
+    return this.taskResource
+      .createCommnent(comment, {taskId: task._id})
       .$observable;
   }
 }

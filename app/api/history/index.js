@@ -19,7 +19,7 @@ module.exports = function (app) {
         comment.user = UserService.getUserId(req.user);
         comment.text = req.form.text;
 
-        comment.save(function (err) {
+        comment.save(function (err, comment) {
             if (err) {
                 return next(err);
             }
@@ -32,7 +32,7 @@ module.exports = function (app) {
                         return next(err);
                     }
 
-                    res.sendStatus(200);
+                    res.status(200).json(comment);
                 });
             })
 
