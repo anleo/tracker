@@ -1,7 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 
 import {Task} from '../../models/task'
-import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskStatus} from "../../models/task-status";
 import {BoardViewComponent} from "./board-view.component";
@@ -24,9 +23,7 @@ export class TasksBoardComponent implements OnInit {
   boards: Board[] = BoardsMock;
   currentBoard: Board;
 
-  constructor(protected taskService: TaskService,
-              protected taskStatusService: TaskStatusService) {
-  }
+  constructor(private taskStatusService: TaskStatusService) {}
 
   ngOnInit() {
     this.taskStatusService
