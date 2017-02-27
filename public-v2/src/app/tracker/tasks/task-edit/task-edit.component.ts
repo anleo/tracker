@@ -12,42 +12,39 @@ import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 })
 export class TasksEditComponent implements OnInit {
   @Input() task: Task|null = null;
+  parentTask: Task|null = null;
   parentTaskId: string|null = null;
   priorities: number[] = TaskPrioritiesMock;
   taskMoveToggle: boolean = false;
   statuses: TaskStatus[] = [];
-
-  @Output() onUpdate: EventEmitter<Task> = new EventEmitter();
-  @Output() onRemove: EventEmitter<Task> = new EventEmitter();
-  @Output() onClose: EventEmitter<Task> = new EventEmitter();
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
   }
 
   ngOnInit(): void {
-    this.taskService.editTask$.subscribe((task) => {
-      this.task = task ? task : new Task();
-      if (task && task.parentTaskId) {
-        this.parentTaskId = task.parentTaskId;
-      }
+    this.taskService.task$.subscribe((task) => {
+      this.parentTask = task ? task : null;
 
-      this.taskStatusService
-        .getTaskStatusList()
-        .subscribe(taskStatusList => this.statuses = taskStatusList);
+      this.taskService.editTask$.subscribe((task) => {
+        this.task = task ? task : new Task();
+
+        if (this.task && !this.task.parentTaskId && this.parentTask) {
+          this.task.parentTaskId = this.parentTask && this.parentTask._id;
+        }
+
+        this.taskStatusService
+          .getTaskStatusList()
+          .subscribe(taskStatusList => this.statuses = taskStatusList);
+      });
     });
 
-    this.taskService.editTaskModal$.subscribe((task) => {
-      this.task = task ? task : new Task();
-      if (task && task.parentTaskId) {
-        this.parentTaskId = task.parentTaskId;
-      }
-    });
   }
 
   initTask(): void {
     this.task = new Task();
     this.task.parentTaskId = this.parentTaskId;
+    this.taskService.editTask$.next(this.task);
   }
 
   save(): void {
@@ -59,37 +56,25 @@ export class TasksEditComponent implements OnInit {
   }
 
   reinitTask(task: Task): void {
-    this.emitUpdate(task);
-    this.taskService.editTaskUpdated$.next(task);
-    this.taskService.editTaskModal$.next(null);
-    this.taskService.editTaskClose$.next(true);
-    this.onClose.emit(null);
+    this.taskService.editTaskUpdated$.next({task: task, status: 'update'});
     setTimeout(() => this.initTask(), 0);
   }
 
   remove(task: Task): void {
     this.taskService.remove(this.task).subscribe(() => {
-      this.emitRemove(task);
-      this.taskService.editTaskRemoved$.next(task);
-      this.taskService.editTaskModal$.next(null);
-      this.taskService.editTaskClose$.next(true);
-      this.onClose.emit(null);
+      this.taskService.editTaskUpdated$.next({task: task, status: 'remove'});
       setTimeout(() => this.initTask(), 0);
     });
   }
 
-  emitUpdate(task: Task): void {
-    this.onUpdate.emit(task);
-  }
-
-  emitRemove(task: Task): void {
-    this.onRemove.emit(task);
+  onMove(task: Task):void {
+    this.taskMoveToggle = false;
+    this.taskService.editTaskUpdated$.next({task: task, status: 'move'});
+    setTimeout(() => this.initTask(), 0);
   }
 
   close(): void {
-    this.taskService.editTaskClose$.next(true);
-    this.taskService.editTaskModal$.next(null);
-    this.onClose.emit(null);
+    this.taskService.editTaskUpdated$.next({task: null, status: 'close'});
     setTimeout(() => this.initTask(), 0);
   }
 
