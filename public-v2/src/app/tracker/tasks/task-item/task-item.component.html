@@ -1,6 +1,4 @@
-<div *ngIf="task" class="task-info">
-
-  <!--<h2 ng-hide="task._id == newTask._id" class="clearfix">-->
+<div *ngIf="task && !editModalMode && !editMode" class="task-info">
   <h2 class="clearfix">
     {{task.title}}
     <div class="pull-right" *ngIf="task && task.parentTaskId">
@@ -14,8 +12,6 @@
   </h2>
 
   <h5 *ngIf="parentTask">
-    <!--<a ui-sref="app.task({taskId: parentTask._id})"><i class="fa fa-long-arrow-left"></i>-->
-    <!--{{parentTask.title}}</a>-->
     <a [routerLink]="['/app/tasks/', parentTask._id]"><i class="fa fa-long-arrow-left"></i>
       {{parentTask.title}}</a>
   </h5>
@@ -34,10 +30,8 @@
 <!--<div *ngIf="openHistory" task-history task="task" ></div>-->
 
 <div *ngIf="!openHistory">
-  <app-task-edit (onUpdate)="onUpdate($event)" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>
-
-  <!--<div *ngIf="!newTask._id" task-editor task="newTask" task-on-complete="init"-->
-  <!--class="edit-form"></div>-->
+  <app-task-edit (onUpdate)="onUpdate($event)" *ngIf="!editModalMode" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>
+  <app-task-edit-modal class="edit-form"></app-task-edit-modal>
 
   <div>
     <div *ngIf="task && task._id" class="pull-right board-buttons btn-group" role="group">

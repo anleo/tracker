@@ -14,6 +14,8 @@ export class TaskItemComponent implements OnInit {
   parentTask: Task|null = null;
   root: Task|null = null;
   tasks: Task[] = [];
+  editModalMode: boolean = false;
+  editMode: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -35,6 +37,31 @@ export class TaskItemComponent implements OnInit {
 
         this.init(task);
       });
+
+    this.taskService.editTaskModal$.subscribe((task) => {
+      if (task) {
+        this.editModalMode = true;
+      }
+    });
+
+    this.taskService.editTaskClose$.subscribe((isClosed) => {
+      if (isClosed) {
+        this.editModalMode = false;
+        this.editMode = false;
+      }
+    });
+
+    this.taskService.editTaskUpdated$.subscribe((task) => {
+      if (task) {
+        this.onUpdate(task);
+      }
+    });
+
+    this.taskService.editTaskRemoved$.subscribe((task) => {
+      if (task) {
+        this.onRemove(task);
+      }
+    });
   }
 
   init(task) {
@@ -84,6 +111,7 @@ export class TaskItemComponent implements OnInit {
     }
 
     setTimeout(() => {
+      this.editMode = false;
       this.tasks = tasks;
       this.initEditTask();
     }, 0)
@@ -107,12 +135,14 @@ export class TaskItemComponent implements OnInit {
     }
 
     setTimeout(() => {
+      this.editMode = false;
       this.tasks = tasks;
       this.initEditTask();
     }, 0);
   }
 
   edit(task: Task) {
+    this.editMode = true;
     this.taskService.setEditTask(task);
   }
 
