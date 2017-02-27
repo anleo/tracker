@@ -5,6 +5,7 @@ import {TaskResolver} from "./resolvers/task.resolver";
 import {TasksComponent} from "./tasks/tasks.component";
 import {ReportsComponent} from "./reports/reports.component";
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
+import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'reports',
     component: ReportsComponent
+  },
+  {
+    path: 'my',
+    component: MyTasksComponent
   },
   {
     path: ':taskId',

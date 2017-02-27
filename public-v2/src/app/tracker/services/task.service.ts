@@ -196,5 +196,11 @@ export class TaskService {
       .moveTask({taskId: taskId, toTaskId: toTaskId})
       .$observable;
   }
+
+  getUserTasks(userId: string): Observable <Task[]> {
+    return this.taskResource
+      .getUserTasks({userId: userId})
+      .$observable
+  }
 }
 
