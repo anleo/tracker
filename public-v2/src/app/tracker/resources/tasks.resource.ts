@@ -89,4 +89,10 @@ export class TaskResource extends Resource {
     method: RequestMethod.Put
   })
   moveTask: ResourceMethod<{taskId: string, toTaskId: string}, Task>
+
+  @ResourceAction({
+    url: '/api/users/{!userId}/tasks',
+    isArray: true
+  })
+  getUserTasks: ResourceMethod<{userId: string}, Task[]>
 }
