@@ -101,9 +101,8 @@ export class TaskService {
   }
 
   onMove(task: Task):void {
-    console.log('>>>>> onMOVE')
     if (task) {
-      if (task._id === this.task._id) {
+      if (task._id === (this.task && this.task._id)) {
         this.task$.next(task);
       } else {
         let taskFound = this.tasks && this.tasks.find((_task) => _task._id === task._id);

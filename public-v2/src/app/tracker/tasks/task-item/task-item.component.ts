@@ -23,7 +23,7 @@ export class TaskItemComponent implements OnInit {
 
   ngOnInit() {
     this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
-    this.taskService.task$.subscribe((task) => this.task = task);
+    this.taskService.task$.subscribe((task) => this.init(task));
     this.taskService.tasks$.subscribe((tasks) => this.tasks = tasks);
 
     this.route.params
@@ -35,25 +35,29 @@ export class TaskItemComponent implements OnInit {
         }
       })
       .subscribe(task => {
-        this.parentTask = null;
-        this.root = null;
-        this.tasks = [];
-
-        this.task = task;
-        let taskId = task && task._id ? task._id : null;
-
-        this.taskService.task$.next(task);
-
-        this.loadTasks(taskId).subscribe(tasks => {
-          this.taskService.tasks$.next(tasks);
-        });
-
-        this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
-
-        if (task && task.parentTaskId) {
-          this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
-        }
+        this.initTaskData(task);
       });
+  }
+
+  private initTaskData(task) {
+    this.parentTask = null;
+    this.root = null;
+    this.tasks = [];
+
+    this.task = task;
+    let taskId = task && task._id ? task._id : null;
+
+    this.taskService.task$.next(task);
+
+    this.loadTasks(taskId).subscribe(tasks => {
+      this.taskService.tasks$.next(tasks);
+    });
+
+    this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
+
+    if (task && task.parentTaskId) {
+      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
+    }
   }
 
   init(task) {
