@@ -12,7 +12,7 @@ export class CanActivatePublicGuard implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.userService.get()
       .map(user => {
-        if (user._id) {
+        if (user) {
           this.router.navigate(['/app/tasks']);
           return false;
         }

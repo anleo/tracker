@@ -892,3 +892,8 @@ hr {
 .history-message {
     padding-top: 7px;
 }
+
+.upload-button {
+  margin: 0;
+  font-weight: normal;
+}
