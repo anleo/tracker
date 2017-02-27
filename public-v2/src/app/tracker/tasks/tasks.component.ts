@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {Task} from '../models/task';
 
@@ -6,14 +6,7 @@ import {Task} from '../models/task';
   selector: 'app-tasks',
   templateUrl: './tasks.component.html'
 })
-export class TasksComponent implements OnInit {
+export class TasksComponent {
   tasks: Task[] = [];
   openHistory: boolean = false;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-
 }

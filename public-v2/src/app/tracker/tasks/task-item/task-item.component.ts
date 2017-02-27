@@ -34,9 +34,7 @@ export class TaskItemComponent implements OnInit {
           return Observable.of(null);
         }
       })
-      .subscribe(task => {
-        this.initTaskData(task);
-      });
+      .subscribe(task => this.initTaskData(task));
   }
 
   private initTaskData(task) {
@@ -49,9 +47,7 @@ export class TaskItemComponent implements OnInit {
 
     this.taskService.task$.next(task);
 
-    this.loadTasks(taskId).subscribe(tasks => {
-      this.taskService.tasks$.next(tasks);
-    });
+    this.loadTasks(taskId).subscribe(tasks => this.taskService.tasks$.next(tasks));
 
     this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
 

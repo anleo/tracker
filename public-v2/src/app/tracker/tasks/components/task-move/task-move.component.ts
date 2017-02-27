@@ -24,9 +24,6 @@ export class TaskMoveComponent implements OnInit {
 
   moveToTask(task: Task): void {
     this.taskService.moveTask(this.task._id, task._id)
-      .subscribe(task => {
-        this.onMove.emit(task);
-      });
+      .subscribe(task => this.onMove.emit(task));
   }
-
 }

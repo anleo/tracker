@@ -3,15 +3,11 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from "rxjs";
 
 import {Task} from '../models/task';
+import {TaskWithStatus} from '../models/task-with-status';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
 import {FileResourse} from "../resources/file.resource";
 import {Router} from "@angular/router";
-
-class TaskWithStatus {
-  task: Task|null;
-  status: string; // update, remove, move, close
-}
 
 @Injectable()
 export class TaskService {
@@ -33,10 +29,10 @@ export class TaskService {
     this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
 
     this.editTask$.subscribe((task: Task) => this.editTask = task);
-    this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.updater(taskWithStatus));
+    this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
-  updater(taskWithStatus: TaskWithStatus):void|boolean {
+  actionProvider(taskWithStatus: TaskWithStatus):void|boolean {
     if (!taskWithStatus) {
       return false;
     }
@@ -100,16 +96,18 @@ export class TaskService {
     }
   }
 
-  onMove(task: Task):void {
-    if (task) {
-      if (task._id === (this.task && this.task._id)) {
-        this.task$.next(task);
-      } else {
-        let taskFound = this.tasks && this.tasks.find((_task) => _task._id === task._id);
-        if (taskFound) {
-          let tasks = this.tasks.filter(item => item._id !== task._id);
-          this.tasks$.next(tasks);
-        }
+  onMove(task: Task):void|null {
+    if(!task) {
+      return null;
+    }
+
+    if (task._id === (this.task && this.task._id)) {
+      this.task$.next(task);
+    } else {
+      let taskFound = this.tasks && this.tasks.find((_task) => _task._id === task._id);
+      if (taskFound) {
+        let tasks = this.tasks.filter(item => item._id !== task._id);
+        this.tasks$.next(tasks);
       }
     }
   }
