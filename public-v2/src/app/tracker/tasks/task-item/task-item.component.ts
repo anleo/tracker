@@ -11,10 +11,9 @@ import {TaskService} from "../../services/task.service";
 })
 export class TaskItemComponent implements OnInit {
   task: Task|null = null;
-  parentTask: Task|null = null;
-  root: Task|null = null;
   tasks: Task[] = [];
-  editModalMode: boolean = false;
+  root: Task|null = null;
+  parentTask: Task|null = null;
   editMode: boolean = false;
 
   constructor(private route: ActivatedRoute,
@@ -23,6 +22,10 @@ export class TaskItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
+    this.taskService.task$.subscribe((task) => this.init(task));
+    this.taskService.tasks$.subscribe((tasks) => this.tasks = tasks);
+
     this.route.params
       .switchMap((params: Params) => {
         if (params['taskId']) {
@@ -31,37 +34,26 @@ export class TaskItemComponent implements OnInit {
           return Observable.of(null);
         }
       })
-      .subscribe(task => {
-        this.taskService.taskMoved$
-          .subscribe(task => this.onTaskMoved(task));
+      .subscribe(task => this.initTaskData(task));
+  }
 
-        this.init(task);
-      });
+  private initTaskData(task) {
+    this.parentTask = null;
+    this.root = null;
+    this.tasks = [];
 
-    this.taskService.editTaskModal$.subscribe((task) => {
-      if (task) {
-        this.editModalMode = true;
-      }
-    });
+    this.task = task;
+    let taskId = task && task._id ? task._id : null;
 
-    this.taskService.editTaskClose$.subscribe((isClosed) => {
-      if (isClosed) {
-        this.editModalMode = false;
-        this.editMode = false;
-      }
-    });
+    this.taskService.task$.next(task);
 
-    this.taskService.editTaskUpdated$.subscribe((task) => {
-      if (task) {
-        this.onUpdate(task);
-      }
-    });
+    this.loadTasks(taskId).subscribe(tasks => this.taskService.tasks$.next(tasks));
 
-    this.taskService.editTaskRemoved$.subscribe((task) => {
-      if (task) {
-        this.onRemove(task);
-      }
-    });
+    this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
+
+    if (task && task.parentTaskId) {
+      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
+    }
   }
 
   init(task) {
@@ -72,14 +64,12 @@ export class TaskItemComponent implements OnInit {
     this.task = task;
     let taskId = task && task._id ? task._id : null;
 
-    this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
+    this.loadTasks(taskId).subscribe(tasks => this.taskService.tasks$.next(tasks));
     taskId && this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
 
     if (task && task.parentTaskId) {
       this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
     }
-
-    this.initEditTask();
   }
 
   loadTasks(taskId: string): Observable<Task[]> {
@@ -90,76 +80,7 @@ export class TaskItemComponent implements OnInit {
     }
   }
 
-  onUpdate(task: Task) {
-    let tasks = this.tasks || [];
-    this.tasks = [];
-    let taskFound = tasks.find((_task) => _task._id === task._id);
-
-    if (this.task && this.task._id === task._id) {
-      this.task = task;
-    } else {
-      if (taskFound) {
-        tasks = tasks.map((_task) => {
-          if (_task._id === task._id) {
-            _task = task;
-          }
-          return _task;
-        });
-      } else {
-        tasks.push(task);
-      }
-    }
-
-    setTimeout(() => {
-      this.editMode = false;
-      this.tasks = tasks;
-      this.initEditTask();
-    }, 0)
-  }
-
-  onRemove(task: Task) {
-    let tasks = this.tasks;
-    this.tasks = [];
-
-    if (this.task && this.task._id === task._id) {
-      if (this.parentTask && this.parentTask._id) {
-        this.router.navigateByUrl('/app/tasks/' + this.parentTask._id);
-      } else {
-        this.router.navigateByUrl('/app/tasks/');
-      }
-    } else {
-      let index = tasks.indexOf(task);
-      if (index > -1) {
-        tasks.splice(index, 1);
-      }
-    }
-
-    setTimeout(() => {
-      this.editMode = false;
-      this.tasks = tasks;
-      this.initEditTask();
-    }, 0);
-  }
-
   edit(task: Task) {
-    this.editMode = true;
     this.taskService.setEditTask(task);
   }
-
-  initEditTask() {
-    let editTask = new Task();
-
-    if (this.task && this.task._id) {
-      editTask.parentTaskId = this.task._id;
-    }
-
-    this.taskService.setEditTask(editTask);
-  }
-
-  onTaskMoved(task) {
-    if (task) {
-      this.tasks = this.tasks.filter(item => item._id !== task._id);
-    }
-  }
-
 }
