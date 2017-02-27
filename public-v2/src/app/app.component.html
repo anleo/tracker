@@ -22,7 +22,7 @@
         <ul class="nav navbar-nav">
           <li *ngIf="user"><a [routerLink]="['/app/tasks']">Projects</a></li>
           <!--<li><a [routerLink]="['/app/tasks/reports']">Report</a></li>-->
-          <!--<li><a>My tasks</a></li>-->
+          <li *ngIf="user"><a [routerLink]="['/app/tasks/my']">My tasks</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">

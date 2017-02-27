@@ -41,6 +41,7 @@ import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/
 import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
 import {TaskSearchPipe} from "./pipes/task-search.pipe";
 import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
+import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
 
 @NgModule({
   imports: [
@@ -84,7 +85,8 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
     TaskTeamComponent,
     TaskTagsComponent,
     UploaderComponent,
-    FileViewerComponent
+    FileViewerComponent,
+    MyTasksComponent
   ],
   providers: [
     TaskResolver,
