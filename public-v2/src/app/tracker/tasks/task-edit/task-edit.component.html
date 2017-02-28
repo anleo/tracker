@@ -120,7 +120,7 @@
       <a *ngIf="task._id && task.status != 'in progress'" class="btn btn-danger btn-sm pull-right"
          (click)="remove(task)">Delete</a>
 
-      <div [hidden]="task.status !== 'accepted'"
+      <div *ngIf="task.status === 'accepted'"
            [ngClass]="{'pull-right': task.simple}"
            class="checkbox archive-button">
 

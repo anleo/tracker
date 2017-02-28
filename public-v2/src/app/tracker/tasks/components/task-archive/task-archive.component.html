@@ -5,9 +5,7 @@
   </h5>
 </a>
 
-<!-- TODO @@@id: add boards-->
-<!--<div *ngIf="tasks.length" task-views tasks="tasks" task-on-complete="init"></div>-->
-
+<app-task-edit class="edit-form" *ngIf="editMode"></app-task-edit>
 <app-tasks-board [tasks]="tasks" *ngIf="tasks.length"></app-tasks-board>
 
 <div *ngIf="!tasks.length">

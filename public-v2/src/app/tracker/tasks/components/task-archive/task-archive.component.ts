@@ -12,6 +12,7 @@ import {Task} from '../../../models/task';
 
 export class TaskArchiveComponent implements OnInit {
   tasks: Task[] = [];
+  editMode: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private location: Location,
@@ -19,9 +20,11 @@ export class TaskArchiveComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let task = this.route.snapshot.data['task'];
-    if (task) {
-      this.taskService.getArchivedTasks(task._id).subscribe((tasks) => this.initTasks(tasks))
+    this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
+
+    let taskId = this.route.snapshot.params['taskId'];
+    if (taskId) {
+      this.taskService.getArchivedTasks(taskId).subscribe((tasks) => this.initTasks(tasks))
     } else {
       this.taskService.getArchivedProject().subscribe((tasks) => this.initTasks(tasks))
     }
