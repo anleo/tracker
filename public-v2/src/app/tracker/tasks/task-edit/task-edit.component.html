@@ -1,3 +1,5 @@
+<div class="overlay" *ngIf="modalMode" (click)="close()"></div>
+<div [ngClass]="{'modal': modalMode}">
 <form (submit)="save()" id="form" *ngIf="task">
 
   <div class="row">
@@ -149,3 +151,4 @@
   <hr *ngIf="!task._id && task.title" class="mg"/>
 
 </form>
+</div>
