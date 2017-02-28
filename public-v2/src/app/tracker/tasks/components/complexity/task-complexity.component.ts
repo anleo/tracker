@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, EventEmitter} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {TaskComplexities} from './task-complexities';
 import {TaskComplexity} from "../../../models/task-complexity";
 import {Task} from '../../../models/task';
