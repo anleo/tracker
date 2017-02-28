@@ -44,7 +44,7 @@ import {TaskSearchPipe} from "./pipes/task-search.pipe";
 import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
 import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
-import { CommentsComponent } from './tasks/task-comments/comments.component';
+import { CommentsComponent } from './tasks/task-comments/task-comments.component';
 import { TaskHistoryComponent } from './tasks/task-history/task-history.component';
 import { TaskHistoryCommentComponent } from './tasks/task-history/task-history-comment/task-history-comment.component';
 import { TaskHistoryDeveloperComponent } from './tasks/task-history/task-history-developer/task-history-developer.component';

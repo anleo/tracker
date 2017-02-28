@@ -5,7 +5,7 @@ import {HistoryMessage} from "../../models/history-message";
 
 @Component({
   selector: 'comments',
-  templateUrl: './comments.component.html'
+  templateUrl: 'task-comments.component.html'
 })
 export class CommentsComponent implements OnInit {
   @Input() task: Task;

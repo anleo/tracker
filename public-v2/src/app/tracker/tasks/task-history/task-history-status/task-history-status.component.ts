@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {BasicHistoryComponent} from "../basic-task-history/basic.component";
+import {BasicHistoryComponent} from "../basic-task-history/basic-task-history-message.component";
 
 @Component({
   selector: 'task-history-status',
