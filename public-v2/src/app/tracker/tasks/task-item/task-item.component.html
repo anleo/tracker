@@ -17,6 +17,7 @@
   </h5>
 
   <app-task-metrics [task]="task" (click)="edit(task)" class="pull-left" ></app-task-metrics>
+  <a class="btn btn-sm btn-link pull-right" (click)="toggleTaskHistory()">Details</a>
 
   <div class="clearfix"></div>
 
@@ -27,9 +28,9 @@
   <task-tags-panel [task]="task" *ngIf="task.tags && task.tags.length"></task-tags-panel>
 </div>
 
-<!--<div *ngIf="openHistory" task-history task="task" ></div>-->
+<task-history *ngIf="showHistory" [task]="task"></task-history>
 
-<div *ngIf="!openHistory">
+<div *ngIf="!showHistory">
   <app-task-edit class="edit-form"></app-task-edit>
 
   <div>

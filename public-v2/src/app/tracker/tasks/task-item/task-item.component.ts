@@ -1,4 +1,4 @@
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, Params} from "@angular/router";
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
@@ -15,17 +15,16 @@ export class TaskItemComponent implements OnInit {
   root: Task|null = null;
   parentTask: Task|null = null;
   editMode: boolean = false;
+  showHistory: boolean = false;
 
   constructor(private route: ActivatedRoute,
-              private router: Router,
               private taskService: TaskService) {
   }
 
   ngOnInit() {
-    this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
     this.taskService.task$.subscribe((task) => this.init(task));
     this.taskService.tasks$.subscribe((tasks) => this.tasks = tasks);
-
+    this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
     this.route.params
       .switchMap((params: Params) => {
         if (params['taskId']) {
@@ -82,5 +81,9 @@ export class TaskItemComponent implements OnInit {
 
   edit(task: Task) {
     this.taskService.setEditTask(task);
+  }
+
+  toggleTaskHistory(): void {
+    this.showHistory = !this.showHistory;
   }
 }

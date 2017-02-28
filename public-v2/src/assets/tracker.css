@@ -897,3 +897,33 @@ hr {
   margin: 0;
   font-weight: normal;
 }
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  background: #000;
+  opacity: 0.2;
+}
+
+.modal {
+  position: absolute;
+  top: 40px;
+  left: 5%;
+  right: auto;
+  bottom: auto;
+  width: 90%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 100px -30px #000;
+  background: #fff;
+  z-index: 1000;
+  display: block;
+}
+
+.modal form {
+  padding: 30px;
+}

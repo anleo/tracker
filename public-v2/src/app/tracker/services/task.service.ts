@@ -8,6 +8,7 @@ import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
 import {FileResourse} from "../resources/file.resource";
 import {Router} from "@angular/router";
+import {HistoryMessage} from "../models/history-message";
 
 @Injectable()
 export class TaskService {
@@ -19,6 +20,7 @@ export class TaskService {
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  editTaskModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
 
   constructor(private taskResource: TaskResource,
@@ -37,7 +39,6 @@ export class TaskService {
       return false;
     }
 
-    let taskId = taskWithStatus.task && taskWithStatus.task._id;
     let task = taskWithStatus.task;
 
     if (taskWithStatus.status === 'update') {
@@ -120,6 +121,11 @@ export class TaskService {
     this.editTask$.next(task);
   }
 
+  setEditTaskModal(task: Task):void {
+    this.editTaskModal$.next(true);
+    this.editTask$.next(task);
+  }
+
   getTags(task: Task): Observable<string[]> {
     return this.taskResource.getTags({taskId: task._id}).$observable;
   }
@@ -191,6 +197,18 @@ export class TaskService {
   moveTask(taskId: string, toTaskId: string): Observable <Task> {
     return this.taskResource
       .moveTask({taskId: taskId, toTaskId: toTaskId})
+      .$observable;
+  }
+
+  getTaskHistory(task: Task): Observable <HistoryMessage[]> {
+    return this.taskResource
+      .getTaskHistory({taskId: task._id})
+      .$observable;
+  }
+
+  createComment(task: Task, comment:HistoryMessage): Observable <HistoryMessage> {
+    return this.taskResource
+      .createCommnent(comment, {taskId: task._id})
       .$observable;
   }
 
