@@ -18,6 +18,6 @@ export class TaskPanelComponent implements OnInit {
   }
 
   edit(task: Task) {
-    this.taskService.setEditTask(task);
+    this.taskService.setEditTaskModal(task);
   }
 }
