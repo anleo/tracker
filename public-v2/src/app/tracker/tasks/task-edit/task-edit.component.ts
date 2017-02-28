@@ -24,23 +24,35 @@ export class TasksEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
     this.taskService.task$.subscribe((task) => {
-      this.parentTask = task ? task : null;
+      this.parentTaskId = task && task._id ? task._id : null;
+      this.initTask();
 
-      this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
       this.taskService.editTask$.subscribe((task) => {
-        this.task = task ? task : new Task();
 
-        if (this.task && !this.task.parentTaskId && this.parentTask) {
-          this.task.parentTaskId = this.parentTask && this.parentTask._id;
+        if (task) {
+          this.task = task ? task : new Task();
+          let editTaskId = task && task._id ? task._id : null;
+          let mainTaskId = this.parentTaskId;
+          let parentTask = null;
+
+          if (editTaskId) {
+            parentTask = editTaskId === mainTaskId ? null : mainTaskId;
+          } else {
+            parentTask = mainTaskId;
+          }
+
+          if (this.task && !this.task.parentTaskId) {
+            this.task.parentTaskId = parentTask;
+          }
         }
-
-        this.taskStatusService
-          .getTaskStatusList()
-          .subscribe(taskStatusList => this.statuses = taskStatusList);
       });
     });
 
+    this.taskStatusService
+      .getTaskStatusList()
+      .subscribe(taskStatusList => this.statuses = taskStatusList);
   }
 
   initTask(): void {

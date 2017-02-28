@@ -15,6 +15,9 @@ export class TaskService {
   tasks: Task[]|null = null;
   editTask: Task|null = null;
 
+  root: Task|null = null;
+  parentTask: Task|null = null;
+
   task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
@@ -25,7 +28,10 @@ export class TaskService {
   constructor(private taskResource: TaskResource,
               private fileResource: FileResourse,
               private router: Router) {
-    this.task$.subscribe((task: Task) => this.task = task);
+    this.task$.subscribe((task: Task) => {
+      this.task = task;
+      this.parentTask = task;
+    });
 
     this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
 
@@ -49,14 +55,46 @@ export class TaskService {
     }
   }
 
+  private initTaskData(task) {
+    this.init(task);
+    this.task$.next(task);
+  }
+
+  init(task) {
+    this.parentTask = null;
+    this.root = null;
+    this.tasks = [];
+
+    this.task = task;
+    let taskId = task && task._id ? task._id : null;
+
+    this.loadTasks(taskId).subscribe(tasks => this.tasks$.next(tasks));
+    taskId && this.getRoot(taskId).subscribe((root) => this.root = root);
+
+    if (task && task.parentTaskId) {
+      this.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
+    }
+  }
+
+  loadTasks(taskId: string): Observable<Task[]> {
+    if (taskId) {
+      return this.getChildrenTasks(taskId);
+    } else {
+      return this.getTasks();
+    }
+  }
+
   onUpdate(task: Task):void {
+    let taskId = task && task._id ? task._id : null;
+
     let tasks = this.tasks || [];
     this.tasks = [];
     let taskFound = tasks.find((_task) => _task._id === task._id);
 
     if (this.task && this.task._id === task._id) {
       this.task = task;
-      this.task$.next(this.task);
+      this.task$.next(task);
+      this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
     } else {
       if (taskFound) {
         tasks = tasks.map((_task) => {
@@ -68,18 +106,18 @@ export class TaskService {
       } else {
         tasks.push(task);
       }
-
-      this.tasks = tasks;
-      this.tasks$.next(this.tasks);
+      this.reloadTasks(task, tasks);
     }
   }
 
   onRemove(task: Task):void {
     let tasks = this.tasks;
     this.tasks = [];
+    let taskId = task && task._id ? task._id : null;
 
     if (this.task && this.task._id === task._id) {
       this.task$.next(null);
+      this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
       if (this.task.parentTaskId) {
         this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
       } else {
@@ -91,8 +129,7 @@ export class TaskService {
         tasks.splice(index, 1);
       }
 
-      this.tasks = tasks;
-      this.tasks$.next(this.tasks);
+      this.reloadTasks(task, tasks);
     }
   }
 
@@ -101,14 +138,30 @@ export class TaskService {
       return null;
     }
 
+    let taskId = task && task._id ? task._id : null;
+
     if (task._id === (this.task && this.task._id)) {
       this.task$.next(task);
+      this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
     } else {
       let taskFound = this.tasks && this.tasks.find((_task) => _task._id === task._id);
       if (taskFound) {
         let tasks = this.tasks.filter(item => item._id !== task._id);
-        this.tasks$.next(tasks);
+        this.reloadTasks(task, tasks);
       }
+    }
+  }
+
+  private reloadTasks(task: Task, tasks: Task[]):void {
+    this.tasks = tasks;
+    if (task && task.parentTaskId) {
+      this.getTask(task.parentTaskId).subscribe((parentTask) => {
+        this.parentTask = parentTask;
+        this.task$.next(parentTask);
+      });
+      this.loadTasks(task.parentTaskId).subscribe((tasks) => this.tasks$.next(tasks));
+    } else {
+      this.getTasks().subscribe((tasks) => this.tasks$.next(tasks));
     }
   }
 

@@ -14,7 +14,7 @@
 
       <div class="form-group">
         <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task"
-               id="title"/>
+               id="title" autocomplete="off"/>
       </div>
 
       <div *ngIf="task.title">
