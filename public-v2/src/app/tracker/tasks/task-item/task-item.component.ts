@@ -15,6 +15,7 @@ export class TaskItemComponent implements OnInit {
   root: Task|null = null;
   parentTask: Task|null = null;
   editMode: boolean = false;
+  showHistory: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private taskService: TaskService) {
@@ -67,5 +68,9 @@ export class TaskItemComponent implements OnInit {
 
   edit(task: Task) {
     this.taskService.setEditTask(task);
+  }
+
+  toggleTaskHistory(): void {
+    this.showHistory = !this.showHistory;
   }
 }
