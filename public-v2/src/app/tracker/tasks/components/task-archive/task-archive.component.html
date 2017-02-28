@@ -7,6 +7,9 @@
 
 <!-- TODO @@@id: add boards-->
 <!--<div *ngIf="tasks.length" task-views tasks="tasks" task-on-complete="init"></div>-->
+
+<app-tasks-board [tasks]="tasks" *ngIf="tasks.length"></app-tasks-board>
+
 <div *ngIf="!tasks.length">
   There are no archived tasks yet.
 </div>
