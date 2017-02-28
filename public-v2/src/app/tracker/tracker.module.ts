@@ -48,6 +48,16 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
 import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
+import { CommentsComponent } from './tasks/task-comments/task-comments.component';
+import { TaskHistoryComponent } from './tasks/task-history/task-history.component';
+import { TaskHistoryCommentComponent } from './tasks/task-history/task-history-comment/task-history-comment.component';
+import { TaskHistoryDeveloperComponent } from './tasks/task-history/task-history-developer/task-history-developer.component';
+import { TaskHistoryComplexityComponent } from './tasks/task-history/task-history-complexity/task-history-complexity.component';
+import { TaskHistoryDescriptionComponent } from './tasks/task-history/task-history-description/task-history-description.component';
+import { TaskHistoryMetricsComponent } from './tasks/task-history/task-history-metrics/task-history-metrics.component';
+import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
+import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
+import {LinkyModule} from "angular-linky";
 
 @NgModule({
   imports: [
@@ -61,7 +71,8 @@ import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
     TooltipModule.forRoot(),
     NgUploaderModule,
     ProgressbarModule.forRoot(),
-    ElasticModule
+    ElasticModule,
+    LinkyModule
   ],
   declarations: [
     TasksBoardFilter,
@@ -96,7 +107,16 @@ import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
     FileViewerComponent,
     HumanizeComplexityPipe,
     TimeFromNowPipe,
-    MyTasksComponent
+    MyTasksComponent,
+    CommentsComponent,
+    TaskHistoryComponent,
+    TaskHistoryCommentComponent,
+    TaskHistoryDeveloperComponent,
+    TaskHistoryComplexityComponent,
+    TaskHistoryDescriptionComponent,
+    TaskHistoryMetricsComponent,
+    TaskHistorySpenttimeComponent,
+    TaskHistoryStatusComponent,
   ],
   providers: [
     TaskResolver,

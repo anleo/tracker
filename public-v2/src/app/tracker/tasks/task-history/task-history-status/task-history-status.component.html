@@ -1,0 +1,5 @@
+<span class="label label-primary">status</span>
+<span *ngIf="message.user"><strong>{{message.user.first}} {{message.user.last}}</strong></span>
+<span class="text-muted date-history-message"> at {{message.updatedAt | date : 'HH:mm yyyy/MM/dd'}}</span>
+<p *ngIf="message.status!==''" class="history-message">Status was changed on '{{message.status}}' .</p>
+<p *ngIf="message.status==''" class="history-message">Task was created with status 'new' .</p>
