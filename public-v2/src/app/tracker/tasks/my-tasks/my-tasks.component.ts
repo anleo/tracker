@@ -11,18 +11,19 @@ import {User} from "../../../user/models/user";
 export class MyTasksComponent implements OnInit {
   tasks: Task[] = [];
   user: User | null = null;
+  editMode: boolean = false;
 
   constructor(private userService: UserService,
               private taskService: TaskService) {
   }
 
   ngOnInit(): void {
+    this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
+
     this.userService.get()
       .subscribe(user => this.user = user);
 
     this.taskService.getUserTasks(this.user._id)
       .subscribe(tasks => this.tasks = tasks);
   }
-
-
 }
