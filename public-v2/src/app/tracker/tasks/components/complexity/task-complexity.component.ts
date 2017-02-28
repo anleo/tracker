@@ -2,18 +2,23 @@ import {Component, Input, Output, OnInit, EventEmitter} from "@angular/core";
 import {TaskComplexities} from './task-complexities';
 import {TaskComplexity} from "../../../models/task-complexity";
 import {Task} from '../../../models/task';
+import {TaskService} from "../../../services/task.service";
 
 @Component({
   selector: 'complexity',
   templateUrl: 'task-complexity.component.html'
 })
 export class TaskComplexityComponent implements OnInit {
-  @Input() task: Task|null;
-  @Output() updatedComplexity: EventEmitter<Task> = new EventEmitter();
+  task: Task|null;
   complexities = TaskComplexities;
   complexityValue: number|null;
 
+  constructor(public taskService: TaskService) {}
+
   ngOnInit(): void {
+    this.taskService.editTask$.subscribe((task: Task) => {
+      this.task = task;
+    });
     if (this.task && this.task.complexity) {
       this.complexityValue = this.task.complexity;
     }
@@ -21,8 +26,8 @@ export class TaskComplexityComponent implements OnInit {
 
   setValue(complexity: TaskComplexity): void {
     this.task.complexity = complexity.value;
-    this.updatedComplexity.emit(this.task);
     this.complexityValue = complexity.value;
+    this.taskService.setEditTask(this.task);
   }
 
 }
