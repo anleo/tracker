@@ -1,4 +1,4 @@
-<div *ngIf="task && !editModalMode && !editMode" class="task-info">
+<div *ngIf="task && !editMode" class="task-info">
   <h2 class="clearfix">
     {{task.title}}
     <div class="pull-right" *ngIf="task && task.parentTaskId">
@@ -31,8 +31,7 @@
 <task-history *ngIf="showHistory" [task]="task"></task-history>
 
 <div *ngIf="!showHistory">
-  <app-task-edit (onUpdate)="onUpdate($event)" *ngIf="!editModalMode" (onRemove)="onRemove($event)" class="edit-form"></app-task-edit>
-  <app-task-edit-modal class="edit-form"></app-task-edit-modal>
+  <app-task-edit class="edit-form"></app-task-edit>
 
   <div>
     <div *ngIf="task && task._id" class="pull-right board-buttons btn-group" role="group">
@@ -52,7 +51,7 @@
       <app-tasks-board *ngIf="tasks && tasks.length" [tasks]="tasks"></app-tasks-board>
     </div>
 
-    <div *ngIf="!tasks.length" class="align-center">
+    <div *ngIf="tasks && !tasks.length" class="align-center">
       <h4>No active tasks.</h4>
     </div>
   </div>

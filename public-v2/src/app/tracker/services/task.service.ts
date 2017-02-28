@@ -3,53 +3,127 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from "rxjs";
 
 import {Task} from '../models/task';
+import {TaskWithStatus} from '../models/task-with-status';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
 import {FileResourse} from "../resources/file.resource";
+import {Router} from "@angular/router";
 import {HistoryMessage} from "../models/history-message";
 
 @Injectable()
 export class TaskService {
-  editTask: Task|null = null;
-  movedTask: Task|null = null;
+  task: Task|null = null;
   tasks: Task[]|null = null;
+  editTask: Task|null = null;
+
+  task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
-  editTaskUpdated$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
-  editTaskRemoved$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
-  editTaskClose$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
-  editTaskModal$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
-  tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
-  taskMoved$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  editTaskModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
 
   constructor(private taskResource: TaskResource,
-              private fileResource: FileResourse) {
-    this.editTask$.subscribe((task) => this.editTask = task);
+              private fileResource: FileResourse,
+              private router: Router) {
+    this.task$.subscribe((task: Task) => this.task = task);
 
-    this.editTaskModal$.subscribe((task) => this.editTask = task);
+    this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
 
-    this.tasks$.subscribe((tasks) => this.tasks = tasks);
-
-    this.taskMoved$.subscribe(task => this.movedTask = task);
-
-    this.editTaskClose$.subscribe();
-    this.editTaskUpdated$.subscribe();
+    this.editTask$.subscribe((task: Task) => this.editTask = task);
+    this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
-  setTasks(tasks: Task[]) {
+  actionProvider(taskWithStatus: TaskWithStatus):void|boolean {
+    if (!taskWithStatus) {
+      return false;
+    }
+
+    let task = taskWithStatus.task;
+
+    if (taskWithStatus.status === 'update') {
+      this.onUpdate(task);
+    } else if (taskWithStatus.status === 'remove') {
+      this.onRemove(task);
+    } else if (taskWithStatus.status === 'move') {
+      this.onMove(task);
+    }
+  }
+
+  onUpdate(task: Task):void {
+    let tasks = this.tasks || [];
+    this.tasks = [];
+    let taskFound = tasks.find((_task) => _task._id === task._id);
+
+    if (this.task && this.task._id === task._id) {
+      this.task = task;
+      this.task$.next(this.task);
+    } else {
+      if (taskFound) {
+        tasks = tasks.map((_task) => {
+          if (_task._id === task._id) {
+            _task = task;
+          }
+          return _task;
+        });
+      } else {
+        tasks.push(task);
+      }
+
+      this.tasks = tasks;
+      this.tasks$.next(this.tasks);
+    }
+  }
+
+  onRemove(task: Task):void {
+    let tasks = this.tasks;
+    this.tasks = [];
+
+    if (this.task && this.task._id === task._id) {
+      this.task$.next(null);
+      if (this.task.parentTaskId) {
+        this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
+      } else {
+        this.router.navigateByUrl('/app/tasks/');
+      }
+    } else {
+      let index = tasks.indexOf(task);
+      if (index > -1) {
+        tasks.splice(index, 1);
+      }
+
+      this.tasks = tasks;
+      this.tasks$.next(this.tasks);
+    }
+  }
+
+  onMove(task: Task):void|null {
+    if(!task) {
+      return null;
+    }
+
+    if (task._id === (this.task && this.task._id)) {
+      this.task$.next(task);
+    } else {
+      let taskFound = this.tasks && this.tasks.find((_task) => _task._id === task._id);
+      if (taskFound) {
+        let tasks = this.tasks.filter(item => item._id !== task._id);
+        this.tasks$.next(tasks);
+      }
+    }
+  }
+
+  setTasks(tasks: Task[]):void {
     this.tasks$.next(tasks);
   }
 
-  setEditTask(task: Task) {
+  setEditTask(task: Task):void {
     this.editTask$.next(task);
   }
 
-  setEditTaskModal(task: Task) {
-    this.editTaskModal$.next(task);
-  }
-
-  setMovedTask(task: Task) {
-    this.taskMoved$.next(task);
+  setEditTaskModal(task: Task):void {
+    this.editTaskModal$.next(true);
+    this.editTask$.next(task);
   }
 
   getTags(task: Task): Observable<string[]> {
@@ -136,6 +210,12 @@ export class TaskService {
     return this.taskResource
       .createCommnent(comment, {taskId: task._id})
       .$observable;
+  }
+
+  getUserTasks(userId: string): Observable <Task[]> {
+    return this.taskResource
+      .getUserTasks({userId: userId})
+      .$observable
   }
 }
 

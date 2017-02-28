@@ -17,7 +17,11 @@ import {TaskItemComponent} from "./tasks/task-item/task-item.component";
 import {TasksListComponent} from './tasks/tasks-list/tasks-list.component';
 import {TasksEditComponent} from './tasks/task-edit/task-edit.component';
 import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
+
 import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
+import {BoardViewComponent} from "./tasks/tasks-board/board-view.component";
+import {ListViewComponent} from "./tasks/tasks-board/list-view.component";
+
 import {ReportsComponent} from "./reports/reports.component";
 import {DatepickerModule} from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
@@ -39,11 +43,11 @@ import {HumanizeTimePipe} from "./pipes/humanize-time.pipe";
 import {TaskDescriptionEditor} from "./tasks/components/task-description-editor/task-description-editor.component";
 import {TaskDescriptionViewer} from "./tasks/components/task-description-viewer/task-description-viewer.component";
 import {TaskTagsPanelComponent} from "./tasks/components/task-tags-panel/task-tags-panel.component";
-import {TasksEditModalComponent} from "./tasks/task-edit-modal/task-edit-modal.component";
 import {TaskSearchPipe} from "./pipes/task-search.pipe";
 import {TaskMoveComponent} from "./tasks/components/task-move/task-move.component";
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
 import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
+import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
 import { CommentsComponent } from './tasks/task-comments/task-comments.component';
 import { TaskHistoryComponent } from './tasks/task-history/task-history.component';
 import { TaskHistoryCommentComponent } from './tasks/task-history/task-history-comment/task-history-comment.component';
@@ -79,6 +83,8 @@ import {LinkyModule} from "angular-linky";
     TasksListComponent,
     TasksEditComponent,
     TasksBoardComponent,
+    BoardViewComponent,
+    ListViewComponent,
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
@@ -94,7 +100,6 @@ import {LinkyModule} from "angular-linky";
     TaskDescriptionEditor,
     TaskDescriptionViewer,
     TaskTagsPanelComponent,
-    TasksEditModalComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskTagsComponent,
@@ -102,6 +107,7 @@ import {LinkyModule} from "angular-linky";
     FileViewerComponent,
     HumanizeComplexityPipe,
     TimeFromNowPipe,
+    MyTasksComponent,
     CommentsComponent,
     TaskHistoryComponent,
     TaskHistoryCommentComponent,

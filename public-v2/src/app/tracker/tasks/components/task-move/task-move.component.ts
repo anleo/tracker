@@ -13,7 +13,7 @@ export class TaskMoveComponent implements OnInit {
   tasks: Task[] = [];
   search: string = '';
 
-  @Output() onMoved: EventEmitter <Task> = new EventEmitter();
+  @Output() onMove: EventEmitter <Task> = new EventEmitter();
 
   constructor(private taskService: TaskService){}
 
@@ -24,10 +24,6 @@ export class TaskMoveComponent implements OnInit {
 
   moveToTask(task: Task): void {
     this.taskService.moveTask(this.task._id, task._id)
-      .subscribe(task => {
-        this.taskService.setMovedTask(task);
-        this.onMoved.emit(task);
-      });
+      .subscribe(task => this.onMove.emit(task));
   }
-
 }
