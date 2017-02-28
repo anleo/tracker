@@ -2,17 +2,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import {Task} from '../models/task';
 
-@Pipe({name: 'tasksBoardFilter'})
+@Pipe({
+  name: 'tasksBoardFilter',
+  pure: false
+})
 export class TasksBoardFilter implements PipeTransform {
   transform(tasks: Task[], type: any): Task[] {
-    let results = [];
-
-    tasks.map((task) => {
+    tasks = tasks.map((task) => {
       if (task.status === type.value) {
-        results.push(task);
+        return task;
       }
     });
 
-    return results;
+    return tasks;
   }
 }

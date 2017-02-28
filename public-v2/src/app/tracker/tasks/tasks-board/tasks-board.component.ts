@@ -13,8 +13,7 @@ export class TasksBoardComponent implements OnInit {
   @Input() tasks: Task[];
   boardTypes: TaskStatus[];
 
-  constructor(private taskService: TaskService,
-              private taskStatusService: TaskStatusService) {
+  constructor(private taskStatusService: TaskStatusService) {
   }
 
   ngOnInit() {
