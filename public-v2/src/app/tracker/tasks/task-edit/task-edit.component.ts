@@ -63,10 +63,6 @@ export class TasksEditComponent implements OnInit {
     setTimeout(() => this.initTask(), 0);
   }
 
-  private closeModal() {
-    this.taskService.editTaskModal$.next(false);
-  }
-
   remove(task: Task): void {
     this.taskService.remove(this.task).subscribe(() => {
       this.closeModal();
@@ -107,5 +103,9 @@ export class TasksEditComponent implements OnInit {
 
   showTaskMove(): void {
     this.taskMoveToggle = !this.taskMoveToggle;
+  }
+
+  private closeModal() {
+    this.taskService.editTaskModal$.next(false);
   }
 }
