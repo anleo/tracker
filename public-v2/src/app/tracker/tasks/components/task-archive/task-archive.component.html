@@ -1,0 +1,12 @@
+<a (click)="location.back()">
+  <h5>
+    <i class="fa fa-long-arrow-left"></i>
+    Back
+  </h5>
+</a>
+
+<!-- TODO @@@id: add boards-->
+<!--<div *ngIf="tasks.length" task-views tasks="tasks" task-on-complete="init"></div>-->
+<div *ngIf="!tasks.length">
+  There are no archived tasks yet.
+</div>

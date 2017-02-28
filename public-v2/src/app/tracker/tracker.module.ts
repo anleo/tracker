@@ -44,6 +44,7 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
 import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
+import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
 
 @NgModule({
   imports: [
@@ -90,7 +91,8 @@ import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
     FileViewerComponent,
     HumanizeComplexityPipe,
     TimeFromNowPipe,
-    MyTasksComponent
+    MyTasksComponent,
+    TaskArchiveComponent
   ],
   providers: [
     TaskResolver,

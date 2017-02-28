@@ -32,7 +32,7 @@ export class TaskService {
     this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
-  actionProvider(taskWithStatus: TaskWithStatus):void|boolean {
+  actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
     if (!taskWithStatus) {
       return false;
     }
@@ -49,7 +49,7 @@ export class TaskService {
     }
   }
 
-  onUpdate(task: Task):void {
+  onUpdate(task: Task): void {
     let tasks = this.tasks || [];
     this.tasks = [];
     let taskFound = tasks.find((_task) => _task._id === task._id);
@@ -74,7 +74,7 @@ export class TaskService {
     }
   }
 
-  onRemove(task: Task):void {
+  onRemove(task: Task): void {
     let tasks = this.tasks;
     this.tasks = [];
 
@@ -96,8 +96,8 @@ export class TaskService {
     }
   }
 
-  onMove(task: Task):void|null {
-    if(!task) {
+  onMove(task: Task): void|null {
+    if (!task) {
       return null;
     }
 
@@ -112,11 +112,11 @@ export class TaskService {
     }
   }
 
-  setTasks(tasks: Task[]):void {
+  setTasks(tasks: Task[]): void {
     this.tasks$.next(tasks);
   }
 
-  setEditTask(task: Task):void {
+  setEditTask(task: Task): void {
     this.editTask$.next(task);
   }
 
@@ -197,6 +197,18 @@ export class TaskService {
   getUserTasks(userId: string): Observable <Task[]> {
     return this.taskResource
       .getUserTasks({userId: userId})
+      .$observable
+  }
+
+  getArchivedProject(): Observable <Task[]> {
+    return this.taskResource
+      .getArchivedProject()
+      .$observable
+  }
+
+  getArchivedTasks(taskId: string): Observable <Task[]> {
+    return this.taskResource
+      .getArchivedTasks({taskId: taskId})
       .$observable
   }
 }

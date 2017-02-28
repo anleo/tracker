@@ -88,11 +88,24 @@ export class TaskResource extends Resource {
     path: '/{!taskId}/move/{!toTaskId}',
     method: RequestMethod.Put
   })
-  moveTask: ResourceMethod<{taskId: string, toTaskId: string}, Task>
+  moveTask: ResourceMethod<{taskId: string, toTaskId: string}, Task>;
 
   @ResourceAction({
     url: '/api/users/{!userId}/tasks',
     isArray: true
   })
-  getUserTasks: ResourceMethod<{userId: string}, Task[]>
+  getUserTasks: ResourceMethod<{userId: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/archived',
+    isArray: true
+  })
+  getArchivedTasks: ResourceMethod<{taskId: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/archived',
+    isArray: true
+  })
+  getArchivedProject: ResourceMethod<null, Task[]>;
+
 }
