@@ -6,7 +6,7 @@ import {Task} from '../models/task';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
 import {FileResourse} from "../resources/file.resource";
-import {HistoryMessage} from "../models/historyMessage";
+import {HistoryMessage} from "../models/history-message";
 
 @Injectable()
 export class TaskService {
@@ -126,7 +126,7 @@ export class TaskService {
       .$observable;
   }
 
-  getHistory(task: Task): Observable <HistoryMessage[]> {
+  getTaskHistory(task: Task): Observable <HistoryMessage[]> {
     return this.taskResource
       .getTaskHistory({taskId: task._id})
       .$observable;

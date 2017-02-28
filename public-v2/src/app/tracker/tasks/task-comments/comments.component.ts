@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {HistoryMessage} from "../../models/historyMessage";
 import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
+import {HistoryMessage} from "../../models/history-message";
 
 @Component({
   selector: 'comments',
@@ -24,7 +24,7 @@ export class CommentsComponent implements OnInit {
   createComment(): void {
     this.taskService.createComment(this.task, this.comment)
       .subscribe((comment) => {
-        this.savedComment.emit(this.comment);
+        this.savedComment.emit(comment);
         this.comment = new HistoryMessage();
 
       });

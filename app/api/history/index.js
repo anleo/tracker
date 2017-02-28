@@ -23,19 +23,26 @@ module.exports = function (app) {
             if (err) {
                 return next(err);
             }
-            TaskService.notifyUsers(req.Task, 'comment.save', function (err) {
-                if (err) {
-                    return next(err);
-                }
-                TaskService.updateCommentsCounter(req.Task, function (err) {
+            TaskHistory.findById(comment._id)
+                .populate('user', 'first last')
+                .lean()
+                .exec(function (err, comment) {
                     if (err) {
                         return next(err);
                     }
+                    TaskService.notifyUsers(req.Task, 'comment.save', function (err) {
+                        if (err) {
+                            return next(err);
+                        }
+                        TaskService.updateCommentsCounter(req.Task, function (err) {
+                            if (err) {
+                                return next(err);
+                            }
+                            res.status(200).json(comment);
+                        });
+                    })
 
-                    res.status(200).json(comment);
-                });
-            })
-
+                })
         })
     });
 
