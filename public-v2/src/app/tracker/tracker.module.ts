@@ -19,8 +19,10 @@ import {TasksEditComponent} from './tasks/task-edit/task-edit.component';
 import {TaskPanelComponent} from "./tasks/task-panel/task-panel.component";
 
 import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
-import {BoardViewComponent} from "./tasks/tasks-board/board-view.component";
-import {ListViewComponent} from "./tasks/tasks-board/list-view.component";
+import {BoardViewComponent} from "./tasks/tasks-board/views/board/board-view.component";
+import {ListViewComponent} from "./tasks/tasks-board/views/list/list-view.component";
+import {TreeViewComponent} from "./tasks/tasks-board/views/tree/tree-view.component";
+import {PanelTreeComponent} from "./tasks/tasks-board/views/tree/panel-tree.component";
 
 import {ReportsComponent} from "./reports/reports.component";
 import {DatepickerModule} from 'ng2-bootstrap/datepicker';
@@ -74,6 +76,8 @@ import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
     TasksBoardComponent,
     BoardViewComponent,
     ListViewComponent,
+    TreeViewComponent,
+    PanelTreeComponent,
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
