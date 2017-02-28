@@ -17,6 +17,7 @@ export class TasksEditComponent implements OnInit {
   priorities: number[] = TaskPrioritiesMock;
   taskMoveToggle: boolean = false;
   statuses: TaskStatus[] = [];
+  modalMode: boolean = false;
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService) {
@@ -26,6 +27,7 @@ export class TasksEditComponent implements OnInit {
     this.taskService.task$.subscribe((task) => {
       this.parentTask = task ? task : null;
 
+      this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
       this.taskService.editTask$.subscribe((task) => {
         this.task = task ? task : new Task();
 
@@ -56,12 +58,18 @@ export class TasksEditComponent implements OnInit {
   }
 
   reinitTask(task: Task): void {
+    this.closeModal();
     this.taskService.editTaskUpdated$.next({task: task, status: 'update'});
     setTimeout(() => this.initTask(), 0);
   }
 
+  private closeModal() {
+    this.taskService.editTaskModal$.next(false);
+  }
+
   remove(task: Task): void {
     this.taskService.remove(this.task).subscribe(() => {
+      this.closeModal();
       this.taskService.editTaskUpdated$.next({task: task, status: 'remove'});
       setTimeout(() => this.initTask(), 0);
     });
@@ -69,11 +77,13 @@ export class TasksEditComponent implements OnInit {
 
   onMove(task: Task):void {
     this.taskMoveToggle = false;
+    this.closeModal();
     this.taskService.editTaskUpdated$.next({task: task, status: 'move'});
     setTimeout(() => this.initTask(), 0);
   }
 
   close(): void {
+    this.closeModal();
     this.taskService.editTaskUpdated$.next({task: null, status: 'close'});
     setTimeout(() => this.initTask(), 0);
   }
