@@ -149,10 +149,10 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                 archived: {$ne: true}
             };
 
-        self.getTasksByQuery(query, function (err, children) {
-            if (err) {
-                return next(err);
-            }
+            self.getTasksByQuery(query, function (err, children) {
+                if (err) {
+                    return next(err);
+                }
 
                 async.map(children, function (child, next) {
                     self.estimateTask(velocity, child, next);
@@ -529,26 +529,34 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
 
             task.save(function (err) {
                 if (err) return next(err);
-
-                FileService.connectFiles(task.files);
-                self.updateRootTags(task);
-
-                self.updateParentByTask(task, function (err) {
-                    if (err) {
-                        return next(err);
-                    }
-
-                    self.getEstimatedTask(task, function (err, task) {
+                Task.findById(task._id)
+                    .populate('owner', '-local.passwordHashed -local.passwordSalt')
+                    .populate('developer', '-local.passwordHashed -local.passwordSalt')
+                    .lean()
+                    .exec(function (err, task) {
                         if (err) return next(err);
 
-                        HistoryService.createTaskHistory(task, function (err) {
-                            if (err) return next(err);
-                            self.notifyUsers(task, 'task.save');
-                            next(null, task);
+                        FileService.connectFiles(task.files);
+                        self.updateRootTags(task);
+
+                        self.updateParentByTask(task, function (err) {
+                            if (err) {
+                                return next(err);
+                            }
+
+                            self.getEstimatedTask(task, function (err, task) {
+                                if (err) return next(err);
+
+                                HistoryService.createTaskHistory(task, function (err) {
+                                    if (err) return next(err);
+                                    self.notifyUsers(task, 'task.save');
+                                    next(null, task);
+                                });
+                            });
                         });
                     });
-                });
-            });
+            })
+
         });
     };
 
