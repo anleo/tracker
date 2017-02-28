@@ -19,6 +19,7 @@ export class TaskService {
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  editTaskModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
 
   constructor(private taskResource: TaskResource,
@@ -37,7 +38,6 @@ export class TaskService {
       return false;
     }
 
-    let taskId = taskWithStatus.task && taskWithStatus.task._id;
     let task = taskWithStatus.task;
 
     if (taskWithStatus.status === 'update') {
@@ -117,6 +117,11 @@ export class TaskService {
   }
 
   setEditTask(task: Task):void {
+    this.editTask$.next(task);
+  }
+
+  setEditTaskModal(task: Task):void {
+    this.editTaskModal$.next(true);
     this.editTask$.next(task);
   }
 
