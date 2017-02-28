@@ -102,7 +102,6 @@ export class TaskResource extends Resource {
     method: RequestMethod.Post
   })
   createCommnent: ResourceMethodStrict<HistoryMessage, {taskId: string}, HistoryMessage>;
-  moveTask: ResourceMethod<{taskId: string, toTaskId: string}, Task>
 
   @ResourceAction({
     url: '/api/users/{!userId}/tasks',
