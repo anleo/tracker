@@ -1,0 +1,29 @@
+<comments [task]="task" (savedComment)="onSave($event)"></comments>
+<div class="task-views-block">
+  <div class="clearfix">
+    <div class="btn-group board-buttons" role="group">
+      <button class="btn btn-default btn-sm"
+              (click)="findAllMessages()">All
+      </button>
+      <button class="btn btn-default btn-sm"
+              (click)="findComments()">Comments
+      </button>
+      <button class="btn btn-default btn-sm"
+              (click)="findOtherMessages()">Other
+      </button>
+    </div>
+  </div>
+</div>
+<div *ngIf="messages && messages.length">
+  <div *ngFor="let message of messages">
+    <div class="well history-message-wrapper">
+      <task-history-developer *ngIf="message._type == 'TaskDeveloper'" [message]="message"></task-history-developer>
+      <task-history-comment *ngIf="message._type == 'TaskComment'"[message]="message"></task-history-comment>
+      <task-history-complexity *ngIf="message._type == 'TaskComplexity'" [message]="message"></task-history-complexity>
+      <task-history-description *ngIf="message._type == 'TaskDescription'" [message]="message"></task-history-description>
+      <task-history-metrics *ngIf="message._type == 'TaskMetrics'" [message]="message"></task-history-metrics>
+      <task-history-spenttime *ngIf="message._type == 'TaskSpenttime'" [message]="message"></task-history-spenttime>
+      <task-history-status *ngIf="message._type == 'TaskStatus'" [message]="message"></task-history-status>
+    </div>
+  </div>
+</div>
