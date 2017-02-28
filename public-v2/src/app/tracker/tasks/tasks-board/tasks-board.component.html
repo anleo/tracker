@@ -1,7 +1,33 @@
-<div class="row board-view" *ngIf="tasks && tasks.length">
-  <div class="col-sm-4" *ngFor="let board of boardTypes">
-    <h3 class="list-name">{{board.name}}</h3>
+<div class="task-views-block">
+  <div class="clearfix">
+    <div class="btn-group board-buttons" role="group">
+      <button class="btn btn-default btn-sm"
+              *ngFor="let board of boards"
+              (click)="onChangeBoard(board)">
+        {{board.title}}
+      </button>
+    </div>
 
-    <app-tasks-list [tasks]="tasks | tasksBoardFilter: board" [board]="board"></app-tasks-list>
+    <!--<button class="btn btn-default btn-sm btn-metrics">-->
+      <!--<i class="fa"></i>-->
+    <!--</button>-->
+    <!--&nbsp;-->
+    <!--<button class="btn btn-default btn-sm btn-metrics" tooltip="Sort By Priority">-->
+      <!--<i class="fa fa-bolt"></i>-->
+    <!--</button>-->
+    <!--&nbsp;-->
+    <!--<button class="btn btn-default btn-sm btn-metrics" tooltip="Sort By Date">-->
+      <!--<i class="fa fa-calendar"></i>-->
+      <!--<i class="fa"></i>-->
+    <!--</button>-->
+  </div>
+
+  <div class="clearfix">
+    <div *ngIf="currentBoard.name == 'board'">
+      <board-view [tasks]="tasks"></board-view>
+    </div>
+    <div *ngIf="currentBoard.name == 'list'">
+      <list-view [tasks]="tasks"></list-view>
+    </div>
   </div>
 </div>

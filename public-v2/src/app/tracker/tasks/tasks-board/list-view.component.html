@@ -1,0 +1,5 @@
+<div class="row" *ngIf="tasks && tasks.length">
+  <div class="col-sm-12">
+      <app-tasks-list [tasks]="tasks" [board]="status"></app-tasks-list>
+  </div>
+</div>
