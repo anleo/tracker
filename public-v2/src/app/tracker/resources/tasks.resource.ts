@@ -97,7 +97,7 @@ export class TaskResource extends Resource {
   getUserTasks: ResourceMethod<{userId: string}, Task[]>;
 
   @ResourceAction({
-    path: '/{!taskId}/archived',
+    path: '/{!taskId}/archive',
     isArray: true
   })
   getArchivedTasks: ResourceMethod<{taskId: string}, Task[]>;

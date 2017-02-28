@@ -31,6 +31,18 @@ const routes: Routes = [
     resolve: {
       task: TaskResolver
     },
+    // TODO @@@id:need to resolve question with router and view
+    // children: [{
+    //   path: 'archive',
+    //   component: TaskArchiveComponent
+    // }]
+  },
+  {
+    path: ':taskId/archive',
+    component: TaskArchiveComponent,
+    resolve: {
+      task: TaskResolver
+    }
   },
   {
     path: '**',

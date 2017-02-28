@@ -21,9 +21,14 @@ export class TaskArchiveComponent implements OnInit {
   ngOnInit(): void {
     let task = this.route.snapshot.data['task'];
     if (task) {
-      console.log('with task', task);
+      this.taskService.getArchivedTasks(task._id).subscribe((tasks) => this.initTasks(tasks))
     } else {
-      this.taskService.getArchivedProject().subscribe((tasks) => this.tasks = tasks)
+      this.taskService.getArchivedProject().subscribe((tasks) => this.initTasks(tasks))
     }
   }
+
+  initTasks(tasks: Task[]): void {
+    this.tasks = tasks;
+  }
+
 }
