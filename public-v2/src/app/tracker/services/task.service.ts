@@ -15,9 +15,7 @@ export class TaskService {
   task: Task|null = null;
   tasks: Task[]|null = null;
   editTask: Task|null = null;
-
   root: Task|null = null;
-  parentTask: Task|null = null;
 
   task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
@@ -29,10 +27,7 @@ export class TaskService {
   constructor(private taskResource: TaskResource,
               private fileResource: FileResourse,
               private router: Router) {
-    this.task$.subscribe((task: Task) => {
-      this.task = task;
-      this.parentTask = task;
-    });
+    this.task$.subscribe((task: Task) => this.task = task);
 
     this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
 
@@ -40,7 +35,7 @@ export class TaskService {
     this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
-  actionProvider(taskWithStatus: TaskWithStatus):void|boolean {
+  actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
     if (!taskWithStatus) {
       return false;
     }
@@ -56,27 +51,6 @@ export class TaskService {
     }
   }
 
-  private initTaskData(task) {
-    this.init(task);
-    this.task$.next(task);
-  }
-
-  init(task) {
-    this.parentTask = null;
-    this.root = null;
-    this.tasks = [];
-
-    this.task = task;
-    let taskId = task && task._id ? task._id : null;
-
-    this.loadTasks(taskId).subscribe(tasks => this.tasks$.next(tasks));
-    taskId && this.getRoot(taskId).subscribe((root) => this.root = root);
-
-    if (task && task.parentTaskId) {
-      this.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
-    }
-  }
-
   loadTasks(taskId: string): Observable<Task[]> {
     if (taskId) {
       return this.getChildrenTasks(taskId);
@@ -85,21 +59,25 @@ export class TaskService {
     }
   }
 
-  onUpdate(task: Task):void {
+  onUpdate(task: Task): void {
+    if (!task) {
+      return null;
+    }
+
     let taskId = task && task._id ? task._id : null;
 
     let tasks = this.tasks || [];
     this.tasks = [];
-    let taskFound = tasks.find((_task) => _task._id === task._id);
+    let taskFound = tasks.find((_task) => _task._id === taskId);
 
-    if (this.task && this.task._id === task._id) {
+    if (this.task && this.task._id === taskId) {
       this.task = task;
       this.task$.next(task);
       this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
     } else {
       if (taskFound) {
         tasks = tasks.map((_task) => {
-          if (_task._id === task._id) {
+          if (_task._id === taskId) {
             _task = task;
           }
           return _task;
@@ -111,12 +89,16 @@ export class TaskService {
     }
   }
 
-  onRemove(task: Task):void {
+  onRemove(task: Task): void {
+    if (!task) {
+      return null;
+    }
+
     let tasks = this.tasks;
     this.tasks = [];
     let taskId = task && task._id ? task._id : null;
 
-    if (this.task && this.task._id === task._id) {
+    if (this.task && this.task._id === taskId) {
       this.task$.next(null);
       this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
       if (this.task.parentTaskId) {
@@ -134,8 +116,8 @@ export class TaskService {
     }
   }
 
-  onMove(task: Task):void|null {
-    if(!task) {
+  onMove(task: Task): void|null {
+    if (!task) {
       return null;
     }
 
@@ -145,19 +127,18 @@ export class TaskService {
       this.task$.next(task);
       this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
     } else {
-      let taskFound = this.tasks && this.tasks.find((_task) => _task._id === task._id);
+      let taskFound = this.tasks && this.tasks.find((_task) => _task._id === taskId);
       if (taskFound) {
-        let tasks = this.tasks.filter(item => item._id !== task._id);
+        let tasks = this.tasks.filter(item => item._id !== taskId);
         this.reloadTasks(task, tasks);
       }
     }
   }
 
-  private reloadTasks(task: Task, tasks: Task[]):void {
+  private reloadTasks(task: Task, tasks: Task[]): void {
     this.tasks = tasks;
     if (task && task.parentTaskId) {
       this.getTask(task.parentTaskId).subscribe((parentTask) => {
-        this.parentTask = parentTask;
         this.task$.next(parentTask);
       });
       this.loadTasks(task.parentTaskId).subscribe((tasks) => this.tasks$.next(tasks));
@@ -166,15 +147,15 @@ export class TaskService {
     }
   }
 
-  setTasks(tasks: Task[]):void {
+  setTasks(tasks: Task[]): void {
     this.tasks$.next(tasks);
   }
 
-  setEditTask(task: Task):void {
+  setEditTask(task: Task): void {
     this.editTask$.next(task);
   }
 
-  setEditTaskModal(task: Task):void {
+  setEditTaskModal(task: Task): void {
     this.editTaskModal$.next(true);
     this.editTask$.next(task);
   }
@@ -259,7 +240,7 @@ export class TaskService {
       .$observable;
   }
 
-  createComment(task: Task, comment:HistoryMessage): Observable <HistoryMessage> {
+  createComment(task: Task, comment: HistoryMessage): Observable <HistoryMessage> {
     return this.taskResource
       .createCommnent(comment, {taskId: task._id})
       .$observable;
