@@ -247,7 +247,7 @@ export class TaskService {
 
   createComment(task: Task, comment: HistoryMessage): Observable <HistoryMessage> {
     return this.taskResource
-      .createCommnent(comment, {taskId: task._id})
+      .createComment(comment, {taskId: task._id})
       .$observable;
   }
 

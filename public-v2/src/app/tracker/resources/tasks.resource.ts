@@ -101,7 +101,7 @@ export class TaskResource extends Resource {
     path: '/{!taskId}/history/comments',
     method: RequestMethod.Post
   })
-  createCommnent: ResourceMethodStrict<HistoryMessage, {taskId: string}, HistoryMessage>;
+  createComment: ResourceMethodStrict<HistoryMessage, {taskId: string}, HistoryMessage>;
 
   @ResourceAction({
     url: '/api/users/{!userId}/tasks',
