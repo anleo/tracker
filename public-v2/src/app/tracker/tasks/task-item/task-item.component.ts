@@ -28,6 +28,7 @@ export class TaskItemComponent implements OnInit {
     this.route.params
       .switchMap((params: Params) => {
         if (params['taskId']) {
+          this.taskService.tasks$.next([]);
           return this.taskService.getTask(params['taskId']);
         } else {
           return Observable.of(null);
@@ -37,22 +38,8 @@ export class TaskItemComponent implements OnInit {
   }
 
   private initTaskData(task) {
-    this.parentTask = null;
-    this.root = null;
-    this.tasks = [];
-
-    this.task = task;
-    let taskId = task && task._id ? task._id : null;
-
+    this.init(task);
     this.taskService.task$.next(task);
-
-    this.loadTasks(taskId).subscribe(tasks => this.taskService.tasks$.next(tasks));
-
-    this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
-
-    if (task && task.parentTaskId) {
-      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
-    }
   }
 
   init(task) {
