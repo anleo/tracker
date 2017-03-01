@@ -14,6 +14,7 @@ export class TaskSpentTimeComponent implements OnInit {
   spentTimeValues = TaskTimes;
   oldSpentTime: number = 0;
   addedSpentTime: number = 0;
+  flag: number = 0;
 
   constructor(public taskService: TaskService) {
   }
@@ -33,7 +34,17 @@ export class TaskSpentTimeComponent implements OnInit {
 
   addTime(time: TaskTime) {
     this.addedSpentTime += time.value;
-    this.task.spenttime += time.value;
+    if (time.name === '5m') {
+      this.flag++;
+      if (this.flag === 3) {
+        this.addedSpentTime = Math.floor(this.addedSpentTime * 100) / 100;
+        this.flag = 0;
+      } else {
+        this.addedSpentTime = Math.floor(this.addedSpentTime * 1000) / 1000;
+      }
+    }
+
+    this.task.spenttime += this.addedSpentTime;
     this.taskService.setEditTask(this.task);
   }
 
