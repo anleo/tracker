@@ -17,9 +17,9 @@ export const BrowserTitles: BrowserTitle = {
   // '/app/task-search': {
   //   title: 'Search'
   // },
-  // '/app/projects-archive': {
-  //   title: 'Archived Projects'
-  // },
+  '/app/tasks/archived': {
+    title: 'Archived Projects'
+  },
   '/app/users/me': {
     title: 'Profile'
   },
