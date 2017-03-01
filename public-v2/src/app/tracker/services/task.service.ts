@@ -219,13 +219,8 @@ export class TaskService {
   }
 
   getTaskMetrics(task: Task): Observable <Task> {
-    return this.taskResource.getTaskMetrics(task)
+    return this.taskResource.getTaskMetrics(task,{taskId: task._id})
       .$observable
-      .map((task) => {
-          this.setEditTask(task);
-          return task;
-        }
-      )
   }
 }
 

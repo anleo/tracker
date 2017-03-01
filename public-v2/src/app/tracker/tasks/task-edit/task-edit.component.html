@@ -1,147 +1,140 @@
 <div class="overlay" *ngIf="modalMode" (click)="close()"></div>
 <div [ngClass]="{'modal': modalMode}">
-<form (submit)="save()" id="form" *ngIf="task">
-
-  <div class="row">
-    <!--left-side-->
-    <div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'">
-
-      <!--// @@@ fix taskId snapshot-->
-      <!--<div class="form-group">-->
-        <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
-        <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
-      <!--</div>-->
-
-      <div class="form-group">
-        <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task"
-               id="title"/>
-      </div>
-
-      <div *ngIf="task.title">
-
-        <div class="form-group">
-          <task-description-editor
-            [task]="task"
-            (descriptionUpdated)="taskChangeHandler($event)">
-          </task-description-editor>
-        </div>
-        <uploader (onUpload)="handleOnUpload($event)"></uploader>
-        <file-viewer [deletion]="true"  (onDelete)="handleOnDelete($event)" *ngIf="task.files && task.files.length" [files]="task.files"></file-viewer>
-
-
-      </div>
-
-    </div>
-
-    <!--right-side-->
-    <div class="col-md-6 tech-info" *ngIf="task.title">
-
-      <hr class="mg hidden-lg hidden-md"/>
-
-      <div *ngIf="task.simple || task.status == 'accepted'" class="form-group clearfix"> <!-- Status-->
-
-        <div *ngIf="task.simple" class="pull-left">
-
-          <i class="fa fa-check-square-o fa-md vcenter" tooltip="Status"></i>
-
-          <div class="btn-group task-statuses">
-            <label *ngFor="let status of statuses"
-                   class="btn btn-default btn-sm"
-                   [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
-                   (click)="setField('status', status.value)"
-            >{{status.name}}</label>
-          </div>
-        </div>
-        <editor-metrics></editor-metrics>
-        <!--<ul ng-if="task.simple" class="task-metrics pull-right edit-panel-metrics-info">-->
-          <!--<li>-->
-            <!--<i class="fa fa-clock-o" uib-tooltip="Time"></i>&nbsp;<span uib-tooltip="Estimated" class="text-right">{{task.estimatedTime| round}}</span>-->
-            <!--/ <span uib-tooltip="Spent" class="text-right">{{task.spenttime| round}}</span>-->
-            <!--/ <span uib-tooltip="TODO" ng-class="{'warning-text' : (task.timeToDo|round) < 0}" class="text-right">{{task.timeToDo| round}}</span>-->
-          <!--</li>-->
-        <!--</ul>-->
-
-      </div>
-
-      <hr *ngIf="task.simple || task.status == 'accepted'" class="mg"/>
-      <div *ngIf="task.simple" class="form-group">
-        <complexity></complexity>
-      </div>
-
-      <div class="form-group" *ngIf="task.title"> <!-- Priority-->
-        <i class="fa fa-bolt fa-md vcenter"></i>
-
-        <div class="btn-group priority">
-          <label *ngFor="let priority of priorities"
-                 class="btn btn-default btn-sm"
-                 [ngClass]="{'active': task.priority === priority}"
-                 (click)="setField('priority', priority)">{{priority}}</label>
-        </div>
-      </div>
-
-      <!--<hr ng-if="task.simple" class="mg"/>-->
-      <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
-      <!--</div>-->
-
-      <div class="form-group clearfix" *ngIf="task.simple">
-        <spent-time></spent-time>
-      </div>
-
-      <hr class="mg"/>
-
-      <task-assign-developer
-        *ngIf="task.parentTaskId"
-        [task]="task"
-        (developerAssigned)="taskChangeHandler($event)">
-      </task-assign-developer>
-
-      <task-team-select
-        *ngIf="!task.parentTaskId"
-        [task]="task"
-        (teamUpdated)="taskChangeHandler($event)">
-      </task-team-select>
-
-      <hr class="mg"/>
-
-      <task-tags [task]="task" (tasksUpdated)="taskChangeHandler($event)"></task-tags>
-
-    </div>
-
-  </div>
-
-  <hr *ngIf="task.title" class="mg"/>
-
-  <div class="form-group clearfix" *ngIf="task.title">
-    <div >
-      <button class="btn btn-success btn-sm" type="submit">Save</button>
-      <a *ngIf="task._id" class="btn btn-default btn-sm" (click)="showTaskMove()">Move</a>
-      <a class="btn btn-default btn-sm" (click)="close()">Close</a>
-      <a *ngIf="task._id && task.status != 'in progress'" class="btn btn-danger btn-sm pull-right"
-         (click)="remove(task)">Delete</a>
-
-      <!--<div ng-show="task.status == 'accepted'" class="checkbox archive-button" ng-class="{'pull-right': task.simple}">-->
-
-      <!--<input type="button"-->
-      <!--ng-model="task.archived"-->
-      <!--id="archived" />-->
-
-      <!--<label for="archived"-->
-      <!--ng-click="task.archived = !task.archived"-->
-      <!--class="btn btn-sm"-->
-      <!--ng-class="task.archived == true ? 'btn-warning' : 'btn-default' ">-->
-      <!--<i class="fa" ng-class="task.archived == true ? 'fa-check-square-o' : 'fa-square-o' "></i>&nbsp;Archived</label>-->
-      <!--</div>-->
-    </div>
+  <form (submit)="save()" id="form" *ngIf="task">
 
     <div class="row">
-      <task-move
-        *ngIf="taskMoveToggle"
-        [task]="task"
-        (onMove)="onMove(task)"></task-move>
+      <!--left-side-->
+      <div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'">
+
+        <!--// @@@ fix taskId snapshot-->
+        <!--<div class="form-group">-->
+        <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
+        <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
+        <!--</div>-->
+
+        <div class="form-group">
+          <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task"
+                 id="title"/>
+        </div>
+
+        <div *ngIf="task.title">
+
+          <div class="form-group">
+            <task-description-editor
+              [task]="task"
+              (descriptionUpdated)="taskChangeHandler($event)">
+            </task-description-editor>
+          </div>
+          <uploader (onUpload)="handleOnUpload($event)"></uploader>
+          <file-viewer [deletion]="true" (onDelete)="handleOnDelete($event)" *ngIf="task.files && task.files.length"
+                       [files]="task.files"></file-viewer>
+
+
+        </div>
+
+      </div>
+
+      <!--right-side-->
+      <div class="col-md-6 tech-info" *ngIf="task.title">
+
+        <hr class="mg hidden-lg hidden-md"/>
+
+        <div *ngIf="task.simple || task.status == 'accepted'" class="form-group clearfix"> <!-- Status-->
+
+          <div *ngIf="task.simple" class="pull-left">
+
+            <i class="fa fa-check-square-o fa-md vcenter" tooltip="Status"></i>
+
+            <div class="btn-group task-statuses">
+              <label *ngFor="let status of statuses"
+                     class="btn btn-default btn-sm"
+                     [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
+                     (click)="setField('status', status.value)"
+              >{{status.name}}</label>
+            </div>
+          </div>
+          <editor-metrics ></editor-metrics>
+        </div>
+
+        <hr *ngIf="task.simple || task.status == 'accepted'" class="mg"/>
+        <div *ngIf="task.simple" class="form-group">
+          <complexity></complexity>
+        </div>
+
+        <div class="form-group" *ngIf="task.title"> <!-- Priority-->
+          <i class="fa fa-bolt fa-md vcenter"></i>
+
+          <div class="btn-group priority">
+            <label *ngFor="let priority of priorities"
+                   class="btn btn-default btn-sm"
+                   [ngClass]="{'active': task.priority === priority}"
+                   (click)="setField('priority', priority)">{{priority}}</label>
+          </div>
+        </div>
+
+        <!--<hr ng-if="task.simple" class="mg"/>-->
+        <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
+        <!--</div>-->
+
+        <div class="form-group clearfix" *ngIf="task.simple">
+          <spent-time></spent-time>
+        </div>
+
+        <hr class="mg"/>
+
+        <task-assign-developer
+          *ngIf="task.parentTaskId"
+          [task]="task"
+          (developerAssigned)="taskChangeHandler($event)">
+        </task-assign-developer>
+
+        <task-team-select
+          *ngIf="!task.parentTaskId"
+          [task]="task"
+          (teamUpdated)="taskChangeHandler($event)">
+        </task-team-select>
+
+        <hr class="mg"/>
+
+        <task-tags [task]="task" (tasksUpdated)="taskChangeHandler($event)"></task-tags>
+
+      </div>
+
     </div>
-  </div>
 
-  <hr *ngIf="!task._id && task.title" class="mg"/>
+    <hr *ngIf="task.title" class="mg"/>
 
-</form>
+    <div class="form-group clearfix" *ngIf="task.title">
+      <div>
+        <button class="btn btn-success btn-sm" type="submit">Save</button>
+        <a *ngIf="task._id" class="btn btn-default btn-sm" (click)="showTaskMove()">Move</a>
+        <a class="btn btn-default btn-sm" (click)="close()">Close</a>
+        <a *ngIf="task._id && task.status != 'in progress'" class="btn btn-danger btn-sm pull-right"
+           (click)="remove(task)">Delete</a>
+
+        <!--<div ng-show="task.status == 'accepted'" class="checkbox archive-button" ng-class="{'pull-right': task.simple}">-->
+
+        <!--<input type="button"-->
+        <!--ng-model="task.archived"-->
+        <!--id="archived" />-->
+
+        <!--<label for="archived"-->
+        <!--ng-click="task.archived = !task.archived"-->
+        <!--class="btn btn-sm"-->
+        <!--ng-class="task.archived == true ? 'btn-warning' : 'btn-default' ">-->
+        <!--<i class="fa" ng-class="task.archived == true ? 'fa-check-square-o' : 'fa-square-o' "></i>&nbsp;Archived</label>-->
+        <!--</div>-->
+      </div>
+
+      <div class="row">
+        <task-move
+          *ngIf="taskMoveToggle"
+          [task]="task"
+          (onMove)="onMove(task)"></task-move>
+      </div>
+    </div>
+
+    <hr *ngIf="!task._id && task.title" class="mg"/>
+
+  </form>
 </div>
