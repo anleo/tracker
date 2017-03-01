@@ -15,7 +15,6 @@ export class TaskSearchDirective implements OnInit {
   focused: boolean = false;
   queryControl = new FormControl();
 
-
   constructor(private router: Router,
               private taskService: TaskService) {
   }

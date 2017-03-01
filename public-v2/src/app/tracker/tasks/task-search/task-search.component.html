@@ -3,7 +3,7 @@
 
   <h3 *ngIf="!tasks || !tasks.length">Nothing found for: <i>'{{query}}'</i></h3>
 
-  <a href history-back>
+  <a (click)="goBack()">
     <h5>
       <i class="fa fa-long-arrow-left"></i>
       Back
@@ -12,6 +12,7 @@
 
   <!--@@@@ TODO: check task on complete. Is it implemented?-->
   <!--<div *ngIf="tasks.length" task-views tasks="tasks" task-on-complete="init"></div>-->
+  <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
   <app-tasks-board *ngIf="tasks && tasks.length" [tasks]="tasks"></app-tasks-board>
 </div>
 

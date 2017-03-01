@@ -1,9 +1,9 @@
 <form class="form-inline nav-bar-search"
-      (ngSubmit)="searchQuery()">
+      (ngSubmit)="searchQuery(query)">
   <div class="form-group">
     <input type="text"
            name="query"
-           [ngModel]="query"
+           [(ngModel)]="query"
            [formControl]="queryControl"
            (focus)="focused = true"
            (blur)="focused = false"
