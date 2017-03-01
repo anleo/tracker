@@ -1,4 +1,4 @@
-import {BrowserTitle} from "../../tracker/models/browser-title";
+import {BrowserTitle} from "../../models/browser-title";
 
 export const BrowserTitles: BrowserTitle = {
   '/app/tasks': {

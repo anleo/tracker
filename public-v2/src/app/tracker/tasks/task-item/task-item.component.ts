@@ -54,8 +54,12 @@ export class TaskItemComponent implements OnInit {
 
     this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
 
+    // TODO @@@id: check it
     if (task && task.parentTaskId) {
-      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
+      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) =>  {
+        this.parentTask = parentTask;
+        this.root && this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
+      });
     }
   }
 
