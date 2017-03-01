@@ -7,7 +7,7 @@ import {Task} from "../../models/task";
 })
 export class TaskMetricsComponent {
   @Input() task: Task;
-  @Input() options: boolean;
+  @Input() showStatus: boolean;
   metricsDetails: number;
 
   public setLabelClass(): string {

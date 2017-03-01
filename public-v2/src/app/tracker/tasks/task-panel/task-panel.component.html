@@ -21,7 +21,7 @@
 
   <!--<div class="panel-body" *ngIf="metricsDetails || task.description || task.tags && task.tags.length">-->
   <div class="panel-body">
-    <app-task-metrics [task]="task" [options]="false" (click)="edit(task)" class="fs-sm " style="display: inline-block"></app-task-metrics>
+    <app-task-metrics [task]="task" [showStatus]="false" (click)="edit(task)" class="fs-sm " style="display: inline-block"></app-task-metrics>
 
     <div *ngIf="task.description">
       <hr *ngIf="metricsDetails"/>
