@@ -14,7 +14,6 @@
     <h4 class="panel-title">
       <a [routerLink]="['/app/tasks/', task._id]">{{task.title}}</a>
       <span class="fa fa-pencil-square-o vcenter pull-right pointer" (click)="edit(task)"></span>
-      <!--<span class="fa fa-arrows vcenter pull-right pointer"></span>-->
       <span class="label label-info vcenter pull-right" *ngIf="!task.simple">complex</span>
     </h4>
   </div>

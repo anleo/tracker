@@ -260,5 +260,17 @@ export class TaskService {
       .getUserTasks({userId: userId})
       .$observable
   }
+
+  getArchivedProjects(): Observable <Task[]> {
+    return this.taskResource
+      .getArchivedProjects()
+      .$observable
+  }
+
+  getArchivedTasks(taskId: string): Observable <Task[]> {
+    return this.taskResource
+      .getArchivedTasks({taskId: taskId})
+      .$observable
+  }
 }
 
