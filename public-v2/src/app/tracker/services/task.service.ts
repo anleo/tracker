@@ -6,7 +6,6 @@ import {Task} from '../models/task';
 import {TaskWithStatus} from '../models/task-with-status';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
-import {FileResourse} from "../resources/file.resource";
 import {Router} from "@angular/router";
 import {HistoryMessage} from "../models/history-message";
 
@@ -227,7 +226,7 @@ export class TaskService {
   }
 
   deleteFile(file: any, task: Task): Observable <any> {
-    return this.fileResource.delete({taskId: task._id, fileId: file._id})
+    return this.taskResource.deleteTaskFile({taskId: task._id, fileId: file._id})
       .$observable;
   }
 

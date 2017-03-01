@@ -37,7 +37,6 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
 import { UploaderComponent } from './tasks/uploader/uploader.component';
 import { NgUploaderModule } from 'ngx-uploader';
 import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
-import {FileResourse} from "./resources/file.resource";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
@@ -128,8 +127,7 @@ import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService,
-    FileResourse
+    TaskStatusService
   ]
 })
 export class TrackerModule {
