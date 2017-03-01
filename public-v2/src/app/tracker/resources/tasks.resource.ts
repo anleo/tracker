@@ -108,4 +108,10 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getUserTasks: ResourceMethod<{userId: string}, Task[]>
+
+  @ResourceAction({
+    method: RequestMethod.Post,
+    path: '/{!_id}/metrics'
+  })
+  getTaskMetrics: ResourceMethod<Task, Task>;
 }

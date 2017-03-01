@@ -60,6 +60,7 @@ import { TaskHistoryMetricsComponent } from './tasks/task-history/task-history-m
 import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
 import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
+import { EditorMetricsComponent } from './tasks/components/editor-metrics/editor-metrics.component';
 
 @NgModule({
   imports: [
@@ -121,6 +122,7 @@ import {LinkyModule} from "angular-linky";
     TaskHistoryMetricsComponent,
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
+    EditorMetricsComponent,
   ],
   providers: [
     TaskResolver,
