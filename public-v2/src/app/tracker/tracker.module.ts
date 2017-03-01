@@ -58,6 +58,7 @@ import { TaskHistoryMetricsComponent } from './tasks/task-history/task-history-m
 import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
 import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
+import {TaskReportComponent} from "./reports/task-report/task-report.component";
 
 @NgModule({
   imports: [
@@ -88,6 +89,7 @@ import {LinkyModule} from "angular-linky";
     TaskPanelComponent,
     TaskItemComponent,
     CommonReportComponent,
+    TaskReportComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskAssignDeveloperComponent,
