@@ -26,7 +26,7 @@ export class TaskArchiveComponent implements OnInit {
     if (taskId) {
       this.taskService.getArchivedTasks(taskId).subscribe((tasks) => this.initTasks(tasks))
     } else {
-      this.taskService.getArchivedProject().subscribe((tasks) => this.initTasks(tasks))
+      this.taskService.getArchivedProjects().subscribe((tasks) => this.initTasks(tasks))
     }
   }
 

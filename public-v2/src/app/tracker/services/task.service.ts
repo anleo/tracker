@@ -218,9 +218,9 @@ export class TaskService {
       .$observable
   }
 
-  getArchivedProject(): Observable <Task[]> {
+  getArchivedProjects(): Observable <Task[]> {
     return this.taskResource
-      .getArchivedProject()
+      .getArchivedProjects()
       .$observable
   }
 

@@ -119,6 +119,6 @@ export class TaskResource extends Resource {
     path: '/archived',
     isArray: true
   })
-  getArchivedProject: ResourceMethod<null, Task[]>;
+  getArchivedProjects: ResourceMethod<any, Task[]>;
 
 }
