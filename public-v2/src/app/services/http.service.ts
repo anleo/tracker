@@ -17,10 +17,9 @@ export class HttpService extends Http {
       .catch((err: any) => {
         if (err.status === 401) {
           this.router.navigate(['/app/login']);
-          return Observable.empty();
-        } else {
-          return Observable.throw(err);
         }
+
+        return Observable.throw(err);
       })
   }
 }

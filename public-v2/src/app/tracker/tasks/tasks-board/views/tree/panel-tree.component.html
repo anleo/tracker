@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let node of nodes">
+    <app-task-panel [task]="node"></app-task-panel>
+    <panel-tree [nodes]="node.subTasks"></panel-tree>
+  </li>
+</ul>
