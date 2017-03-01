@@ -13,6 +13,7 @@ import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
 import {HttpService} from "./services/http.service";
 import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
+import {BrowserTitleService} from "./services/browser-title/browser-title.service";
 
 export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
   return new HttpService(xhrBackend, requestOptions, router);
@@ -40,7 +41,8 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
       deps: [XHRBackend, RequestOptions, Router]
     },
     HttpService,
-    CanActivatePublicGuard
+    CanActivatePublicGuard,
+    BrowserTitleService
   ],
   bootstrap: [AppComponent]
 })
