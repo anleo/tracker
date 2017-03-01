@@ -107,5 +107,18 @@ export class TaskResource extends Resource {
     url: '/api/users/{!userId}/tasks',
     isArray: true
   })
-  getUserTasks: ResourceMethod<{userId: string}, Task[]>
+  getUserTasks: ResourceMethod<{userId: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/archive',
+    isArray: true
+  })
+  getArchivedTasks: ResourceMethod<{taskId: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/archived',
+    isArray: true
+  })
+  getArchivedProjects: ResourceMethod<any, Task[]>;
+
 }
