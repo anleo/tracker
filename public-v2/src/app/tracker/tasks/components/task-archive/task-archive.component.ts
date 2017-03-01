@@ -20,7 +20,7 @@ export class TaskArchiveComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
+    this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
 
     let taskId = this.route.snapshot.params['taskId'];
     if (taskId) {

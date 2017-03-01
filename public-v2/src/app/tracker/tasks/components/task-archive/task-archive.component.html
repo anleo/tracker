@@ -5,7 +5,7 @@
   </h5>
 </a>
 
-<app-task-edit class="edit-form" *ngIf="editMode"></app-task-edit>
+<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 <app-tasks-board [tasks]="tasks" *ngIf="tasks.length"></app-tasks-board>
 
 <div *ngIf="!tasks.length">
