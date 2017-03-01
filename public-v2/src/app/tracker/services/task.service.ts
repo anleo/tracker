@@ -160,6 +160,10 @@ export class TaskService {
     this.editTask$.next(task);
   }
 
+  setTask(task: Task):void {
+    this.task$.next(task);
+  }
+
   setEditTaskModal(task: Task): void {
     this.editTaskModal$.next(true);
     this.editTask$.next(task);
@@ -254,6 +258,18 @@ export class TaskService {
   getUserTasks(userId: string): Observable <Task[]> {
     return this.taskResource
       .getUserTasks({userId: userId})
+      .$observable
+  }
+
+  getArchivedProjects(): Observable <Task[]> {
+    return this.taskResource
+      .getArchivedProjects()
+      .$observable
+  }
+
+  getArchivedTasks(taskId: string): Observable <Task[]> {
+    return this.taskResource
+      .getArchivedTasks({taskId: taskId})
       .$observable
   }
 
