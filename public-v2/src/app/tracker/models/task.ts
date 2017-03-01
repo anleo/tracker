@@ -25,4 +25,5 @@ export class Task {
   archived?: boolean;
   commentsCounter?: number;
   updatedBy?: string|any;
+  subTasks?: Array<Task>;
 }

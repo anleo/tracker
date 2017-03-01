@@ -3,8 +3,8 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Task} from '../../models/task'
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskStatus} from "../../models/task-status";
-import {BoardViewComponent} from "./board-view.component";
-import {ListViewComponent} from "./list-view.component";
+import {BoardViewComponent} from "./views/board/board-view.component";
+import {ListViewComponent} from "./views/list/list-view.component";
 import {Board} from "../../models/board";
 import {BoardsMock} from "../../mocks/boards.mock";
 
