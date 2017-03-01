@@ -673,7 +673,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
 
                     if (!newParent) return next(new Error('No new parent'));
 
-                    task.parentTaskId = newParent;
+                    task.parentTaskId = newParent._id;
 
                     task.save(function (err, task) {
                         if (err) {
