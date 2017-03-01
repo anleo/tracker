@@ -101,7 +101,7 @@ export class TaskService {
     if (this.task && this.task._id === taskId) {
       this.task$.next(null);
       this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
-      if (this.task.parentTaskId) {
+      if (this.task && this.task.parentTaskId) {
         this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
       } else {
         this.router.navigateByUrl('/app/tasks/');
