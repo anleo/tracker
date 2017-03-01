@@ -10,7 +10,7 @@ export const BrowserTitles: BrowserTitle = {
   '/app/tasks/my': {
     title: 'My Tasks'
   },
-  // TODO @@@id:update it
+  // TODO @@@id:when we will have these routers - update
   // '/app/tags-find': {
   //   title: 'Search by tags'
   // },
