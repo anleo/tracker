@@ -50,17 +50,18 @@ export class TaskItemComponent implements OnInit {
     this.tasks = [];
 
     this.task = task;
+    this.task && this.browserTitleService.setTitle(this.task.title);
     let taskId = task && task._id ? task._id : null;
 
     this.loadTasks(taskId).subscribe(tasks => this.taskService.tasks$.next(tasks));
-    taskId && this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
-// TODO @@@id: check it
-//     if (task && task.parentTaskId) {
-//       this.taskService.getTask(task.parentTaskId).subscribe((parentTask) =>  {
-//         this.parentTask = parentTask;
-//         this.root && this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
-//       });
-//     }
+    taskId && this.taskService.getRoot(taskId).subscribe((root) => {
+      this.root = root;
+
+      if (this.root._id !== this.task._id) {
+        this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
+      }
+    });
+
     if (task && task.parentTaskId) {
       this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
     }
