@@ -24,6 +24,9 @@ export class MyTasksComponent implements OnInit {
       .subscribe(user => this.user = user);
 
     this.taskService.getUserTasks(this.user._id)
-      .subscribe(tasks => this.tasks = tasks);
+      .subscribe(tasks => {
+        this.tasks = tasks;
+        this.taskService.setTasks(tasks);
+      });
   }
 }
