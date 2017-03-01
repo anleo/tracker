@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {TaskService} from "../services/task.service";
-import {Task} from "../models/task";
-import {TaskStatusService} from "../services/task-status.service";
-import {TaskStatus} from "../models/task-status";
+import {TaskService} from "../../services/task.service";
+import {Task} from "../../models/task";
+import {TaskStatusService} from "../../services/task-status.service";
+import {TaskStatus} from "../../models/task-status";
 import * as moment from 'moment/moment';
 
 @Component({
-  templateUrl: 'reports.component.html',
+  templateUrl: 'common-report.component.html',
   providers: [TaskService]
 })
 
-export class ReportsComponent implements OnInit {
+export class CommonReportComponent implements OnInit {
   date: Date | null = new Date;
   today: Date | null = new Date;
   tasks: Task[] = [];

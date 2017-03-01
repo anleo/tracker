@@ -22,7 +22,7 @@ import {TasksBoardComponent} from "./tasks/tasks-board/tasks-board.component";
 import {BoardViewComponent} from "./tasks/tasks-board/board-view.component";
 import {ListViewComponent} from "./tasks/tasks-board/list-view.component";
 
-import {ReportsComponent} from "./reports/reports.component";
+import {CommonReportComponent} from "./reports/common-report/common-report.component";
 import {DatepickerModule} from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent} from './tasks/task-metrics/task-metrics.component';
@@ -87,7 +87,7 @@ import {LinkyModule} from "angular-linky";
     ListViewComponent,
     TaskPanelComponent,
     TaskItemComponent,
-    ReportsComponent,
+    CommonReportComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskAssignDeveloperComponent,

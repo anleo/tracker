@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TasksComponent} from "./tasks/tasks.component";
-import {ReportsComponent} from "./reports/reports.component";
+import {CommonReportComponent} from "./reports/common-report/common-report.component";
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
 
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'reports',
-    component: ReportsComponent
+    component: CommonReportComponent
   },
   {
     path: 'my',
