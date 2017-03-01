@@ -3,28 +3,27 @@ import {TaskService} from "../services/task.service";
 import {Task} from "../models/task";
 import {TaskStatusService} from "../services/task-status.service";
 import {TaskStatus} from "../models/task-status";
-import {Location} from "@angular/common";
+import * as moment from 'moment/moment';
 
 @Component({
-  moduleId: module.id,
   templateUrl: 'reports.component.html',
   providers: [TaskService]
 })
 
 export class ReportsComponent implements OnInit {
   date: Date | null = new Date;
+  today: Date | null = new Date;
   tasks: Task[] = [];
   showDatePicker: boolean = false;
+  showMetrics: boolean = false;
   TaskStatus = TaskStatus;
 
   constructor(private contextTaskService: TaskService,
-              private taskStatusService: TaskStatusService,
-              private location: Location) {
-  }
+              private taskStatusService: TaskStatusService) {}
 
   ngOnInit(): void {
     this.contextTaskService
-      .getTaskReportByDate(this.date)
+      .getTaskReportByDate(this.date.toString())
       .subscribe(tasks => {
         this.contextTaskService.setTasks(tasks);
         return this.tasks = tasks;
@@ -35,14 +34,20 @@ export class ReportsComponent implements OnInit {
     this.showDatePicker = !this.showDatePicker;
   }
 
+  toggleMetrics(): void {
+    this.showMetrics = !this.showMetrics;
+  }
+
   onClose(): void {
     this.showDatePicker = false;
   }
 
   onChangeDate(date): void {
     this.date = date;
+    date = this.prepareDate(date);
+
     this.contextTaskService
-      .getTaskReportByDate(this.date)
+      .getTaskReportByDate(date)
       .subscribe(tasks => {
         this.contextTaskService.setTasks(tasks);
         return this.tasks = tasks;
@@ -61,4 +66,12 @@ export class ReportsComponent implements OnInit {
     return status;
   }
 
+  private prepareDate(date): string {
+    let currentTime = moment(this.today).format('hh:mm:ss');
+
+    date = date.toString()
+      .replace(/[0-9]{2}:[0-9]{2}:[0-9]{2}/g, currentTime);
+
+    return date;
+  }
 }

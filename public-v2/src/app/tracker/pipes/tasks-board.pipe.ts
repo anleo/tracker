@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 import {Task} from '../models/task';
 
@@ -8,12 +8,6 @@ import {Task} from '../models/task';
 })
 export class TasksBoardFilter implements PipeTransform {
   transform(tasks: Task[], type: any): Task[] {
-    tasks = tasks.map((task) => {
-      if (task.status === type.value) {
-        return task;
-      }
-    });
-
-    return tasks;
+    return tasks.filter(task => task.status === type.value);
   }
 }
