@@ -60,6 +60,7 @@ import { TaskHistoryMetricsComponent } from './tasks/task-history/task-history-m
 import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
 import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
+import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
 
 import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
@@ -126,6 +127,7 @@ import {ROOT_TASKSERVICE} from "../app.tokens";
     TaskHistoryMetricsComponent,
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
+    TaskArchiveComponent,
     TaskSearchDirective,
     TaskSearchComponent
   ],
