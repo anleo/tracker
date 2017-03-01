@@ -160,6 +160,10 @@ export class TaskService {
     this.editTask$.next(task);
   }
 
+  setTask(task: Task):void {
+    this.task$.next(task);
+  }
+
   setEditTaskModal(task: Task): void {
     this.editTaskModal$.next(true);
     this.editTask$.next(task);

@@ -25,6 +25,7 @@ module.exports = function (app) {
             }
             TaskHistory.findById(comment._id)
                 .populate('user', 'first last')
+                .populate('developer', 'first last')
                 .lean()
                 .exec(function (err, comment) {
                     if (err) {
@@ -53,6 +54,7 @@ module.exports = function (app) {
         TaskHistory.find(query)
             .populate('user', 'first last')
             .populate('developer', 'first last')
+            .lean()
             .sort('-updatedAt')
             .exec(function (err, messages) {
                 if (err) {
