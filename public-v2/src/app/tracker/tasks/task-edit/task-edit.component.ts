@@ -1,10 +1,11 @@
-import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input, ViewContainerRef} from '@angular/core';
 
 import {Task} from '../../models/task';
 import {TaskStatus} from '../../models/task-status';
 import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
+import {ToastsManager} from "ng2-toastr";
 
 @Component({
   selector: 'app-task-edit',
@@ -20,27 +21,42 @@ export class TasksEditComponent implements OnInit {
   modalMode: boolean = false;
 
   constructor(private taskService: TaskService,
-              private taskStatusService: TaskStatusService) {
+              private taskStatusService: TaskStatusService,
+              public vcr: ViewContainerRef,
+              public toastr: ToastsManager) {
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
+    this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
     this.taskService.task$.subscribe((task) => {
-      this.parentTask = task ? task : null;
+      this.parentTaskId = task && task._id ? task._id : null;
+      this.initTask();
 
-      this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
       this.taskService.editTask$.subscribe((task) => {
-        this.task = task ? task : new Task();
 
-        if (this.task && !this.task.parentTaskId && this.parentTask) {
-          this.task.parentTaskId = this.parentTask && this.parentTask._id;
+        if (task) {
+          this.task = task ? task : new Task();
+          let editTaskId = task && task._id ? task._id : null;
+          let mainTaskId = this.parentTaskId;
+          let parentTask = null;
+
+          if (editTaskId) {
+            parentTask = editTaskId === mainTaskId ? null : mainTaskId;
+          } else {
+            parentTask = mainTaskId;
+          }
+
+          if (this.task && !this.task.parentTaskId) {
+            this.task.parentTaskId = parentTask;
+          }
         }
-
-        this.taskStatusService
-          .getTaskStatusList()
-          .subscribe(taskStatusList => this.statuses = taskStatusList);
       });
     });
 
+    this.taskStatusService
+      .getTaskStatusList()
+      .subscribe(taskStatusList => this.statuses = taskStatusList);
   }
 
   initTask(): void {
@@ -71,7 +87,7 @@ export class TasksEditComponent implements OnInit {
     });
   }
 
-  onMove(task: Task):void {
+  onMove(task: Task): void {
     this.taskMoveToggle = false;
     this.closeModal();
     this.taskService.editTaskUpdated$.next({task: task, status: 'move'});
@@ -94,11 +110,15 @@ export class TasksEditComponent implements OnInit {
 
   handleOnUpload(file: any): void {
     this.task.files.push(file);
+    this.toastr.success('Saved');
   }
 
   handleOnDelete(file: any): void {
     this.taskService.deleteFile(file, this.task)
-      .subscribe(() => this.task.files.splice(this.task.files.indexOf(file), 1))
+      .subscribe(() => {
+        this.task.files.splice(this.task.files.indexOf(file), 1);
+        this.toastr.error('Deleted');
+      })
   }
 
   showTaskMove(): void {

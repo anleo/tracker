@@ -3,6 +3,7 @@
     <div class="btn-group board-buttons" role="group">
       <button class="btn btn-default btn-sm"
               *ngFor="let board of boards"
+              [ngClass]="{'active': currentBoard == board}"
               (click)="onChangeBoard(board)">
         {{board.title}}
       </button>
@@ -23,11 +24,15 @@
   </div>
 
   <div class="clearfix">
-    <div *ngIf="currentBoard.name == 'board'">
+    <div
+      *ngIf="currentBoard.name == 'board'">
       <board-view [tasks]="tasks"></board-view>
     </div>
     <div *ngIf="currentBoard.name == 'list'">
       <list-view [tasks]="tasks"></list-view>
+    </div>
+    <div *ngIf="currentBoard.name == 'tree'">
+      <tree-view [tasks]="tasks"></tree-view>
     </div>
   </div>
 </div>
