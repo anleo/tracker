@@ -927,3 +927,11 @@ hr {
 .modal form {
   padding: 30px;
 }
+
+.edit-form.show {
+  display: block;
+}
+
+.edit-form.hide {
+  display: none;
+}
