@@ -1,6 +1,6 @@
 <ul class="detail-line task-metrics">
 
-  <li tooltip="Status" class="nobg" placement="top">
+  <li tooltip="Status" class="nobg" placement="top" *ngIf="options">
         <span class="label" [ngClass]="[setLabelClass()]">
             {{task.status || 'new'}}
         </span>

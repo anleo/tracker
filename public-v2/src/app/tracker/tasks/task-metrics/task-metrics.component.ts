@@ -1,18 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Task} from "../../models/task";
 
 @Component({
   selector: 'app-task-metrics',
   templateUrl: './task-metrics.component.html'
 })
-export class TaskMetricsComponent implements OnInit{
+export class TaskMetricsComponent {
   @Input() task: Task;
+  @Input() options: boolean;
   metricsDetails: number;
-  options:any;
-
-  ngOnInit(){
-    console.log('task', this.task);
-  }
 
   public setLabelClass(): string {
     let className = 'label-info';

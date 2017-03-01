@@ -117,6 +117,10 @@ export class TaskService {
     this.tasks$.next(tasks);
   }
 
+  setTask(task: Task):void {
+    this.task$.next(task);
+  }
+
   setEditTask(task: Task):void {
     this.editTask$.next(task);
   }
