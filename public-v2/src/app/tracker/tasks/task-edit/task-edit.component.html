@@ -137,7 +137,7 @@
       <task-move
         *ngIf="taskMoveToggle"
         [task]="task"
-        (onMove)="onMove(task)"></task-move>
+        (onMove)="onMove($event)"></task-move>
     </div>
   </div>
 

@@ -123,14 +123,19 @@ export class TaskService {
 
     let taskId = task && task._id ? task._id : null;
 
-    if (task._id === (this.task && this.task._id)) {
+    if (taskId === (this.task && this.task._id)) {
       this.task$.next(task);
       this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
     } else {
       let taskFound = this.tasks && this.tasks.find((_task) => _task._id === taskId);
       if (taskFound) {
-        let tasks = this.tasks.filter(item => item._id !== taskId);
-        this.reloadTasks(task, tasks);
+        this.tasks = this.tasks.filter(item => item._id !== taskId);
+        if (this.task && this.task._id) {
+          this.getTask(this.task._id).subscribe((task) => this.task$.next(task));
+          this.loadTasks(this.task._id).subscribe((tasks) => this.tasks$.next(tasks));
+        } else {
+          this.getTasks().subscribe((tasks) => this.tasks$.next(tasks));
+        }
       }
     }
   }
