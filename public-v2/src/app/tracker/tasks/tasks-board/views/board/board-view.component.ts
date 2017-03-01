@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 
-import {TaskService} from "../../services/task.service";
-import {TaskStatusService} from "../../services/task-status.service";
-import {BoardBaseComponent} from "./board-base.component";
+import {TaskService} from "../../../../services/task.service";
+import {TaskStatusService} from "../../../../services/task-status.service";
+import {BoardBaseComponent} from "../../board-base.component";
 
 @Component({
   selector: 'board-view',
