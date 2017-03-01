@@ -107,5 +107,11 @@ export class TaskResource extends Resource {
     url: '/api/users/{!userId}/tasks',
     isArray: true
   })
-  getUserTasks: ResourceMethod<{userId: string}, Task[]>
+  getUserTasks: ResourceMethod<{userId: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/search?query={!query}',
+    isArray: true
+  })
+  search: ResourceMethod<any, Task[]>;
 }

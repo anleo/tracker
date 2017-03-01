@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
-import { ElasticModule } from 'angular2-elastic';
+import {ElasticModule} from 'angular2-elastic';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -33,10 +33,10 @@ import {TaskTeamComponent} from "./tasks/components/task-team/task-team.componen
 import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-developer/task-assign-developer.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
-import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
-import { UploaderComponent } from './tasks/uploader/uploader.component';
-import { NgUploaderModule } from 'ngx-uploader';
-import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
+import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.component';
+import {UploaderComponent} from './tasks/uploader/uploader.component';
+import {NgUploaderModule} from 'ngx-uploader';
+import {FileViewerComponent} from './tasks/file-viewer/file-viewer.component';
 import {FileResourse} from "./resources/file.resource";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import {RoundPipe} from "./pipes/round.pipe";
@@ -61,13 +61,18 @@ import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history
 import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
 
+import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
+import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
+import {TaskSearchService} from "./services/task-search.service";
+import {ROOT_TASKSERVICE} from "../app.tokens";
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     TrackerRoutingModule,
     ToastModule.forRoot(),
-    FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
     TooltipModule.forRoot(),
@@ -121,14 +126,18 @@ import {LinkyModule} from "angular-linky";
     TaskHistoryMetricsComponent,
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
+    TaskSearchDirective,
+    TaskSearchComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
-    TaskService,
+    {provide: ROOT_TASKSERVICE, useExisting: TaskService},
     TaskStatusService,
-    FileResourse
-  ]
+    FileResourse,
+    TaskSearchService
+  ],
+  exports: [TaskSearchDirective]
 })
 export class TrackerModule {
 }

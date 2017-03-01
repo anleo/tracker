@@ -8,10 +8,9 @@ import {PasswordChangeComponent} from "./password-change/password-change.compone
 import {PasswordResetComponent} from "./password-reset/password-reset.component";
 import {AuthResource} from "./auth.resource";
 
-import {BlankComponent} from "../blank/blank.component";
 import {AuthService} from "./auth.service";
 import {RouterModule} from "@angular/router";
-import { LogoutComponent } from './logout/logout.component';
+import {LogoutComponent} from './logout/logout.component';
 
 @NgModule({
   imports: [
@@ -20,7 +19,6 @@ import { LogoutComponent } from './logout/logout.component';
     RouterModule
   ],
   declarations: [
-    BlankComponent,
     LoginComponent,
     RegistrationComponent,
     PasswordChangeComponent,

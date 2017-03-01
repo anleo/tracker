@@ -6,6 +6,7 @@ import {TasksComponent} from "./tasks/tasks.component";
 import {ReportsComponent} from "./reports/reports.component";
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
+import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
 
 const routes: Routes = [
   {
@@ -20,12 +21,17 @@ const routes: Routes = [
     path: 'my',
     component: MyTasksComponent
   },
+
   {
     path: ':taskId',
     component: TaskItemComponent,
     resolve: {
       task: TaskResolver
     },
+  },
+  {
+    path: ':taskId/search/:query',
+    component: TaskSearchComponent
   },
   {
     path: '**',
