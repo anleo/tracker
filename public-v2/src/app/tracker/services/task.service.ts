@@ -160,7 +160,7 @@ export class TaskService {
     this.editTask$.next(task);
   }
 
-  setTask(task: Task):void {
+  setTask(task: Task): void {
     this.task$.next(task);
   }
 

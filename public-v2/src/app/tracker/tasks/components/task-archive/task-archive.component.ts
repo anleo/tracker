@@ -23,15 +23,12 @@ export class TaskArchiveComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
+    let task = this.route.parent.snapshot.data['task'];
 
-    let taskId = this.route.snapshot.params['taskId'];
-    if (taskId) {
-      this.taskService.getArchivedTasks(taskId).subscribe((tasks) => {
+    if (task) {
+      this.taskService.getArchivedTasks(task._id).subscribe((tasks) => {
         this.initTasks(tasks);
-        // TODO @@@id: simplify when we updated routing and we will have task in snapshot
-        this.taskService.getTask(taskId).subscribe((task) => {
-          this.browserTitleService.setTitleWithPrefix('Archive', task.title);
-        });
+        this.browserTitleService.setTitleWithPrefix('Archive', task.title);
       });
     } else {
       this.taskService.getArchivedProjects().subscribe((tasks) => this.initTasks(tasks))
