@@ -30,9 +30,9 @@
 
 <task-history *ngIf="showHistory" [task]="task"></task-history>
 
+<div >
+  <app-task-edit [hidden]="showHistory" class="edit-form"></app-task-edit>
 <div *ngIf="!showHistory">
-  <app-task-edit class="edit-form"></app-task-edit>
-
   <div>
     <div *ngIf="task && task._id" class="pull-right board-buttons btn-group" role="group">
       <!--<a *ngIf="tasks && tasks.length" class="btn btn-sm btn-default" ui-sref="app.tags-page({taskId: task._id})">Tags</a>-->
@@ -56,4 +56,6 @@
       <h4>No active tasks.</h4>
     </div>
   </div>
+</div>
+
 </div>
