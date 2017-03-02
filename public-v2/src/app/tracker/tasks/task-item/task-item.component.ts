@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
+import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 
 @Component({
   selector: 'app-task-item',
@@ -18,7 +19,8 @@ export class TaskItemComponent implements OnInit {
   showHistory: boolean = false;
 
   constructor(private route: ActivatedRoute,
-              private taskService: TaskService) {
+              private taskService: TaskService,
+              private browserTitleService: BrowserTitleService) {
   }
 
   ngOnInit() {
@@ -48,10 +50,17 @@ export class TaskItemComponent implements OnInit {
     this.tasks = [];
 
     this.task = task;
+    this.task && this.browserTitleService.setTitle(this.task.title);
     let taskId = task && task._id ? task._id : null;
 
     this.loadTasks(taskId).subscribe(tasks => this.taskService.tasks$.next(tasks));
-    taskId && this.taskService.getRoot(taskId).subscribe((root) => this.root = root);
+    taskId && this.taskService.getRoot(taskId).subscribe((root) => {
+      this.root = root;
+
+      if (this.root._id !== this.task._id) {
+        this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
+      }
+    });
 
     if (task && task.parentTaskId) {
       this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);

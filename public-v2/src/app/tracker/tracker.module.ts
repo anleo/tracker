@@ -49,17 +49,19 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
 import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
-import { CommentsComponent } from './tasks/task-comments/task-comments.component';
-import { TaskHistoryComponent } from './tasks/task-history/task-history.component';
-import { TaskHistoryCommentComponent } from './tasks/task-history/task-history-comment/task-history-comment.component';
-import { TaskHistoryDeveloperComponent } from './tasks/task-history/task-history-developer/task-history-developer.component';
-import { TaskHistoryComplexityComponent } from './tasks/task-history/task-history-complexity/task-history-complexity.component';
-import { TaskHistoryDescriptionComponent } from './tasks/task-history/task-history-description/task-history-description.component';
-import { TaskHistoryMetricsComponent } from './tasks/task-history/task-history-metrics/task-history-metrics.component';
-import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
-import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
+import {CommentsComponent} from './tasks/task-comments/task-comments.component';
+import {TaskHistoryComponent} from './tasks/task-history/task-history.component';
+import {TaskHistoryCommentComponent} from './tasks/task-history/task-history-comment/task-history-comment.component';
+import {TaskHistoryDeveloperComponent} from './tasks/task-history/task-history-developer/task-history-developer.component';
+import {TaskHistoryComplexityComponent} from './tasks/task-history/task-history-complexity/task-history-complexity.component';
+import {TaskHistoryDescriptionComponent} from './tasks/task-history/task-history-description/task-history-description.component';
+import {TaskHistoryMetricsComponent} from './tasks/task-history/task-history-metrics/task-history-metrics.component';
+import {TaskHistorySpenttimeComponent} from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
+import {TaskHistoryStatusComponent} from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
+import {BlankComponent} from "../blank/blank.component";
+import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
 
 import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
@@ -81,7 +83,11 @@ import {ROOT_TASKSERVICE} from "../app.tokens";
     ElasticModule,
     LinkyModule
   ],
+  exports: [
+    BlankComponent
+  ],
   declarations: [
+    BlankComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
@@ -126,6 +132,8 @@ import {ROOT_TASKSERVICE} from "../app.tokens";
     TaskHistoryMetricsComponent,
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
+    TaskArchiveComponent,
+    MetricsInEditorComponent
     TaskArchiveComponent,
     TaskSearchDirective,
     TaskSearchComponent

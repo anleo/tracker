@@ -13,8 +13,7 @@ import {AuthModule} from "./auth/auth.module";
 import {UserModule} from "./user/user.module";
 import {HttpService} from "./services/http.service";
 import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
-import {BlankComponent} from "./blank/blank.component";
-
+import {BrowserTitleService} from "./services/browser-title/browser-title.service";
 import {TaskService} from "./tracker/services/task.service";
 import {TaskSearchDirective} from "./tracker/tasks/task-search/task-search.directive";
 
@@ -24,8 +23,7 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
 
 @NgModule({
   declarations: [
-    AppComponent,
-    BlankComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -45,8 +43,9 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
       deps: [XHRBackend, RequestOptions, Router]
     },
     HttpService,
-    CanActivatePublicGuard,
     TaskService,
+    BrowserTitleService,
+    CanActivatePublicGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: [TaskSearchDirective]
