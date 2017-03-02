@@ -35,6 +35,6 @@
   <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt | date:'yyyy/MM/dd HH:mm:ss'}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt | fromNow }}
   </li>
   <li *ngIf="task.files.length > 0" tooltip="Attachments" placement="top"><i class="fa fa-paperclip"></i>{{task.files.length}}</li>
-  <li *ngIf="task.commentsCounter"><i class="fa fa-comment"></i>&nbsp;<span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span></li>
+  <li *ngIf="task.commentsCounter" (click)="$event.stopPropagation();"><i class="fa fa-comment"></i>&nbsp;<span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span></li>
 </ul>
 
