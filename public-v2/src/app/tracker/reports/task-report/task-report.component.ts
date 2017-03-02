@@ -21,7 +21,6 @@ export class TaskReportComponent implements OnInit {
   tasks: Task[] = [];
   taskId: string;
   showDatePicker: boolean = false;
-  showMetrics: boolean = false;
   TaskStatus = TaskStatus;
   team: Array<{id: string, text: string}> = [];
   developer: Array<{id: string, text: string}> = [];
@@ -64,10 +63,6 @@ export class TaskReportComponent implements OnInit {
 
   toggleDatePicker(): void {
     this.showDatePicker = !this.showDatePicker;
-  }
-
-  toggleMetrics(): void {
-    this.showMetrics = !this.showMetrics;
   }
 
   onClose(): void {
