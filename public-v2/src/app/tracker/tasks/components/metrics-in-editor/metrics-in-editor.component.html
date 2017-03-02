@@ -1,0 +1,7 @@
+<ul ng-if="task.simple" class="task-metrics pull-right edit-panel-metrics-info">
+  <li>
+    <i class="fa fa-clock-o" tooltip="Time"></i>&nbsp;<span tooltip="Estimated" class="text-right">{{task.estimatedTime | round}}</span>
+    / <span tooltip="Spent" class="text-right">{{task.spenttime | round}}</span>
+    / <span tooltip="TODO" [ngClass]="{'warning-text' : (task.timeToDo | round) < 0}" class="text-right">{{task.timeToDo | round}}</span>
+  </li>
+</ul>

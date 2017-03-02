@@ -6,7 +6,6 @@ import {Task} from '../models/task';
 import {TaskWithStatus} from '../models/task-with-status';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
-import {FileResourse} from "../resources/file.resource";
 import {Router} from "@angular/router";
 import {HistoryMessage} from "../models/history-message";
 
@@ -25,7 +24,6 @@ export class TaskService {
   editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
 
   constructor(private taskResource: TaskResource,
-              private fileResource: FileResourse,
               private router: Router) {
     this.task$.subscribe((task: Task) => this.task = task);
 
@@ -227,7 +225,7 @@ export class TaskService {
   }
 
   deleteFile(file: any, task: Task): Observable <any> {
-    return this.fileResource.delete({taskId: task._id, fileId: file._id})
+    return this.taskResource.deleteTaskFile({taskId: task._id, fileId: file._id})
       .$observable;
   }
 
@@ -270,6 +268,11 @@ export class TaskService {
   getArchivedTasks(taskId: string): Observable <Task[]> {
     return this.taskResource
       .getArchivedTasks({taskId: taskId})
+      .$observable
+  }
+
+  getTaskMetrics(task: Task): Observable <Task> {
+    return this.taskResource.getTaskMetrics(task,{taskId: task._id})
       .$observable
   }
 }

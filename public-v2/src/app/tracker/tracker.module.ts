@@ -33,11 +33,10 @@ import {TaskTeamComponent} from "./tasks/components/task-team/task-team.componen
 import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-developer/task-assign-developer.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
-import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.component';
-import {UploaderComponent} from './tasks/uploader/uploader.component';
-import {NgUploaderModule} from 'ngx-uploader';
-import {FileViewerComponent} from './tasks/file-viewer/file-viewer.component';
-import {FileResourse} from "./resources/file.resource";
+import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
+import { UploaderComponent } from './tasks/uploader/uploader.component';
+import { NgUploaderModule } from 'ngx-uploader';
+import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
@@ -62,6 +61,7 @@ import {TaskHistoryStatusComponent} from './tasks/task-history/task-history-stat
 import {LinkyModule} from "angular-linky";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
 import {BlankComponent} from "../blank/blank.component";
+import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
 
 @NgModule({
   imports: [
@@ -127,14 +127,14 @@ import {BlankComponent} from "../blank/blank.component";
     TaskHistoryMetricsComponent,
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
-    TaskArchiveComponent
+    TaskArchiveComponent,
+    MetricsInEditorComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService,
-    FileResourse
+    TaskStatusService
   ]
 })
 export class TrackerModule {
