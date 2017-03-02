@@ -1,4 +1,5 @@
 <ul class="detail-line task-metrics">
+
   <li tooltip="Status" class="nobg" placement="top" *ngIf="showStatus">
         <span class="label" [ngClass]="[setLabelClass()]">
             {{task.status || 'new'}}
@@ -51,6 +52,15 @@
   </li>
 
   <li *ngIf="(metricsDetails == 2) && task.commentsCounter">
+    <i class="fa fa-comment"></i>&nbsp;
+    <span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span>
+  </li>
+
+  <li *ngIf="task.files.length > 0" tooltip="Attachments" placement="top">
+    <i class="fa fa-paperclip"></i>{{task.files.length}}
+  </li>
+
+  <li *ngIf="task.commentsCounter" (click)="$event.stopPropagation();">
     <i class="fa fa-comment"></i>&nbsp;
     <span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span>
   </li>

@@ -904,8 +904,8 @@ hr {
   transition: width 3s ease !important;
 }
 
-.history-message-wrapper {
-  background-color: #fff;
+.well {
+  background-color: #fff!important;
 }
 
 .date-history-message{
