@@ -24,7 +24,6 @@ export class TaskService {
   editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
 
   constructor(private taskResource: TaskResource,
-              private fileResource: FileResourse,
               private router: Router) {
     this.task$.subscribe((task: Task) => this.task = task);
 
