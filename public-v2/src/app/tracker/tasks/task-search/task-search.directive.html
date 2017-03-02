@@ -1,0 +1,16 @@
+<form class="form-inline nav-bar-search"
+      (ngSubmit)="searchQuery(query)">
+  <div class="form-group">
+    <input type="text"
+           name="query"
+           [(ngModel)]="query"
+           [formControl]="queryControl"
+           (focus)="focused = true"
+           (blur)="focused = false"
+           [ngClass]="{'active':focused === true}"
+           class="form-control"
+           placeholder="Search"/>
+    <!--@@@@ TODO check what's possible to implement-->
+    <!--[ngModelOptions]="{ updateOn: 'default blur', debounce: { 'default': 10000, 'blur': 1 } }"-->
+  </div>
+</form>

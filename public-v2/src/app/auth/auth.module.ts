@@ -10,7 +10,7 @@ import {AuthResource} from "./auth.resource";
 
 import {AuthService} from "./auth.service";
 import {RouterModule} from "@angular/router";
-import { LogoutComponent } from './logout/logout.component';
+import {LogoutComponent} from './logout/logout.component';
 
 @NgModule({
   imports: [

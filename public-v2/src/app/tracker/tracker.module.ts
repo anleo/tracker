@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
 import {ElasticModule} from 'angular2-elastic';
@@ -33,10 +33,10 @@ import {TaskTeamComponent} from "./tasks/components/task-team/task-team.componen
 import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-developer/task-assign-developer.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
-import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
-import { UploaderComponent } from './tasks/uploader/uploader.component';
-import { NgUploaderModule } from 'ngx-uploader';
-import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
+import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.component';
+import {UploaderComponent} from './tasks/uploader/uploader.component';
+import {NgUploaderModule} from 'ngx-uploader';
+import {FileViewerComponent} from './tasks/file-viewer/file-viewer.component';
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
@@ -64,13 +64,17 @@ import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive
 import {BlankComponent} from "../blank/blank.component";
 import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
 
+import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
+import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
+import {TaskSearchService} from "./services/task-search.service";
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     TrackerRoutingModule,
     ToastModule.forRoot(),
-    FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
     TooltipModule.forRoot(),
@@ -80,6 +84,7 @@ import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/met
     LinkyModule
   ],
   exports: [
+    TaskSearchDirective,
     BlankComponent
   ],
   declarations: [
@@ -130,13 +135,17 @@ import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/met
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
     TaskArchiveComponent,
-    MetricsInEditorComponent
+    MetricsInEditorComponent,
+    TaskArchiveComponent,
+    TaskSearchDirective,
+    TaskSearchComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService
+    TaskStatusService,
+    TaskSearchService
   ]
 })
 export class TrackerModule {

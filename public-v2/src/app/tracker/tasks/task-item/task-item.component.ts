@@ -1,10 +1,11 @@
 import {ActivatedRoute, Params} from "@angular/router";
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
+import {ROOT_TASKSERVICE} from "../../../app.tokens";
 
 @Component({
   selector: 'app-task-item',
@@ -20,7 +21,8 @@ export class TaskItemComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private taskService: TaskService,
-              private browserTitleService: BrowserTitleService) {
+              private browserTitleService: BrowserTitleService,
+              @Inject(ROOT_TASKSERVICE) private rootTaskService) {
   }
 
   ngOnInit() {
@@ -42,6 +44,7 @@ export class TaskItemComponent implements OnInit {
   private initTaskData(task) {
     this.init(task);
     this.taskService.task$.next(task);
+    this.rootTaskService.task$.next(task);
   }
 
   init(task) {

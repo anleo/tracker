@@ -8,6 +8,7 @@ import {TaskItemComponent} from "./tasks/task-item/task-item.component";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
 import {TaskReportComponent} from "./reports/task-report/task-report.component";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
+import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
 import {BlankComponent} from "../blank/blank.component";
 
 const routes: Routes = [
@@ -36,7 +37,11 @@ const routes: Routes = [
     children: [
       {path: '', component: TaskItemComponent},
       {path: 'archive', component: TaskArchiveComponent},
-      {path: 'report', component: TaskReportComponent}
+      {path: 'report', component: TaskReportComponent},
+      {
+        path: 'search/:query',
+        component: TaskSearchComponent
+      },
     ]
   },
   {
