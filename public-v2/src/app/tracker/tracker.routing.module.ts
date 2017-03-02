@@ -7,6 +7,7 @@ import {ReportsComponent} from "./reports/reports.component";
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
+import {BlankComponent} from "../blank/blank.component";
 
 const routes: Routes = [
   {
@@ -27,14 +28,14 @@ const routes: Routes = [
   },
   {
     path: ':taskId',
-    component: TaskItemComponent,
+    component: BlankComponent,
     resolve: {
       task: TaskResolver
-    }
-  },
-  {
-    path: ':taskId/archive',
-    component: TaskArchiveComponent
+    },
+    children: [
+      {path: '', component: TaskItemComponent},
+      {path: 'archive', component: TaskArchiveComponent},
+    ]
   },
   {
     path: '**',

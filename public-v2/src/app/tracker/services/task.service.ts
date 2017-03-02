@@ -158,7 +158,7 @@ export class TaskService {
     this.editTask$.next(task);
   }
 
-  setTask(task: Task):void {
+  setTask(task: Task): void {
     this.task$.next(task);
   }
 
@@ -268,6 +268,11 @@ export class TaskService {
   getArchivedTasks(taskId: string): Observable <Task[]> {
     return this.taskResource
       .getArchivedTasks({taskId: taskId})
+      .$observable
+  }
+
+  getTaskMetrics(task: Task): Observable <Task> {
+    return this.taskResource.getTaskMetrics(task,{taskId: task._id})
       .$observable
   }
 }
