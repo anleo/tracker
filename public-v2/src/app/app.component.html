@@ -36,9 +36,9 @@
           <li *ngIf="!user"><a [routerLink]="['/app/register']">Register</a></li>
           <li *ngIf="user"><a [routerLink]="['/app/logout']">Logout</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" *ngIf="taskId">
           <li>
-            <div task-search></div>
+            <task-search></task-search>
           </li>
         </ul>
       </div>

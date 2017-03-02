@@ -120,6 +120,11 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getArchivedProjects: ResourceMethod<any, Task[]>;
+  @ResourceAction({
+    path: '/{!taskId}/search?query={!query}',
+    isArray: true
+  })
+  search: ResourceMethod<any, Task[]>;
 
   @ResourceAction({
     method: RequestMethod.Delete,
