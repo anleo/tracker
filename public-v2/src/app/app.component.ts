@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
-import {Router} from "@angular/router";
+import {Router, NavigationStart} from "@angular/router";
 
 import {User} from "./user/models/user";
 import {UserService} from "./user/services/user.service";
@@ -25,7 +25,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
-      this.browserTitleService.getTitleByUrl(event.url);
+      if (event instanceof NavigationStart) {
+        this.browserTitleService.getTitleByUrl(event.url);
+      }
     });
 
     this.userService.user$.subscribe((user) => {
