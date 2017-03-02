@@ -27,24 +27,31 @@ export class TaskSpentTimeComponent implements OnInit {
   }
 
   resetTime() {
+    this.flag = 0;
     this.task.spenttime = this.oldSpentTime;
     this.addedSpentTime = null;
     this.taskService.setEditTask(this.task);
   }
 
-  addTime(time: TaskTime) {
-    this.addedSpentTime += time.value;
-    if (time.name === '5m') {
-      this.flag++;
-      if (this.flag === 3) {
-        this.addedSpentTime = Math.floor(this.addedSpentTime * 100) / 100;
-        this.flag = 0;
-      } else {
-        this.addedSpentTime = Math.floor(this.addedSpentTime * 1000) / 1000;
-      }
+  fixSpenttimeMathematicalError(addedTime: number): number {
+    this.flag++;
+    if (this.flag === 3) {
+      addedTime = Math.floor(addedTime * 100) / 100;
+      this.flag = 0;
+    } else {
+      addedTime = Math.floor(addedTime * 1000) / 1000;
     }
+    return addedTime;
+  }
 
-    this.task.spenttime += this.addedSpentTime;
+  addTime(time: TaskTime) {
+    if (time.name === '5m') {
+      this.addedSpentTime += this.fixSpenttimeMathematicalError(time.value);
+    } else {
+      this.addedSpentTime += time.value;
+    }
+    this.addedSpentTime = Math.ceil(this.addedSpentTime * 1000) / 1000;
+    this.task.spenttime = this.addedSpentTime;
     this.taskService.setEditTask(this.task);
   }
 
