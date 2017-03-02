@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^2.3.1",
     "@angular/platform-browser-dynamic": "^2.3.1",
     "@angular/router": "^3.3.1",
+    "@types/socket.io-client": "^1.4.29",
     "angular-linky": "^1.2.2",
     "angular2-elastic": "^0.13.0",
     "angular2-fontawesome": "~0.8.0",
@@ -35,6 +36,7 @@
     "ng2-toastr": "^1.4.1",
     "ngx-uploader": "^2.2.0",
     "rxjs": "^5.0.1",
+    "socket.io-client": "^1.4.8",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.7.2"
   },
