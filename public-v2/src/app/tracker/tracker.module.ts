@@ -84,6 +84,7 @@ import {ROOT_TASKSERVICE} from "../app.tokens";
     LinkyModule
   ],
   exports: [
+    TaskSearchDirective,
     BlankComponent
   ],
   declarations: [
@@ -133,7 +134,7 @@ import {ROOT_TASKSERVICE} from "../app.tokens";
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
     TaskArchiveComponent,
-    MetricsInEditorComponent
+    MetricsInEditorComponent,
     TaskArchiveComponent,
     TaskSearchDirective,
     TaskSearchComponent
@@ -144,8 +145,7 @@ import {ROOT_TASKSERVICE} from "../app.tokens";
     {provide: ROOT_TASKSERVICE, useExisting: TaskService},
     TaskStatusService,
     TaskSearchService
-  ],
-  exports: [TaskSearchDirective]
+  ]
 })
 export class TrackerModule {
 }
