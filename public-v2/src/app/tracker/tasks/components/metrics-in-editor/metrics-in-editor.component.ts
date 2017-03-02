@@ -4,10 +4,10 @@ import {Task} from "../../../models/task";
 import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
-  selector: 'editor-metrics',
-  templateUrl: './editor-metrics.component.html'
+  selector: 'metrics-in-editor',
+  templateUrl: 'metrics-in-editor.component.html'
 })
-export class EditorMetricsComponent implements OnInit {
+export class MetricsInEditorComponent implements OnInit {
   task: Task;
   parentTaskId: string;
   previousComplexity: number = 0;
@@ -16,8 +16,8 @@ export class EditorMetricsComponent implements OnInit {
   constructor(private taskService: TaskService) {
   }
 
-  getTaskMetrics(task: Task, id: string): void {
-    this.taskService.getTaskMetrics(task, id)
+  getTaskMetrics(task: Task): void {
+    this.taskService.getTaskMetrics(task)
       .subscribe((task) => this.taskService.setEditTask(task))
   }
 
@@ -37,7 +37,7 @@ export class EditorMetricsComponent implements OnInit {
 
           if (task.complexity && this.previousComplexity !== task.complexity) {
             this.previousComplexity = task.complexity;
-            this.getTaskMetrics(this.task, task._id);
+            this.getTaskMetrics(this.task);
           }
         }
       );
