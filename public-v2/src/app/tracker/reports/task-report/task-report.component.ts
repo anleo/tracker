@@ -32,11 +32,7 @@ export class TaskReportComponent implements OnInit {
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // let taskId = this.route.snapshot.params['taskId'];
-    this.taskId = '551540d7210f64444cde2327';
-    // let userId = '5514462ae4eb270b4f115c2c';
-    let userId = '';
-    // let date = this.date.toString();
+    this.taskId = this.route.parent.snapshot.params['taskId'];
 
     this.contextTaskService
       .getTaskTeam(this.taskId)
@@ -48,9 +44,12 @@ export class TaskReportComponent implements OnInit {
 
     this.userService.get()
       .map(user => this.prepareUser([user]))
-      .subscribe(user => this.developer = user);
+      .map(user => this.developer = user)
+      .subscribe(user => {
+        let developer = this.getDeveloper();
 
-    this.initTasks(this.taskId, this.date.toString(), userId);
+        this.initTasks(this.taskId, this.date.toString(), developer.id);
+      });
   }
 
   initTasks(taskId, date, userId): void {

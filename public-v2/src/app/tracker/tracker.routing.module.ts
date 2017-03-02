@@ -20,10 +20,6 @@ const routes: Routes = [
     component: CommonReportComponent
   },
   {
-    path: 'reports2',
-    component: TaskReportComponent
-  },
-  {
     path: 'my',
     component: MyTasksComponent
   },
@@ -40,7 +36,7 @@ const routes: Routes = [
     children: [
       {path: '', component: TaskItemComponent},
       {path: 'archive', component: TaskArchiveComponent},
-      {path: 'reports', component: TaskReportComponent}
+      {path: 'report', component: TaskReportComponent}
     ]
   },
   {
