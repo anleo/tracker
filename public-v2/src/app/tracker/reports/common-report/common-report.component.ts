@@ -4,6 +4,7 @@ import {Task} from "../../models/task";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskStatus} from "../../models/task-status";
 import * as moment from 'moment/moment';
+import {Location} from "@angular/common";
 
 @Component({
   templateUrl: 'common-report.component.html',
@@ -19,7 +20,8 @@ export class CommonReportComponent implements OnInit {
   TaskStatus = TaskStatus;
 
   constructor(private contextTaskService: TaskService,
-              private taskStatusService: TaskStatusService) {}
+              private taskStatusService: TaskStatusService,
+              private location: Location) {}
 
   ngOnInit(): void {
     this.contextTaskService

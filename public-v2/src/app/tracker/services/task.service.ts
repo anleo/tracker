@@ -210,10 +210,13 @@ export class TaskService {
   getTaskReportByDate(date: string): Observable <Task[]> {
     return this.taskResource
       .getTaskReportByDate({date: date})
-      .$observable
-      .catch((err) => {
-        return Observable.throw(err);
-      });
+      .$observable;
+  }
+
+  getTaskReportByTask(taskId: string, date: string, userId: string): Observable <Task[]> {
+    return this.taskResource
+      .getTaskReportByTask({taskId: taskId, date: date, userId: userId})
+      .$observable;
   }
 
   getTaskTeam(taskId: string): Observable <User[]> {

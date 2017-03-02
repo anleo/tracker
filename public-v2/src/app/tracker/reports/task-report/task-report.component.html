@@ -33,6 +33,13 @@
             </datepicker>
           </div>
         </div>
+        <div class="w-sm pull-left">
+          <ng-select *ngIf="team.length"
+                     [items]="team"
+                     [active]="developer"
+                     (selected)="onChangeDeveloper($event)">
+          </ng-select>
+        </div>
       </h5>
 
       <div *ngIf="tasks.length" class="result">

@@ -65,7 +65,14 @@ export class TaskResource extends Resource {
     path: '/report/{!date}',
     isArray: true
   })
-  getTaskReportByDate: ResourceMethod<{date: string}, any>;
+  getTaskReportByDate: ResourceMethod<{date: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/report/{!date}',
+    params: {"userId": "userId"},
+    isArray: true
+  })
+  getTaskReportByTask: ResourceMethod<{taskId: string, date: string, userId: string}, Task[]>;
 
   @ResourceAction({
     path: '/{!taskId}/team',

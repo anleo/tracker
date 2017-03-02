@@ -4,6 +4,10 @@ import {Task} from "../../models/task";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskStatus} from "../../models/task-status";
 import * as moment from 'moment/moment';
+import {ActivatedRoute} from "@angular/router";
+import {User} from "../../../user/models/user";
+import {Location} from "@angular/common";
+import {UserService} from "../../../user/services/user.service";
 
 @Component({
   templateUrl: 'task-report.component.html',
@@ -14,16 +18,44 @@ export class TaskReportComponent implements OnInit {
   date: Date | null = new Date;
   today: Date | null = new Date;
   tasks: Task[] = [];
+  taskId: string;
   showDatePicker: boolean = false;
   showMetrics: boolean = false;
   TaskStatus = TaskStatus;
+  team: Array<{id: string, text: string}> = [];
+  developer: Array<{id: string, text: string}> = [];
 
   constructor(private contextTaskService: TaskService,
-              private taskStatusService: TaskStatusService) {}
+              private taskStatusService: TaskStatusService,
+              private userService: UserService,
+              private location: Location,
+              private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    // let taskId = this.route.snapshot.params['taskId'];
+    this.taskId = '551540d7210f64444cde2327';
+    // let userId = '5514462ae4eb270b4f115c2c';
+    let userId = '';
+    // let date = this.date.toString();
+
     this.contextTaskService
-      .getTaskReportByDate(this.date.toString())
+      .getTaskTeam(this.taskId)
+      .map(users => this.prepareUser(users))
+      .subscribe(users => {
+        this.team = users;
+        this.team.unshift({id: 'all', text: 'All'});
+      });
+
+    this.userService.get()
+      .map(user => this.prepareUser([user]))
+      .subscribe(user => this.developer = user);
+
+    this.initTasks(this.taskId, this.date.toString(), userId);
+  }
+
+  initTasks(taskId, date, userId): void {
+    this.contextTaskService
+      .getTaskReportByTask(taskId, date, userId)
       .subscribe(tasks => {
         this.contextTaskService.setTasks(tasks);
         return this.tasks = tasks;
@@ -44,17 +76,23 @@ export class TaskReportComponent implements OnInit {
 
   onChangeDate(date): void {
     this.date = date;
+    let developer = this.getDeveloper();
     date = this.prepareDate(date);
 
-    this.contextTaskService
-      .getTaskReportByDate(date)
-      .subscribe(tasks => {
-        this.contextTaskService.setTasks(tasks);
-        return this.tasks = tasks;
-      });
+    this.initTasks(this.taskId, date, developer.id);
   }
 
-  getStatusById(id: string) {
+  onChangeDeveloper(developer): void {
+    this.setDeveloper(developer);
+
+    if(developer.id === 'all'){
+      developer.id = '';
+    }
+
+    this.initTasks(this.taskId, this.date.toString(), developer.id);
+  }
+
+  getStatusById(id: string): TaskStatus {
     let status: TaskStatus | null = null;
 
     this.taskStatusService.getById(id)
@@ -64,6 +102,23 @@ export class TaskReportComponent implements OnInit {
       });
 
     return status;
+  }
+
+  private getDeveloper(): {id: string, text: string}  {
+    return this.developer[0];
+  }
+
+  private setDeveloper(developer) {
+    this.developer = [developer];
+
+    return this;
+  }
+
+  private prepareUser(users: User[]): Array<{id: string, text: string}> {
+    let userList = [];
+    users.forEach((user) => userList.push({id: user._id, text: user.name}));
+
+    return userList;
   }
 
   private prepareDate(date): string {
