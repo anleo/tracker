@@ -56,7 +56,7 @@ export class TaskSpentTimeComponent implements OnInit {
 
   addTime(time: TaskTime) {
     this.addedSpentTime = this.calculationAddedSpenttime(time);
-    this.task.spenttime = this.addedSpentTime;
+    this.task.spenttime += this.addedSpentTime;
     this.taskService.setEditTask(this.task);
   }
 
