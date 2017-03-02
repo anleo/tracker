@@ -57,7 +57,7 @@ export class TaskReportComponent implements OnInit {
       .getTaskReportByTask(taskId, date, userId)
       .subscribe(tasks => {
         this.contextTaskService.setTasks(tasks);
-        return this.tasks = tasks;
+        this.tasks = tasks;
       });
   }
 
@@ -90,11 +90,9 @@ export class TaskReportComponent implements OnInit {
   getStatusById(id: string): TaskStatus {
     let status: TaskStatus | null = null;
 
-    this.taskStatusService.getById(id)
-      .subscribe(taskStatus => {
-        status = taskStatus;
-        return taskStatus;
-      });
+    this.taskStatusService
+      .getById(id)
+      .subscribe(taskStatus => status = taskStatus);
 
     return status;
   }
