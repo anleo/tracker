@@ -16,7 +16,7 @@
 </div>
 <div *ngIf="messages && messages.length">
   <div *ngFor="let message of messages">
-    <div class="well history-message-wrapper">
+    <div class="well">
       <task-history-developer *ngIf="message._type == 'TaskDeveloper'" [message]="message"></task-history-developer>
       <task-history-comment *ngIf="message._type == 'TaskComment'"[message]="message"></task-history-comment>
       <task-history-complexity *ngIf="message._type == 'TaskComplexity'" [message]="message"></task-history-complexity>

@@ -9,30 +9,43 @@
       </button>
     </div>
 
-    <!--<button class="btn btn-default btn-sm btn-metrics">-->
-      <!--<i class="fa"></i>-->
-    <!--</button>-->
-    <!--&nbsp;-->
-    <!--<button class="btn btn-default btn-sm btn-metrics" tooltip="Sort By Priority">-->
-      <!--<i class="fa fa-bolt"></i>-->
-    <!--</button>-->
-    <!--&nbsp;-->
-    <!--<button class="btn btn-default btn-sm btn-metrics" tooltip="Sort By Date">-->
-      <!--<i class="fa fa-calendar"></i>-->
-      <!--<i class="fa"></i>-->
-    <!--</button>-->
+    <button class="btn btn-default btn-sm btn-metrics"
+            (click)="changeMetricsView()"
+            [ngClass]="{'btn-warning' : metricsViewType == 1,'btn-info' : metricsViewType == 2}">
+      <i class="fa" [ngClass]="{
+        'fa-circle-o' : metricsViewType == 0,
+        'fa-dot-circle-o' : metricsViewType == 1,
+        'fa-circle' : metricsViewType == 2}">
+      </i>
+    </button>
+    &nbsp;
+    <button class="btn btn-default btn-sm btn-metrics"
+            tooltip="Sort By Priority"
+            (click)="sortByPriority()">
+      <i class="fa fa-bolt"></i>
+    </button>
+    &nbsp;
+    <button class="btn btn-default btn-sm btn-metrics"
+            tooltip="Sort By Date"
+            (click)="sortByDate()">
+      <i class="fa fa-calendar"></i>
+      <i class="fa" [ngClass]="{
+        'fa-long-arrow-down': orderByDate === 'asc',
+        'fa-long-arrow-up': orderByDate === 'desc'}">
+      </i>
+    </button>
   </div>
 
   <div class="clearfix">
     <div
       *ngIf="currentBoard.name == 'board'">
-      <board-view [tasks]="tasks"></board-view>
+      <board-view [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriory} | tasksSort: {field: 'updatedAt', type: orderByDate}"></board-view>
     </div>
     <div *ngIf="currentBoard.name == 'list'">
-      <list-view [tasks]="tasks"></list-view>
+      <list-view [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriory} | tasksSort: {field: 'updatedAt', type: orderByDate}"></list-view>
     </div>
     <div *ngIf="currentBoard.name == 'tree'">
-      <tree-view [tasks]="tasks"></tree-view>
+      <tree-view [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriory} | tasksSort: {field: 'updatedAt', type: orderByDate}"></tree-view>
     </div>
   </div>
 </div>
