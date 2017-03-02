@@ -22,6 +22,8 @@ export class TasksBoardComponent implements OnInit {
   statusTypes: TaskStatus[];
   boards: Board[] = BoardsMock;
   currentBoard: Board;
+  orderByPriory: string = 'desc';
+  orderByDate: string = 'asc';
 
   constructor(private taskStatusService: TaskStatusService) {}
 
@@ -39,5 +41,17 @@ export class TasksBoardComponent implements OnInit {
 
   defaultBoard(): void {
     this.currentBoard = this.boards.find(item => item.name === 'board');
+  }
+
+  sortByPriority(): void {
+    this.orderByPriory = (this.orderByPriory === 'asc')
+      ? 'desc'
+      : 'asc';
+  }
+
+  sortByDate(): void {
+    this.orderByDate = (this.orderByDate === 'asc')
+      ? 'desc'
+      : 'asc';
   }
 }

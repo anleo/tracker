@@ -62,6 +62,7 @@ import {LinkyModule} from "angular-linky";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
 import {BlankComponent} from "../blank/blank.component";
 import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
+import {TasksSortPipe} from "./pipes/tasks-sort.pipe";
 
 @NgModule({
   imports: [
@@ -95,6 +96,7 @@ import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/met
     ListViewComponent,
     TreeViewComponent,
     PanelTreeComponent,
+    TasksSortPipe,
     TaskPanelComponent,
     TaskItemComponent,
     ReportsComponent,
