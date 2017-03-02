@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
+import {FormControl} from "@angular/forms";
 import {Router} from "@angular/router";
 import "rxjs/add/operator/switchMap";
-import {TaskService} from "../../services/task.service";
-import {FormControl} from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
+
+import {ROOT_TASKSERVICE} from "../../../app.tokens";
 
 @Component({
   selector: 'task-search',
@@ -16,7 +17,7 @@ export class TaskSearchDirective implements OnInit {
   queryControl = new FormControl();
 
   constructor(private router: Router,
-              private taskService: TaskService) {
+              @Inject(ROOT_TASKSERVICE) private rootTaskService) {
   }
 
   ngOnInit(): void {
@@ -29,10 +30,10 @@ export class TaskSearchDirective implements OnInit {
   searchQuery(query: string) {
     let q = query ? query : '';
 
-    if (q.length && this.taskService.task) {
-      this.router.navigate(['/app/tasks', this.taskService.task._id, 'search', q]);
+    if (q.length && this.rootTaskService.task) {
+      this.router.navigate(['/app/tasks', this.rootTaskService.task._id, 'search', q]);
     } else {
-      this.router.navigate(['/app/tasks', this.taskService.task._id]);
+      this.router.navigate(['/app/tasks', this.rootTaskService.task._id]);
     }
   }
 }
