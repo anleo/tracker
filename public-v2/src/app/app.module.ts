@@ -16,6 +16,7 @@ import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
 import {BrowserTitleService} from "./services/browser-title/browser-title.service";
 import {TaskService} from "./tracker/services/task.service";
 import {TaskSearchDirective} from "./tracker/tasks/task-search/task-search.directive";
+import {ROOT_TASKSERVICE} from "./app.tokens";
 
 export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
   return new HttpService(xhrBackend, requestOptions, router);
@@ -43,7 +44,7 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
       deps: [XHRBackend, RequestOptions, Router]
     },
     HttpService,
-    TaskService,
+    {provide: ROOT_TASKSERVICE, useExisting: TaskService},
     BrowserTitleService,
     CanActivatePublicGuard
   ],

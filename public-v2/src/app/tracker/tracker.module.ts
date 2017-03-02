@@ -66,7 +66,6 @@ import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/met
 import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
 import {TaskSearchService} from "./services/task-search.service";
-import {ROOT_TASKSERVICE} from "../app.tokens";
 
 @NgModule({
   imports: [
@@ -142,7 +141,7 @@ import {ROOT_TASKSERVICE} from "../app.tokens";
   providers: [
     TaskResolver,
     TaskResource,
-    {provide: ROOT_TASKSERVICE, useExisting: TaskService},
+    TaskService,
     TaskStatusService,
     TaskSearchService
   ]
