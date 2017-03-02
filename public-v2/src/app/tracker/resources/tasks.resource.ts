@@ -122,6 +122,12 @@ export class TaskResource extends Resource {
   getArchivedProjects: ResourceMethod<any, Task[]>;
 
   @ResourceAction({
+    method: RequestMethod.Delete,
+    path: '/{!taskId}/files/{!fileId}'
+  })
+  deleteTaskFile: ResourceMethod<{taskId: string, fileId: string}, any>;
+
+  @ResourceAction({
     method: RequestMethod.Post,
     path: '/{!taskId}/metrics'
   })
