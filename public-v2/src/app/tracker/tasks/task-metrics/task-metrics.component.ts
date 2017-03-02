@@ -7,8 +7,8 @@ import {Task} from "../../models/task";
 })
 export class TaskMetricsComponent {
   @Input() task: Task;
+  @Input() showStatus: boolean;
   metricsDetails: number;
-  options:any;
 
   public setLabelClass(): string {
     let className = 'label-info';

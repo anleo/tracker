@@ -51,7 +51,10 @@
           <ul>
             <li *ngFor="let task of tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_IN_PROGRESS)">
               <span class="status">></span>{{task.title}}
-              <app-task-metrics *ngIf="showMetrics" [task]="task"></app-task-metrics>
+              <app-task-metrics *ngIf="showMetrics"
+                                [task]="task"
+                                [showStatus]="true">
+              </app-task-metrics>
             </li>
           </ul>
         </div>

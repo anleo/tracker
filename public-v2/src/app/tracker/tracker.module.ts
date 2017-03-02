@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
-import { ElasticModule } from 'angular2-elastic';
+import {ElasticModule} from 'angular2-elastic';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -37,7 +37,6 @@ import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.co
 import { UploaderComponent } from './tasks/uploader/uploader.component';
 import { NgUploaderModule } from 'ngx-uploader';
 import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
-import {FileResourse} from "./resources/file.resource";
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
@@ -50,17 +49,20 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
 import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
-import { CommentsComponent } from './tasks/task-comments/task-comments.component';
-import { TaskHistoryComponent } from './tasks/task-history/task-history.component';
-import { TaskHistoryCommentComponent } from './tasks/task-history/task-history-comment/task-history-comment.component';
-import { TaskHistoryDeveloperComponent } from './tasks/task-history/task-history-developer/task-history-developer.component';
-import { TaskHistoryComplexityComponent } from './tasks/task-history/task-history-complexity/task-history-complexity.component';
-import { TaskHistoryDescriptionComponent } from './tasks/task-history/task-history-description/task-history-description.component';
-import { TaskHistoryMetricsComponent } from './tasks/task-history/task-history-metrics/task-history-metrics.component';
-import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
-import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
+import {CommentsComponent} from './tasks/task-comments/task-comments.component';
+import {TaskHistoryComponent} from './tasks/task-history/task-history.component';
+import {TaskHistoryCommentComponent} from './tasks/task-history/task-history-comment/task-history-comment.component';
+import {TaskHistoryDeveloperComponent} from './tasks/task-history/task-history-developer/task-history-developer.component';
+import {TaskHistoryComplexityComponent} from './tasks/task-history/task-history-complexity/task-history-complexity.component';
+import {TaskHistoryDescriptionComponent} from './tasks/task-history/task-history-description/task-history-description.component';
+import {TaskHistoryMetricsComponent} from './tasks/task-history/task-history-metrics/task-history-metrics.component';
+import {TaskHistorySpenttimeComponent} from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
+import {TaskHistoryStatusComponent} from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
 import {TaskReportComponent} from "./reports/task-report/task-report.component";
+import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
+import {BlankComponent} from "../blank/blank.component";
+import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
 
 @NgModule({
   imports: [
@@ -77,7 +79,11 @@ import {TaskReportComponent} from "./reports/task-report/task-report.component";
     ElasticModule,
     LinkyModule
   ],
+  exports: [
+    BlankComponent
+  ],
   declarations: [
+    BlankComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
@@ -123,13 +129,14 @@ import {TaskReportComponent} from "./reports/task-report/task-report.component";
     TaskHistoryMetricsComponent,
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
+    TaskArchiveComponent,
+    MetricsInEditorComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
-    TaskStatusService,
-    FileResourse
+    TaskStatusService
   ]
 })
 export class TrackerModule {
