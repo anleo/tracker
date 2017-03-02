@@ -5,36 +5,63 @@
             {{task.status || 'new'}}
         </span>
   </li>
+
   <li *ngIf="task.archived" class="nobg">
         <span class="label label-default">
             Archived
         </span>
   </li>
 
-  <li *ngIf="task.priority" tooltip="Priority"><i class="fa fa-bolt"></i>&nbsp;{{task.priority}}</li>
+  <li *ngIf="(metricsDetails == 2) && task.priority" tooltip="Priority">
+    <i class="fa fa-bolt"></i>&nbsp;
+    {{task.priority}}
+  </li>
 
   <li>
-    <i class="fa fa-clock-o" tooltip="Time" placement="top"></i>&nbsp;<span
-    tooltip="Estimated {{task.estimatedTime | humanizeTime}}">{{task.estimatedTime | round}}</span>
+    <i class="fa fa-clock-o" tooltip="Time" placement="top"></i>&nbsp;
+    <span tooltip="Estimated {{task.estimatedTime | humanizeTime}}">{{task.estimatedTime | round}}</span>
     / <span tooltip="Spent {{task.spenttime | humanizeTime }}" placement="top">{{task.spenttime | round}}</span>
     / <span tooltip="TODO {{task.timeToDo}}" [ngClass]="{'warning-text' : (task.timeToDo) < 0}" placement="top">{{task.timeToDo|round}}</span>
   </li>
 
   <li tooltip="Complexity / Points" placement="top">
-    <i class="fa fa-puzzle-piece"></i>&nbsp;<span
-    *ngIf="task.simple">{{(task.complexity | humanizeComplexity) || 0}} / </span><span>{{task.points}}p</span>
-  </li>
-  <li *ngIf=" task.velocity" tooltip="Velocity" placement="top"><i class="fa fa-line-chart"></i>&nbsp;{{task.velocity|round}}
-  </li>
-
-  <li *ngIf="task.owner && task.developer.local && task.owner.local.username" tooltip="Owner" placement="top"><i class="fa fa-user-secret"></i>&nbsp;{{task.owner.local.username}}
-  </li>
-  <li *ngIf="task.developer && task.developer.local && task.developer.local.username" tooltip="Developer" placement="top"><i class="fa fa-user"></i>&nbsp;{{task.developer.local.username}}
+    <i class="fa fa-puzzle-piece"></i>&nbsp;
+    <span *ngIf="task.simple">{{(task.complexity | humanizeComplexity) || 0}} / </span>
+    <span>{{task.points}}p</span>
   </li>
 
-  <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt | date:'yyyy/MM/dd HH:mm:ss'}}" placement="top"><i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt | fromNow }}
+  <li *ngIf="(metricsDetails == 2) && task.velocity" tooltip="Velocity" placement="top">
+    <i class="fa fa-line-chart"></i>&nbsp;
+    {{task.velocity|round}}
   </li>
-  <li *ngIf="task.files.length > 0" tooltip="Attachments" placement="top"><i class="fa fa-paperclip"></i>{{task.files.length}}</li>
-  <li *ngIf="task.commentsCounter" (click)="$event.stopPropagation();"><i class="fa fa-comment"></i>&nbsp;<span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span></li>
+
+  <li *ngIf="(metricsDetails == 2) && task.owner && task.developer.local && task.owner.local.username" tooltip="Owner" placement="top">
+    <i class="fa fa-user-secret"></i>&nbsp;{{task.owner.local.username}}
+  </li>
+
+  <li *ngIf="task.developer && task.developer.local && task.developer.local.username" tooltip="Developer" placement="top">
+    <i class="fa fa-user"></i>&nbsp;{{task.developer.local.username}}
+  </li>
+
+  <li *ngIf="task.updatedAt" tooltip="Updated {{task.updatedAt | date:'yyyy/MM/dd HH:mm:ss'}}" placement="top">
+    <i class="fa fa-refresh"></i>&nbsp;{{task.updatedAt | fromNow }}
+  </li>
+
+  <li *ngIf="(metricsDetails == 2) && task.files.length > 0" tooltip="Attachments" placement="top">
+    <i class="fa fa-paperclip"></i>{{task.files.length}}
+  </li>
+
+  <li *ngIf="(metricsDetails == 2) && task.commentsCounter">
+    <i class="fa fa-comment"></i>&nbsp;
+    <span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span>
+  </li>
+
+  <li *ngIf="task.files.length > 0" tooltip="Attachments" placement="top">
+    <i class="fa fa-paperclip"></i>{{task.files.length}}
+  </li>
+
+  <li *ngIf="task.commentsCounter" (click)="$event.stopPropagation();">
+    <i class="fa fa-comment"></i>&nbsp;
+    <span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span>
+  </li>
 </ul>
-
