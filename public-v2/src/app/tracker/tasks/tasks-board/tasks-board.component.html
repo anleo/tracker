@@ -9,10 +9,16 @@
       </button>
     </div>
 
-    <!--<button class="btn btn-default btn-sm btn-metrics">-->
-      <!--<i class="fa"></i>-->
-    <!--</button>-->
-    <!--&nbsp;-->
+    <button class="btn btn-default btn-sm btn-metrics"
+            (click)="changeMetricsView()"
+            [ngClass]="{'btn-warning' : metricsViewType == 1,'btn-info' : metricsViewType == 2}">
+      <i class="fa" [ngClass]="{
+        'fa-circle-o' : metricsViewType == 0,
+        'fa-dot-circle-o' : metricsViewType == 1,
+        'fa-circle' : metricsViewType == 2}">
+      </i>
+    </button>
+    &nbsp;
     <button class="btn btn-default btn-sm btn-metrics"
             tooltip="Sort By Priority"
             (click)="sortByPriority()">

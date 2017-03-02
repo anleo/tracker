@@ -7,6 +7,7 @@ import {BoardViewComponent} from "./views/board/board-view.component";
 import {ListViewComponent} from "./views/list/list-view.component";
 import {Board} from "../../models/board";
 import {BoardsMock} from "../../mocks/boards.mock";
+import {TaskService} from "../../services/task.service";
 
 @Component({
   selector: 'app-tasks-board',
@@ -24,8 +25,12 @@ export class TasksBoardComponent implements OnInit {
   currentBoard: Board;
   orderByPriory: string = 'desc';
   orderByDate: string = 'asc';
+  metricsViewType: number = 2;
 
-  constructor(private taskStatusService: TaskStatusService) {}
+  constructor(
+    private taskStatusService: TaskStatusService,
+    private taskService: TaskService
+  ) {}
 
   ngOnInit() {
     this.taskStatusService
@@ -53,5 +58,15 @@ export class TasksBoardComponent implements OnInit {
     this.orderByDate = (this.orderByDate === 'asc')
       ? 'desc'
       : 'asc';
+  }
+
+  changeMetricsView(): void {
+    if(this.metricsViewType < 2){
+      this.metricsViewType++;
+    }else{
+      this.metricsViewType = 0;
+    }
+
+    this.taskService.setTaskMetricsViewType(this.metricsViewType);
   }
 }
