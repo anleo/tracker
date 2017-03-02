@@ -53,7 +53,7 @@
             >{{status.name}}</label>
           </div>
         </div>
-        <metrics-in-editor *ngIf="task && task._id"></metrics-in-editor>
+        <metrics-in-editor *ngIf="task && task._id && task.simple"></metrics-in-editor>
       </div>
 
         <hr *ngIf="task.simple || task.status == 'accepted'" class="mg"/>

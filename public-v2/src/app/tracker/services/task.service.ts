@@ -15,6 +15,7 @@ export class TaskService {
   tasks: Task[]|null = null;
   editTask: Task|null = null;
   root: Task|null = null;
+  taskMetricsViewType: number = null;
 
   task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
@@ -22,6 +23,8 @@ export class TaskService {
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   editTaskModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
+
+  taskMetricsViewType$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
   constructor(private taskResource: TaskResource,
               private router: Router) {
@@ -31,6 +34,8 @@ export class TaskService {
 
     this.editTask$.subscribe((task: Task) => this.editTask = task);
     this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+
+    this.taskMetricsViewType$.subscribe(type => this.taskMetricsViewType = type);
   }
 
   actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
@@ -160,6 +165,10 @@ export class TaskService {
 
   setTask(task: Task): void {
     this.task$.next(task);
+  }
+
+  setTaskMetricsViewType(type: number): void {
+    this.taskMetricsViewType$.next(type);
   }
 
   setEditTaskModal(task: Task): void {
