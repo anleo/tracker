@@ -218,13 +218,16 @@ export class TaskService {
     return task && task._id ? this.updateTask(task) : this.saveTask(task);
   }
 
-  getTaskReportByDate(date: Date): Observable <Task[]> {
+  getTaskReportByDate(date: string): Observable <Task[]> {
     return this.taskResource
-      .getTaskReportByDate({date: date.toString()})
-      .$observable
-      .catch((err) => {
-        return Observable.throw(err);
-      });
+      .getTaskReportByDate({date: date})
+      .$observable;
+  }
+
+  getTaskReportByTask(taskId: string, date: string, userId: string): Observable <Task[]> {
+    return this.taskResource
+      .getTaskReportByTask({taskId: taskId, date: date, userId: userId})
+      .$observable;
   }
 
   getTaskTeam(taskId: string): Observable <User[]> {
@@ -258,7 +261,7 @@ export class TaskService {
 
   createComment(task: Task, comment: HistoryMessage): Observable <HistoryMessage> {
     return this.taskResource
-      .createCommnent(comment, {taskId: task._id})
+      .createComment(comment, {taskId: task._id})
       .$observable;
   }
 
