@@ -37,6 +37,7 @@ export class TaskArchiveComponent implements OnInit {
 
   initTasks(tasks: Task[]): void {
     this.tasks = tasks;
+    this.taskService.setTasks(tasks);
   }
 
 }
