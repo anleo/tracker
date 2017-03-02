@@ -17,7 +17,7 @@ export class TaskPanelComponent implements OnInit {
 
   ngOnInit() {
     this.taskService.taskMetricsViewType$
-      .map(type => !isNull(type) ? type : 2)
+      .map(type => !isNull(type) ? type : 0)
       .subscribe(type => {
         this.metricsDetails = type;
       })

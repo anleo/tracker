@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
 import {ElasticModule} from 'angular2-elastic';
+import {LocalStorageModule} from 'angular-2-local-storage';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -77,7 +78,11 @@ import {TasksSortPipe} from "./pipes/tasks-sort.pipe";
     NgUploaderModule,
     ProgressbarModule.forRoot(),
     ElasticModule,
-    LinkyModule
+    LinkyModule,
+    LocalStorageModule.withConfig({
+      prefix: '',
+      storageType: 'localStorage'
+    })
   ],
   exports: [
     BlankComponent

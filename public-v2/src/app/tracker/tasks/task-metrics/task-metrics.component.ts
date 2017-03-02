@@ -9,7 +9,6 @@ export class TaskMetricsComponent {
   @Input() task: Task;
   @Input() showStatus: boolean;
   @Input() metricsDetails: number;
-  // metricsDetails: number = 0;
 
   public setLabelClass(): string {
     let className = 'label-info';
