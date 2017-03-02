@@ -26,6 +26,10 @@ export class CommentsComponent implements OnInit {
       .subscribe((comment) => {
         this.savedComment.emit(comment);
         this.comment = new HistoryMessage();
+        this.taskService.getTask(this.task._id)
+          .subscribe((task) => {
+            this.taskService.setTask(task);
+          });
 
       });
   }

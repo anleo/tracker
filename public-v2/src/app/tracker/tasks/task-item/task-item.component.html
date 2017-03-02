@@ -16,7 +16,7 @@
       {{parentTask.title}}</a>
   </h5>
 
-  <app-task-metrics [task]="task" (click)="edit(task)" class="pull-left" ></app-task-metrics>
+  <app-task-metrics [task]="task" [showStatus]="true" (click)="edit(task)" class="pull-left" ></app-task-metrics>
   <a class="btn btn-sm btn-link pull-right" (click)="toggleTaskHistory()">Details</a>
 
   <div class="clearfix"></div>
@@ -30,13 +30,13 @@
 
 <task-history *ngIf="showHistory" [task]="task"></task-history>
 
+<div >
+  <app-task-edit [hidden]="showHistory" class="edit-form"></app-task-edit>
 <div *ngIf="!showHistory">
-  <app-task-edit class="edit-form"></app-task-edit>
-
   <div>
     <div *ngIf="task && task._id" class="pull-right board-buttons btn-group" role="group">
       <!--<a *ngIf="tasks && tasks.length" class="btn btn-sm btn-default" ui-sref="app.tags-page({taskId: task._id})">Tags</a>-->
-      <!--<a class="btn btn-sm btn-default" ui-sref="app.tasks-archive({taskId: task._id})">Archive</a>-->
+      <a class="btn btn-sm btn-default" [routerLink]="['/app/tasks/', task._id, 'archive']">Archive</a>
       <!--<a *ngIf="tasks.length" class="btn btn-sm btn-default"-->
       <!--ui-sref="app.task-report({taskId: task._id, userId: userId})">Report</a>-->
     </div>
@@ -44,9 +44,10 @@
     <!--<div *ngIf="tasks && tasks.length" infinite-scroll="scroll()" infinite-scroll-distance="0"-->
     <!--infinite-scroll-disabled="busyScroll">    -->
     <div *ngIf="tasks && tasks.length">
-      <!--<div class="pull-right board-buttons" *ngIf="!taskId">-->
-        <!--<a class="btn btn-sm btn-default" ui-sref="app.projects-archive">Archive</a>-->
-      <!--</div>-->
+      <div class="pull-right board-buttons" *ngIf="!(task && task._id)">
+        <a class="btn btn-sm btn-default"
+           [routerLink]="['/app/tasks/archived']">Archive</a>
+      </div>
 
       <app-tasks-board *ngIf="tasks && tasks.length" [tasks]="tasks"></app-tasks-board>
     </div>
@@ -57,3 +58,4 @@
   </div>
 </div>
 
+</div>

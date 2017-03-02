@@ -1,3 +1,3 @@
 <metrics-widget *ngIf="tasks.length"></metrics-widget>
-<app-task-edit class="edit-form" *ngIf="editMode"></app-task-edit>
+<app-task-edit class="edit-form" *ngIf="editMode" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 <app-tasks-board [tasks]="tasks"></app-tasks-board>

@@ -1,0 +1,13 @@
+<a (click)="location.back()">
+  <h5>
+    <i class="fa fa-long-arrow-left"></i>
+    Back
+  </h5>
+</a>
+
+<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
+<app-tasks-board [tasks]="tasks" *ngIf="tasks.length"></app-tasks-board>
+
+<div *ngIf="!tasks.length">
+  There are no archived tasks yet.
+</div>
