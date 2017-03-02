@@ -12,8 +12,8 @@ import {Location} from "@angular/common";
 })
 
 export class CommonReportComponent implements OnInit {
-  date: Date | null = new Date;
-  today: Date | null = new Date;
+  date: Date = new Date;
+  today: Date = new Date;
   tasks: Task[] = [];
   showDatePicker: boolean = false;
   showMetrics: boolean = false;

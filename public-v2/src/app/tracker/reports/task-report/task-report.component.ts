@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
+import {Location} from "@angular/common";
+import {ActivatedRoute} from "@angular/router";
+import * as moment from 'moment/moment';
+
 import {TaskService} from "../../services/task.service";
-import {Task} from "../../models/task";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskStatus} from "../../models/task-status";
-import * as moment from 'moment/moment';
-import {ActivatedRoute} from "@angular/router";
+import {Task} from "../../models/task";
 import {User} from "../../../user/models/user";
-import {Location} from "@angular/common";
 import {UserService} from "../../../user/services/user.service";
 
 @Component({
@@ -15,8 +16,8 @@ import {UserService} from "../../../user/services/user.service";
 })
 
 export class TaskReportComponent implements OnInit {
-  date: Date | null = new Date;
-  today: Date | null = new Date;
+  date: Date = new Date;
+  today: Date = new Date;
   tasks: Task[] = [];
   taskId: string;
   showDatePicker: boolean = false;
@@ -36,14 +37,14 @@ export class TaskReportComponent implements OnInit {
 
     this.contextTaskService
       .getTaskTeam(this.taskId)
-      .map(users => this.prepareUser(users))
+      .map(users => this.prepareUsers(users))
       .subscribe(users => {
         this.team = users;
         this.team.unshift({id: 'all', text: 'All'});
       });
 
     this.userService.get()
-      .map(user => this.prepareUser([user]))
+      .map(user => this.prepareUsers([user]))
       .map(user => this.developer = user)
       .subscribe(user => {
         let developer = this.getDeveloper();
@@ -113,7 +114,7 @@ export class TaskReportComponent implements OnInit {
     return this;
   }
 
-  private prepareUser(users: User[]): Array<{id: string, text: string}> {
+  private prepareUsers(users: User[]): Array<{id: string, text: string}> {
     let userList = [];
     users.forEach((user) => userList.push({id: user._id, text: user.name}));
 
