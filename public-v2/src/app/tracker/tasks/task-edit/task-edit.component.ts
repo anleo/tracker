@@ -6,7 +6,6 @@ import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 import {ToastsManager} from "ng2-toastr";
-import {SocketService} from "../../../services/socket.service";
 
 @Component({
   selector: 'app-task-edit',
@@ -24,8 +23,7 @@ export class TasksEditComponent implements OnInit {
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService,
               public vcr: ViewContainerRef,
-              public toastr: ToastsManager,
-              private socketService: SocketService) {
+              public toastr: ToastsManager) {
     this.toastr.setRootViewContainerRef(vcr);
 
   }

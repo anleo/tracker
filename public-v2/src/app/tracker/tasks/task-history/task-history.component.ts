@@ -1,4 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Task} from "../../models/task";
 import {TaskService} from "../../services/task.service";
 import {HistoryMessage} from "../../models/history-message";
@@ -9,6 +10,7 @@ import {TaskHistoryDescriptionComponent} from "./task-history-description/task-h
 import {TaskHistoryMetricsComponent} from "./task-history-metrics/task-history-metrics.component";
 import {TaskHistorySpenttimeComponent} from "./task-history-spenttime/task-history-spenttime.component";
 import {TaskHistoryStatusComponent} from "./task-history-status/task-history-status.component";
+import {SocketService} from "../../../services/socket.service";
 
 @Component({
   selector: 'task-history',
@@ -23,15 +25,32 @@ import {TaskHistoryStatusComponent} from "./task-history-status/task-history-sta
     TaskHistoryStatusComponent
   ]
 })
-export class TaskHistoryComponent implements OnInit {
+export class TaskHistoryComponent implements OnInit,OnDestroy {
   @Input() task: Task;
   messages: HistoryMessage[];
   allMessages: HistoryMessage[];
+  $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(public taskService: TaskService) {
+  constructor(public taskService: TaskService,
+              private socketService: SocketService) {
+  }
+
+  ngOnDestroy(): void {
+    this.$onDestroy.next(true);
   }
 
   ngOnInit() {
+    this.loadHistory();
+
+    let self = this;
+    this.socketService.scopeOn(self, 'task.remove', (data) => {
+      if (this.task && this.task._id === data.task) {
+        self.loadHistory();
+      }
+    });
+  }
+
+  private loadHistory(): void {
     this.taskService.getTaskHistory(this.task)
       .subscribe((messages) => {
         this.messages = messages;
