@@ -46,17 +46,18 @@ export class TaskSpentTimeComponent implements OnInit {
   }
 
   calculationAddedSpenttime(time: TaskTime): number {
+    let addedTime ;
     if (time.name === '5m') {
-      this.addedSpentTime += this.fixSpenttimeMathematicalError(time.value);
+      addedTime = this.fixSpenttimeMathematicalError(time.value);
     } else {
-      this.addedSpentTime += time.value;
+      addedTime = time.value;
     }
-    return Math.ceil(this.addedSpentTime * 1000) / 1000;
+    return Math.ceil(addedTime* 1000) / 1000;
   }
 
   addTime(time: TaskTime) {
-    this.addedSpentTime = this.calculationAddedSpenttime(time);
-    this.task.spenttime += this.addedSpentTime;
+    this.addedSpentTime += this.calculationAddedSpenttime(time);
+    this.task.spenttime += this.calculationAddedSpenttime(time);
     this.taskService.setEditTask(this.task);
   }
 
