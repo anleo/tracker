@@ -1,11 +1,10 @@
-import {Component, OnInit, ViewContainerRef, Output, EventEmitter} from '@angular/core';
-import {ActivatedRoute, Params} from "@angular/router";
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import {TaskSearchService} from "../../services/task-search.service";
 import {Task} from "../../models/task";
 import {TaskService} from "../../services/task.service";
-import {Location} from "@angular/common";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 
 @Component({
@@ -22,14 +21,14 @@ export class TaskSearchComponent implements OnInit {
               private taskSearchService: TaskSearchService,
               private taskService: TaskService,
               public toastr: ToastsManager,
-              private location: Location,
+              private router: Router,
               private browserTitleService: BrowserTitleService,
               vcr: ViewContainerRef) {
     this.toastr.setRootViewContainerRef(vcr);
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/app/tasks',this.taskId]);
   }
 
   ngOnInit(): void {
