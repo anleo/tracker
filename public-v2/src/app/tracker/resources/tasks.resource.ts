@@ -144,4 +144,13 @@ export class TaskResource extends Resource {
     path: '/{!taskId}/metrics'
   })
   getTaskMetrics: ResourceMethodStrict<Task,{taskId: string}, Task>;
+
+  @ResourceAction({
+    path: '/{!taskId}/tags',
+    params: {"query": "query"},
+    isArray: true
+  })
+
+  getTasksByTags: ResourceMethod<{taskId: string, query: Array<string>}, Task[]>;
+
 }

@@ -35,8 +35,15 @@
 <div *ngIf="!showHistory">
   <div>
     <div *ngIf="task && task._id" class="pull-right board-buttons btn-group" role="group">
-      <!--<a *ngIf="tasks && tasks.length" class="btn btn-sm btn-default" ui-sref="app.tags-page({taskId: task._id})">Tags</a>-->
-      <a class="btn btn-sm btn-default" [routerLink]="['/app/tasks/', task._id, 'archive']">Archive</a>
+      <a *ngIf="tasks.length"
+         class="btn btn-sm btn-default"
+         [routerLink]="['/app/tasks/', task._id, 'tags']">
+        Tags
+      </a>
+      <a class="btn btn-sm btn-default"
+         [routerLink]="['/app/tasks/', task._id, 'archive']">
+        Archive
+      </a>
       <a *ngIf="tasks.length"
           class="btn btn-sm btn-default"
           [routerLink]="['/app/tasks/', task._id, 'report']">
