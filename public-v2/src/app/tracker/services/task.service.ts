@@ -284,7 +284,7 @@ export class TaskService {
   }
 
   getTaskMetrics(task: Task): Observable <Task> {
-    return this.taskResource.getTaskMetrics(task,{taskId: task._id})
+    return this.taskResource.getTaskMetrics(task, {taskId: task._id})
       .$observable
   }
 }
