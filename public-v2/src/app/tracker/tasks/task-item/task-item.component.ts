@@ -65,19 +65,13 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     let task = _.find(this.tasks, (aTask) => aTask._id === data.task);
 
     if (this.task && this.task._id == data.parent) {
-      console.log('update tasks from parent');
-
       this.taskService.getTask(this.task._id)
         .subscribe(task => this.initTaskData(task));
 
     } else if (this.task && this.task._id == data.task ) {
-      console.log('update tasks from task');
-
       this.taskService.getTask(this.task._id)
         .subscribe(task => this.initTaskData(task));
     } else if ((!this.task || !this.task._id) && !data.parent) {
-      console.log('update all tasks');
-
       this.loadTasks(null)
         .subscribe((tasks) => this.tasks = tasks);
     }
