@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
-import { ElasticModule } from 'angular2-elastic';
+import {ElasticModule} from 'angular2-elastic';
+import {LocalStorageModule} from 'angular-2-local-storage';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -24,7 +25,7 @@ import {ListViewComponent} from "./tasks/tasks-board/views/list/list-view.compon
 import {TreeViewComponent} from "./tasks/tasks-board/views/tree/tree-view.component";
 import {PanelTreeComponent} from "./tasks/tasks-board/views/tree/panel-tree.component";
 
-import {ReportsComponent} from "./reports/reports.component";
+import {CommonReportComponent} from "./reports/common-report/common-report.component";
 import {DatepickerModule} from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent} from './tasks/task-metrics/task-metrics.component';
@@ -33,11 +34,10 @@ import {TaskTeamComponent} from "./tasks/components/task-team/task-team.componen
 import {TaskAssignDeveloperComponent} from "./tasks/components/task-assign-developer/task-assign-developer.component";
 import {TaskTagsComponent} from "./tasks/components/task-tags/task-tags.component";
 import {TaskComplexityComponent} from "./tasks/components/complexity/task-complexity.component";
-import { MetricsWidgetComponent } from './tasks/metrics-widget/metrics-widget.component';
-import { UploaderComponent } from './tasks/uploader/uploader.component';
-import { NgUploaderModule } from 'ngx-uploader';
-import { FileViewerComponent } from './tasks/file-viewer/file-viewer.component';
-import {FileResourse} from "./resources/file.resource";
+import {MetricsWidgetComponent} from './tasks/metrics-widget/metrics-widget.component';
+import {UploaderComponent} from './tasks/uploader/uploader.component';
+import {NgUploaderModule} from 'ngx-uploader';
+import {FileViewerComponent} from './tasks/file-viewer/file-viewer.component';
 import {TaskSpentTimeComponent} from "./tasks/components/task-spent-time/task-spent-time.component";
 import {RoundPipe} from "./pipes/round.pipe";
 import {TextLimitPipe} from "./pipes/text-limit.pipe";
@@ -50,34 +50,51 @@ import {TaskMoveComponent} from "./tasks/components/task-move/task-move.componen
 import {HumanizeComplexityPipe} from "./pipes/humanize-complexity.pipe";
 import {TimeFromNowPipe} from "./pipes/time-from-now.pipe";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
-import { CommentsComponent } from './tasks/task-comments/task-comments.component';
-import { TaskHistoryComponent } from './tasks/task-history/task-history.component';
-import { TaskHistoryCommentComponent } from './tasks/task-history/task-history-comment/task-history-comment.component';
-import { TaskHistoryDeveloperComponent } from './tasks/task-history/task-history-developer/task-history-developer.component';
-import { TaskHistoryComplexityComponent } from './tasks/task-history/task-history-complexity/task-history-complexity.component';
-import { TaskHistoryDescriptionComponent } from './tasks/task-history/task-history-description/task-history-description.component';
-import { TaskHistoryMetricsComponent } from './tasks/task-history/task-history-metrics/task-history-metrics.component';
-import { TaskHistorySpenttimeComponent } from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
-import { TaskHistoryStatusComponent } from './tasks/task-history/task-history-status/task-history-status.component';
+import {CommentsComponent} from './tasks/task-comments/task-comments.component';
+import {TaskHistoryComponent} from './tasks/task-history/task-history.component';
+import {TaskHistoryCommentComponent} from './tasks/task-history/task-history-comment/task-history-comment.component';
+import {TaskHistoryDeveloperComponent} from './tasks/task-history/task-history-developer/task-history-developer.component';
+import {TaskHistoryComplexityComponent} from './tasks/task-history/task-history-complexity/task-history-complexity.component';
+import {TaskHistoryDescriptionComponent} from './tasks/task-history/task-history-description/task-history-description.component';
+import {TaskHistoryMetricsComponent} from './tasks/task-history/task-history-metrics/task-history-metrics.component';
+import {TaskHistorySpenttimeComponent} from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
+import {TaskHistoryStatusComponent} from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
+import {TaskReportComponent} from "./reports/task-report/task-report.component";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
+import {BlankComponent} from "../blank/blank.component";
+import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
+import {TasksSortPipe} from "./pipes/tasks-sort.pipe";
+
+import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
+import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
+import {TaskSearchService} from "./services/task-search.service";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     TrackerRoutingModule,
     ToastModule.forRoot(),
-    FormsModule,
     DatepickerModule.forRoot(),
     SelectModule,
     TooltipModule.forRoot(),
     NgUploaderModule,
     ProgressbarModule.forRoot(),
     ElasticModule,
-    LinkyModule
+    LinkyModule,
+    LocalStorageModule.withConfig({
+      prefix: '',
+      storageType: 'localStorage'
+    })
+  ],
+  exports: [
+    TaskSearchDirective,
+    BlankComponent
   ],
   declarations: [
+    BlankComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
@@ -90,9 +107,11 @@ import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive
     ListViewComponent,
     TreeViewComponent,
     PanelTreeComponent,
+    TasksSortPipe,
     TaskPanelComponent,
     TaskItemComponent,
-    ReportsComponent,
+    CommonReportComponent,
+    TaskReportComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskAssignDeveloperComponent,
@@ -122,14 +141,18 @@ import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive
     TaskHistoryMetricsComponent,
     TaskHistorySpenttimeComponent,
     TaskHistoryStatusComponent,
-    TaskArchiveComponent
+    TaskArchiveComponent,
+    MetricsInEditorComponent,
+    TaskArchiveComponent,
+    TaskSearchDirective,
+    TaskSearchComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
     TaskStatusService,
-    FileResourse
+    TaskSearchService
   ]
 })
 export class TrackerModule {

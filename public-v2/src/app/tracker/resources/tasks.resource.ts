@@ -65,7 +65,14 @@ export class TaskResource extends Resource {
     path: '/report/{!date}',
     isArray: true
   })
-  getTaskReportByDate: ResourceMethod<{date: string}, any>;
+  getTaskReportByDate: ResourceMethod<{date: string}, Task[]>;
+
+  @ResourceAction({
+    path: '/{!taskId}/report/{!date}',
+    params: {"userId": "userId"},
+    isArray: true
+  })
+  getTaskReportByTask: ResourceMethod<{taskId: string, date: string, userId: string}, Task[]>;
 
   @ResourceAction({
     path: '/{!taskId}/team',
@@ -101,7 +108,7 @@ export class TaskResource extends Resource {
     path: '/{!taskId}/history/comments',
     method: RequestMethod.Post
   })
-  createCommnent: ResourceMethodStrict<HistoryMessage, {taskId: string}, HistoryMessage>;
+  createComment: ResourceMethodStrict<HistoryMessage, {taskId: string}, HistoryMessage>;
 
   @ResourceAction({
     url: '/api/users/{!userId}/tasks',
@@ -120,5 +127,21 @@ export class TaskResource extends Resource {
     isArray: true
   })
   getArchivedProjects: ResourceMethod<any, Task[]>;
+  @ResourceAction({
+    path: '/{!taskId}/search?query={!query}',
+    isArray: true
+  })
+  search: ResourceMethod<any, Task[]>;
 
+  @ResourceAction({
+    method: RequestMethod.Delete,
+    path: '/{!taskId}/files/{!fileId}'
+  })
+  deleteTaskFile: ResourceMethod<{taskId: string, fileId: string}, any>;
+
+  @ResourceAction({
+    method: RequestMethod.Post,
+    path: '/{!taskId}/metrics'
+  })
+  getTaskMetrics: ResourceMethodStrict<Task,{taskId: string}, Task>;
 }

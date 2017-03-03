@@ -7,7 +7,7 @@ export class Task {
   priority?: number = 5;
   status?: string = '';
   spenttime?: number = 0;
-  complexity?: number;
+  complexity?: number = 0;
   points?: number;
   velocity?: number;
   parentTaskId?: string;

@@ -1,15 +1,15 @@
 <div class="overlay" *ngIf="modalMode" (click)="close()"></div>
 <div [ngClass]="{'modal': modalMode}">
-<form (submit)="save()" id="form" *ngIf="task">
+  <form (submit)="save()" id="form" *ngIf="task">
 
-  <div class="row">
-    <!--left-side-->
-    <div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'">
+    <div class="row">
+      <!--left-side-->
+      <div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'">
 
       <!--// @@@ fix taskId snapshot-->
       <!--<div class="form-group">-->
-      <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
-      <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
+        <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
+        <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
       <!--</div>-->
 
       <div class="form-group">
@@ -26,7 +26,7 @@
           </task-description-editor>
         </div>
         <uploader (onUpload)="handleOnUpload($event)"></uploader>
-        <file-viewer [deletion]="true" (onDelete)="handleOnDelete($event)" *ngIf="task.files && task.files.length"
+        <file-viewer [isDeletable]="true" (onDelete)="handleOnDelete($event)" *ngIf="task.files && task.files.length"
                      [files]="task.files"></file-viewer>
 
 
@@ -53,21 +53,13 @@
             >{{status.name}}</label>
           </div>
         </div>
-
-        <!--<ul ng-if="task.simple" class="task-metrics pull-right edit-panel-metrics-info">-->
-        <!--<li>-->
-        <!--<i class="fa fa-clock-o" uib-tooltip="Time"></i>&nbsp;<span uib-tooltip="Estimated" class="text-right">{{task.estimatedTime| round}}</span>-->
-        <!--/ <span uib-tooltip="Spent" class="text-right">{{task.spenttime| round}}</span>-->
-        <!--/ <span uib-tooltip="TODO" ng-class="{'warning-text' : (task.timeToDo|round) < 0}" class="text-right">{{task.timeToDo| round}}</span>-->
-        <!--</li>-->
-        <!--</ul>-->
-
+        <metrics-in-editor *ngIf="task && task._id && task.simple"></metrics-in-editor>
       </div>
 
-      <hr *ngIf="task.simple || task.status == 'accepted'" class="mg"/>
-      <div *ngIf="task.simple" class="form-group">
-        <complexity></complexity>
-      </div>
+        <hr *ngIf="task.simple || task.status == 'accepted'" class="mg"/>
+        <div *ngIf="task.simple" class="form-group">
+          <complexity></complexity>
+        </div>
 
       <div class="form-group" *ngIf="task.title"> <!-- Priority-->
         <i class="fa fa-bolt fa-md vcenter"></i>
@@ -84,9 +76,9 @@
       <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
       <!--</div>-->
 
-      <div class="form-group clearfix" *ngIf="task.simple">
-        <spent-time></spent-time>
-      </div>
+        <div class="form-group clearfix" *ngIf="task.simple">
+          <spent-time></spent-time>
+        </div>
 
       <hr class="mg"/>
 

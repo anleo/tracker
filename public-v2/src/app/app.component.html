@@ -21,7 +21,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li *ngIf="user"><a [routerLink]="['/app/tasks']">Projects</a></li>
-          <!--<li><a [routerLink]="['/app/tasks/reports']">Report</a></li>-->
+          <li><a [routerLink]="['/app/tasks/reports']">Report</a></li>
           <li *ngIf="user"><a [routerLink]="['/app/tasks/my']">My tasks</a></li>
         </ul>
 
@@ -36,9 +36,9 @@
           <li *ngIf="!user"><a [routerLink]="['/app/register']">Register</a></li>
           <li *ngIf="user"><a [routerLink]="['/app/logout']">Logout</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" *ngIf="taskId">
           <li>
-            <div task-search></div>
+            <task-search></task-search>
           </li>
         </ul>
       </div>
