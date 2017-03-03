@@ -3,6 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
+import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 
 @Component({
   templateUrl: 'task-tags-search.component.html',
@@ -17,13 +18,15 @@ export class TaskTagsSearchComponent implements OnInit {
 
   constructor(private contextTaskService: TaskService,
               private route: ActivatedRoute,
-              private location: Location) {}
+              private location: Location,
+              private browserTitleService: BrowserTitleService) {}
 
   ngOnInit(): void {
     this.task = this.route.parent.snapshot.data['task'];
     let currentTag = this.route.snapshot.params['tag'];
 
-    this.contextTaskService.getTags(this.task)
+    this.contextTaskService
+      .getTags(this.task)
       .subscribe(tags => {
         this.availableTags = tags;
 
@@ -31,6 +34,8 @@ export class TaskTagsSearchComponent implements OnInit {
           this.toggleTag(currentTag);
         }
       });
+
+    this.browserTitleService.setTitle('Search by tags');
   }
 
   toggleTag(tag: string): void {
