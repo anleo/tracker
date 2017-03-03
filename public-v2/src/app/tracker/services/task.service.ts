@@ -287,5 +287,11 @@ export class TaskService {
     return this.taskResource.getTaskMetrics(task,{taskId: task._id})
       .$observable
   }
+
+  getTasksByTags(taskId: string, tags: Array<string>): Observable <Task[]> {
+    return this.taskResource
+      .getTasksByTags({taskId: taskId, query: tags})
+      .$observable;
+  }
 }
 

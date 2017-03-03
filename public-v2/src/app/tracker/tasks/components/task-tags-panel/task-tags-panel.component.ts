@@ -8,7 +8,4 @@ import {Task} from "../../../models/task";
 
 export class TaskTagsPanelComponent {
   @Input() task: Task;
-
-  constructor() {
-  }
 }

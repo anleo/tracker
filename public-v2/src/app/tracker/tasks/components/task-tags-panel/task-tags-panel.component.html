@@ -1,13 +1,8 @@
 <div class="tags tags-panel">
   <i class="fa fa-tags"></i>&nbsp;
-
-  <!--@@@ anleo: fix URL to search by tags when search will be done-->
-  <!--<a-->
-  <!--routerLink="app.tags-find({taskId: task._id, tags: tag})"-->
-  <!--class="label"-->
-  <!--ng-repeat="tag in task.tags">{{tag}}</a>-->
-
-  <a
-  class="label"
-  *ngFor="let tag of task.tags">{{tag}}</a>
+  <a class="label"
+     *ngFor="let tag of task.tags"
+     [routerLink]="['/app/tasks/', task._id, 'tags', tag]">
+    {{tag}}
+  </a>
 </div>
