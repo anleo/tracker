@@ -30,15 +30,18 @@
 
 <task-history *ngIf="showHistory" [task]="task"></task-history>
 
+<div >
+  <app-task-edit [hidden]="showHistory" class="edit-form"></app-task-edit>
 <div *ngIf="!showHistory">
-  <app-task-edit class="edit-form"></app-task-edit>
-
   <div>
     <div *ngIf="task && task._id" class="pull-right board-buttons btn-group" role="group">
       <!--<a *ngIf="tasks && tasks.length" class="btn btn-sm btn-default" ui-sref="app.tags-page({taskId: task._id})">Tags</a>-->
       <a class="btn btn-sm btn-default" [routerLink]="['/app/tasks/', task._id, 'archive']">Archive</a>
-      <!--<a *ngIf="tasks.length" class="btn btn-sm btn-default"-->
-      <!--ui-sref="app.task-report({taskId: task._id, userId: userId})">Report</a>-->
+      <a *ngIf="tasks.length"
+          class="btn btn-sm btn-default"
+          [routerLink]="['/app/tasks/', task._id, 'report']">
+        Report
+      </a>
     </div>
 
     <!--<div *ngIf="tasks && tasks.length" infinite-scroll="scroll()" infinite-scroll-distance="0"-->
@@ -56,4 +59,6 @@
       <h4>No active tasks.</h4>
     </div>
   </div>
+</div>
+
 </div>

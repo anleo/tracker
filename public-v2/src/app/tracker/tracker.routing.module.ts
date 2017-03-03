@@ -3,9 +3,10 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TasksComponent} from "./tasks/tasks.component";
-import {ReportsComponent} from "./reports/reports.component";
+import {CommonReportComponent} from "./reports/common-report/common-report.component";
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
 import {MyTasksComponent} from "./tasks/my-tasks/my-tasks.component";
+import {TaskReportComponent} from "./reports/task-report/task-report.component";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
 import {BlankComponent} from "../blank/blank.component";
@@ -17,13 +18,12 @@ const routes: Routes = [
   },
   {
     path: 'reports',
-    component: ReportsComponent
+    component: CommonReportComponent
   },
   {
     path: 'my',
     component: MyTasksComponent
   },
-
   {
     path: 'archived',
     component: TaskArchiveComponent
@@ -37,6 +37,7 @@ const routes: Routes = [
     children: [
       {path: '', component: TaskItemComponent},
       {path: 'archive', component: TaskArchiveComponent},
+      {path: 'report', component: TaskReportComponent},
       {
         path: 'search/:query',
         component: TaskSearchComponent

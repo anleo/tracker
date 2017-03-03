@@ -15,6 +15,7 @@ export class TaskService {
   tasks: Task[]|null = null;
   editTask: Task|null = null;
   root: Task|null = null;
+  taskMetricsViewType: number = null;
 
   task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
@@ -22,6 +23,8 @@ export class TaskService {
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   editTaskModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
+
+  taskMetricsViewType$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
   constructor(private taskResource: TaskResource,
               private router: Router) {
@@ -31,6 +34,8 @@ export class TaskService {
 
     this.editTask$.subscribe((task: Task) => this.editTask = task);
     this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+
+    this.taskMetricsViewType$.subscribe(type => this.taskMetricsViewType = type);
   }
 
   actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
@@ -162,6 +167,10 @@ export class TaskService {
     this.task$.next(task);
   }
 
+  setTaskMetricsViewType(type: number): void {
+    this.taskMetricsViewType$.next(type);
+  }
+
   setEditTaskModal(task: Task): void {
     this.editTaskModal$.next(true);
     this.editTask$.next(task);
@@ -209,13 +218,16 @@ export class TaskService {
     return task && task._id ? this.updateTask(task) : this.saveTask(task);
   }
 
-  getTaskReportByDate(date: Date): Observable <Task[]> {
+  getTaskReportByDate(date: string): Observable <Task[]> {
     return this.taskResource
-      .getTaskReportByDate({date: date.toString()})
-      .$observable
-      .catch((err) => {
-        return Observable.throw(err);
-      });
+      .getTaskReportByDate({date: date})
+      .$observable;
+  }
+
+  getTaskReportByTask(taskId: string, date: string, userId: string): Observable <Task[]> {
+    return this.taskResource
+      .getTaskReportByTask({taskId: taskId, date: date, userId: userId})
+      .$observable;
   }
 
   getTaskTeam(taskId: string): Observable <User[]> {
@@ -249,7 +261,7 @@ export class TaskService {
 
   createComment(task: Task, comment: HistoryMessage): Observable <HistoryMessage> {
     return this.taskResource
-      .createCommnent(comment, {taskId: task._id})
+      .createComment(comment, {taskId: task._id})
       .$observable;
   }
 

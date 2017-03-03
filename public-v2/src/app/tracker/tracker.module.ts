@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import {SelectModule} from 'ng2-select';
 import {ElasticModule} from 'angular2-elastic';
+import {LocalStorageModule} from 'angular-2-local-storage';
 
 import {TaskResolver} from "./resolvers/task.resolver";
 import {TaskService} from "./services/task.service";
@@ -24,7 +25,7 @@ import {ListViewComponent} from "./tasks/tasks-board/views/list/list-view.compon
 import {TreeViewComponent} from "./tasks/tasks-board/views/tree/tree-view.component";
 import {PanelTreeComponent} from "./tasks/tasks-board/views/tree/panel-tree.component";
 
-import {ReportsComponent} from "./reports/reports.component";
+import {CommonReportComponent} from "./reports/common-report/common-report.component";
 import {DatepickerModule} from 'ng2-bootstrap/datepicker';
 import {TaskStatusService} from "./services/task-status.service";
 import {TaskMetricsComponent} from './tasks/task-metrics/task-metrics.component';
@@ -59,9 +60,11 @@ import {TaskHistoryMetricsComponent} from './tasks/task-history/task-history-met
 import {TaskHistorySpenttimeComponent} from './tasks/task-history/task-history-spenttime/task-history-spenttime.component';
 import {TaskHistoryStatusComponent} from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
+import {TaskReportComponent} from "./reports/task-report/task-report.component";
 import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
 import {BlankComponent} from "../blank/blank.component";
 import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
+import {TasksSortPipe} from "./pipes/tasks-sort.pipe";
 
 import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
@@ -80,7 +83,11 @@ import {TaskSearchService} from "./services/task-search.service";
     NgUploaderModule,
     ProgressbarModule.forRoot(),
     ElasticModule,
-    LinkyModule
+    LinkyModule,
+    LocalStorageModule.withConfig({
+      prefix: '',
+      storageType: 'localStorage'
+    })
   ],
   exports: [
     TaskSearchDirective,
@@ -100,9 +107,11 @@ import {TaskSearchService} from "./services/task-search.service";
     ListViewComponent,
     TreeViewComponent,
     PanelTreeComponent,
+    TasksSortPipe,
     TaskPanelComponent,
     TaskItemComponent,
-    ReportsComponent,
+    CommonReportComponent,
+    TaskReportComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
     TaskAssignDeveloperComponent,

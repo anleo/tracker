@@ -80,6 +80,7 @@ export class TaskItemComponent implements OnInit {
 
   edit(task: Task) {
     this.taskService.setEditTask(task);
+    this.showHistory = false;
   }
 
   toggleTaskHistory(): void {
