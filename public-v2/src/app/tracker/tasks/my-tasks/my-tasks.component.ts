@@ -13,13 +13,18 @@ export class MyTasksComponent implements OnInit {
   tasks: Task[] = [];
   user: User | null = null;
   editMode: boolean = false;
+  editTask$: Task|null;
 
   constructor(private userService: UserService,
               private taskService: TaskService,
               private location: Location) {}
 
   ngOnInit(): void {
-    this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
+    this.taskService.editTaskModal$
+      .subscribe((flag) => this.editMode = flag);
+    this.taskService.editTask$
+      .subscribe((task) => this.editTask$ = task);
+
     this.userService.get()
       .subscribe(user => this.user = user);
 
