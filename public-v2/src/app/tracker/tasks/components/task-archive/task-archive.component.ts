@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, AfterContentChecked} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 
@@ -11,8 +11,9 @@ import {BrowserTitleService} from "../../../../services/browser-title/browser-ti
   templateUrl: 'task-archive.component.html'
 })
 
-export class TaskArchiveComponent implements OnInit {
+export class TaskArchiveComponent implements OnInit, AfterContentChecked {
   tasks: Task[] = [];
+  editTask$: Task|null;
   editMode: boolean = false;
 
   constructor(private route: ActivatedRoute,
@@ -23,6 +24,7 @@ export class TaskArchiveComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
+    this.taskService.editTask$.subscribe((task) => this.editTask$ = task);
     let task = this.route.parent.snapshot.data['task'];
 
     if (task) {
@@ -32,6 +34,12 @@ export class TaskArchiveComponent implements OnInit {
       });
     } else {
       this.taskService.getArchivedProjects().subscribe((tasks) => this.initTasks(tasks))
+    }
+  }
+
+  ngAfterContentChecked() {
+    if (this.editTask$ && !this.editTask$.archived) {
+      this.tasks = this.tasks.filter((task) => task._id !== this.editTask$._id);
     }
   }
 
