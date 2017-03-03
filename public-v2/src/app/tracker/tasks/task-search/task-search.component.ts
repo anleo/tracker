@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewContainerRef, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
@@ -21,7 +21,7 @@ export class TaskSearchComponent implements OnInit {
               private taskSearchService: TaskSearchService,
               private taskService: TaskService,
               public toastr: ToastsManager,
-              private router:Router,
+              private router: Router,
               private browserTitleService: BrowserTitleService,
               vcr: ViewContainerRef) {
     this.toastr.setRootViewContainerRef(vcr);

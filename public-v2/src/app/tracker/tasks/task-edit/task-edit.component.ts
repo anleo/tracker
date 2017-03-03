@@ -19,12 +19,15 @@ export class TasksEditComponent implements OnInit {
   taskMoveToggle: boolean = false;
   statuses: TaskStatus[] = [];
   modalMode: boolean = false;
+  initEditTask: Task;
+  counter: number = 0;
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService,
               public vcr: ViewContainerRef,
               public toastr: ToastsManager) {
     this.toastr.setRootViewContainerRef(vcr);
+
   }
 
   ngOnInit(): void {
@@ -34,6 +37,7 @@ export class TasksEditComponent implements OnInit {
       this.initTask();
 
       this.taskService.editTask$.subscribe((task) => {
+         this.getInitEditedTask(task);
 
         if (task) {
           this.task = task ? task : new Task();
@@ -59,6 +63,13 @@ export class TasksEditComponent implements OnInit {
       .subscribe(taskStatusList => this.statuses = taskStatusList);
   }
 
+  getInitEditedTask(task: Task) {
+    if (task !== null && task._id && this.counter == 0) {
+      this.counter = 1;
+      this.initEditTask = Object.assign({}, task);
+    }
+  }
+
   initTask(): void {
     this.task = new Task();
     this.task.parentTaskId = this.parentTaskId;
@@ -66,6 +77,7 @@ export class TasksEditComponent implements OnInit {
   }
 
   save(): void {
+    this.counter = 0;
     if (this.task && this.task.parentTaskId) {
       this.taskService.saveChildTask(this.task).subscribe((task) => this.reinitTask(task));
     } else {
@@ -80,6 +92,7 @@ export class TasksEditComponent implements OnInit {
   }
 
   remove(task: Task): void {
+    this.counter = 0;
     this.taskService.remove(this.task).subscribe(() => {
       this.closeModal();
       this.taskService.editTaskUpdated$.next({task: task, status: 'remove'});
@@ -88,6 +101,7 @@ export class TasksEditComponent implements OnInit {
   }
 
   onMove(task: Task): void {
+    this.counter = 0;
     this.taskMoveToggle = false;
     this.closeModal();
     this.taskService.editTaskUpdated$.next({task: task, status: 'move'});
@@ -95,8 +109,9 @@ export class TasksEditComponent implements OnInit {
   }
 
   close(): void {
+    this.counter = 0;
     this.closeModal();
-    this.taskService.editTaskUpdated$.next({task: null, status: 'close'});
+    this.taskService.editTaskUpdated$.next({task: this.initEditTask, status: 'update'});
     setTimeout(() => this.initTask(), 0);
   }
 

@@ -332,7 +332,9 @@ module.exports = function (app) {
 
     app.get('/api/tasks/:taskId/tags', function (req, res, next) {
         var q = req.query.query || [];
-
+        if(typeof q === 'string'){
+            q = [q];
+        }
         TaskService.getRoot(req.Task, function (err, root) {
             if (err) {
                 return next(err);
