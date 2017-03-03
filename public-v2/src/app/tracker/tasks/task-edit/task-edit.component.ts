@@ -27,6 +27,7 @@ export class TasksEditComponent implements OnInit {
               public vcr: ViewContainerRef,
               public toastr: ToastsManager) {
     this.toastr.setRootViewContainerRef(vcr);
+
   }
 
   ngOnInit(): void {
