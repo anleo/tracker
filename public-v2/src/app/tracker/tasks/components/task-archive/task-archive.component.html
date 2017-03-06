@@ -1,8 +1,6 @@
-<a (click)="location.back()">
-  <h5>
-    <i class="fa fa-long-arrow-left"></i>
-    Back
-  </h5>
+<a class="back-button" (click)="location.back()">
+  <i class="fa fa-long-arrow-left"></i>
+  Back
 </a>
 
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
