@@ -5,15 +5,15 @@ module.exports = function () {
     });
 
     this.Then(/^I see sign in form$/, function (callback) {
-        this.iSee('form[ng-submit="login()"]', callback);
+        this.iSee('form#loginForm', callback);
     });
 
     this.When(/^I type username "([^"]*)"$/, function (arg1, callback) {
-        this.iType('input[ng-model="loginName"]', arg1, callback);
+        this.iType('input[name="username"]', arg1, callback);
     });
 
     this.When(/^I type password "([^"]*)"$/, function (arg1, callback) {
-        this.iType('input[ng-model="userPassword"]', arg1, callback);
+        this.iType('input[name="password"]', arg1, callback);
     });
 
     this.When(/^click on log in button$/, function (callback) {
