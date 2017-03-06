@@ -935,3 +935,9 @@ hr {
 .edit-form.hide {
   display: none;
 }
+
+.back-button {
+  margin: 10px 0;
+  display: inline-block;
+  cursor: pointer;
+}

@@ -1,10 +1,8 @@
 <h3>Search by tags</h3>
-<h5>
-  <a (click)="location.back()">
-    <i class="fa fa-long-arrow-left"></i>
-    Back
-  </a>
-</h5>
+<a class="back-button" (click)="location.back()">
+  <i class="fa fa-long-arrow-left"></i>
+  Back
+</a>
 <div class="tags mg" *ngIf="availableTags.length">
   <i class="fa fa-tags"></i>
   <a class="tag btn btn-xs "
