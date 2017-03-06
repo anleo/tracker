@@ -1,8 +1,8 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import * as moment from 'moment/moment';
-
 @Pipe({name: 'humanizeTime'})
 export class HumanizeTimePipe implements PipeTransform {
+
   transform(number: number): string {
     let negativeNumber = number < 0;
     number = Math.abs(number);
