@@ -1,5 +1,3 @@
-@wip
-
 Feature: MetricsInTaskEditor
 
   Background:
