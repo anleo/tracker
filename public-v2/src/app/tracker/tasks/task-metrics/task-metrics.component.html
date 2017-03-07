@@ -51,7 +51,7 @@
     <i class="fa fa-paperclip"></i>{{task.files.length}}
   </li>
 
-  <li *ngIf="(metricsDetails == 2) && task.commentsCounter">
+  <li *ngIf="(metricsDetails == 2) && task.commentsCounter" (click)="$event.stopPropagation();">
     <i class="fa fa-comment"></i>&nbsp;
     <span tooltip="Comments" placement="top">{{task.commentsCounter || 0}}</span>
   </li>
