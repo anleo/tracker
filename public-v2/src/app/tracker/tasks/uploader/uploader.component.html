@@ -1,17 +1,19 @@
+
 <div class="upload-form">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-default mg "><i
+      <label class="upload-button">
+      <a class="btn btn-default mg"><i
         class="fa fa-upload"></i>
-        <label class="upload-button">
-          <input type="file"
+          <input #uploader
+                 type="file"
                  class="hidden"
                  ngFileSelect
                  [options]="options"
                  (onUpload)="handleUpload($event)">
           Upload
-        </label>
       </a>
+      </label>
     </div>
     <div class="col-md-8" *ngIf="uploading">
       <div class="total-progress">

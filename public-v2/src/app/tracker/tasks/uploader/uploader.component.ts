@@ -1,4 +1,4 @@
-import {Component, NgZone, Inject, Output, EventEmitter} from '@angular/core';
+import {Component, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
 import {NgUploaderOptions} from 'ngx-uploader';
 
 @Component({
@@ -13,25 +13,25 @@ export class UploaderComponent {
   options: NgUploaderOptions;
   response: any;
 
+  @ViewChild('uploader') uploaderInput: ElementRef;
+
   @Output() onUpload: EventEmitter<any> = new EventEmitter();
 
-  constructor(@Inject(NgZone) private zone: NgZone) {
+  constructor() {
     this.options = new NgUploaderOptions({
       url: '/api/files',
       autoUpload: true,
-      calculateSpeed: true
     });
   }
 
   handleUpload(data: any) {
-    setTimeout(() => {
-      this.zone.run(() => {
         this.uploading = true;
         this.response = data;
 
         if (data && data.response) {
           this.response = JSON.parse(data.response);
           this.dynamic = 100;
+          this.uploaderInput.nativeElement.value = '';
 
           setTimeout(() => {
             this.uploading = false;
@@ -39,7 +39,5 @@ export class UploaderComponent {
             this.dynamic = 0;
           }, 3000)
         }
-      });
-    });
   }
 }

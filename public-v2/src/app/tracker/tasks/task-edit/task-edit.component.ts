@@ -125,7 +125,6 @@ export class TasksEditComponent implements OnInit {
 
   handleOnUpload(file: any): void {
     this.task.files.push(file);
-    this.toastr.success('Saved');
   }
 
   handleOnDelete(file: any): void {
