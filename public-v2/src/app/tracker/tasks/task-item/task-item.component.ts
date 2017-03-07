@@ -104,8 +104,10 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
   loadTasks(taskId: string|null): Observable<Task[]> {
     if (taskId) {
+       console.log('item get children');
       return this.taskService.getChildrenTasks(taskId);
     } else {
+      console.log('item get tasks');
       return this.taskService.getTasks();
     }
   }
