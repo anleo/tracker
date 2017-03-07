@@ -9,6 +9,8 @@ import {LogoutComponent} from "./auth/logout/logout.component";
 import {UserResolver} from "./user/resolver/UserResolver";
 import {ProfileComponent} from "./user/components/user-profile.component";
 import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
+import {TaskEditClassComponent} from "./tracker/tasks/task-edit/task-edit-class.component";
+import {TaskEditArchiveClassComponent} from "./tracker/tasks/task-edit/task-edit-archive.component";
 
 const routes: Routes = [
   {
@@ -19,6 +21,14 @@ const routes: Routes = [
         path: '',
         redirectTo: 'tasks',
         pathMatch: 'full'
+      },
+      {
+        path: 'class',
+        component: TaskEditClassComponent
+      },
+      {
+        path: 'archive-class',
+        component: TaskEditArchiveClassComponent
       },
       {
         path: 'login',

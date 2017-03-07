@@ -70,6 +70,9 @@ import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
 import {TaskSearchService} from "./services/task-search.service";
 import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search.component";
+import {TaskEditClassComponent} from "./tasks/task-edit/task-edit-class.component";
+import {TaskEditArchiveClassComponent} from "./tasks/task-edit/task-edit-archive.component";
+import {TaskNewService} from "./services/task-new.service";
 
 @NgModule({
   imports: [
@@ -92,6 +95,8 @@ import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search
   ],
   exports: [
     TaskSearchDirective,
+    TaskEditClassComponent,
+    TaskEditArchiveClassComponent,
     BlankComponent
   ],
   declarations: [
@@ -147,14 +152,17 @@ import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search
     MetricsInEditorComponent,
     TaskArchiveComponent,
     TaskSearchDirective,
-    TaskSearchComponent
+    TaskSearchComponent,
+    TaskEditClassComponent,
+    TaskEditArchiveClassComponent
   ],
   providers: [
     TaskResolver,
     TaskResource,
     TaskService,
     TaskStatusService,
-    TaskSearchService
+    TaskSearchService,
+    TaskNewService
   ]
 })
 export class TrackerModule {
