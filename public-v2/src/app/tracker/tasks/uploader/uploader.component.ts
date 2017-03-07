@@ -25,19 +25,19 @@ export class UploaderComponent {
   }
 
   handleUpload(data: any) {
-        this.uploading = true;
-        this.response = data;
+    this.uploading = true;
+    this.response = data;
 
-        if (data && data.response) {
-          this.response = JSON.parse(data.response);
-          this.dynamic = 100;
-          this.uploaderInput.nativeElement.value = '';
+    if (data && data.response) {
+      this.response = JSON.parse(data.response);
+      this.dynamic = 100;
+      this.uploaderInput.nativeElement.value = '';
 
-          setTimeout(() => {
-            this.uploading = false;
-            this.onUpload.emit(this.response);
-            this.dynamic = 0;
-          }, 3000)
-        }
+      setTimeout(() => {
+        this.uploading = false;
+        this.onUpload.emit(this.response);
+        this.dynamic = 0;
+      }, 3000)
+    }
   }
 }
