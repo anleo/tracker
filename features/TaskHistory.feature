@@ -46,7 +46,7 @@ Feature: TaskHistory
     And I see task title input
     When I type task title "p1.1"
     Then I see task form
-    Then I click on task status "In Progress"
+    Then I click on task status "In progress"
     Then I click on save button
 
     And I see task "p1.1"
@@ -86,7 +86,7 @@ Feature: TaskHistory
     Then I see task complexity buttons
     And I click on task complexity "2+"
     Then I click task spent time "+1h"
-    Then I click on task status "In Progress"
+    Then I click on task status "In progress"
     Then I click on save button
 
     And I see task "p1.1"
@@ -194,7 +194,7 @@ Feature: TaskHistory
     Then I see task complexity buttons
     And I click on task complexity "2+"
     Then I click task spent time "+1h"
-    Then I click on task status "In Progress"
+    Then I click on task status "In progress"
     Then I click on save button
 
     And I see task "p1.1"

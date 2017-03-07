@@ -38,7 +38,14 @@ module.exports = function () {
 
     });
 
-    this.Then(/^I edit this task$/, function (callback) {
+    this.Then(/^I edit this task in layout$/, function (callback) {
+        this.chain
+            .iClick('ul.task-metrics')
+            .iSee('app-task-edit form')
+            .then(callback);
+    });
+
+    this.Then(/^I edit this task in modal$/, function (callback) {
         this.chain
             .iClick('.task-info div[task-metrics]')
             .iSee('.modal-box div[task-editor]')

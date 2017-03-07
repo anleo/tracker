@@ -8,7 +8,7 @@ module.exports = function () {
         this.iSee('div li[ng-repeat*="accepted"]:contains("'+arg1+'")', callback)
     });
 
-    this.When(/^I see "([^"]*)" in In Progress tasks$/, function (arg1, callback) {
+    this.When(/^I see "([^"]*)" in In progress tasks$/, function (arg1, callback) {
         this.iSee('div li[ng-repeat*="in progress"]:contains("'+arg1+'")', callback)
     });
 
@@ -55,7 +55,7 @@ module.exports = function () {
         this.iDontSee('div li[ng-repeat*="accepted"]:contains("'+arg1+'")', callback);
     });
 
-    this.When(/^I don't see "([^"]*)" in In Progress tasks$/, function (arg1, callback) {
+    this.When(/^I don't see "([^"]*)" in In progress tasks$/, function (arg1, callback) {
         this.iDontSee('div li[ng-repeat*="in progress"]:contains("'+arg1+'")', callback);
     });
 

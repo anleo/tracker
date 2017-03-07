@@ -23,7 +23,7 @@ module.exports = function () {
     this.Then(/^I see task "([^"]*)" comments number "([^"]*)"$/, function (arg1, arg2, callback) {
         this.chain
             .iSee('h2:contains("' + arg1 + '")')
-            .iSee(' ul.detail-line li span[uib-tooltip="Comments"]:contains("' + arg2 + '")')
+            .iSee(' ul.detail-line li span[tooltip="Comments"]:contains("' + arg2 + '")')
             .then(callback);
     });
 

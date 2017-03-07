@@ -1,3 +1,5 @@
+@wip
+
 Feature: MetricsInTaskEditor
 
   Background:
@@ -27,13 +29,17 @@ Feature: MetricsInTaskEditor
     When I type task title "p1.1"
     Then I see task form
     Then I click task spent time "1h"
-    And I see estimated time "0"
-    And I see spent time "1"
-    And I see time todo "0"
-    Then I click task spent time "1h"
-    And I see estimated time "0"
-    And I see spent time "2"
-    And I see time todo "0"
+#    And I see estimated time "0"
+    And I see humanized spent time "01:00"
+#    And I see spent time "1"
+#    And I see time todo "0"
+    Then I click task spent time "30m"
+    And I see humanized spent time "01:30"
+#    And I see estimated time "0"
+#    And I see spent time "2"
+    Then I click task spent time "30m"
+    And I see humanized spent time "02:00"
+#    And I see time todo "0"
     Then I click on task complexity "2+"
     Then I click on task status "Accepted"
     Then I click on save button
@@ -44,10 +50,11 @@ Feature: MetricsInTaskEditor
     Then I see task form
     Then I click task spent time "30m"
     Then I click on task complexity "3"
-    And I see estimated time "0"
-    And I see spent time "0.50"
-    And I see time todo "0"
-    Then I click on task status "In Progress"
+    And I see humanized spent time "00:30"
+#    And I see estimated time "0"
+#    And I see spent time "0.50"
+#    And I see time todo "0"
+    Then I click on task status "In progress"
     Then I click on save button
 
   Scenario: Metrics of an edited task
@@ -67,9 +74,10 @@ Feature: MetricsInTaskEditor
     When I type task title "p1.1"
     Then I see task form
     Then I click task spent time "1h"
-    And I see estimated time "0"
-    And I see spent time "1"
-    And I see time todo "0"
+    And I see humanized spent time "01:00"
+#    And I see estimated time "0"
+#    And I see spent time "1"
+#    And I see time todo "0"
     Then I click on task complexity "2+"
     Then I click on task status "Accepted"
     Then I click on save button
@@ -80,28 +88,29 @@ Feature: MetricsInTaskEditor
     Then I see task form
     Then I click task spent time "30m"
     Then I click on task complexity "3"
-    And I see estimated time "0"
-    And I see spent time "0.50"
-    And I see time todo "0"
-    Then I click on task status "In Progress"
+    And I see humanized spent time "00:30"
+#    And I see estimated time "0"
+#    And I see spent time "0.50"
+#    And I see time todo "0"
+    Then I click on task status "In progress"
     Then I click on save button
 
     Then I am on "p1" page
     Then I click on task link "p1.2"
     Then I am on "p1.2" page
-    Then I edit this task
+    Then I edit this task in layout
     And I see estimated time "1.63"
-    And I see spent time "0.50"
+    And I see spent time "0.5"
     And I see time todo "1.13"
 
     Then I click task spent time "1h"
     And I see estimated time "1.63"
-    And I see spent time "1.50"
+    And I see spent time "1.5"
     And I see time todo "0.13"
 
     Then I click on task complexity "2+"
-    And I see estimated time "1.00"
-    And I see spent time "1.50"
-    And I see time todo "-0.50"
+    And I see estimated time "1"
+    And I see spent time "1.5"
+    And I see time todo "-0.5"
 
 
