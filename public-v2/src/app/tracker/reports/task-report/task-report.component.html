@@ -35,7 +35,8 @@
       </h5>
 
       <div *ngIf="tasks.length" class="result">
-        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_ACCEPTED)).length">
+        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_ACCEPTED)).length"
+        ngClass="{{this.getStatusById(TaskStatus.TASK_STATUS_ACCEPTED).id}}">
           <h5>Done:</h5>
           <ul>
             <li *ngFor="let task of tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_ACCEPTED)">
@@ -44,7 +45,8 @@
           </ul>
         </div>
 
-        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_IN_PROGRESS)).length">
+        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_IN_PROGRESS)).length"
+             ngClass="{{this.getStatusById(TaskStatus.TASK_STATUS_IN_PROGRESS).id}}">
           <h5>In Progress:</h5>
           <ul>
             <li *ngFor="let task of tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_IN_PROGRESS)">
@@ -53,7 +55,8 @@
           </ul>
         </div>
 
-        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_NEW)).length">
+        <div *ngIf="(tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_NEW)).length"
+             ngClass="{{this.getStatusById(TaskStatus.TASK_STATUS_NEW).id}}">
           <h5>Plans:</h5>
           <ul>
             <li *ngFor="let task of tasks | tasksBoardFilter: this.getStatusById(TaskStatus.TASK_STATUS_NEW)">
