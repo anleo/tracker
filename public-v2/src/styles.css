@@ -516,6 +516,7 @@ hr {
 
 .archive-button {
   margin: 0;
+  margin-right: 5px !important;
 }
 
 .archive-button input {
