@@ -111,7 +111,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   edit(task: Task) {
-    this.taskService.setEditTask(task);
+    this.taskService.setEditTaskModal(task);
     this.showHistory = false;
   }
 
