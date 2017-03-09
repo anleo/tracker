@@ -113,8 +113,8 @@
          (click)="remove(task)">Delete</a>
 
       <div *ngIf="task.status === 'accepted'"
-           [ngClass]="{'pull-right': task.simple}"
-           class="checkbox archive-button">
+
+           class="checkbox archive-button pull-right">
 
         <input type="button"
                [(ngModel)]="task.archived"
