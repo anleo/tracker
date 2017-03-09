@@ -3,12 +3,15 @@
   <div class="clearfix">
     <div class="btn-group board-buttons" role="group">
       <button class="btn btn-default btn-sm"
+              [ngClass]="{'active': currentView === 'allMessages'}"
               (click)="findAllMessages()">All
       </button>
       <button class="btn btn-default btn-sm"
+              [ngClass]="{'active': currentView === 'comments'}"
               (click)="findComments()">Comments
       </button>
       <button class="btn btn-default btn-sm"
+              [ngClass]="{'active': currentView === 'otherMessages'}"
               (click)="findOtherMessages()">Other
       </button>
     </div>
