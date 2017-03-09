@@ -1,9 +1,12 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import * as moment from 'moment/moment';
-
 @Pipe({name: 'humanizeTime'})
 export class HumanizeTimePipe implements PipeTransform {
+
   transform(number: number): string {
+    let negativeNumber = number < 0;
+    number = Math.abs(number);
+
     let momentDuration = moment.duration(number * 60, 'm');
     let humanizeTime = moment.utc(momentDuration.asMilliseconds()).format('HH:mm');
 
@@ -17,6 +20,7 @@ export class HumanizeTimePipe implements PipeTransform {
       humanizeTime = ' ' + momentDuration.get('days') + days + ' ' + humanizeTime;
     }
 
+    humanizeTime = negativeNumber ? '- ' + humanizeTime : humanizeTime
     return humanizeTime;
   }
 }

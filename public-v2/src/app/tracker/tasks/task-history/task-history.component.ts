@@ -30,6 +30,7 @@ export class TaskHistoryComponent implements OnInit,OnDestroy {
   messages: HistoryMessage[];
   allMessages: HistoryMessage[];
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  currentView: string = 'allMessages';
 
   constructor(public taskService: TaskService,
               private socketService: SocketService) {
@@ -64,17 +65,21 @@ export class TaskHistoryComponent implements OnInit,OnDestroy {
   }
 
   findAllMessages() {
+    this.currentView = 'allMessages';
     this.messages = this.allMessages.slice();
   }
 
   findComments() {
+    this.currentView = 'comments';
     this.messages = this.allMessages.slice();
     this.messages = this.messages.filter((message) => {
       return message._type == 'TaskComment';
-    })
+    });
+
   }
 
   findOtherMessages() {
+    this.currentView = 'otherMessages';
     this.messages = this.allMessages.slice();
     this.messages = this.messages .filter((message) => {
       return message._type !== 'TaskComment';

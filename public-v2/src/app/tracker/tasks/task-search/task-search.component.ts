@@ -28,7 +28,7 @@ export class TaskSearchComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/app/tasks',this.taskId]);
+    this.router.navigate(['/app/tasks/',this.taskId]);
   }
 
   ngOnInit(): void {
