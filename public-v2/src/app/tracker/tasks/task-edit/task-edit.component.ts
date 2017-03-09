@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, Input, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, Input, ViewContainerRef, HostListener} from '@angular/core';
 
 import {Task} from '../../models/task';
 import {TaskStatus} from '../../models/task-status';
@@ -9,7 +9,10 @@ import {ToastsManager} from "ng2-toastr";
 
 @Component({
   selector: 'app-task-edit',
-  templateUrl: 'task-edit.component.html'
+  templateUrl: 'task-edit.component.html',
+  host: {
+    '(document:keyup)': 'onKeyUp($event)'
+  }
 })
 export class TasksEditComponent implements OnInit {
   @Input() task: Task|null = null;
@@ -30,6 +33,13 @@ export class TasksEditComponent implements OnInit {
 
   }
 
+  @HostListener('document:keyup', ['$event'])
+  onKeyUp(event: KeyboardEvent) {
+    if(event.keyCode == 27) {
+      this.close();
+    }
+  }
+
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
     this.taskService.task$.subscribe((task) => {
@@ -37,7 +47,7 @@ export class TasksEditComponent implements OnInit {
       this.initTask();
 
       this.taskService.editTask$.subscribe((task) => {
-         this.getInitEditedTask(task);
+        this.getInitEditedTask(task);
 
         if (task) {
           this.task = task ? task : new Task();
@@ -143,4 +153,5 @@ export class TasksEditComponent implements OnInit {
   private closeModal() {
     this.taskService.editTaskModal$.next(false);
   }
+
 }
