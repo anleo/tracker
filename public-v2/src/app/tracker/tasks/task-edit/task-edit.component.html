@@ -28,8 +28,6 @@
         <uploader (onUpload)="handleOnUpload($event)"></uploader>
         <file-viewer [isDeletable]="true" (onDelete)="handleOnDelete($event)" *ngIf="task.files && task.files.length"
                      [files]="task.files"></file-viewer>
-
-
       </div>
 
     </div>
