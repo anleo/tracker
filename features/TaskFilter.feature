@@ -23,10 +23,10 @@ Feature: TaskFilter
     Then I click on task link "p1"
     Then I am on "p1" page
 
-    Then I edit this task
+    Then I edit this task in layout
     Then I click on Move link
     And I see search input
-    When I type title of a serched task "task 1"
+    When I type title of a searched task "task 1"
     Then I see in a search list "task 1"
 
   Scenario: Filter tasks with "Move" button(negative case)
@@ -41,8 +41,8 @@ Feature: TaskFilter
     Then I click on task link "p1"
     Then I am on "p1" page
 
-    Then I edit this task
+    Then I edit this task in layout
     Then I click on Move link
     And I see search input
-    When I type title of a serched task "test"
+    When I type title of a searched task "test"
     Then I don't see in a search list "test"

@@ -13,6 +13,7 @@ import {BrowserTitleService} from "../../../services/browser-title/browser-title
 })
 export class TaskSearchComponent implements OnInit {
   tasks: Task[];
+  task: Task;
   taskId: string;
   query: string;
   editMode: boolean = false;
@@ -28,24 +29,28 @@ export class TaskSearchComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/app/tasks/',this.taskId]);
+    this.router.navigate(['/app/tasks', this.task._id]);
   }
 
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
-    this.taskId = this.taskService.task && this.taskService.task._id;
     this.browserTitleService.setTitle('Search');
-    this.taskId && this.route.params
-      .subscribe((params: Params) => {
-        this.taskSearchService
-          .search(params['query'], this.taskService.task)
-          .then((tasks: Task[]) => {
-            this.query = params['query'];
-            this.tasks = tasks;
-          })
-          .catch((err: any) => {
-            this.toastr.error(err._body);
-          });
-      });
+    this.taskService.task$.subscribe((task) => {
+      this.task = task;
+
+      this.route.params
+        .subscribe((params: Params) => {
+          this.query = params['query'];
+
+          this.task && this.taskSearchService
+            .search(this.query, this.task)
+            .then((tasks: Task[]) => {
+              this.tasks = tasks;
+            })
+            .catch((err: any) => {
+              this.toastr.error(err._body);
+            });
+        });
+    });
   }
 }

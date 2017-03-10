@@ -131,7 +131,7 @@ export class TaskResource extends Resource {
     path: '/{!taskId}/search?query={!query}',
     isArray: true
   })
-  search: ResourceMethod<any, Task[]>;
+  search: ResourceMethod<{taskId: string, query: string}, Task[]>;
 
   @ResourceAction({
     method: RequestMethod.Delete,

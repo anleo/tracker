@@ -41,10 +41,7 @@ const routes: Routes = [
       {path: 'report', component: TaskReportComponent},
       {path: 'tags', component: TaskTagsSearchComponent},
       {path: 'tags/:tag', component: TaskTagsSearchComponent},
-      {
-        path: 'search/:query',
-        component: TaskSearchComponent
-      },
+      {path: 'search/:query', component: TaskSearchComponent}
     ]
   },
   {

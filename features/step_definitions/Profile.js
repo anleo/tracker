@@ -1,7 +1,7 @@
 module.exports = function () {
 
     this.Then(/^I click my profile link$/, function (callback) {
-        this.iClick('a[ui-sref="app.profile"]', callback);
+        this.iClick('a.profileLink', callback);
     });
 
     this.Then(/^I see my profile form$/, function (callback) {
@@ -9,27 +9,27 @@ module.exports = function () {
     });
 
     this.Then(/^I see first name "([^"]*)" in form$/, function (arg1, callback) {
-        this.iSeeValue('.profile form.myprofile input[ng-model="user.first"]', arg1, callback);
+        this.iSeeValue('.profile form.myprofile input#firstName', arg1, callback);
     });
 
     this.Then(/^I see last name "([^"]*)" in form$/, function (arg1, callback) {
-        this.iSeeValue('.profile form.myprofile input[ng-model="user.last"]', arg1, callback);
+        this.iSeeValue('.profile form.myprofile input#lastName', arg1, callback);
     });
 
     this.Then(/^I see email "([^"]*)" in form$/, function (arg1, callback) {
-        this.iSeeValue('.profile form.myprofile input[ng-model="user.email"]', arg1, callback);
+        this.iSeeValue('.profile form.myprofile input#email', arg1, callback);
     });
 
     this.Then(/^I type first name "([^"]*)" in form$/, function (arg1, callback) {
-        this.iType('.profile form.myprofile input[ng-model="user.first"]', arg1, callback);
+        this.iType('.profile form.myprofile input#firstName', arg1, callback);
     });
 
     this.Then(/^I type last name "([^"]*)" in form$/, function (arg1, callback) {
-        this.iType('.profile form.myprofile input[ng-model="user.last"]', arg1, callback);
+        this.iType('.profile form.myprofile input#lastName', arg1, callback);
     });
 
     this.Then(/^I type email "([^"]*)" in form$/, function (arg1, callback) {
-        this.iType('.profile form.myprofile input[ng-model="user.email"]', arg1, callback);
+        this.iType('.profile form.myprofile input#email', arg1, callback);
     });
 
     this.Then(/^I save my profile form$/, function (callback) {
@@ -49,15 +49,15 @@ module.exports = function () {
     });
 
     this.Then(/^I type "([^"]*)" in Old Password field$/, function (arg1, callback) {
-        this.iType('.profile form.password input[ng-model="oldPassword"]', arg1, callback);
+        this.iType('.profile form.password input#oldPassword', arg1, callback);
     });
 
     this.Then(/^I type "([^"]*)" in New Password field$/, function (arg1, callback) {
-        this.iType('.profile form.password input[ng-model="newPassword"]', arg1, callback);
+        this.iType('.profile form.password input#newPassword', arg1, callback);
     });
 
     this.Then(/^I type "([^"]*)" in Confirm Password field$/, function (arg1, callback) {
-        this.iType('.profile form.password input[ng-model="newPasswordConfirm"]', arg1, callback);
+        this.iType('.profile form.password input#newPasswordConfirm', arg1, callback);
     });
 
     this.Then(/^I click Change button$/, function (callback) {
@@ -70,8 +70,8 @@ module.exports = function () {
 
     this.Then(/^I click on toaster notification "([^"]*)"$/, function (arg1, callback) {
         this.chain
-            .iSee('div[ng-repeat="toaster in toasters"] div:contains("' + arg1 + '")')
-            .iClick('.toaster-popup .toast-title')
+            .iSee('div#toast-container div.toast:contains("' + arg1 + '")')
+            .iClick('div#toast-container div.toast')
             .then(callback);
     });
 };

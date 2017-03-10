@@ -1,4 +1,4 @@
-<div class="task-search">
+<div class="task-search" *ngIf="task">
   <h3 *ngIf="tasks && tasks.length">Tasks found for: <i>'{{query}}'</i></h3>
 
   <h3 *ngIf="!tasks || !tasks.length">Nothing found for: <i>'{{query}}'</i></h3>

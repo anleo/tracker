@@ -1,5 +1,5 @@
 <span class="label label-danger">complexity/points</span>
 <span *ngIf="message.user"><strong>{{message.user.first}} {{message.user.last}}</strong></span>
 <span class="text-muted date-history-message"> at {{message.updatedAt | date : 'HH:mm yyyy/MM/dd'}}</span>
-<p *ngIf="message.complexity" class="history-message">Complexity was changed to {{message.complexity | humanizeComplexity}} .</p>
-<p class="history-message">Points were changed to {{message.points}} .</p>
+<p *ngIf="message.complexity" class="history-message">Complexity was changed to {{message.complexity | humanizeComplexity}}.</p>
+<p class="history-message">Points were changed to {{message.points}}.</p>

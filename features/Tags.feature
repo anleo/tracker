@@ -34,12 +34,13 @@ Feature: Tags
 
     Then I see task form
 
-    Then I tag task with "tag1"
+    Then I tag this task with "tag1"
 
     Then I click on save button
 
     Then I am on "task11" page
     And I see task "p3"
+    Then I switch metrics settings
 
     Then I click on task tag "tag1"
     And I see task "p3"
