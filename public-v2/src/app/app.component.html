@@ -28,7 +28,7 @@
         <ul class="nav navbar-nav navbar-right">
 
           <li *ngIf="user">
-            <a [routerLink]="['/app/users/me']"><i class="fa fa-user"></i>
+            <a [routerLink]="['/app/users/me']" class="profileLink"><i class="fa fa-user"></i>
               {{user.first? (user.first+ ' ' +user.last): user.local.username}}
             </a>
           </li>

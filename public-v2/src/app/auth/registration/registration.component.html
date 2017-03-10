@@ -4,14 +4,14 @@
     <div class="clearfix">
       <h1 class="pull-left">Registration</h1>
 
-      <!--<div class="pull-right login-social-link">-->
-        <!--<a href="/auth/twitter"><i class="fa fa-twitter"></i></a>-->
-        <!--<a href="/auth/facebook"><i class="fa fa-facebook-square"></i></a>-->
-        <!--<a href="/auth/google"><i class="fa fa-google"></i></a>-->
-      <!--</div>-->
+      <div class="pull-right login-social-link">
+        <a href="/auth/twitter"><i class="fa fa-twitter"></i></a>
+        <a href="/auth/facebook"><i class="fa fa-facebook-square"></i></a>
+        <a href="/auth/google"><i class="fa fa-google"></i></a>
+      </div>
     </div>
 
-    <form (ngSubmit)="register()">
+    <form (ngSubmit)="register()" class="registrationForm">
       <div class="form-group">
         <input [(ngModel)]="user.username" name="username" type="text" class="form-control" placeholder="Username" required>
       </div>

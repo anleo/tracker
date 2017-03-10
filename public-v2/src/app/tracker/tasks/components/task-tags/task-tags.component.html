@@ -3,22 +3,19 @@
   <i class="fa fa-tags fa-md vcenter" tooltip="Tags"></i>
 
   <div class="field-fix">
-    <ng-select class="ng-select"
-                [multiple]="true"
-                [items]="tagsList"
-                [active]="tags"
-                (selected)="selected($event)"
-                (removed)="removed($event)"
-                placeholder="Select tag...">
-    </ng-select>
-    <br>
-    <div class="input-group">
-      <input type="text" [(ngModel)]="tag" class="form-control"
-             (keydown)="onKey($event)"
-             placeholder="Add new tag...">
-      <span class="input-group-btn">
-        <button class="btn btn-success" type="button" (click)="addTag()">Add</button>
-      </span>
+    <div class="tag-selector">
+      <ng-select #ngSelect class="ng-select tag-select"
+                 [multiple]="true"
+                 [items]="tagsList"
+                 [active]="tags"
+                 (selected)="selected($event)"
+                 (removed)="removed($event)"
+                 (typed)="typed($event)"
+                 placeholder="Select tag...">
+      </ng-select>
+      <a (click)="notInList && addTag()"
+         class="btn btn-xs btn-success add-tag-btn"
+         *ngIf="tag && tag.length && notInList"><span>Add tag</span></a>
     </div>
     <div *ngIf="alreadyIn" class="text-danger">Already in tag list!</div>
     <div *ngIf="addedTag" class="text-success">Tag added!</div>

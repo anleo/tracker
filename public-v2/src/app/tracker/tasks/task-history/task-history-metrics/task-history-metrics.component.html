@@ -1,5 +1,5 @@
 <span class="label label-success">metrics</span>
 <span *ngIf ="message.user"><strong>{{message.user.first}} {{message.user.last}}</strong></span>
 <span class="text-muted date-history-message"> at {{message.updatedAt | date : 'HH:mm yyyy/MM/dd'}}</span>
-<p *ngIf="message.velocity" class="history-message">Velocity was changed to {{message.velocity | round}} .</p>
-<p *ngIf="message.estimatedTime" class="history-message">Estimated time was changed to {{message.estimatedTime | round}} hours .</p>
+<p *ngIf="message.velocity" class="history-message">Velocity was changed to {{message.velocity | round}}.</p>
+<p *ngIf="message.estimatedTime" class="history-message">Estimated time was changed to {{message.estimatedTime | round}} hours.</p>

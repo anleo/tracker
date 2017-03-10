@@ -28,8 +28,6 @@
         <uploader (onUpload)="handleOnUpload($event)"></uploader>
         <file-viewer [isDeletable]="true" (onDelete)="handleOnDelete($event)" *ngIf="task.files && task.files.length"
                      [files]="task.files"></file-viewer>
-
-
       </div>
 
     </div>
@@ -47,10 +45,11 @@
 
           <div class="btn-group task-statuses">
             <label *ngFor="let status of statuses"
-                   class="btn btn-default btn-sm"
+                   class="btn btn-default btn-sm taskStatusButton"
                    [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
-                   (click)="setField('status', status.value)"
-            >{{status.name}}</label>
+                   (click)="setField('status', status.value)">
+              {{status.name}}
+            </label>
           </div>
         </div>
         <metrics-in-editor *ngIf="task && task._id && task.simple"></metrics-in-editor>
