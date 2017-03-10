@@ -55,25 +55,25 @@ module.exports = function () {
     this.Then(/^I see task "([^"]*)" estimated time "([^"]*)" tooltip "([^"]*)"$/, function (arg1, arg2, arg3, callback) {
         this.chain
             .iSee('.board-view a:contains("' + arg1 + '")')
-            .iSee('.board-view ul li span[tooltip="Estimated ' + arg3 + '"]:contains("' + arg2 + '")')
+            .iSee('.board-view ul li span[ng-reflect-tooltip="Estimated ' + arg3 + '"]:contains("' + arg2 + '")')
             .then(callback);
     });
 
     this.Then(/^I click back to project "([^"]*)"$/, function (arg1, callback) {
-        this.iClick('div a:contains("' + arg1 + '")', callback);
+        this.iClick('div.task-info a.project-link:contains("' + arg1 + '")', callback);
     });
 
     this.Then(/^I see parent "([^"]*)" estimated time "([^"]*)" tooltip "([^"]*)"$/, function (arg1, arg2, arg3, callback) {
         this.chain
-            .iSee('div h2:contains("' + arg1 + '")')
-            .iSee('div[ng-hide="task._id == newTask._id"] li span[tooltip="Estimated ' + arg3 + '"]:contains("' + arg2 + '")')
+            .iSee('div.task-info h2:contains("' + arg1 + '")')
+            .iSee('div.task-info app-task-metrics li span[ng-reflect-tooltip="Estimated ' + arg3 + '"]:contains("' + arg2 + '")')
             .then(callback);
     });
 
     this.Then(/^I see parent "([^"]*)" complexity "([^"]*)"$/, function (arg1, arg2, callback) {
         this.chain
-            .iSee('div h2:contains("' + arg1 + '")')
-            .iSee('div[ng-hide="task._id == newTask._id"] li[tooltip="Complexity / Points"]:contains("' + arg2 + '")')
+            .iSee('div.task-info h2:contains("' + arg1 + '")')
+            .iSee('div.task-info app-task-metrics li[tooltip="Complexity / Points"]:contains("' + arg2 + '")')
             .then(callback);
     });
 
