@@ -31,7 +31,6 @@ Feature: TaskEstimation
     Then I don't see task "task 1"
     And I see task complexity "8p"
 
-
   Scenario: ProjectEstimation1
 
     When I see task "task 1"
@@ -77,8 +76,8 @@ Feature: TaskEstimation
 
     Then I see task "p1.2" velocity "8"
     And I don't see task "task 2"
-    And I see task "p1.1" estimated time "1.00" tooltip "01:00"
-    And I see parent "p1" estimated time "2.00" tooltip "02:00"
+    And I see task "p1.1" estimated time "1" tooltip "01:00"
+    And I see parent "p1" estimated time "2" tooltip "02:00"
 
     Then I click on task link "p1.1"
     Then I am on "p1.1" page
@@ -96,18 +95,18 @@ Feature: TaskEstimation
 
     Then I don't see task "task 1"
     And I don't see task "p1.2"
-    And I see task "p1.1.1" estimated time "1.00" tooltip "01:00"
-    And I see parent "p1.1" estimated time "1.00" tooltip "01:00"
+    And I see task "p1.1.1" estimated time "1" tooltip "01:00"
+    And I see parent "p1.1" estimated time "1" tooltip "01:00"
 
     Then I sleep 3
-    Then I see parent "p1" estimated time "1.00" tooltip "01:00"
+    Then I see parent "p1" estimated time "1" tooltip "01:00"
 
     Then I click back to project "p1"
     And I see task "p1.1"
     And I see task "p1.2"
 
-    Then I see parent "p1" estimated time "2.00" tooltip "02:00"
-    And I see task "p1.1" estimated time "1.00" tooltip "01:00"
+    Then I see parent "p1" estimated time "2" tooltip "02:00"
+    And I see task "p1.1" estimated time "1" tooltip "01:00"
 
   Scenario: ProjectEstimation2
 
@@ -232,8 +231,8 @@ Feature: TaskEstimation
     And I see task "p1.1"
     And I don't see task "task 1"
 
-    Then I see task "p1.3" velocity "8.00"
-    And I see task "p1.1" estimated time "2.00" tooltip "02:00"
-    And I see task "p1.2" estimated time "2.00" tooltip "02:00"
-    And I see parent "p1" estimated time "5.00" tooltip "05:00"
+    Then I see task "p1.3" velocity "8"
+    And I see task "p1.1" estimated time "2" tooltip "02:00"
+    And I see task "p1.2" estimated time "2" tooltip "02:00"
+    And I see parent "p1" estimated time "5" tooltip "05:00"
     And I see parent "p1" complexity "40p"

@@ -61,7 +61,7 @@ export class TaskHistoryComponent implements OnInit,OnDestroy {
 
   onSave(comment: HistoryMessage): void {
     this.allMessages.unshift(comment);
-    this.findComments();
+    this.findAllMessages();
   }
 
   findAllMessages() {

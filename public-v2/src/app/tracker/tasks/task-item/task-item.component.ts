@@ -68,7 +68,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
       this.taskService.getTask(this.task._id)
         .subscribe(task => this.initTaskData(task));
 
-    } else if (this.task && this.task._id == data.task ) {
+    } else if (this.task && this.task._id == data.task) {
       this.taskService.getTask(this.task._id)
         .subscribe(task => this.initTaskData(task));
     } else if ((!this.task || !this.task._id) && !data.parent) {
@@ -117,5 +117,9 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
   toggleTaskHistory(): void {
     this.showHistory = !this.showHistory;
+  }
+
+  resetTaskHistory(): void {
+    this.showHistory = false;
   }
 }

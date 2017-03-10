@@ -44,7 +44,7 @@ Feature: Report
     Then I type task title "project 1.2"
     And I see task form
 
-    Then I click on task status "In Progress"
+    Then I click on task status "In progress"
 
     And I click on save button
 
@@ -77,7 +77,7 @@ Feature: Report
 
     When I click on "Report" button in navbar
     And I see "project 1.3" in Done tasks
-    And I see "project 1.2" in In Progress tasks
+    And I see "project 1.2" in In progress tasks
     And I see "project 1.1" in Plans tasks
     And I see "project 1.1.1" in Plans tasks
 
@@ -121,7 +121,7 @@ Feature: Report
     Then I type task title "project 1.2"
     And I see task form
 
-    Then I click on task status "In Progress"
+    Then I click on task status "In progress"
 
     And I click on save button
     Then I sleep 1
@@ -223,7 +223,7 @@ Feature: Report
 
     Then I see "Andy Garcia" in assigned users
     And I see "project 1.3" in Done tasks
-    And I see "project 1.2" in In Progress tasks
+    And I see "project 1.2" in In progress tasks
     And I see "project 1.1" in Plans tasks
     And I see "project 1.1.1" in Plans tasks
 
@@ -236,7 +236,7 @@ Feature: Report
     When I choose user "Arnie Shwarziniggah"
     And I see "project 1.5" in Done tasks
     And I see "project 1.5.1" in Done tasks
-    And I don't see "project 1.2" in In Progress tasks
+    And I don't see "project 1.2" in In progress tasks
     And I don't see "project 1.1" in Plans tasks
 
     When I choose user "All"
@@ -244,7 +244,7 @@ Feature: Report
     And I see "project 1.3" in Done tasks
     And I see "project 1.5" in Done tasks
     And I see "project 1.5.1" in Done tasks
-    And I see "project 1.2" in In Progress tasks
+    And I see "project 1.2" in In progress tasks
     And I see "project 1.1" in Plans tasks
     And I see "project 1.1.1" in Plans tasks
     And I see "project 1.4" in Plans tasks

@@ -4,20 +4,20 @@ module.exports = function () {
         this.iSee(".board-view a:contains('" + arg1 + "')", callback);
     });
 
-
     this.Then(/^I click on task link "([^"]*)"$/, function (arg1, callback) {
-        this.chain
-            .iDontSee('.modal-dialog .modal-content')
-            .iClick(".container .board-view a:contains('" + arg1 + "')")
-            .then(callback)
+        this.iClick(".container .board-view a:contains('" + arg1 + "')", callback);
     });
 
     this.Then(/^I see search form$/, function (callback) {
-        this.iSee(".nav input[ng-model='search']", callback);
+        this.iSee(".nav task-search", callback);
     });
 
     this.When(/^I search "([^"]*)"$/, function (arg1, callback) {
-        this.iType(".nav input[ng-model='search']", arg1, callback);
+        this.iType(".nav task-search input[name='query']", arg1, callback);
+    });
+
+    this.When(/^I clear search input$/, function (callback) {
+        this.iPressBackspace(".nav task-search input[name='query']", callback);
     });
 
     this.Then(/^I don't see task "([^"]*)"$/, function (arg1, callback) {
@@ -30,7 +30,7 @@ module.exports = function () {
     });
 
     this.When(/^I don't see search form$/, function (callback) {
-        this.iDontSee(".nav input[ng-model='search']", callback);
+        this.iDontSee(".nav task-search input[name='query']", callback);
     });
 
     this.Then(/^I click projects$/, function (callback) {
@@ -38,7 +38,14 @@ module.exports = function () {
 
     });
 
-    this.Then(/^I edit this task$/, function (callback) {
+    this.Then(/^I edit this task in layout$/, function (callback) {
+        this.chain
+            .iClick('ul.task-metrics')
+            .iSee('app-task-edit form')
+            .then(callback);
+    });
+
+    this.Then(/^I edit this task in modal$/, function (callback) {
         this.chain
             .iClick('.task-info div[task-metrics]')
             .iSee('.modal-box div[task-editor]')
@@ -47,40 +54,43 @@ module.exports = function () {
 
     this.Then(/^I tag this task with "([^"]*)"$/, function (arg1, callback) {
         this.chain
-            .iType('.modal-box .ui-select-container input:last', arg1)
-            .iClick('.modal-box .ui-select-container span:contains("' +arg1+ '")')
+            .iType('app-task-edit form task-tags div.addTag input', arg1)
+            .iClick('app-task-edit form task-tags div.addTag button')
+            .iClick("app-task-edit form task-tags ng-select input")
+            .iClick('app-task-edit form task-tags ng-select ul.ui-select-choices li div:contains("' + arg1 + '")')
             .then(callback);
     });
 
     this.Then(/^I save task$/, function (callback) {
-        this.iClick('.modal-box button:contains(Save)', callback);
+        this.iClick('app-task-edit form button:contains(Save)', callback);
+    });
+
+    this.Then(/^I switch metrics settings$/, function (callback) {
+        this.iClick('app-tasks-board button.btn-metrics', callback);
     });
 
     this.Then(/^I see task with tag "([^"]*)"$/, function (arg1, callback) {
-        this.iSee(
-            'a[ui-sref="app.tags-find({taskId: task._id, tags: tag})"]:contains("'+arg1+'")',
-            callback
-        );
+        this.iSee('app-task-panel task-tags-panel a:contains("' + arg1 + '")', callback);
     });
 
-    this.Then(/^I click on edit button$/, function (callback) {
-        this.iClick('a:contains("task 1.2") + span[ng-click="edit(task)"]', callback);
+    this.Then(/^I click on edit button of task "([^"]*)"$/, function (arg1, callback) {
+        this.iClick('a:contains("' + arg1 + '") + span.editTaskButton', callback);
     });
 
     this.Then(/^I see edit form$/, function (callback) {
-        this.iSee('.modal-box>div[task-editor]', callback);
+        this.iSee('app-task-edit form', callback);
     });
 
     this.Then(/^I see title field$/, function (callback) {
-       this.iSee('.modal-box>div[task-editor] input[ng-model="task.title"]', callback);
+        this.iSee('app-task-edit form input[name="title"]', callback);
     });
 
     this.Then(/^I type "([^"]*)"$/, function (arg1, callback) {
-        this.iType('.modal-box>div[task-editor] input[ng-model="task.title"]', arg1, callback);
+        this.iType('app-task-edit form input[name="title"]', arg1, callback);
     });
 
     this.Then(/^I reload page$/, function (callback) {
-       this.iReload(callback);
+        this.iReload(callback);
     });
 
 };

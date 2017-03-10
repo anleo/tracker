@@ -2,7 +2,7 @@
 
 <div class="btn-group complexity">
   <label *ngFor="let complexity of complexities; let i = index"
-         class="btn btn-default btn-sm"
+         class="btn btn-default btn-sm complexityButton"
          [ngClass]="{active: complexity.value === task.complexity}"
          (click)="setValue(complexity)">{{complexity.name}}</label>
 </div>

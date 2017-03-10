@@ -29,12 +29,13 @@ Feature: Search
     Then I see task "task 1.2"
     And I don't see task "task 1.1"
 
-    When I search ""
+    When I search "z"
+    When I clear search input
+
     Then I am on "task 1" page
 
     And I see task "task 1.1"
     And I see task "task 1.2"
-
 
   Scenario: Search form visibility
     When I don't see search form
@@ -45,19 +46,20 @@ Feature: Search
     And I don't see search form
 
   Scenario: Search should search by tag
-
     Then I click on task link "task 1"
     Then I am on "task 1" page
 
     Then I click on task link "task 1.1"
     Then I am on "task 1.1" page
 
-    Then I edit this task
+    Then I click on edit button of task "task 1.1"
+    Then I see edit form
 
-    Then I sleep 3
     Then I tag this task with "super-tag"
     Then I sleep 1
     Then I save task
+
+    Then I switch metrics settings
 
     Then I see task with tag "super-tag"
 
@@ -81,7 +83,7 @@ Feature: Search
     Then I see task "task 1.2"
     Then I sleep 1
 
-    Then I click on edit button
+    Then I click on edit button of task "task 1.2"
     Then I see edit form
     And I see title field
     Then I sleep 1

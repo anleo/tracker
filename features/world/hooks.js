@@ -4,11 +4,11 @@ module.exports = function () {
   this.Before(function (next) {
     if (this.driver) {
       this.driver.manage().window().setSize(1000, 520).then(function () {
-        this.parseText(next);
+        this.prepare(next);
       }.bind(this));
     }
     else {
-      this.parseText(next);
+      this.prepare(next);
     }
   });
 
