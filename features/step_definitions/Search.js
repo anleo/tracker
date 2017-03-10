@@ -54,10 +54,10 @@ module.exports = function () {
 
     this.Then(/^I tag this task with "([^"]*)"$/, function (arg1, callback) {
         this.chain
-            .iType('app-task-edit form task-tags div.addTag input', arg1)
-            .iClick('app-task-edit form task-tags div.addTag button')
-            .iClick("app-task-edit form task-tags ng-select input")
-            .iClick('app-task-edit form task-tags ng-select ul.ui-select-choices li div:contains("' + arg1 + '")')
+            .iType('app-task-edit form task-tags ng-select.tag-select input.ui-select-search', arg1)
+            .iClick('app-task-edit form task-tags a.add-tag-btn')
+            .iClick("app-task-edit form task-tags ng-select.tag-select input.ui-select-search")
+            .iClick('app-task-edit form task-tags ng-select.tag-select ul.ui-select-choices li div:contains("' + arg1 + '")')
             .then(callback);
     });
 

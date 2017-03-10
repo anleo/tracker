@@ -127,7 +127,7 @@ export class TaskTagsComponent implements OnInit {
   public typed($event) {
     this.tag = $event;
     this.notInList = true;
-    this.tagsList.map((tag) => {
+    this.tagsList.forEach((tag) => {
       if (tag && tag.text.toString() === $event.toString()) {
         this.notInList = false;
       }
