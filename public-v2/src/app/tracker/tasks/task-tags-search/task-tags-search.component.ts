@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {Location} from "@angular/common";
+import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
+
 import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
@@ -18,34 +18,43 @@ export class TaskTagsSearchComponent implements OnInit {
 
   constructor(private contextTaskService: TaskService,
               private route: ActivatedRoute,
-              private location: Location,
-              private browserTitleService: BrowserTitleService) {}
+              private router: Router,
+              private browserTitleService: BrowserTitleService) {
+  }
 
   ngOnInit(): void {
     this.task = this.route.parent.snapshot.data['task'];
-    let currentTag = this.route.snapshot.params['tag'];
+
+    this.router.events
+      .subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.selectedTags = this.route.snapshot.queryParams['tags'] ?
+            this.route.snapshot.queryParams['tags'].split(',') : [];
+
+          this.getTasks();
+        }
+      });
 
     this.contextTaskService
       .getTags(this.task)
-      .subscribe(tags => {
-        this.availableTags = tags;
-
-        if (this.inListTags(this.availableTags, currentTag)) {
-          this.toggleTag(currentTag);
-        }
-      });
+      .subscribe(tags => this.availableTags = tags);
 
     this.browserTitleService.setTitle('Search by tags');
   }
 
   toggleTag(tag: string): void {
     if (!this.inListTags(this.selectedTags, tag)) {
-      this.selectedTags.push(tag)
+      this.selectedTags.push(tag);
     } else {
-      delete this.selectedTags[this.selectedTags.indexOf(tag)];
+      this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
     }
 
-    if (Object.keys(this.selectedTags).length) {
+    this.getTasks();
+    this.navigateWithTags();
+  }
+
+  private getTasks(): void {
+    if (this.selectedTags.length) {
       this.contextTaskService
         .getTasksByTags(this.task._id, this.selectedTags)
         .subscribe(tasks => {
@@ -54,6 +63,14 @@ export class TaskTagsSearchComponent implements OnInit {
         });
     } else {
       this.tasks = [];
+    }
+  }
+
+  private navigateWithTags(): void {
+    if (this.selectedTags.length) {
+      this.router.navigate(['/app/tasks', this.task._id, 'tags'], {queryParams: {tags: this.selectedTags}});
+    } else {
+      this.router.navigate(['/app/tasks', this.task._id, 'tags']);
     }
   }
 

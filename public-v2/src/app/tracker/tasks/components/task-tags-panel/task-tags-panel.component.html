@@ -2,7 +2,7 @@
   <i class="fa fa-tags"></i>&nbsp;
   <a class="label"
      *ngFor="let tag of task.tags"
-     [routerLink]="['/app/tasks/', task._id, 'tags', tag]">
+     [routerLink]="['/app/tasks/', task._id, 'tags']" [queryParams]="{tags:tag}">
     {{tag}}
   </a>
 </div>
