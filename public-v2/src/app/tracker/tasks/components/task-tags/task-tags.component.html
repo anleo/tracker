@@ -15,7 +15,7 @@
       </ng-select>
       <a (click)="notInList && addTag()"
          class="btn btn-xs btn-success add-tag-btn"
-         *ngIf="notInList"><span>Add tag</span></a>
+         *ngIf="tag && tag.length && notInList"><span>Add tag</span></a>
     </div>
 
     <div *ngIf="alreadyIn" class="text-danger">Already in tag list!</div>
