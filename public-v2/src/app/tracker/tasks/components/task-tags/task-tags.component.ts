@@ -1,4 +1,5 @@
-import {Component, Input, OnInit, Output, EventEmitter, ElementRef} from "@angular/core";
+import {
+  Component, Input, OnInit, Output, EventEmitter, ElementRef} from "@angular/core";
 import {Task} from "../../../models/task";
 import {TaskService} from "../../../services/task.service";
 
@@ -16,6 +17,7 @@ export class TaskTagsComponent implements OnInit {
   selectedTags: Array <string> = [];
   alreadyIn: boolean = false;
   addedTag: boolean = false;
+  notInList: boolean = true;
 
   @Output() tasksUpdated = new EventEmitter();
 
@@ -118,14 +120,17 @@ export class TaskTagsComponent implements OnInit {
           this.alreadyIn = true;
           setTimeout(() => this.alreadyIn = false, 2000);
         }
+        this.tag = null;
       });
   }
 
-  public onKey($event) {
-    if ($event.key === 'Enter') {
-      $event.preventDefault();
-      $event.stopPropagation();
-      this.addTag();
-    }
+  public typed($event) {
+    this.tag = $event;
+    this.notInList = true;
+    this.tagsList.forEach((tag) => {
+      if (tag && tag.text.toString() === $event.toString()) {
+        this.notInList = false;
+      }
+    });
   }
 }

@@ -941,3 +941,30 @@ hr {
   display: inline-block;
   cursor: pointer;
 }
+
+.tag-selector {
+  position: relative;
+}
+
+.tag-select .ui-select-search {
+  padding-left: 65px;
+}
+
+.add-tag-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  line-height: 20px;
+  height: 100%;
+  border-radius: 0 3px 3px 0;
+}
+
+.add-tag-btn span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -10px;
+  width: 46px;
+  margin-left: -23px;
+}
