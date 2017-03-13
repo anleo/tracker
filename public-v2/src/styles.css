@@ -912,3 +912,9 @@ hr {
 .date-history-message{
   font-size: 10px;
 }
+
+.description-height {
+  max-height: 104px;
+  min-height: 52px;
+  overflow-y: auto !important;
+}
