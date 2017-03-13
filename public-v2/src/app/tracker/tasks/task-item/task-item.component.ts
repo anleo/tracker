@@ -35,25 +35,6 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // let self = this;
-    //
-    // this.socketService.scopeOn(self, 'task.save', (data) => self.socketSync(data));
-    // this.socketService.scopeOn(self, 'task.remove', (data) => self.socketSync(data));
-    //
-    // this.taskService.task$.subscribe((task) => this.initTask(task));
-    // this.taskService.tasks$.subscribe((tasks) => this.tasks = tasks);
-    // this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
-    // this.route.params
-    //   .switchMap((params: Params) => {
-    //     if (params['taskId']) {
-    //       this.taskService.tasks$.next([]);
-    //       return this.taskService.getTask(params['taskId']);
-    //     } else {
-    //       return Observable.of(null);
-    //     }
-    //   })
-    //   .subscribe(task => this.initTaskData(task));
-
     this.init();
   }
 
@@ -61,7 +42,6 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     this.route.params
       .switchMap((params: Params) => {
         if (params['taskId']) {
-          // this.taskService.tasks$.next([]);
           return this.taskService.getTask(params['taskId']);
         } else {
           return Observable.of(null);
@@ -79,107 +59,38 @@ export class TaskItemComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    console.log('>>>>> taskWithStatus', taskWithStatus)
-
     let task = taskWithStatus.task;
 
     if (taskWithStatus.status === 'update') {
-      this.onUpdate(task);
+      this.onUpdate();
+    } else if (taskWithStatus.status === 'move') {
+      this.onMove();
     } else if (taskWithStatus.status === 'remove') {
       this.onRemove(task);
-    } else if (taskWithStatus.status === 'move') {
-      this.onMove(task);
     }
   }
 
-  onUpdate(task: Task): void {
-    if (!task) {
-      return null;
-    }
-
-    let taskId = task && task._id ? task._id : null;
-
-    if (this.task && this.task._id === taskId) {
-      this.task = task;
-      this.loadTasks(taskId).subscribe((tasks) => this.tasks = tasks);
-    } else {
-      this.reloadTasks(task);
-    }
+  onUpdate(): void {
+    this.init();
   }
 
-  onMove(task: Task): void|null {
-    if (!task) {
-      return null;
-    }
-
-    let taskId = task && task._id ? task._id : null;
-
-    if (taskId === (this.task && this.task._id)) {
-      this.loadTasks(taskId).subscribe((tasks) => this.tasks = tasks);
-    } else {
-      let taskFound = this.tasks && this.tasks.find((_task) => _task._id === taskId);
-      if (taskFound) {
-        if (this.task && this.task._id) {
-          this.taskService.getTask(this.task._id).subscribe((task) => this.task = task);
-          this.loadTasks(this.task._id).subscribe((tasks) => this.tasks = tasks);
-        } else {
-          this.taskService.getTasks().subscribe((tasks) => this.tasks = tasks);
-        }
-      }
-    }
+  onMove(): void {
+    this.init();
   }
 
   onRemove(task: Task): void {
-    if (!task) {
-      return null;
-    }
-
     let taskId = task && task._id ? task._id : null;
 
     if (this.task && this.task._id === taskId) {
-      this.loadTasks(taskId).subscribe((tasks) => this.tasks = tasks);
       if (this.task && this.task.parentTaskId) {
         this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
       } else {
         this.router.navigateByUrl('/app/tasks/');
       }
     } else {
-      this.reloadTasks(task);
+      this.init();
     }
   }
-
-  reloadTasks(task: Task): void {
-    if (task && task.parentTaskId) {
-      this.taskService.getTask(task.parentTaskId).subscribe((task) => this.task = task);
-      this.loadTasks(task.parentTaskId).subscribe((tasks) => this.tasks = tasks);
-    } else {
-      this.taskService.getTasks().subscribe((tasks) => this.tasks = tasks);
-    }
-  }
-
-  // private initTaskData(task) {
-  //   this.initTask(task);
-  //   // this.taskService.task$.next(task);
-  //   // this.rootTaskService.task$.next(task);
-  // }
-
-  // socketSync(data): Task {
-  //   let task = _.find(this.tasks, (aTask) => aTask._id === data.task);
-  //
-  //   if (this.task && this.task._id == data.parent) {
-  //     this.taskService.getTask(this.task._id)
-  //       .subscribe(task => this.initTaskData(task));
-  //
-  //   } else if (this.task && this.task._id == data.task) {
-  //     this.taskService.getTask(this.task._id)
-  //       .subscribe(task => this.initTaskData(task));
-  //   } else if ((!this.task || !this.task._id) && !data.parent) {
-  //     this.loadTasks(null)
-  //       .subscribe((tasks) => this.tasks = tasks);
-  //   }
-  //
-  //   return task;
-  // };
 
   initTask(task) {
     this.parentTask = null;
