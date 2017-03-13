@@ -23,7 +23,7 @@ export class TaskTagsSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.task = this.route.parent.snapshot.data['task'];
+    this.task = this.route.snapshot.data['task'];
 
     this.router.events
       .subscribe((event) => {

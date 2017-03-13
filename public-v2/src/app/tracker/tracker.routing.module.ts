@@ -32,15 +32,42 @@ const routes: Routes = [
   {
     path: ':taskId',
     component: BlankComponent,
-    resolve: {
-      task: TaskResolver
-    },
     children: [
-      {path: '', component: TaskItemComponent},
-      {path: 'archive', component: TaskArchiveComponent},
-      {path: 'report', component: TaskReportComponent},
-      {path: 'tags', component: TaskTagsSearchComponent},
-      {path: 'search/:query', component: TaskSearchComponent}
+      {
+        path: '',
+        component: TaskItemComponent,
+        resolve: {
+          task: TaskResolver
+        }
+      },
+      {
+        path: 'archive',
+        component: TaskArchiveComponent,
+        resolve: {
+          task: TaskResolver
+        }
+      },
+      {
+        path: 'report',
+        component: TaskReportComponent,
+        resolve: {
+          task: TaskResolver
+        }
+      },
+      {
+        path: 'tags',
+        component: TaskTagsSearchComponent,
+        resolve: {
+          task: TaskResolver
+        }
+      },
+      {
+        path: 'search/:query',
+        component: TaskSearchComponent,
+        resolve: {
+          task: TaskResolver
+        }
+      }
     ]
   },
   {

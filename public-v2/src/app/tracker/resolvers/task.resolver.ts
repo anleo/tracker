@@ -14,8 +14,10 @@ export class TaskResolver implements Resolve<any> {
   }
 
   resolve(route: ActivatedRouteSnapshot): Observable<Task> {
+    let taskId = route.params['taskId'] || route.parent.params['taskId'] || null;
+
     return this.taskService
-      .getTask(route.params['taskId'])
+      .getTask(taskId)
       .map((task) => {
         this.taskService.task$.next(task);
         this.rootTaskService.task$.next(task);
