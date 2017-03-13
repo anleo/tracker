@@ -6,6 +6,8 @@ import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 import {ToastsManager} from "ng2-toastr";
+import {ActivatedRoute, Params} from "@angular/router";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-task-edit',
@@ -28,6 +30,7 @@ export class TasksEditComponent implements OnInit {
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService,
               public vcr: ViewContainerRef,
+              private route: ActivatedRoute,
               public toastr: ToastsManager) {
     this.toastr.setRootViewContainerRef(vcr);
 
@@ -35,38 +38,49 @@ export class TasksEditComponent implements OnInit {
 
   @HostListener('document:keyup', ['$event'])
   onKeyUp(event: KeyboardEvent) {
-    if(event.keyCode == 27) {
+    if (event.keyCode == 27) {
       this.close();
     }
   }
 
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
-    this.taskService.task$.subscribe((task) => {
-      this.parentTaskId = task && task._id ? task._id : null;
-      this.initTask();
-
-      this.taskService.editTask$.subscribe((task) => {
-        this.getInitEditedTask(task);
-
-        if (task) {
-          this.task = task ? task : new Task();
-          let editTaskId = task && task._id ? task._id : null;
-          let mainTaskId = this.parentTaskId;
-          let parentTask = null;
-
-          if (editTaskId) {
-            parentTask = editTaskId === mainTaskId ? null : mainTaskId;
-          } else {
-            parentTask = mainTaskId;
-          }
-
-          if (this.task && !this.task.parentTaskId) {
-            this.task.parentTaskId = parentTask;
-          }
+    // this.taskService.task$.subscribe((task) => {
+    this.route.params
+      .switchMap((params: Params) => {
+        console.log('>>>>> ', params['taskId'])
+        if (params['taskId']) {
+          return Observable.of(params['taskId']);
+        } else {
+          return Observable.of(null);
         }
+      })
+      .subscribe(task => {
+        this.parentTaskId = task || null;
+        console.log('>>>>> this.parentTaskId', this.parentTaskId)
+        this.initTask();
+
+        this.taskService.editTask$.subscribe((task) => {
+          this.getInitEditedTask(task);
+
+          if (task) {
+            this.task = task ? task : new Task();
+            let editTaskId = task && task._id ? task._id : null;
+            let mainTaskId = this.parentTaskId;
+            let parentTask = null;
+
+            if (editTaskId) {
+              parentTask = editTaskId === mainTaskId ? null : mainTaskId;
+            } else {
+              parentTask = mainTaskId;
+            }
+
+            if (this.task && !this.task.parentTaskId) {
+              this.task.parentTaskId = parentTask;
+            }
+          }
+        });
       });
-    });
 
     this.taskStatusService
       .getTaskStatusList()
@@ -87,12 +101,13 @@ export class TasksEditComponent implements OnInit {
   }
 
   save(): void {
-    this.counter = 0;
-    if (this.task && this.task.parentTaskId) {
-      this.taskService.saveChildTask(this.task).subscribe((task) => this.reinitTask(task));
-    } else {
-      this.taskService.save(this.task).subscribe((task) => this.reinitTask(task));
-    }
+    this.taskService.editTaskUpdated$.next({task: this.task, status: 'update'});
+    // this.counter = 0;
+    // if (this.task && this.task.parentTaskId) {
+    //   this.taskService.saveChildTask(this.task).subscribe((task) => this.reinitTask(task));
+    // } else {
+    //   this.taskService.save(this.task).subscribe((task) => this.reinitTask(task));
+    // }
   }
 
   reinitTask(task: Task): void {

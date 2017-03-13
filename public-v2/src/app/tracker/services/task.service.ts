@@ -33,127 +33,127 @@ export class TaskService {
     this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
 
     this.editTask$.subscribe((task: Task) => this.editTask = task);
-    this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+    // this.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
 
     this.taskMetricsViewType$.subscribe(type => this.taskMetricsViewType = type);
   }
 
-  actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
-    if (!taskWithStatus) {
-      return false;
-    }
-
-    let task = taskWithStatus.task;
-
-    if (taskWithStatus.status === 'update') {
-      this.onUpdate(task);
-    } else if (taskWithStatus.status === 'remove') {
-      this.onRemove(task);
-    } else if (taskWithStatus.status === 'move') {
-      this.onMove(task);
-    }
-  }
-
-  loadTasks(taskId: string): Observable<Task[]> {
-    if (taskId) {
-      return this.getChildrenTasks(taskId);
-    } else {
-      return this.getTasks();
-    }
-  }
-
-  onUpdate(task: Task): void {
-    if (!task) {
-      return null;
-    }
-
-    let taskId = task && task._id ? task._id : null;
-
-    let tasks = this.tasks || [];
-    this.tasks = [];
-    let taskFound = tasks.find((_task) => _task._id === taskId);
-
-    if (this.task && this.task._id === taskId) {
-      this.task = task;
-      this.task$.next(task);
-      this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
-    } else {
-      if (taskFound) {
-        tasks = tasks.map((_task) => {
-          if (_task._id === taskId) {
-            _task = task;
-          }
-          return _task;
-        });
-      } else {
-        tasks.push(task);
-      }
-      this.reloadTasks(task, tasks);
-    }
-  }
-
-  onRemove(task: Task): void {
-    if (!task) {
-      return null;
-    }
-
-    let tasks = this.tasks;
-    this.tasks = [];
-    let taskId = task && task._id ? task._id : null;
-
-    if (this.task && this.task._id === taskId) {
-      this.task$.next(null);
-      this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
-      if (this.task && this.task.parentTaskId) {
-        this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
-      } else {
-        this.router.navigateByUrl('/app/tasks/');
-      }
-    } else {
-      let index = tasks.indexOf(task);
-      if (index > -1) {
-        tasks.splice(index, 1);
-      }
-
-      this.reloadTasks(task, tasks);
-    }
-  }
-
-  onMove(task: Task): void|null {
-    if (!task) {
-      return null;
-    }
-
-    let taskId = task && task._id ? task._id : null;
-
-    if (taskId === (this.task && this.task._id)) {
-      this.task$.next(task);
-      this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
-    } else {
-      let taskFound = this.tasks && this.tasks.find((_task) => _task._id === taskId);
-      if (taskFound) {
-        this.tasks = this.tasks.filter(item => item._id !== taskId);
-        if (this.task && this.task._id) {
-          this.getTask(this.task._id).subscribe((task) => this.task$.next(task));
-          this.loadTasks(this.task._id).subscribe((tasks) => this.tasks$.next(tasks));
-        } else {
-          this.getTasks().subscribe((tasks) => this.tasks$.next(tasks));
-        }
-      }
-    }
-  }
-
-  private reloadTasks(task: Task, tasks: Task[]): void {
-    this.tasks = tasks;
-    if (task && task.parentTaskId) {
-      this.getTask(task.parentTaskId).subscribe((parentTask) => {
-        this.task$.next(parentTask);
-      });
-      this.loadTasks(task.parentTaskId).subscribe((tasks) => this.tasks$.next(tasks));
-    } else {
-      this.getTasks().subscribe((tasks) => this.tasks$.next(tasks));
-    }
-  }
+  // actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
+  //   if (!taskWithStatus) {
+  //     return false;
+  //   }
+  //
+  //   let task = taskWithStatus.task;
+  //
+  //   if (taskWithStatus.status === 'update') {
+  //     this.onUpdate(task);
+  //   } else if (taskWithStatus.status === 'remove') {
+  //     this.onRemove(task);
+  //   } else if (taskWithStatus.status === 'move') {
+  //     this.onMove(task);
+  //   }
+  // }
+  //
+  // loadTasks(taskId: string): Observable<Task[]> {
+  //   if (taskId) {
+  //     return this.getChildrenTasks(taskId);
+  //   } else {
+  //     return this.getTasks();
+  //   }
+  // }
+  //
+  // onUpdate(task: Task): void {
+  //   if (!task) {
+  //     return null;
+  //   }
+  //
+  //   let taskId = task && task._id ? task._id : null;
+  //
+  //   let tasks = this.tasks || [];
+  //   this.tasks = [];
+  //   let taskFound = tasks.find((_task) => _task._id === taskId);
+  //
+  //   if (this.task && this.task._id === taskId) {
+  //     this.task = task;
+  //     this.task$.next(task);
+  //     this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
+  //   } else {
+  //     if (taskFound) {
+  //       tasks = tasks.map((_task) => {
+  //         if (_task._id === taskId) {
+  //           _task = task;
+  //         }
+  //         return _task;
+  //       });
+  //     } else {
+  //       tasks.push(task);
+  //     }
+  //     this.reloadTasks(task, tasks);
+  //   }
+  // }
+  //
+  // onRemove(task: Task): void {
+  //   if (!task) {
+  //     return null;
+  //   }
+  //
+  //   let tasks = this.tasks;
+  //   this.tasks = [];
+  //   let taskId = task && task._id ? task._id : null;
+  //
+  //   if (this.task && this.task._id === taskId) {
+  //     this.task$.next(null);
+  //     this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
+  //     if (this.task && this.task.parentTaskId) {
+  //       this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
+  //     } else {
+  //       this.router.navigateByUrl('/app/tasks/');
+  //     }
+  //   } else {
+  //     let index = tasks.indexOf(task);
+  //     if (index > -1) {
+  //       tasks.splice(index, 1);
+  //     }
+  //
+  //     this.reloadTasks(task, tasks);
+  //   }
+  // }
+  //
+  // onMove(task: Task): void|null {
+  //   if (!task) {
+  //     return null;
+  //   }
+  //
+  //   let taskId = task && task._id ? task._id : null;
+  //
+  //   if (taskId === (this.task && this.task._id)) {
+  //     this.task$.next(task);
+  //     this.loadTasks(taskId).subscribe((tasks) => this.tasks$.next(tasks));
+  //   } else {
+  //     let taskFound = this.tasks && this.tasks.find((_task) => _task._id === taskId);
+  //     if (taskFound) {
+  //       this.tasks = this.tasks.filter(item => item._id !== taskId);
+  //       if (this.task && this.task._id) {
+  //         this.getTask(this.task._id).subscribe((task) => this.task$.next(task));
+  //         this.loadTasks(this.task._id).subscribe((tasks) => this.tasks$.next(tasks));
+  //       } else {
+  //         this.getTasks().subscribe((tasks) => this.tasks$.next(tasks));
+  //       }
+  //     }
+  //   }
+  // }
+  //
+  // private reloadTasks(task: Task, tasks: Task[]): void {
+  //   this.tasks = tasks;
+  //   if (task && task.parentTaskId) {
+  //     this.getTask(task.parentTaskId).subscribe((parentTask) => {
+  //       this.task$.next(parentTask);
+  //     });
+  //     this.loadTasks(task.parentTaskId).subscribe((tasks) => this.tasks$.next(tasks));
+  //   } else {
+  //     this.getTasks().subscribe((tasks) => this.tasks$.next(tasks));
+  //   }
+  // }
 
   setTasks(tasks: Task[]): void {
     this.tasks$.next(tasks);
