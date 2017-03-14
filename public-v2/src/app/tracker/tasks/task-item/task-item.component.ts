@@ -1,13 +1,10 @@
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import * as _ from 'lodash';
 
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
-import {ROOT_TASKSERVICE} from "../../../app.tokens";
-import {SocketService} from "../../../services/socket.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {TaskWithStatus} from "../../models/task-with-status";
 
@@ -29,7 +26,6 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
-              private socketService: SocketService,
               private router: Router) {
     this.taskService.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }

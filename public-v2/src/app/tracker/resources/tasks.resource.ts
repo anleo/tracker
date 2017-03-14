@@ -51,6 +51,11 @@ export class TaskResource extends Resource {
   getTask: ResourceMethodStrict<any, {taskId: string}, Task>;
 
   @ResourceAction({
+    path: '/{!taskId}/parent'
+  })
+  getParent: ResourceMethodStrict<any, {taskId: string}, Task>;
+
+  @ResourceAction({
     path: '/{!taskId}/root'
   })
   getRoot: ResourceMethodStrict<any, {taskId: string}, Task>;

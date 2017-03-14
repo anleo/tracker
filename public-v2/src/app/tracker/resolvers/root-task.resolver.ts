@@ -1,17 +1,15 @@
 import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router';
-import {Injectable, Inject} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 
 import {TaskService} from "../services/task.service";
 import {Task} from "../models/task";
-import {ROOT_TASKSERVICE} from "../../app.tokens";
 import {CurrentTaskService} from "../services/current-task.service";
 
 @Injectable()
-export class TaskResolver implements Resolve<any> {
+export class RootTaskResolver implements Resolve<any> {
   constructor(private taskService: TaskService,
               private currentTaskService: CurrentTaskService,
-              @Inject(ROOT_TASKSERVICE) private rootTaskService,
               private router: Router) {
   }
 
@@ -19,10 +17,9 @@ export class TaskResolver implements Resolve<any> {
     let taskId = route.params['taskId'] || route.parent.params['taskId'] || null;
 
     return this.taskService
-      .getTask(taskId)
+      .getRoot(taskId)
       .map((task) => {
-        this.currentTaskService.task$.next(task);
-        this.rootTaskService.task$.next(task);
+        this.currentTaskService.rootTask$.next(task);
         return task;
       })
       .catch((err: any) => {
