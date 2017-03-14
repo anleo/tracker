@@ -17,7 +17,7 @@ export class TaskTagsComponent implements OnInit {
   selectedTags: Array <string> = [];
   alreadyIn: boolean = false;
   addedTag: boolean = false;
-  notInList: boolean = true;
+  notInList: boolean;
 
   @Output() tasksUpdated = new EventEmitter();
 
@@ -112,20 +112,23 @@ export class TaskTagsComponent implements OnInit {
             this.addedTag = true;
             this.loadTagsList();
             this.initSelectedTags();
+            this.tags.push({id: this.tag, text: this.tag});
+            this.selectedTags.push(this.tag);
             this.tag = null;
             this.elementRef.nativeElement.querySelector('.ng-select input').focus();
+            this.elementRef.nativeElement.querySelector('.ng-select input').value = null;
             setTimeout(() => this.addedTag = false, 2000);
           });
         } else {
           this.alreadyIn = true;
+          this.tag = null;
           setTimeout(() => this.alreadyIn = false, 2000);
         }
-        this.tag = null;
       });
   }
 
   public typed($event) {
-    this.tag = $event;
+    this.tag = $event.trim();
     this.notInList = true;
     this.tagsList.forEach((tag) => {
       if (tag && tag.text.toString() === $event.toString()) {

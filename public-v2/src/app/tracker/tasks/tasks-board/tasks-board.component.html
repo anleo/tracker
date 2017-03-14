@@ -3,7 +3,7 @@
     <div class="btn-group board-buttons" role="group">
       <button class="btn btn-default btn-sm"
               *ngFor="let board of boards"
-              [ngClass]="{'active': currentBoard == board}"
+              [ngClass]="{'active': currentBoard?.name === board?.name}"
               (click)="onChangeBoard(board)">
         {{board.title}}
       </button>

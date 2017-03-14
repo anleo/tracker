@@ -968,3 +968,7 @@ hr {
   width: 46px;
   margin-left: -23px;
 }
+
+.task-tree > panel-tree > ul{
+  padding-left: 0;
+}

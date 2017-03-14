@@ -9,7 +9,7 @@
   </a>
 
   <!--@@@@ TODO: check task on complete. Is it implemented?-->
-  <!--<div *ngIf="tasks.length" task-views tasks="tasks" task-on-complete="init"></div>-->
+  <!--<div *ngIf="tasks.length" task-views tasks="tasks" task-on-complete="initTask"></div>-->
   <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
   <app-tasks-board *ngIf="tasks && tasks.length" [tasks]="tasks"></app-tasks-board>
 </div>
