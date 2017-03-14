@@ -38,7 +38,7 @@ module.exports = function () {
     });
 
     this.Then(/^I click on task status "([^"]*)"$/, function (arg1, callback) {
-        this.iClick("form div.btn-group label.taskStatusButton:contains('" + arg1 + "')", callback);
+        this.iClick("form div.btn-group button.taskStatusButton:contains('" + arg1 + "')", callback);
     });
 
     this.Then(/^I click task spent time "([^"]*)"$/, function (arg1, callback) {
