@@ -32,7 +32,6 @@ export class TasksEditComponent implements OnInit {
               private taskStatusService: TaskStatusService,
               public vcr: ViewContainerRef,
               private route: ActivatedRoute,
-              private localStorageService:LocalStorageService,
               public toastr: ToastsManager) {
     this.toastr.setRootViewContainerRef(vcr);
   }
@@ -97,8 +96,6 @@ export class TasksEditComponent implements OnInit {
     this.closeModal();
     this.taskService.editTaskUpdated$.next({task: task, status: 'update'});
     setTimeout(() => this.initTask(), 0);
-
-    this.localStorageService.set('lastEditedTask', task);
   }
 
   getInitEditedTask(task: Task) {
