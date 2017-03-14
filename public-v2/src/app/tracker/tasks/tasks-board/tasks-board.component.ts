@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ElementRef, Renderer} from '@angular/core';
 
 import {Task} from '../../models/task'
 import {TaskStatusService} from "../../services/task-status.service";
@@ -46,10 +46,12 @@ export class TasksBoardComponent implements OnInit {
 
   onChangeBoard(board): void {
     this.currentBoard = board;
+    this.localStorageService.set('currentBoard', board);
   }
 
   defaultBoard(): void {
-    this.currentBoard = this.boards.find(item => item.name === 'board');
+    this.currentBoard = this.localStorageService.get('currentBoard') as Board ||
+      this.boards.find(item => item.name === 'board');
   }
 
   sortByPriority(): void {
@@ -69,7 +71,7 @@ export class TasksBoardComponent implements OnInit {
   changeMetricsView(): void {
     if(this.metricsViewType < 2){
       this.metricsViewType++;
-    }else{
+    } else {
       this.metricsViewType = 0;
     }
 
