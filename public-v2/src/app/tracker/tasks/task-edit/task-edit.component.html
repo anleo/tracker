@@ -44,12 +44,13 @@
           <i class="fa fa-check-square-o fa-md vcenter" tooltip="Status"></i>
 
           <div class="btn-group task-statuses">
-            <label *ngFor="let status of statuses"
+            <button *ngFor="let status of statuses"
                    class="btn btn-default btn-sm taskStatusButton"
                    [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
+                   [disabled]="task.archived"
                    (click)="setField('status', status.value)">
               {{status.name}}
-            </label>
+            </button>
           </div>
         </div>
         <metrics-in-editor *ngIf="task && task._id && task.simple"></metrics-in-editor>
