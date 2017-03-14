@@ -1,33 +1,54 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Location} from "@angular/common";
+import {BehaviorSubject} from "rxjs";
+
 import {UserService} from "../../../user/services/user.service";
 import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
 import {User} from "../../../user/models/user";
-import {Location} from "@angular/common";
+import {TaskWithStatus} from "../../models/task-with-status";
 
 @Component({
   templateUrl: 'my-tasks.component.html'
 })
 
-export class MyTasksComponent implements OnInit {
+export class MyTasksComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
   user: User | null = null;
   editMode: boolean = false;
-  editTask$: Task|null;
+  $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private userService: UserService,
               private taskService: TaskService,
-              private location: Location) {}
+              private location: Location) {
+  }
 
   ngOnInit(): void {
+    this.taskService.editTaskUpdated$
+      .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+
     this.taskService.editTaskModal$
       .subscribe((flag) => this.editMode = flag);
-    this.taskService.editTask$
-      .subscribe((task) => this.editTask$ = task);
 
     this.userService.get()
       .subscribe(user => this.user = user);
 
+    this.getTasks();
+  }
+
+  ngOnDestroy(): void {
+    this.$onDestroy.next(true);
+  }
+
+  private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
+    if (!taskWithStatus) {
+      return false;
+    }
+
+    this.getTasks();
+  }
+
+  private getTasks(): void {
     this.taskService.getUserTasks(this.user._id)
       .subscribe(tasks => {
         this.tasks = tasks;
