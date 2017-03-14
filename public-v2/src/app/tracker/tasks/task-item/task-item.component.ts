@@ -1,4 +1,4 @@
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import * as _ from 'lodash';
@@ -9,6 +9,7 @@ import {BrowserTitleService} from "../../../services/browser-title/browser-title
 import {ROOT_TASKSERVICE} from "../../../app.tokens";
 import {SocketService} from "../../../services/socket.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {TaskWithStatus} from "../../models/task-with-status";
 
 @Component({
   selector: 'app-task-item',
@@ -17,8 +18,10 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 export class TaskItemComponent implements OnInit, OnDestroy {
   task: Task|null = null;
   tasks: Task[] = [];
+
   root: Task|null = null;
   parentTask: Task|null = null;
+
   editMode: boolean = false;
   showHistory: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -26,60 +29,70 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
-              @Inject(ROOT_TASKSERVICE) private rootTaskService,
-              private socketService: SocketService) {
+              private socketService: SocketService,
+              private router: Router) {
+    this.taskService.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
   ngOnInit() {
-    let self = this;
+    this.init();
+  }
 
-    this.socketService.scopeOn(self, 'task.save', (data) => self.socketSync(data));
-    this.socketService.scopeOn(self, 'task.remove', (data) => self.socketSync(data));
-
-    this.taskService.task$.subscribe((task) => this.init(task));
-    this.taskService.tasks$.subscribe((tasks) => this.tasks = tasks);
-    this.taskService.editTask$.subscribe((task) => this.editMode = !!(task && task.title));
+  init() {
     this.route.params
       .switchMap((params: Params) => {
         if (params['taskId']) {
-          this.taskService.tasks$.next([]);
           return this.taskService.getTask(params['taskId']);
         } else {
           return Observable.of(null);
         }
       })
-      .subscribe(task => this.initTaskData(task));
+      .subscribe(task => this.initTask(task));
   }
 
   ngOnDestroy(): void {
     this.$onDestroy.next(true);
   }
 
-  private initTaskData(task) {
-    this.init(task);
-    this.taskService.task$.next(task);
-    this.rootTaskService.task$.next(task);
-  }
-
-  socketSync(data): Task {
-    let task = _.find(this.tasks, (aTask) => aTask._id === data.task);
-
-    if (this.task && this.task._id == data.parent) {
-      this.taskService.getTask(this.task._id)
-        .subscribe(task => this.initTaskData(task));
-
-    } else if (this.task && this.task._id == data.task) {
-      this.taskService.getTask(this.task._id)
-        .subscribe(task => this.initTaskData(task));
-    } else if ((!this.task || !this.task._id) && !data.parent) {
-      this.loadTasks(null)
-        .subscribe((tasks) => this.tasks = tasks);
+  actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
+    if (!taskWithStatus) {
+      return false;
     }
 
-    return task;
-  };
+    let task = taskWithStatus.task;
 
-  init(task) {
+    if (taskWithStatus.status === 'update') {
+      this.onUpdate();
+    } else if (taskWithStatus.status === 'move') {
+      this.onMove();
+    } else if (taskWithStatus.status === 'remove') {
+      this.onRemove(task);
+    }
+  }
+
+  onUpdate(): void {
+    this.init();
+  }
+
+  onMove(): void {
+    this.init();
+  }
+
+  onRemove(task: Task): void {
+    let taskId = task && task._id ? task._id : null;
+
+    if (this.task && this.task._id === taskId) {
+      if (this.task && this.task.parentTaskId) {
+        this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
+      } else {
+        this.router.navigateByUrl('/app/tasks/');
+      }
+    } else {
+      this.init();
+    }
+  }
+
+  initTask(task) {
     this.parentTask = null;
     this.root = null;
     this.tasks = [];
@@ -88,7 +101,8 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     this.task && this.browserTitleService.setTitle(this.task.title);
     let taskId = task && task._id ? task._id : null;
 
-    this.loadTasks(taskId).subscribe(tasks => this.taskService.tasks$.next(tasks));
+    this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
+
     taskId && this.taskService.getRoot(taskId).subscribe((root) => {
       this.root = root;
 
