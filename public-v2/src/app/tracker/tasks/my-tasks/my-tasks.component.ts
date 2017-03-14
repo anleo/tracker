@@ -4,6 +4,7 @@ import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
 import {User} from "../../../user/models/user";
 import {Location} from "@angular/common";
+import {TaskByChannel} from "../../models/task-by-channel";
 
 @Component({
   templateUrl: 'my-tasks.component.html'
@@ -13,7 +14,7 @@ export class MyTasksComponent implements OnInit {
   tasks: Task[] = [];
   user: User | null = null;
   editMode: boolean = false;
-  editTask$: Task|null;
+  editTask: Task|null;
 
   constructor(private userService: UserService,
               private taskService: TaskService,
@@ -22,8 +23,9 @@ export class MyTasksComponent implements OnInit {
   ngOnInit(): void {
     this.taskService.editTaskModal$
       .subscribe((flag) => this.editMode = flag);
-    this.taskService.editTask$
-      .subscribe((task) => this.editTask$ = task);
+    this.taskService.editTask$.subscribe((taskByChannel: TaskByChannel) => {
+      this.editTask = taskByChannel && taskByChannel.task ? taskByChannel.task : null;
+    });
 
     this.userService.get()
       .subscribe(user => this.user = user);

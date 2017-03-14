@@ -3,6 +3,7 @@ import {Task} from '../../../models/task';
 import {TaskTimes} from './task-times';
 import {TaskTime} from "../../../models/task-time";
 import {TaskService} from "../../../services/task.service";
+import {TaskByChannel} from "../../../models/task-by-channel";
 
 @Component({
   selector: 'spent-time',
@@ -20,10 +21,10 @@ export class TaskSpentTimeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.taskService.editTask$.subscribe((task: Task) => {
-      this.task = task;
+    this.taskService.editTask$.subscribe((taskByChannel: TaskByChannel) => {
+      this.task = taskByChannel && taskByChannel.task ? taskByChannel.task : null;
     });
-    this.oldSpentTime = this.task.spenttime || 0;
+    this.oldSpentTime = this.task && this.task.spenttime || 0;
   }
 
   resetTime() {

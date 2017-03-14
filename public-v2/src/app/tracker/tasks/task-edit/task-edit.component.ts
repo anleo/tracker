@@ -8,7 +8,7 @@ import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 import {ToastsManager} from "ng2-toastr";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Observable} from "rxjs";
-import {LocalStorageService} from "angular-2-local-storage";
+import {TaskByChannel} from "../../models/task-by-channel";
 
 @Component({
   selector: 'app-task-edit',
@@ -27,6 +27,7 @@ export class TasksEditComponent implements OnInit {
   modalMode: boolean = false;
   initEditTask: Task;
   counter: number = 0;
+  channel: string|null = null;
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService,
@@ -58,7 +59,10 @@ export class TasksEditComponent implements OnInit {
         this.parentTaskId = task || null;
         this.initTask();
 
-        this.taskService.editTask$.subscribe((task) => {
+        this.taskService.editTask$.subscribe((taskByChannel: TaskByChannel) => {
+          let task = taskByChannel && taskByChannel.task ? taskByChannel.task : null;
+          this.channel = taskByChannel && taskByChannel.channel ? taskByChannel.channel : null;
+
           this.getInitEditedTask(task);
 
           if (task) {
@@ -89,12 +93,12 @@ export class TasksEditComponent implements OnInit {
     this.taskMoveToggle = false;
     this.task = new Task();
     this.task.parentTaskId = this.parentTaskId;
-    this.taskService.editTask$.next(this.task);
+    this.taskService.editTask$.next({task: this.task, channel: this.channel});
   }
 
   reinitTask(task: Task): void {
     this.closeModal();
-    this.taskService.editTaskUpdated$.next({task: task, status: 'update'});
+    this.taskService.editTaskUpdated$.next({task: task, status: 'update', channel: this.channel});
     setTimeout(() => this.initTask(), 0);
   }
 
@@ -118,7 +122,7 @@ export class TasksEditComponent implements OnInit {
     this.counter = 0;
     this.taskService.remove(this.task).subscribe(() => {
       this.closeModal();
-      this.taskService.editTaskUpdated$.next({task: task, status: 'remove'});
+      this.taskService.editTaskUpdated$.next({task: task, status: 'remove', channel: this.channel});
       setTimeout(() => this.initTask(), 0);
     });
   }
@@ -126,14 +130,14 @@ export class TasksEditComponent implements OnInit {
   onMove(task: Task): void {
     this.counter = 0;
     this.closeModal();
-    this.taskService.editTaskUpdated$.next({task: task, status: 'move'});
+    this.taskService.editTaskUpdated$.next({task: task, status: 'move', channel: this.channel});
     setTimeout(() => this.initTask(), 0);
   }
 
   close(): void {
     this.counter = 0;
     this.closeModal();
-    this.taskService.editTaskUpdated$.next({task: this.initEditTask, status: 'close'});
+    this.taskService.editTaskUpdated$.next({task: this.initEditTask, status: 'close', channel: this.channel});
     setTimeout(() => this.initTask(), 0);
   }
 

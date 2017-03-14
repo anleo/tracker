@@ -4,6 +4,7 @@ import {BehaviorSubject} from "rxjs";
 
 import {Task} from '../models/task';
 import {TaskWithStatus} from '../models/task-with-status';
+import {TaskByChannel} from '../models/task-by-channel';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
 import {Router} from "@angular/router";
@@ -20,7 +21,7 @@ export class TaskService {
   task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
-  editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  editTask$: BehaviorSubject<TaskByChannel> = new BehaviorSubject<TaskByChannel>(null);
   editTaskModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   editTaskUpdated$: BehaviorSubject<TaskWithStatus> = new BehaviorSubject<TaskWithStatus>(null);
 
@@ -32,7 +33,9 @@ export class TaskService {
 
     this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
 
-    this.editTask$.subscribe((task: Task) => this.editTask = task);
+    this.editTask$.subscribe((taskByChannel: TaskByChannel) => {
+      this.editTask = taskByChannel && taskByChannel.task ? taskByChannel.task : null;
+    });
 
     this.taskMetricsViewType$.subscribe(type => this.taskMetricsViewType = type);
   }
@@ -41,8 +44,9 @@ export class TaskService {
     this.tasks$.next(tasks);
   }
 
-  setEditTask(task: Task): void {
-    this.editTask$.next(task);
+  setEditTask(task: Task, channel?: string): void {
+    let _channel = channel || null;
+    this.editTask$.next({task: task, channel: _channel});
   }
 
   setTask(task: Task): void {
@@ -53,9 +57,9 @@ export class TaskService {
     this.taskMetricsViewType$.next(type);
   }
 
-  setEditTaskModal(task: Task): void {
+  setEditTaskModal(task: Task, channel?: string): void {
     this.editTaskModal$.next(true);
-    this.editTask$.next(task);
+    this.setEditTask(task, channel);
   }
 
   getTags(task: Task): Observable<string[]> {

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TaskService} from "../../../services/task.service";
 import {Task} from "../../../models/task";
 import {ActivatedRoute, Params} from "@angular/router";
+import {TaskByChannel} from "../../../models/task-by-channel";
 
 @Component({
   selector: 'metrics-in-editor',
@@ -27,8 +28,9 @@ export class MetricsInEditorComponent implements OnInit {
     if (this.task && this.task._id) {
       this.previousComplexity = this.task.complexity;
       this.previousSpenttime = this.task.spenttime;
-      this.taskService.editTask$.subscribe((task) => {
-          this.task = task;
+      this.taskService.editTask$.subscribe((taskByChannel: TaskByChannel) => {
+        this.task = taskByChannel && taskByChannel.task ? taskByChannel.task : null;
+        let task = this.task;
 
           if (task.spenttime && this.previousSpenttime !== task.spenttime) {
             this.previousSpenttime = task.spenttime;

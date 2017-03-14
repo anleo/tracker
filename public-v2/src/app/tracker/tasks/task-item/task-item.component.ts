@@ -23,6 +23,8 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   showHistory: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  channel: string = 'task-item-component';
+
   constructor(private route: ActivatedRoute,
               private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
@@ -51,7 +53,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
-    if (!taskWithStatus) {
+    if (!taskWithStatus || taskWithStatus && taskWithStatus.channel !== this.channel) {
       return false;
     }
 
@@ -121,7 +123,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   edit(task: Task) {
-    this.taskService.setEditTaskModal(task);
+    this.taskService.setEditTaskModal(task, this.channel);
     this.showHistory = false;
   }
 

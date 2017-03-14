@@ -3,6 +3,7 @@ import {TaskComplexities} from './task-complexities';
 import {TaskComplexity} from "../../../models/task-complexity";
 import {Task} from '../../../models/task';
 import {TaskService} from "../../../services/task.service";
+import {TaskByChannel} from "../../../models/task-by-channel";
 
 @Component({
   selector: 'complexity',
@@ -16,8 +17,8 @@ export class TaskComplexityComponent implements OnInit {
   constructor(public taskService: TaskService) {}
 
   ngOnInit(): void {
-    this.taskService.editTask$.subscribe((task: Task) => {
-      this.task = task;
+    this.taskService.editTask$.subscribe((taskByChannel: TaskByChannel) => {
+      this.task = taskByChannel && taskByChannel.task ? taskByChannel.task : null;
     });
     if (this.task && this.task.complexity) {
       this.complexityValue = this.task.complexity;

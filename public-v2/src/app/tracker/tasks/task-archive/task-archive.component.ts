@@ -18,6 +18,7 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
   editMode: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  channel: string = 'task-archived-component';
 
   constructor(private route: ActivatedRoute,
               private location: Location,
@@ -41,7 +42,7 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
-    if (!taskWithStatus) {
+    if (!taskWithStatus || taskWithStatus && taskWithStatus.channel !== this.channel) {
       return false;
     }
 
