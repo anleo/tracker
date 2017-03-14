@@ -56,8 +56,6 @@ module.exports = function () {
         this.chain
             .iType('app-task-edit form task-tags ng-select.tag-select input.ui-select-search', arg1)
             .iClick('app-task-edit form task-tags a.add-tag-btn')
-            .iClick("app-task-edit form task-tags ng-select.tag-select input.ui-select-search")
-            .iClick('app-task-edit form task-tags ng-select.tag-select ul.ui-select-choices li div:contains("' + arg1 + '")')
             .then(callback);
     });
 
