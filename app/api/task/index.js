@@ -88,6 +88,20 @@ module.exports = function (app) {
         res.json(req.Task);
     });
 
+    app.get('/api/tasks/:taskId/parent', function (req, res, next) {
+        if (!req.Task.parentTaskId) {
+            return res.json(null);
+        }
+
+        Task.findById(req.Task.parentTaskId, function (err, parent) {
+            if (err) {
+                return next(err);
+            }
+
+            res.json(parent);
+        });
+    });
+
     //________________________________________________________
 
     app.get('/api/tasks/:taskId/move', function (req, res, next) {
@@ -332,7 +346,7 @@ module.exports = function (app) {
 
     app.get('/api/tasks/:taskId/tags', function (req, res, next) {
         var q = req.query.query || [];
-        if(typeof q === 'string'){
+        if (typeof q === 'string') {
             q = [q];
         }
         TaskService.getRoot(req.Task, function (err, root) {
