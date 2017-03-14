@@ -8,6 +8,7 @@ import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 import {ToastsManager} from "ng2-toastr";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Observable} from "rxjs";
+import {LocalStorageService} from "angular-2-local-storage";
 
 @Component({
   selector: 'app-task-edit',
