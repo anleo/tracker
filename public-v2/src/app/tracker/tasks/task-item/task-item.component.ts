@@ -1,12 +1,11 @@
 import {ActivatedRoute, Params} from "@angular/router";
-import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import * as _ from 'lodash';
 
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
-import {ROOT_TASKSERVICE} from "../../../app.tokens";
 import {SocketService} from "../../../services/socket.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
@@ -26,7 +25,6 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
-              @Inject(ROOT_TASKSERVICE) private rootTaskService,
               private socketService: SocketService) {
   }
 
@@ -58,7 +56,6 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   private initTaskData(task) {
     this.init(task);
     this.taskService.task$.next(task);
-    this.rootTaskService.task$.next(task);
   }
 
   socketSync(data): Task {

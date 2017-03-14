@@ -35,22 +35,20 @@ export class TaskSearchComponent implements OnInit {
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
     this.browserTitleService.setTitle('Search');
-    this.taskService.task$.subscribe((task) => {
-      this.task = task;
+    this.task = this.route.parent.snapshot.data['task'];
 
-      this.route.params
-        .subscribe((params: Params) => {
-          this.query = params['query'];
+    this.route.params
+      .subscribe((params: Params) => {
+        this.query = params['query'];
 
-          this.task && this.taskSearchService
-            .search(this.query, this.task)
-            .then((tasks: Task[]) => {
-              this.tasks = tasks;
-            })
-            .catch((err: any) => {
-              this.toastr.error(err._body);
-            });
-        });
-    });
+        this.task && this.taskSearchService
+          .search(this.query, this.task)
+          .then((tasks: Task[]) => {
+            this.tasks = tasks;
+          })
+          .catch((err: any) => {
+            this.toastr.error(err._body);
+          });
+      });
   }
 }

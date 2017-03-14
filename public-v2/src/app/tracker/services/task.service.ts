@@ -192,6 +192,10 @@ export class TaskService {
     return this.taskResource.getTask({}, {taskId: taskId}).$observable;
   }
 
+  getParentByTaskId(taskId: string): Observable<Task> {
+    return this.taskResource.getParent({}, {taskId: taskId}).$observable;
+  }
+
   getRoot(taskId: string): Observable<Task> {
     return this.taskResource.getRoot({}, {taskId: taskId}).$observable;
   }

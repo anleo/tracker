@@ -11,6 +11,8 @@ import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
 import {BlankComponent} from "../blank/blank.component";
 import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search.component";
+import {ParentTaskResolver} from "./resolvers/parent-task.resolver";
+import {RootTaskResolver} from "./resolvers/root-task.resolver";
 
 const routes: Routes = [
   {
@@ -32,41 +34,32 @@ const routes: Routes = [
   {
     path: ':taskId',
     component: BlankComponent,
+    resolve: {
+      task: TaskResolver,
+      parentTask: ParentTaskResolver,
+      rootTask: RootTaskResolver
+
+    },
     children: [
       {
         path: '',
-        component: TaskItemComponent,
-        resolve: {
-          task: TaskResolver
-        }
+        component: TaskItemComponent
       },
       {
         path: 'archive',
-        component: TaskArchiveComponent,
-        resolve: {
-          task: TaskResolver
-        }
+        component: TaskArchiveComponent
       },
       {
         path: 'report',
-        component: TaskReportComponent,
-        resolve: {
-          task: TaskResolver
-        }
+        component: TaskReportComponent
       },
       {
         path: 'tags',
-        component: TaskTagsSearchComponent,
-        resolve: {
-          task: TaskResolver
-        }
+        component: TaskTagsSearchComponent
       },
       {
         path: 'search/:query',
-        component: TaskSearchComponent,
-        resolve: {
-          task: TaskResolver
-        }
+        component: TaskSearchComponent
       }
     ]
   },
