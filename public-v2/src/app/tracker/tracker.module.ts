@@ -61,7 +61,7 @@ import {TaskHistorySpenttimeComponent} from './tasks/task-history/task-history-s
 import {TaskHistoryStatusComponent} from './tasks/task-history/task-history-status/task-history-status.component';
 import {LinkyModule} from "angular-linky";
 import {TaskReportComponent} from "./reports/task-report/task-report.component";
-import {TaskArchiveComponent} from "./tasks/components/task-archive/task-archive.component";
+import {TaskArchiveComponent} from "./tasks/task-archive/task-archive.component";
 import {BlankComponent} from "../blank/blank.component";
 import {MetricsInEditorComponent} from './tasks/components/metrics-in-editor/metrics-in-editor.component';
 import {TasksSortPipe} from "./pipes/tasks-sort.pipe";
