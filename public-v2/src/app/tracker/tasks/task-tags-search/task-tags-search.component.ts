@@ -6,6 +6,7 @@ import {Task} from "../../models/task";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 import {CurrentTaskService} from "../../services/current-task.service";
 import {Subject} from "rxjs";
+import {TaskWithStatus} from "../../models/task-with-status";
 
 @Component({
   templateUrl: 'task-tags-search.component.html',
@@ -36,6 +37,9 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentTaskService.task$.subscribe((task) => this.task = task);
+    this.taskService.editTaskUpdated$
+      .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+
     this.taskService.editTaskModal$
       .subscribe((flag) => this.editMode = flag);
 
@@ -97,5 +101,37 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
 
   private inListTags(tags: Array<string>, tag: string): boolean {
     return tags.find(found => found === tag) ? true : false;
+  }
+
+  private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
+    if (!taskWithStatus) {
+      return false;
+    }
+
+    if (taskWithStatus.status === 'update') {
+      this.onUpdate();
+    } else if (taskWithStatus.status === 'move') {
+      this.onMove();
+    } else if (taskWithStatus.status === 'remove') {
+      this.onRemove();
+    } else if (taskWithStatus.status === 'close') {
+      this.onClose();
+    }
+  }
+
+  private onUpdate(): void {
+    this.getTasks();
+  }
+
+  private onMove(): void {
+    this.getTasks();
+  }
+
+  private onRemove(): void {
+    this.getTasks();
+  }
+
+  private onClose(): void {
+    this.getTasks();
   }
 }
