@@ -19,6 +19,8 @@
   <app-tasks-board [tasks]="tasks"></app-tasks-board>
 </div>
 
+<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
+
 <div *ngIf="!tasks.length">There are no tasks matched such request.</div>
 
 <div *ngIf="!availableTags.length">No existing tags.</div>
