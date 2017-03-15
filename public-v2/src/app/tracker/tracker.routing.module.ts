@@ -13,59 +13,69 @@ import {BlankComponent} from "../blank/blank.component";
 import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search.component";
 import {ParentTaskResolver} from "./resolvers/parent-task.resolver";
 import {RootTaskResolver} from "./resolvers/root-task.resolver";
+import {UserResolver} from "../user/resolver/UserResolver";
+import {TaskComponent} from "./tasks/components/task/task.component";
 
 const routes: Routes = [
   {
-    path: '',
-    component: TasksComponent
-  },
-  {
-    path: 'reports',
-    component: CommonReportComponent
-  },
-  {
-    path: 'my',
-    component: MyTasksComponent
-  },
-  {
-    path: 'archived',
-    component: TaskArchiveComponent
-  },
-  {
-    path: ':taskId',
+    path: 'app/tasks',
     component: BlankComponent,
     resolve: {
-      task: TaskResolver,
-      parentTask: ParentTaskResolver,
-      rootTask: RootTaskResolver
-
+      user: UserResolver
     },
     children: [
       {
         path: '',
-        component: TaskItemComponent
+        component: TasksComponent
       },
       {
-        path: 'archive',
+        path: 'reports',
+        component: CommonReportComponent
+      },
+      {
+        path: 'my',
+        component: MyTasksComponent
+      },
+      {
+        path: 'archived',
         component: TaskArchiveComponent
       },
       {
-        path: 'report',
-        component: TaskReportComponent
+        path: ':taskId',
+        component: TaskComponent,
+        resolve: {
+          task: TaskResolver,
+          parentTask: ParentTaskResolver,
+          rootTask: RootTaskResolver
+        },
+        children: [
+          {
+            path: '',
+            component: TaskItemComponent
+          },
+          {
+            path: 'archive',
+            component: TaskArchiveComponent
+          },
+          {
+            path: 'report',
+            component: TaskReportComponent
+          },
+          {
+            path: 'tags',
+            component: TaskTagsSearchComponent
+          },
+          {
+            path: 'search/:query',
+            component: TaskSearchComponent
+          }
+        ]
       },
       {
-        path: 'tags',
-        component: TaskTagsSearchComponent
-      },
-      {
-        path: 'search/:query',
-        component: TaskSearchComponent
+        path: '**',
+        redirectTo: ''
       }
     ]
-  },
-  {
-    path: '**',
-    redirectTo: ''
   }
 ];
 

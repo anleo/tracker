@@ -73,6 +73,7 @@ import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search
 import {ParentTaskResolver} from "./resolvers/parent-task.resolver";
 import {RootTaskResolver} from "./resolvers/root-task.resolver";
 import {CurrentTaskService} from "./services/current-task.service";
+import {TaskComponent} from "./tasks/components/task/task.component";
 
 @NgModule({
   imports: [
@@ -99,6 +100,7 @@ import {CurrentTaskService} from "./services/current-task.service";
   ],
   declarations: [
     BlankComponent,
+    TaskComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,

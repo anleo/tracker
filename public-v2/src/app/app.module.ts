@@ -15,9 +15,7 @@ import {HttpService} from "./services/http.service";
 import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
 import {SocketService} from "./services/socket.service";
 import {BrowserTitleService} from "./services/browser-title/browser-title.service";
-import {TaskService} from "./tracker/services/task.service";
 import {TaskSearchDirective} from "./tracker/tasks/task-search/task-search.directive";
-import {ROOT_TASKSERVICE} from "./app.tokens";
 
 export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
   return new HttpService(xhrBackend, requestOptions, router);
@@ -33,8 +31,8 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
     HttpModule,
     ResourceModule.forRoot(),
     ToastModule.forRoot(),
-    AppRoutingModule,
     TrackerModule,
+    AppRoutingModule,
     AuthModule,
     UserModule
   ],
@@ -46,7 +44,6 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
     },
     HttpService,
     SocketService,
-    {provide: ROOT_TASKSERVICE, useExisting: TaskService},
     BrowserTitleService,
     CanActivatePublicGuard
   ],
