@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from "@angular/common";
-import {ActivatedRoute} from "@angular/router";
 import * as moment from 'moment/moment';
+import {Subject} from "rxjs";
 
 import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
@@ -9,13 +9,14 @@ import {TaskStatus} from "../../models/task-status";
 import {Task} from "../../models/task";
 import {User} from "../../../user/models/user";
 import {UserService} from "../../../user/services/user.service";
+import {CurrentTaskService} from "../../services/current-task.service";
 
 @Component({
   templateUrl: 'task-report.component.html',
   providers: [TaskService]
 })
 
-export class TaskReportComponent implements OnInit {
+export class TaskReportComponent implements OnInit, OnDestroy {
   date: Date = new Date;
   today: Date = new Date;
   tasks: Task[] = [];
@@ -24,15 +25,21 @@ export class TaskReportComponent implements OnInit {
   TaskStatus = TaskStatus;
   team: Array<{id: string, text: string}> = [];
   developer: Array<{id: string, text: string}> = [];
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private contextTaskService: TaskService,
               private taskStatusService: TaskStatusService,
+              private currentTaskService: CurrentTaskService,
               private userService: UserService,
-              private location: Location,
-              private route: ActivatedRoute) {}
+              private location: Location) {
+  }
 
   ngOnInit(): void {
-    this.taskId = this.route.parent.snapshot.params['taskId'];
+    this.currentTaskService.task$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((task) => {
+      this.taskId = task._id;
+    });
 
     this.contextTaskService
       .getTaskTeam(this.taskId)
@@ -50,6 +57,11 @@ export class TaskReportComponent implements OnInit {
 
         this.initTasks(this.taskId, this.date.toString(), developer.id);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 
   initTasks(taskId, date, userId): void {
