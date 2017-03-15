@@ -52,7 +52,7 @@ export class TaskSearchComponent implements OnInit {
   }
 
   private search(): void {
-    this.taskSearchService
+    this.task && this.taskSearchService
       .search(this.query, this.task)
       .then((tasks: Task[]) => {
         this.tasks = tasks;
