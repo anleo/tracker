@@ -22,11 +22,13 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
   selectedTags: Array<string> = [];
   tasks: Task[] = [];
   task: Task;
+  editMode: boolean = false;
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private contextTaskService: TaskService,
               private currentTaskService: CurrentTaskService,
+              private taskService: TaskService,
               private route: ActivatedRoute,
               private router: Router,
               private browserTitleService: BrowserTitleService) {
@@ -34,6 +36,8 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentTaskService.task$.subscribe((task) => this.task = task);
+    this.taskService.editTaskModal$
+      .subscribe((flag) => this.editMode = flag);
 
     this.router.events
       .takeUntil(this.componentDestroyed$)
