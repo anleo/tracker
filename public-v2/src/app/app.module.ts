@@ -33,8 +33,8 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
     HttpModule,
     ResourceModule.forRoot(),
     ToastModule.forRoot(),
-    AppRoutingModule,
     TrackerModule,
+    AppRoutingModule,
     AuthModule,
     UserModule
   ],
