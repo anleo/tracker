@@ -18,6 +18,7 @@ export class TaskService {
   taskMetricsViewType: number = null;
 
   task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   editTaskToggle$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -30,9 +31,15 @@ export class TaskService {
               private router: Router) {
     this.task$.subscribe((task: Task) => this.task = task);
 
+    this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
+
     this.editTask$.subscribe((task: Task) => this.editTask = task);
 
     this.taskMetricsViewType$.subscribe(type => this.taskMetricsViewType = type);
+  }
+
+  setTasks(tasks: Task[]): void {
+    this.tasks$.next(tasks);
   }
 
   setEditTask(task: Task): void {
