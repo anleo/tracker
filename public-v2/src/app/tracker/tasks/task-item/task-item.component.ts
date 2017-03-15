@@ -34,9 +34,11 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.taskService.editTaskToggle$.subscribe((editMode) => this.editMode = editMode);
 
-    this.currentTaskService.task$.subscribe((task) => this.task = task || null);
+    this.currentTaskService.task$.subscribe((task) => {
+      this.task = task || null;
+      this.init();
+    });
 
-    this.init();
   }
 
   init() {
