@@ -7,6 +7,7 @@ import {Task} from "../../models/task";
 import {TaskService} from "../../services/task.service";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 import {CurrentTaskService} from "../../services/current-task.service";
+import {TaskWithStatus} from "../../models/task-with-status";
 
 @Component({
   selector: 'app-task-search',
@@ -36,6 +37,9 @@ export class TaskSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
+    this.taskService.editTaskUpdated$
+      .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+
     this.browserTitleService.setTitle('Search');
 
     this.currentTaskService.task$.subscribe((task) => this.task = task);
@@ -43,15 +47,51 @@ export class TaskSearchComponent implements OnInit {
     this.route.params
       .subscribe((params: Params) => {
         this.query = params['query'];
-
-        this.task && this.taskSearchService
-          .search(this.query, this.task)
-          .then((tasks: Task[]) => {
-            this.tasks = tasks;
-          })
-          .catch((err: any) => {
-            this.toastr.error(err._body);
-          });
+        this.search();
       });
   }
+
+  private search(): void {
+    this.taskSearchService
+      .search(this.query, this.task)
+      .then((tasks: Task[]) => {
+        this.tasks = tasks;
+      })
+      .catch((err: any) => {
+        this.toastr.error(err._body);
+      });
+  }
+
+  private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
+    if (!taskWithStatus) {
+      return false;
+    }
+
+    if (taskWithStatus.status === 'update') {
+      this.onUpdate();
+    } else if (taskWithStatus.status === 'move') {
+      this.onMove();
+    } else if (taskWithStatus.status === 'remove') {
+      this.onRemove();
+    } else if (taskWithStatus.status === 'close') {
+      this.onClose();
+    }
+  }
+
+  private onUpdate(): void {
+    this.search();
+  }
+
+  private onMove(): void {
+    this.search();
+  }
+
+  private onRemove(): void {
+    this.search();
+  }
+
+  private onClose(): void {
+    this.search();
+  }
+
 }
