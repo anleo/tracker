@@ -45,6 +45,30 @@ export class MyTasksComponent implements OnInit, OnDestroy {
       return false;
     }
 
+    if (taskWithStatus.status === 'update') {
+      this.onUpdate();
+    } else if (taskWithStatus.status === 'move') {
+      this.onMove();
+    } else if (taskWithStatus.status === 'remove') {
+      this.onRemove();
+    } else if (taskWithStatus.status === 'close') {
+      this.onClose();
+    }
+  }
+
+  private onUpdate(): void {
+    this.getTasks();
+  }
+
+  private onMove(): void {
+    this.getTasks();
+  }
+
+  private onRemove(): void {
+    this.getTasks();
+  }
+
+  private onClose(): void {
     this.getTasks();
   }
 
