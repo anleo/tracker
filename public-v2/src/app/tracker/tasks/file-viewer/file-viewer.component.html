@@ -1,5 +1,5 @@
 <div class="images-list" *ngIf="files.length">
-  <ul >
+  <ul>
     <li class="file image" *ngFor="let file of files" tooltip="{{file.metadata.originalname}}">
       <a *ngIf="isImage(file.filename)" href="/api/files/{{file.filename}}" target="_blank" class="img" [style.background-image]="'url(\'/api/files/' + file.filename + '\')'" [style.background-size]="'cover'"></a>
       <a *ngIf="isImage(file.filename)&& isDeletable" (click)="deleteFile(file)" class="delete"><i class="fa fa-times-circle"></i></a>

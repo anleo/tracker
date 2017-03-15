@@ -4,7 +4,7 @@
 
     <div class="row">
       <!--left-side-->
-      <div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'">
+      <div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'" (input)="checkInput($event)">
 
       <!--// @@@ fix taskId snapshot-->
       <!--<div class="form-group">-->
