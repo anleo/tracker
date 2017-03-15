@@ -13,11 +13,6 @@ import {Subject} from "rxjs";
 })
 
 export class TaskTagsSearchComponent implements OnInit, OnDestroy {
-  ngOnDestroy(): void {
-    this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete();
-  }
-
   availableTags: Array<string> = [];
   selectedTags: Array<string> = [];
   tasks: Task[] = [];
@@ -57,6 +52,11 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
       .subscribe(tags => this.availableTags = tags);
 
     this.browserTitleService.setTitle('Search by tags');
+  }
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 
   toggleTag(tag: string): void {
