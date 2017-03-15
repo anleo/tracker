@@ -1,11 +1,10 @@
-import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, NavigationStart} from "@angular/router";
 
 import {User} from "./user/models/user";
 import {UserService} from "./user/services/user.service";
 import {BrowserTitleService} from './services/browser-title/browser-title.service';
 import {TaskService} from "./tracker/services/task.service";
-import {ROOT_TASKSERVICE} from "./app.tokens";
 
 @Component({
   selector: 'app',
@@ -13,14 +12,12 @@ import {ROOT_TASKSERVICE} from "./app.tokens";
   providers: [TaskService]
 })
 
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   user: User;
-  taskId: string = null;
 
   constructor(private router: Router,
               private browserTitleService: BrowserTitleService,
-              private userService: UserService,
-              @Inject(ROOT_TASKSERVICE) private rootTaskService) {
+              private userService: UserService) {
   };
 
   ngOnInit(): void {
@@ -33,14 +30,5 @@ export class AppComponent implements OnInit, OnDestroy {
     this.userService.user$.subscribe((user) => {
       this.user = user;
     });
-
-    this.rootTaskService.task$
-      .subscribe((task) => {
-        this.taskId = task && task._id;
-      })
-  }
-
-  ngOnDestroy() {
-    this.rootTaskService.task$.unsubscribe();
   }
 }

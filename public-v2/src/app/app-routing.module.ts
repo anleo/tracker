@@ -6,7 +6,6 @@ import {PasswordResetComponent} from "./auth/password-reset/password-reset.compo
 import {PasswordChangeComponent} from "./auth/password-change/password-change.component";
 import {BlankComponent} from "./blank/blank.component";
 import {LogoutComponent} from "./auth/logout/logout.component";
-import {UserResolver} from "./user/resolver/UserResolver";
 import {ProfileComponent} from "./user/components/user-profile.component";
 import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
 
@@ -48,11 +47,6 @@ const routes: Routes = [
             component: ProfileComponent
           }
         ]
-      },
-      {
-        path: 'tasks',
-        resolve: {user: UserResolver},
-        loadChildren: './tracker/tracker.module#TrackerModule'
       },
       {
         path: '**',
