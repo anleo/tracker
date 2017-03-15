@@ -165,4 +165,8 @@ export class TasksEditComponent implements OnInit {
     this.taskService.editTaskModal$.next(false);
   }
 
+  checkInput(event) {
+    let toggle = !!(event && event.target && event.target.value);
+    this.taskService.editTaskToggle$.next(toggle);
+  }
 }
