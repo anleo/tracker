@@ -14,6 +14,7 @@ import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search
 import {ParentTaskResolver} from "./resolvers/parent-task.resolver";
 import {RootTaskResolver} from "./resolvers/root-task.resolver";
 import {UserResolver} from "../user/resolver/UserResolver";
+import {TaskComponent} from "./tasks/components/task/task.component";
 
 const routes: Routes = [
   {
@@ -41,7 +42,7 @@ const routes: Routes = [
       },
       {
         path: ':taskId',
-        component: BlankComponent,
+        component: TaskComponent,
         resolve: {
           task: TaskResolver,
           parentTask: ParentTaskResolver,

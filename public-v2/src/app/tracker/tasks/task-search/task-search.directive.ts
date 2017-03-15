@@ -1,10 +1,10 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {Router} from "@angular/router";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/debounceTime";
 
-import {ROOT_TASKSERVICE} from "../../../app.tokens";
+import {CurrentTaskService} from "../../services/current-task.service";
 
 @Component({
   selector: 'task-search',
@@ -12,15 +12,24 @@ import {ROOT_TASKSERVICE} from "../../../app.tokens";
 })
 
 export class TaskSearchDirective implements OnInit {
+  taskId: string | null = null;
   query: string = '';
   focused: boolean = false;
   queryControl = new FormControl();
 
   constructor(private router: Router,
-              @Inject(ROOT_TASKSERVICE) private rootTaskService) {
+              private currentTaskService: CurrentTaskService) {
   }
 
   ngOnInit(): void {
+    this.currentTaskService.task$.subscribe((task) => {
+      this.taskId = task && task._id;
+
+      if (!task) {
+        this.query = '';
+      }
+    });
+
     this.queryControl
       .valueChanges
       .debounceTime(400)
@@ -30,10 +39,10 @@ export class TaskSearchDirective implements OnInit {
   searchQuery(query: string) {
     let q = query ? query : '';
 
-    if (q.length && this.rootTaskService.task) {
-      this.router.navigate(['/app/tasks', this.rootTaskService.task._id, 'search', q]);
+    if (q.length && this.currentTaskService.task) {
+      this.router.navigate(['/app/tasks', this.currentTaskService.task._id, 'search', q]);
     } else {
-      this.router.navigate(['/app/tasks', this.rootTaskService.task._id]);
+      this.router.navigate(['/app/tasks', this.currentTaskService.task._id]);
     }
   }
 }
