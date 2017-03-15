@@ -27,11 +27,17 @@ export class MetricsWidgetComponent implements OnInit {
         if (task.estimatedTime) {
           this.metricsWidget.estimatedTime += task.estimatedTime;
         }
+
         if (task.complexity) {
           this.metricsWidget.points += task.points;
         }
+
         if (task.timeToDo) {
           this.metricsWidget.timeToDo += task.timeToDo;
+        }
+
+        if (task.spenttime && task.simple) {
+          this.metricsWidget.spentime += task.spenttime;
         }
       }
       return this.metricsWidget;
