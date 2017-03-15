@@ -1,33 +1,50 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {ActivatedRoute, Router, NavigationEnd} from "@angular/router";
 
 import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
+import {CurrentTaskService} from "../../services/current-task.service";
+import {Subject} from "rxjs";
 
 @Component({
   templateUrl: 'task-tags-search.component.html',
   providers: [TaskService]
 })
 
-export class TaskTagsSearchComponent implements OnInit {
+export class TaskTagsSearchComponent implements OnInit, OnDestroy {
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
   availableTags: Array<string> = [];
   selectedTags: Array<string> = [];
   tasks: Task[] = [];
   task: Task;
+  editMode: boolean = false;
+
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private contextTaskService: TaskService,
+              private currentTaskService: CurrentTaskService,
+              private taskService: TaskService,
               private route: ActivatedRoute,
               private router: Router,
               private browserTitleService: BrowserTitleService) {
   }
 
   ngOnInit(): void {
-    this.task = this.route.parent.snapshot.data['task'];
+    this.currentTaskService.task$.subscribe((task) => this.task = task);
+    this.taskService.editTaskModal$
+      .subscribe((flag) => this.editMode = flag);
 
     this.router.events
+      .takeUntil(this.componentDestroyed$)
       .subscribe((event) => {
-        if (event instanceof NavigationEnd) {
+        let tagsPath = /tags/.test(this.route.toString());
+
+        if (event instanceof NavigationEnd && tagsPath) {
           this.selectedTags = this.route.snapshot.queryParams['tags'] ?
             this.route.snapshot.queryParams['tags'].split(',') : [];
 

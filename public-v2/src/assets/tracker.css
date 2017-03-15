@@ -973,3 +973,7 @@ hr {
 .task-tree > panel-tree > ul{
   padding-left: 0;
 }
+
+.panel-body task-description-viewer .mg {
+  margin-bottom: 0;
+}

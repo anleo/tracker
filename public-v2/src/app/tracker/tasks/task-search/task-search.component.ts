@@ -6,6 +6,7 @@ import {TaskSearchService} from "../../services/task-search.service";
 import {Task} from "../../models/task";
 import {TaskService} from "../../services/task.service";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
+import {CurrentTaskService} from "../../services/current-task.service";
 
 @Component({
   selector: 'app-task-search',
@@ -20,6 +21,7 @@ export class TaskSearchComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private taskSearchService: TaskSearchService,
+              private currentTaskService: CurrentTaskService,
               private taskService: TaskService,
               public toastr: ToastsManager,
               private router: Router,
@@ -35,7 +37,8 @@ export class TaskSearchComponent implements OnInit {
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
     this.browserTitleService.setTitle('Search');
-    this.task = this.route.parent.snapshot.data['task'];
+
+    this.currentTaskService.task$.subscribe((task) => this.task = task);
 
     this.route.params
       .subscribe((params: Params) => {
