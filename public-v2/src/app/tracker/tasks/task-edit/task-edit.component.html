@@ -48,6 +48,7 @@
                    class="btn btn-default btn-sm taskStatusButton"
                    [ngClass]="{'disabled' : task.archived == true, 'active': task.status === status.value}"
                    [disabled]="task.archived"
+                    type="button"
                    (click)="setField('status', status.value)">
               {{status.name}}
             </button>
