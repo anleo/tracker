@@ -1,12 +1,12 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
+import {BehaviorSubject} from "rxjs";
 
 import {TaskService} from "../../services/task.service";
 import {Task} from '../../models/task';
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 import {TaskWithStatus} from "../../models/task-with-status";
-import {BehaviorSubject} from "rxjs";
+import {CurrentTaskService} from "../../services/current-task.service";
 
 @Component({
   moduleId: module.id,
@@ -19,20 +19,21 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private route: ActivatedRoute,
-              private location: Location,
+  constructor(private location: Location,
               private browserTitleService: BrowserTitleService,
-              private taskService: TaskService) {
+              private taskService: TaskService,
+              private currentTaskService: CurrentTaskService) {
   }
 
   ngOnInit(): void {
+    this.currentTaskService.task$.subscribe((task) => this.task = task);
+
     this.taskService.editTaskUpdated$
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
 
     this.taskService.editTaskModal$
       .subscribe((flag) => this.editMode = flag);
 
-    this.task = this.route.parent.snapshot.data['task'];
     this.getTasks();
   }
 
