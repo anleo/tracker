@@ -41,12 +41,28 @@ export class TaskItemComponent implements OnInit, OnDestroy {
       .takeUntil(this.componentDestroyed$)
       .subscribe((editMode) => this.editMode = editMode);
 
+    this.currentTaskService.rootTask$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((root) => this.root = root || null);
+
+    this.currentTaskService.parentTask$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((parentTask) => this.parentTask = parentTask || null);
+
     this.currentTaskService.task$
       .takeUntil(this.componentDestroyed$)
       .subscribe((task) => {
         this.task = task || null;
         this.initTask(this.task);
         this.editMode = false;
+
+        if (this.root && this.task) {
+          if (this.root._id !== this.task._id) {
+            this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
+          } else {
+            this.browserTitleService.setTitle(this.task.title);
+          }
+        }
       });
   }
 
@@ -109,27 +125,12 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   initTask(task) {
-    this.parentTask = null;
-    this.root = null;
     this.tasks = [];
 
     this.task = task;
-    this.task && this.browserTitleService.setTitle(this.task.title);
     let taskId = task && task._id ? task._id : null;
 
     this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
-
-    taskId && this.taskService.getRoot(taskId).subscribe((root) => {
-      this.root = root;
-
-      if (this.root._id !== this.task._id) {
-        this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
-      }
-    });
-
-    if (task && task.parentTaskId) {
-      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
-    }
   }
 
   loadTasks(taskId: string|null): Observable<Task[]> {
