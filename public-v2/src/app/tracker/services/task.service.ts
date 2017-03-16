@@ -42,10 +42,6 @@ export class TaskService {
     this.tasks$.next(tasks);
   }
 
-  setEditTask(task: Task): void {
-    this.editTask$.next(task);
-  }
-
   setTask(task: Task): void {
     this.task$.next(task);
   }
@@ -54,9 +50,14 @@ export class TaskService {
     this.taskMetricsViewType$.next(type);
   }
 
+  setEditTask(task: Task): void {
+    let editTask = Object.assign({}, task);
+    this.editTask$.next(editTask);
+  }
+
   setEditTaskModal(task: Task): void {
     this.editTaskModal$.next(true);
-    this.editTask$.next(task);
+    this.setEditTask(task);
   }
 
   getTags(task: Task): Observable<string[]> {

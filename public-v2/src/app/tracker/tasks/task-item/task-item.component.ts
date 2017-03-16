@@ -81,6 +81,8 @@ export class TaskItemComponent implements OnInit, OnDestroy {
       this.onMove();
     } else if (taskWithStatus.status === 'remove') {
       this.onRemove(task);
+    } else if (taskWithStatus.status === 'close') {
+      this.editMode = false;
     }
   }
 
