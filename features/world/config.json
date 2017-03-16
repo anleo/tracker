@@ -6,7 +6,7 @@
   },
 
   "project": {
-    "url": "localhost:4200"
+    "url": "http://192.168.10.20:3000"
   },
 
   "mongo": {
