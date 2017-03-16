@@ -1,22 +1,26 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit, Input, OnChanges} from "@angular/core";
 
 @Component({
   selector: 'task-description-viewer',
   templateUrl: 'task-description-viewer.component.html'
 })
 
-export class TaskDescriptionViewer implements OnInit {
+export class TaskDescriptionViewer implements OnInit, OnChanges {
   @Input() description: string;
   @Input() limit: number = 80;
 
-  private shortDescription: string = '';
-  private fullDescription: string = '';
+  public shortDescription: string = '';
+  public fullDescription: string = '';
 
   showMore: boolean = false;
 
   ngOnInit(): void {
     this.shortDescription = this.description;
     this.fullDescription = this.parseText(this.description);
+  }
+
+  ngOnChanges(): void {
+    this.shortDescription = this.description;
   }
 
   toggleShowMore(): void {
