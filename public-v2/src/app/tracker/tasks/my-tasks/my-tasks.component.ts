@@ -51,8 +51,6 @@ export class MyTasksComponent implements OnInit, OnDestroy {
       this.onMove();
     } else if (taskWithStatus.status === 'remove') {
       this.onRemove();
-    } else if (taskWithStatus.status === 'close') {
-      this.onClose();
     }
   }
 
@@ -65,10 +63,6 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   }
 
   private onRemove(): void {
-    this.getTasks();
-  }
-
-  private onClose(): void {
     this.getTasks();
   }
 
