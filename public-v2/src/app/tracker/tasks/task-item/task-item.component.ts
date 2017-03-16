@@ -8,6 +8,7 @@ import {BrowserTitleService} from "../../../services/browser-title/browser-title
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {CurrentTaskService} from "../../services/current-task.service";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-task-item',
@@ -24,25 +25,32 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   showHistory: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  componentDestroyed$: Subject<boolean> = new Subject();
+
   constructor(private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
               private currentTaskService: CurrentTaskService,
               private router: Router) {
     this.taskService.editTaskUpdated$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
   ngOnInit() {
     this.taskService.editTaskToggle$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((editMode) => this.editMode = editMode);
 
     this.currentTaskService.rootTask$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((root) => this.root = root || null);
 
     this.currentTaskService.parentTask$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((parentTask) => this.parentTask = parentTask || null);
 
     this.currentTaskService.task$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((task) => {
         this.task = task || null;
         this.initTask(this.task);
@@ -72,6 +80,8 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.$onDestroy.next(true);
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 
   actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
