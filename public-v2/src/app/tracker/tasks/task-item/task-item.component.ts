@@ -36,9 +36,9 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
     this.currentTaskService.task$.subscribe((task) => {
       this.task = task || null;
-      this.init();
+      this.initTask(this.task);
+      this.editMode = false;
     });
-
   }
 
   init() {
