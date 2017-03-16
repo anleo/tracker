@@ -23,7 +23,6 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   showHistory: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  isFirstLoad: boolean = true;
 
   constructor(private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
@@ -46,6 +45,8 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     this.currentTaskService.task$
       .subscribe((task) => {
         this.task = task || null;
+        this.initTask(this.task);
+        this.editMode = false;
 
         if (this.root && this.task) {
           if (this.root._id !== this.task._id) {
@@ -54,11 +55,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
             this.browserTitleService.setTitle(this.task.title);
           }
         }
-
-        this.init();
       });
-
-    this.isFirstLoad = false;
   }
 
   init() {
