@@ -3,6 +3,8 @@ Feature: Tasks
   Check Tasks After On Close Event In Task Edit - when we decided to update task from tasks, we added some info but then we clicked by 'Close'.We shouldn't
   see changes in current task from tasks
 
+  Check tree board - when we update task from tree board, after saving changes, we need to stay on tree view and see changes
+
   Background:
     Given Home page
 
@@ -36,3 +38,17 @@ Feature: Tasks
     Then I see task "task 1.2" complexity "1"
     And I see task "task 1.2" spent time "0"
     And I don't see description "123456" for task "task 1.2"
+
+  Scenario: Check tree board
+
+    Then I click on "Tree" filter  button
+    And I see tree view
+    Then I see task "task 1" spent time "0"
+    Then I see task "task 1.1.1" spent time "0"
+    Then I click on edit button of task "task 1.1.1"
+    And I click task spent time "+30"
+    Then I see humanized spent time "00:30"
+    And I click on save button
+    Then I see tree view
+    And I see task "task 1" spent time "0.5"
+    And I see task "task 1.1.1" spent time "0.5"
