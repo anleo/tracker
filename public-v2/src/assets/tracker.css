@@ -190,6 +190,7 @@ hr {
 }
 
 .images-list {
+    margin-top: 10px;
     margin-bottom: 20px;
 }
 
@@ -221,7 +222,7 @@ hr {
     width: 75px;
     height: 75px;
     word-spacing: 0;
-    border: 4px solid #fff;
+    border: 2px solid #fff;
     box-shadow: 0 0 1px #333;
     background-position: 50% 50%;
 

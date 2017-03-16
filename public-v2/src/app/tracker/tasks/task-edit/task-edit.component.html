@@ -14,6 +14,7 @@
 
       <div class="form-group">
         <input [(ngModel)]="task.title" name="title" type="text" class="form-control" placeholder="Add Task"
+               (input)="checkInput($event)"
                id="title" autocomplete="off"/>
       </div>
 

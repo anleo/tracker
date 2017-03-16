@@ -1,4 +1,4 @@
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
@@ -7,6 +7,7 @@ import {TaskService} from "../../services/task.service";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {TaskWithStatus} from "../../models/task-with-status";
+import {CurrentTaskService} from "../../services/current-task.service";
 
 @Component({
   selector: 'app-task-item',
@@ -23,27 +24,33 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   showHistory: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private route: ActivatedRoute,
-              private taskService: TaskService,
+  constructor(private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
+              private currentTaskService: CurrentTaskService,
               private router: Router) {
     this.taskService.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
   ngOnInit() {
-    this.init();
+    this.taskService.editTaskToggle$.subscribe((editMode) => this.editMode = editMode);
+
+    this.currentTaskService.task$.subscribe((task) => {
+      this.task = task || null;
+      this.init();
+    });
+
   }
 
   init() {
-    this.route.params
-      .switchMap((params: Params) => {
-        if (params['taskId']) {
-          return this.taskService.getTask(params['taskId']);
-        } else {
-          return Observable.of(null);
-        }
-      })
-      .subscribe(task => this.initTask(task));
+    let taskId = this.task && this.task._id ? this.task._id : null;
+
+    if (taskId) {
+      this.taskService.getTask(taskId).subscribe((task) => this.initTask(task));
+    } else {
+      this.initTask(null);
+    }
+
+    this.editMode = false;
   }
 
   ngOnDestroy(): void {

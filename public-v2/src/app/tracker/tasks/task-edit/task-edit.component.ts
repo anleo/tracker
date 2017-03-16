@@ -1,14 +1,13 @@
 import {Component, OnInit, Input, ViewContainerRef, HostListener} from '@angular/core';
+import {ToastsManager} from "ng2-toastr";
+import {ActivatedRoute} from "@angular/router";
+import {CurrentTaskService} from "../../services/current-task.service";
 
 import {Task} from '../../models/task';
 import {TaskStatus} from '../../models/task-status';
 import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
-import {ToastsManager} from "ng2-toastr";
-import {ActivatedRoute, Params} from "@angular/router";
-import {Observable} from "rxjs";
-import {LocalStorageService} from "angular-2-local-storage";
 
 @Component({
   selector: 'app-task-edit',
@@ -30,8 +29,8 @@ export class TasksEditComponent implements OnInit {
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService,
+              private currentTaskService: CurrentTaskService,
               public vcr: ViewContainerRef,
-              private route: ActivatedRoute,
               public toastr: ToastsManager) {
     this.toastr.setRootViewContainerRef(vcr);
   }
@@ -46,16 +45,9 @@ export class TasksEditComponent implements OnInit {
   ngOnInit(): void {
     this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
 
-    this.route.params
-      .switchMap((params: Params) => {
-        if (params['taskId']) {
-          return Observable.of(params['taskId']);
-        } else {
-          return Observable.of(null);
-        }
-      })
-      .subscribe(task => {
-        this.parentTaskId = task || null;
+    this.currentTaskService.task$
+      .subscribe(taskFromRoute => {
+        this.parentTaskId = taskFromRoute && taskFromRoute._id || null;
         this.initTask();
 
         this.taskService.editTask$.subscribe((task) => {
@@ -165,4 +157,8 @@ export class TasksEditComponent implements OnInit {
     this.taskService.editTaskModal$.next(false);
   }
 
+  checkInput(event) {
+    let toggle = !!(event && event.target && event.target.value);
+    this.taskService.editTaskToggle$.next(toggle);
+  }
 }
