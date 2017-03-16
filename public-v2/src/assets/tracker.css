@@ -977,3 +977,7 @@ hr {
 .panel-body task-description-viewer .mg {
   margin-bottom: 0;
 }
+
+.task-info .app-task-metrics {
+  min-height: 32px;
+}

@@ -23,22 +23,33 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   showHistory: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isFirstLoad: boolean = true;
 
   constructor(private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
               private currentTaskService: CurrentTaskService,
               private router: Router) {
-    this.taskService.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+    this.taskService.editTaskUpdated$
+      .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
   ngOnInit() {
-    this.taskService.editTaskToggle$.subscribe((editMode) => this.editMode = editMode);
+    this.taskService.editTaskToggle$
+      .subscribe((editMode) => this.editMode = editMode);
 
-    this.currentTaskService.task$.subscribe((task) => {
-      this.task = task || null;
-      this.init();
-    });
+    this.currentTaskService.rootTask$
+      .subscribe((root) => this.root = root || null);
 
+    this.currentTaskService.parentTask$
+      .subscribe((parentTask) => this.parentTask = parentTask || null);
+
+    this.currentTaskService.task$
+      .subscribe((task) => {
+        this.task = task || null;
+        this.init();
+      });
+
+    this.isFirstLoad = false;
   }
 
   init() {
@@ -96,8 +107,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   initTask(task) {
-    this.parentTask = null;
-    this.root = null;
+
     this.tasks = [];
 
     this.task = task;
@@ -106,16 +116,19 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
     this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
 
-    taskId && this.taskService.getRoot(taskId).subscribe((root) => {
-      this.root = root;
+    if (!this.isFirstLoad) {
+      taskId && this.taskService.getRoot(taskId).subscribe((root) => {
+        this.currentTaskService.rootTask$.next(root);
 
-      if (this.root._id !== this.task._id) {
-        this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
+        if (this.root._id !== this.task._id) {
+          this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
+        }
+      });
+
+      if (task && task.parentTaskId) {
+        this.taskService.getTask(task.parentTaskId)
+          .subscribe((parentTask) => this.currentTaskService.parentTask$.next(parentTask));
       }
-    });
-
-    if (task && task.parentTaskId) {
-      this.taskService.getTask(task.parentTaskId).subscribe((parentTask) => this.parentTask = parentTask);
     }
   }
 
