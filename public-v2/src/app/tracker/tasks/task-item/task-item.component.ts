@@ -46,6 +46,15 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     this.currentTaskService.task$
       .subscribe((task) => {
         this.task = task || null;
+
+        if (this.root && this.task) {
+          if (this.root._id !== this.task._id) {
+            this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
+          } else {
+            this.browserTitleService.setTitle(this.task.title);
+          }
+        }
+
         this.init();
       });
 
@@ -109,29 +118,12 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   initTask(task) {
-
     this.tasks = [];
 
     this.task = task;
-    this.task && this.browserTitleService.setTitle(this.task.title);
     let taskId = task && task._id ? task._id : null;
 
     this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
-
-    if (!this.isFirstLoad) {
-      taskId && this.taskService.getRoot(taskId).subscribe((root) => {
-        this.currentTaskService.rootTask$.next(root);
-
-        if (this.root._id !== this.task._id) {
-          this.browserTitleService.setTitleWithPrefix(this.task.title, this.root.title);
-        }
-      });
-
-      if (task && task.parentTaskId) {
-        this.taskService.getTask(task.parentTaskId)
-          .subscribe((parentTask) => this.currentTaskService.parentTask$.next(parentTask));
-      }
-    }
   }
 
   loadTasks(taskId: string|null): Observable<Task[]> {
