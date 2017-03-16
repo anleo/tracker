@@ -1,4 +1,4 @@
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
@@ -45,7 +45,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     let taskId = this.task && this.task._id ? this.task._id : null;
 
     if (taskId) {
-      this.taskService.getTask(taskId).subscribe((task) => this.initTask(task));
+      this.initTask(this.task);
     } else {
       this.initTask(null);
     }
