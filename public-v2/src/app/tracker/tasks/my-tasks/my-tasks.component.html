@@ -1,7 +1,7 @@
-<metrics-widget *ngIf="tasks.length"></metrics-widget>
+<metrics-widget *ngIf="tasks?.length" [tasks]="tasks"></metrics-widget>
 <a class="back-button" (click)="location.back()">
   <i class="fa fa-long-arrow-left"></i>
   Back
 </a>
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
-<app-tasks-board [tasks]="tasks"></app-tasks-board>
+<app-tasks-board *ngIf="tasks?.length" [tasks]="tasks"></app-tasks-board>
