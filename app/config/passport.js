@@ -5,6 +5,8 @@ module.exports = function (passport) {
         TwitterStrategy = require('passport-twitter').Strategy,
         FacebookStrategy = require('passport-facebook').Strategy;
 
+    var _ = require('lodash');
+
     // @@@ organise passport
     var application = require('./application');
     var Container = application.container;
@@ -12,13 +14,21 @@ module.exports = function (passport) {
     var Config = Container.get('config').get();
     var User = Container.get('User');
     var Host = Container.get('Host');
+    var UserService = Container.get('UserService');
 
     passport.serializeUser(function (user, done) {
+        console.log('ser', user)
+        _.debounce(function () {
+            UserService.setUser(user);
+        }, 400)();
         done(null, user._id);
     });
 
     passport.deserializeUser(function (id, done) {
         User.findById(id, '-local.passwordHashed -local.passwordSalt', function (err, user) {
+            !err && _.debounce(function () {
+                UserService.setUser(user);
+            }, 400)();
             done(err, user);
         });
     });
@@ -96,7 +106,7 @@ module.exports = function (passport) {
                 req.user.google.id = profile.id;
                 req.user.google.token = accessToken;
                 req.user.google.email = profile.emails[0].value;
-                req.user.email = req.user.email ||  profile.emails[0].value;
+                req.user.email = req.user.email || profile.emails[0].value;
                 req.user.first = req.user.first || profile.displayName.split(' ')[0];
                 req.user.last = req.user.last || profile.displayName.split(' ')[1];
                 req.user.save(function (err) {
@@ -155,7 +165,7 @@ module.exports = function (passport) {
                 req.user.facebook.id = profile.id;
                 req.user.facebook.token = accessToken;
                 req.user.facebook.email = profile.emails[0].value;
-                req.user.email = req.user.email ||  profile.emails[0].value;
+                req.user.email = req.user.email || profile.emails[0].value;
                 req.user.first = req.user.first || profile.displayName.split(' ')[0];
                 req.user.last = req.user.last || profile.displayName.split(' ')[1];
 

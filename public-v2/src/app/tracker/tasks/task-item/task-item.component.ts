@@ -1,6 +1,8 @@
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
+
+import * as _ from 'lodash';
 
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
@@ -8,6 +10,7 @@ import {BrowserTitleService} from "../../../services/browser-title/browser-title
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {CurrentTaskService} from "../../services/current-task.service";
+import {SocketService} from "../../../services/socket.service";
 
 @Component({
   selector: 'app-task-item',
@@ -26,12 +29,16 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
   constructor(private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
+              private socketService: SocketService,
               private currentTaskService: CurrentTaskService,
               private router: Router) {
     this.taskService.editTaskUpdated$.subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
   ngOnInit() {
+    let self = this;
+    this.socketService.scopeOn(self, 'task.save', (data) => self.socketSync(data));
+    this.socketService.scopeOn(self, 'task.remove', (data) => self.socketOnRemove(data));
     this.taskService.editTaskToggle$.subscribe((editMode) => this.editMode = editMode);
 
     this.currentTaskService.task$.subscribe((task) => {
@@ -52,6 +59,25 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
     this.editMode = false;
   }
+
+  socketSync(data): Task {
+    let task = _.find(this.tasks, (aTask) => aTask._id === data.task);
+
+    if (this.task && this.task._id == data.parent) {
+      this.taskService.getTask(this.task._id)
+        .subscribe(task => this.initTask(task));
+
+    } else if (this.task && this.task._id == data.task) {
+      this.taskService.getTask(this.task._id)
+        .subscribe(task => this.initTask(task));
+    } else if ((!this.task || !this.task._id) && !data.parent) {
+      this.loadTasks(null)
+        .subscribe((tasks) => this.tasks = tasks);
+    }
+
+    this.editMode = false;
+    return task;
+  };
 
   ngOnDestroy(): void {
     this.$onDestroy.next(true);
@@ -89,6 +115,18 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     if (this.task && this.task._id === taskId) {
       if (this.task && this.task.parentTaskId) {
         this.router.navigateByUrl('/app/tasks/' + this.task.parentTaskId);
+      } else {
+        this.router.navigateByUrl('/app/tasks/');
+      }
+    } else {
+      this.init();
+    }
+  }
+
+  socketOnRemove(data): void {
+    if (this.task && this.task._id === data.task) {
+      if (data.parent) {
+        this.router.navigateByUrl('/app/tasks/' + data.parent);
       } else {
         this.router.navigateByUrl('/app/tasks/');
       }

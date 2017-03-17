@@ -13,7 +13,6 @@ module.exports = function (app) {
     );
 
     app.post('/api/tasks/:taskId/history/comments', commentForm, FormService.validate, function (req, res, next) {
-
         var comment = new TaskComment();
         comment.task = req.Task._id;
         comment.user = UserService.getUserId(req.user);
@@ -31,7 +30,7 @@ module.exports = function (app) {
                     if (err) {
                         return next(err);
                     }
-                    TaskService.notifyUsers(req.Task, 'comment.save', function (err) {
+                    TaskService.notifyUsersWithoutAuthor(req.Task, 'comment.save', function (err) {
                         if (err) {
                             return next(err);
                         }

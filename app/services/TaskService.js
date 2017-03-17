@@ -20,7 +20,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                     return next(err);
                 }
 
-                self.notifyUsers(task, 'task.save', next)
+                self.notifyUsersWithoutAuthor(task, 'task.save', next)
             });
         });
     };
@@ -220,7 +220,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                     }
                     self.updateParentByTask(parent, function (err) {
                         if (err) return next(err);
-                        wasModified && self.notifyUsers(parent, 'task.save');
+                        wasModified && self.notifyUsersWithoutAuthor(parent, 'task.save');
                         next();
                     });
                 });
@@ -256,6 +256,31 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         });
     };
 
+    this.notifyUsersWithoutAuthor = function (task, event, next) {
+        var _user = UserService.user;
+
+        next = next || _.noop;
+
+        var taskId = self.getTaskId(task).toString();
+        var parentId = self.getTaskId(task.parentTaskId).toString();
+
+        this.getTeam(task, function (err, users) {
+            if (err) return next(err);
+
+            console.log('user', _user);
+            if (_user) {
+                users = users.filter(function (user) {
+                    return UserService.getUserId(user).toString() !== UserService.getUserId(_user);
+                });
+            }
+
+            console.log('users', users)
+            users.forEach(function (user) {
+                SocketService.emitUser(UserService.getUserId(user), event, {task: taskId, parent: parentId});
+            });
+            next();
+        });
+    };
 
     this.updateParentByTask = function (task, next) {
         next = next || _.noop;
@@ -453,7 +478,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
             var wasModified = root.isModified();
             root.save(function (err) {
                 if (err) return next(err);
-                wasModified && self.notifyUsers(root, 'task.save');
+                wasModified && self.notifyUsersWithoutAuthor(root, 'task.save');
             });
         });
     };
@@ -549,7 +574,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
 
                                 HistoryService.createTaskHistory(task, function (err) {
                                     if (err) return next(err);
-                                    self.notifyUsers(task, 'task.save');
+                                    self.notifyUsersWithoutAuthor(task, 'task.save');
                                     next(null, task);
                                 });
                             });
@@ -597,7 +622,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
 
                         HistoryService.createTaskHistory(task, function (err) {
                             if (err) return next(err);
-                            wasModified && self.notifyUsers(task, 'task.save');
+                            wasModified && self.notifyUsersWithoutAuthor(task, 'task.save');
                             next(null, task);
                         });
 
@@ -622,7 +647,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
             async.each(tasks, function (task, next) {
                 self.removeTaskStuff(task);
 
-                self.notifyUsers(task, 'task.remove');
+                self.notifyUsersWithoutAuthor(task, 'task.remove');
                 task.remove(function (err) {
                     if (err) return next(err);
                     self.removeChildren(task, next);
@@ -632,7 +657,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
     };
 
     this.removeTask = function (user, task, next) {
-        self.notifyUsers(task, 'task.remove', function (err) {
+        self.notifyUsersWithoutAuthor(task, 'task.remove', function (err) {
             if (err) return next(err);
             task.remove(function (err) {
                 if (err) {
@@ -689,7 +714,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                                     return next(err);
                                 }
 
-                                self.notifyUsers(task, 'task.save');
+                                self.notifyUsersWithoutAuthor(task, 'task.save');
 
                                 next(null, task);
                             });

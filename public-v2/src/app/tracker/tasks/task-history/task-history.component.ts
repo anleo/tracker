@@ -44,7 +44,7 @@ export class TaskHistoryComponent implements OnInit,OnDestroy {
     this.loadHistory();
 
     let self = this;
-    this.socketService.scopeOn(self, 'task.remove', (data) => {
+    this.socketService.scopeOn(self, 'comment.save', (data) => {
       if (this.task && this.task._id === data.task) {
         self.loadHistory();
       }
@@ -81,7 +81,7 @@ export class TaskHistoryComponent implements OnInit,OnDestroy {
   findOtherMessages() {
     this.currentView = 'otherMessages';
     this.messages = this.allMessages.slice();
-    this.messages = this.messages .filter((message) => {
+    this.messages = this.messages.filter((message) => {
       return message._type !== 'TaskComment';
     })
   }

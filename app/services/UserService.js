@@ -3,6 +3,12 @@ var UserService = function (User) {
     var _ = require('lodash');
     var async = require('async');
 
+    this.user = null;
+
+    this.setUser = function (user) {
+        this.user = user;
+    };
+
     this.getUserId = function (user) {
         return user._id || user || "";
     };
