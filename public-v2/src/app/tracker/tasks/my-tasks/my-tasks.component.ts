@@ -1,5 +1,4 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {Location} from "@angular/common";
 import {BehaviorSubject, Subject} from "rxjs";
 
 import {UserService} from "../../../user/services/user.service";
@@ -48,7 +47,7 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
-    if (!taskWithStatus || !taskWithStatus.task) {
+    if (!taskWithStatus) {
       return false;
     }
 
