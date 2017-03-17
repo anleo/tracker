@@ -33,4 +33,8 @@ module.exports = function () {
             .then(callback);
     });
 
+    this.Then(/^I see tree view$/, function (callback) {
+        this.iSee('div.task-tree panel-tree', callback)
+    });
+
 };
