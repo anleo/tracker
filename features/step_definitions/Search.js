@@ -4,6 +4,10 @@ module.exports = function () {
         this.iSee(".board-view a:contains('" + arg1 + "')", callback);
     });
 
+    this.Then(/^I see parent task "([^"]*)"$/, function (arg1, callback) {
+        this.iSee("div.task-info h2:contains('" + arg1 + "')", callback);
+    });
+
     this.Then(/^I click on task link "([^"]*)"$/, function (arg1, callback) {
         this.iClick(".container .board-view a:contains('" + arg1 + "')", callback);
     });

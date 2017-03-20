@@ -1,6 +1,5 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {Location} from "@angular/common";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 
 import {UserService} from "../../../user/services/user.service";
 import {TaskService} from "../../services/task.service";
@@ -18,26 +17,33 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  componentDestroyed$: Subject<boolean> = new Subject();
+
   constructor(private userService: UserService,
-              private taskService: TaskService,
-              private location: Location) {
+              private taskService: TaskService) {
   }
 
   ngOnInit(): void {
     this.taskService.editTaskUpdated$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
 
     this.taskService.editTaskModal$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((flag) => this.editMode = flag);
 
     this.userService.get()
-      .subscribe(user => this.user = user);
-
-    this.getTasks();
+      .takeUntil(this.componentDestroyed$)
+      .subscribe(user => {
+        this.user = user;
+        user && this.getTasks();
+      });
   }
 
   ngOnDestroy(): void {
     this.$onDestroy.next(true);
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
@@ -51,6 +57,8 @@ export class MyTasksComponent implements OnInit, OnDestroy {
       this.onMove();
     } else if (taskWithStatus.status === 'remove') {
       this.onRemove();
+    } else if (taskWithStatus.status === 'close') {
+      this.editMode = false;
     }
   }
 
@@ -67,10 +75,7 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   }
 
   private getTasks(): void {
-    this.taskService.getUserTasks(this.user._id)
-      .subscribe(tasks => {
-        this.tasks = tasks;
-        this.taskService.setTasks(tasks);
-      });
+    this.user && this.user._id && this.taskService.getUserTasks(this.user._id)
+      .subscribe(tasks => this.tasks = tasks);
   }
 }

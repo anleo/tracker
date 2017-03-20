@@ -1,23 +1,27 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnChanges} from '@angular/core';
 import {Task} from "../../models/task";
 import {MetricsWidget} from "./MetricsWidget";
-import {TaskService} from "../../services/task.service";
 
 @Component({
   selector: 'metrics-widget',
   templateUrl: './metrics-widget.component.html'
 })
-export class MetricsWidgetComponent implements OnInit {
+export class MetricsWidgetComponent implements OnInit, OnChanges {
   metricsWidget: MetricsWidget;
   counter: number = 0;
+
+  @Input()
   tasks: Task[];
+
   @Input()
   simpleOnly: boolean = false;
 
-  constructor(private taskService: TaskService) {
-    this.taskService.tasks$.subscribe((tasks) => {
-      this.getWidgetData(tasks);
-    });
+  ngOnInit() {
+    this.tasks && this.tasks.length && this.getWidgetData(this.tasks);
+  }
+
+  ngOnChanges(): void {
+    this.getWidgetData(this.tasks);
   }
 
   getMetrics(tasks: Task[]) {
@@ -49,10 +53,4 @@ export class MetricsWidgetComponent implements OnInit {
     this.counter = tasks.length;
     this.getMetrics(tasks);
   }
-
-  ngOnInit() {
-    this.tasks = this.taskService.tasks;
-    this.getWidgetData(this.tasks);
-  }
-
 }
