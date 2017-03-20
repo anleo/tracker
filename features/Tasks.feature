@@ -52,3 +52,64 @@ Feature: Tasks
     Then I see tree view
     And I see task "task 1" spent time "0.5"
     And I see task "task 1.1.1" spent time "0.5"
+
+  Scenario: Check Tasks on different taskId routes (check description, metrics)
+
+    Then I click on task link "task 1"
+    And I see parent task "task 1"
+
+    Then I click on task link "task 1.2"
+    And I see parent task "task 1.2"
+
+    Then I see estimated time "2" of parent task
+    And I see spent time "0" of parent task
+    Then I see todo time "2" of parent task
+    Then I see complexity "1" of parent task
+    Then I see points "2p" of parent task
+
+    Then I click on parent task metrics to edit it
+    Then I type description "123456"
+    And I click on save button
+
+    Then I sleep 1
+
+    Then I see parent task description "123456" for task "task 1.2"
+
+    Then I sleep 1
+
+    Then I click back button to parent task "task 1"
+
+    Then I click on task link "task 1.1"
+    And I see parent task "task 1.1"
+    Then I don't see parent task description "123456" for task "task 1.1"
+
+    Then I see estimated time "1" of parent task
+    And I see spent time "1" of parent task
+    Then I see todo time "0" of parent task
+    Then I see points "1p" of parent task
+
+  Scenario: Check cancel function when add new task on task page where no other sub tasks
+
+    Then I click on task link "task 1"
+    And I see parent task "task 1"
+
+    Then I click on task link "task 1.2"
+    And I see parent task "task 1.2"
+
+    #no tasks yet
+    Then I don't see tasks in board
+
+    And I see task title input
+    When I type task title "newTask"
+
+    Then I type description "newDescription"
+
+    And I click on task complexity "2+"
+    And I click task spent time "+30"
+    And I click task spent time "+30"
+    Then I see humanized spent time "01:00"
+
+    Then I click on close button
+
+    #still no tasks yet
+    Then I don't see tasks in board

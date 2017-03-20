@@ -70,8 +70,6 @@ import {TaskSearchDirective} from './tasks/task-search/task-search.directive';
 import {TaskSearchComponent} from "./tasks/task-search/task-search.component";
 import {TaskSearchService} from "./services/task-search.service";
 import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search.component";
-import {ParentTaskResolver} from "./resolvers/parent-task.resolver";
-import {RootTaskResolver} from "./resolvers/root-task.resolver";
 import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
 
@@ -156,8 +154,6 @@ import {TaskComponent} from "./tasks/components/task/task.component";
   ],
   providers: [
     TaskResolver,
-    ParentTaskResolver,
-    RootTaskResolver,
     TaskResource,
     TaskService,
     CurrentTaskService,
