@@ -15,6 +15,7 @@ import {ParentTaskResolver} from "./resolvers/parent-task.resolver";
 import {RootTaskResolver} from "./resolvers/root-task.resolver";
 import {UserResolver} from "../user/resolver/UserResolver";
 import {TaskComponent} from "./tasks/components/task/task.component";
+import {DndComponent} from "./dnd/dnd.component";
 
 const routes: Routes = [
   {
@@ -39,6 +40,10 @@ const routes: Routes = [
       {
         path: 'archived',
         component: TaskArchiveComponent
+      },
+      {
+        path: 'dnd',
+        component: DndComponent
       },
       {
         path: ':taskId',

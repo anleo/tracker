@@ -74,6 +74,10 @@ import {ParentTaskResolver} from "./resolvers/parent-task.resolver";
 import {RootTaskResolver} from "./resolvers/root-task.resolver";
 import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
+import {DndComponent} from "./dnd/dnd.component";
+import {DragComponent} from "./dnd/drag.component";
+import {DropDirective, DropZoneDirective} from "./dnd/drop.component";
+import {DnDService} from "./dnd/dnd.service";
 
 @NgModule({
   imports: [
@@ -152,7 +156,11 @@ import {TaskComponent} from "./tasks/components/task/task.component";
     MetricsInEditorComponent,
     TaskArchiveComponent,
     TaskSearchDirective,
-    TaskSearchComponent
+    TaskSearchComponent,
+    DndComponent,
+    DragComponent,
+    DropDirective,
+    DropZoneDirective
   ],
   providers: [
     TaskResolver,
@@ -162,7 +170,8 @@ import {TaskComponent} from "./tasks/components/task/task.component";
     TaskService,
     CurrentTaskService,
     TaskStatusService,
-    TaskSearchService
+    TaskSearchService,
+    DnDService
   ]
 })
 export class TrackerModule {
