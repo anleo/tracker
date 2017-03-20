@@ -1,6 +1,5 @@
-import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {Resolve, ActivatedRouteSnapshot} from '@angular/router';
 import {Injectable} from '@angular/core';
-import 'rxjs/add/operator/switchMap'
 
 import {TaskService} from "../services/task.service";
 import {Task} from "../models/task";
