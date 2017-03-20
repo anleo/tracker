@@ -43,8 +43,8 @@ export class TasksEditComponent implements OnInit {
     this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
 
     this.currentTaskService.task$
-      .subscribe(taskFromRoute => {
-        this.parentTaskId = taskFromRoute && taskFromRoute._id || null;
+      .subscribe(currentTask => {
+        this.parentTaskId = currentTask && currentTask._id || null;
         this.initTask();
 
         this.taskService.editTask$.subscribe((task) => {

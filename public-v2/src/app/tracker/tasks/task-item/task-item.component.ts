@@ -31,12 +31,13 @@ export class TaskItemComponent implements OnInit, OnDestroy {
               private browserTitleService: BrowserTitleService,
               private currentTaskService: CurrentTaskService,
               private router: Router) {
-    this.taskService.editTaskUpdated$
-      .takeUntil(this.componentDestroyed$)
-      .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
   ngOnInit() {
+    this.taskService.editTaskUpdated$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+
     this.taskService.editTaskToggle$
       .takeUntil(this.componentDestroyed$)
       .subscribe((editMode) => this.editMode = editMode);
