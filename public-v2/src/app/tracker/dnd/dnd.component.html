@@ -18,10 +18,12 @@
 
       <div *ngFor="let task of tasks2">
 
-        <div drop-zone [params]="{status: 'inprogress'}"
+        <div drop-zone [params]="{status: 'inprogress', parentId: task.id}"
              class="drop-zone" style="border: 1px solid #00b3ee;">
           {{task.title}}
           {{task.status}}
+
+          <span *ngIf="task.parentId">parentID: {{task.parentId}}</span>
         </div>
 
       </div>

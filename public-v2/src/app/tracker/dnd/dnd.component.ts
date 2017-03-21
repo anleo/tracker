@@ -24,6 +24,10 @@ export class DndComponent {
       data.item.status = data.params.status;
     }
 
+    if (data.params.parentId) {
+      data.item.parentId = data.params.parentId;
+    }
+
     this.tasks.splice(this.tasks.indexOf(data.item), 1);
     this.tasks2.push(data.item);
   }

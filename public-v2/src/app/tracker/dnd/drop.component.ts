@@ -40,6 +40,7 @@ export class DropDirective {
   private findDropZoneAndParams(event) {
     let dropData = {dropZone: null, dropParams: null};
     let element = document.elementFromPoint(event.clientX, event.clientY);
+    console.log('element', element);
     if (element.attributes['class'] && /drop-zone/.test(element.attributes['class'].value)) {
       dropData.dropZone = element;
 
