@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
 import {BehaviorSubject, Subject} from "rxjs";
-
+import {Location} from "@angular/common";
 import {TaskService} from "../../services/task.service";
 import {Task} from '../../models/task';
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
@@ -20,7 +20,8 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
-  constructor(private browserTitleService: BrowserTitleService,
+  constructor(private location: Location,
+              private browserTitleService: BrowserTitleService,
               private taskService: TaskService,
               private currentTaskService: CurrentTaskService) {
   }
@@ -59,6 +60,10 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
     } else if (taskWithStatus.status === 'remove') {
       this.onRemove();
     }
+  }
+
+  back(): void {
+    this.location.back();
   }
 
   private onUpdate(): void {
