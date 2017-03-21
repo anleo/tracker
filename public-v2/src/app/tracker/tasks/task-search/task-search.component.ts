@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewContainerRef, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
@@ -8,17 +8,21 @@ import {TaskService} from "../../services/task.service";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 import {CurrentTaskService} from "../../services/current-task.service";
 import {TaskWithStatus} from "../../models/task-with-status";
+import {BehaviorSubject, Subject} from "rxjs";
 
 @Component({
   selector: 'app-task-search',
   templateUrl: './task-search.component.html'
 })
-export class TaskSearchComponent implements OnInit {
+export class TaskSearchComponent implements OnInit, OnDestroy {
   tasks: Task[];
   task: Task;
   taskId: string;
   query: string;
   editMode: boolean = false;
+
+  $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private route: ActivatedRoute,
               private taskSearchService: TaskSearchService,
@@ -36,19 +40,31 @@ export class TaskSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.taskService.editTaskModal$.subscribe((flag) => this.editMode = flag);
+    this.taskService.editTaskModal$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((flag) => this.editMode = flag);
+
     this.taskService.editTaskUpdated$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
 
     this.browserTitleService.setTitle('Search');
 
-    this.currentTaskService.task$.subscribe((task) => this.task = task);
+    this.currentTaskService.task$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((task) => this.task = task);
 
     this.route.params
       .subscribe((params: Params) => {
         this.query = params['query'];
         this.search();
       });
+  }
+
+  ngOnDestroy(): void {
+    this.$onDestroy.next(true);
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 
   private search(): void {

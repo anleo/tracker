@@ -1,6 +1,5 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
-import {Location} from "@angular/common";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 
 import {TaskService} from "../../services/task.service";
 import {Task} from '../../models/task';
@@ -19,19 +18,24 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
   editMode: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private location: Location,
-              private browserTitleService: BrowserTitleService,
+  componentDestroyed$: Subject<boolean> = new Subject();
+
+  constructor(private browserTitleService: BrowserTitleService,
               private taskService: TaskService,
               private currentTaskService: CurrentTaskService) {
   }
 
   ngOnInit(): void {
-    this.currentTaskService.task$.subscribe((task) => this.task = task);
+    this.currentTaskService.task$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((task) => this.task = task);
 
     this.taskService.editTaskUpdated$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
 
     this.taskService.editTaskModal$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((flag) => this.editMode = flag);
 
     this.getTasks();
@@ -39,6 +43,8 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.$onDestroy.next(true);
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
