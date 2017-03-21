@@ -1,56 +1,43 @@
-<div drop-listener style="width: 1000px; height: 1000px; border: 1px solid #2aabd2; ">
-  <div style="float: left; width: 499px; height: 499px; border: 1px solid darkslateblue;">
+<div drop-listener (actionOnDrop)="updateArray($event)"
+     style="width: 1000px; height: 1000px; border: 1px solid #2aabd2; ">
+  <div style="float: left; width: 300px; height: 300px; border: 1px solid darkslateblue;">
     Basket 1
 
     <div
       *ngFor="let task of tasks"
-      drag [item]="task"
-      class="pointer"
-      style="border: 1px solid crimson; padding: 5px; margin: 10px; width: 50px; height: 50px;">
+      drag [dragItem]="task"
+      class="drag-item pointer">
       {{task.title}}
     </div>
 
   </div>
 
-  <div style="float: right; overflow: hidden; width: 499px; height: 499px; border: 1px solid darkslateblue;">
-    <div drop-zone (action)="someAction($event)" id="id5" params='{"status": "accepted"}' class="drop-zone-exp"
-         style="border: 1px solid crimson; padding: 5px; margin: 10px; width: 250px; height: 250px;">
+  <div style="float: right; overflow: hidden;">
+    <div class="drop-zone">
       <h1>1</h1>
       <div
-        *ngFor="let task of tasks2"> {{task?.title}}
+        *ngFor="let task of tasks2"> {{task.title}}
       </div>
     </div>
-    <div drop-zone
-         style="border: 1px solid crimson; padding: 5px; margin: 10px; width: 250px; height: 250px;">
-      <h1>2</h1>
-      <div
-        *ngFor="let task of tasks3"> {{task?.title}}
-      </div>
-    </div>
-
-
   </div>
 
 </div>
 
-<!--<style>-->
-  <!--.drop-zone-exp {-->
-    <!--position: relative;-->
-  <!--}-->
-  <!--.drop-zone-exp:before {-->
-    <!--content: '';-->
-    <!--display: block;-->
-    <!--width: 100%;-->
-    <!--height: 100%;-->
-    <!--position: absolute;-->
-    <!--z-index: -1;-->
-    <!--background: #f60;-->
-    <!--opacity: 0;-->
-    <!--top: 0;-->
-    <!--left: 0;-->
-  <!--}-->
-  <!--.drop-zone-exp:hover:before {-->
-    <!--z-index: 10000;-->
-    <!--opacity: 0.3;-->
-  <!--}-->
-<!--</style>-->
+
+<style>
+  .drop-zone {
+    border: 1px solid crimson;
+    padding: 5px;
+    margin: 10px;
+    width: 300px;
+    height: 300px;
+  }
+
+  .drag-item {
+    border: 1px solid crimson;
+    padding: 5px;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+  }
+</style>

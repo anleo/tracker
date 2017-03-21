@@ -18,10 +18,9 @@ const Tasks2 = [
 export class DndComponent {
   tasks = Tasks;
   tasks2 = Tasks2;
-  tasks3 = Tasks2;
 
-  someAction($event) {
-    this.tasks2.push(null)
+  updateArray(item): void {
+    this.tasks.splice(this.tasks.indexOf(item), 1);
+    this.tasks2.push(item);
   }
-
 }
