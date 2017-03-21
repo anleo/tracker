@@ -13,10 +13,17 @@
   </div>
 
   <div style="float: right; overflow: hidden;">
-    <div class="drop-zone">
+    <div drop-zone [params]="{status: 'accepted'}" class="drop-zone drop-zone-class">
       <h1>1</h1>
-      <div
-        *ngFor="let task of tasks2"> {{task.title}}
+
+      <div *ngFor="let task of tasks2">
+
+        <div drop-zone [params]="{status: 'inprogress'}"
+             class="drop-zone" style="border: 1px solid #00b3ee;">
+          {{task.title}}
+          {{task.status}}
+        </div>
+
       </div>
     </div>
   </div>
@@ -25,7 +32,7 @@
 
 
 <style>
-  .drop-zone {
+  .drop-zone-class {
     border: 1px solid crimson;
     padding: 5px;
     margin: 10px;

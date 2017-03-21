@@ -76,7 +76,7 @@ import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {DndComponent} from "./dnd/dnd.component";
 import {DragComponent} from "./dnd/drag.component";
-import {DropDirective} from "./dnd/drop.component";
+import {DropDirective, DropZoneDirective} from "./dnd/drop.component";
 import {DnDService} from "./dnd/dnd.service";
 
 @NgModule({
@@ -160,7 +160,7 @@ import {DnDService} from "./dnd/dnd.service";
     DndComponent,
     DragComponent,
     DropDirective,
-    // DropZoneDirective
+    DropZoneDirective
   ],
   providers: [
     TaskResolver,

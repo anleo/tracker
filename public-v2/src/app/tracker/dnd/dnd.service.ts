@@ -11,6 +11,7 @@ export class DnDService {
   startElementPosition$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   dragElement$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   turnonAction$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  dropParams: any;
 
 
   constructor() {
@@ -29,23 +30,18 @@ export class DnDService {
 
   cancelDrop() {
     this.resetElement();
-    // this.dragItem$.next(null);
   }
 
-  finishDrop() {
+  finishDrop(dropData) {
+    console.log('dropData', dropData);
     let data = {
       flag: true,
-      item: this.dragItem
+      item: this.dragItem,
+      params: dropData || null
     };
 
     this.turnonAction$.next(data);
     this.resetVariables();
-  }
-
-  private resetVariables() {
-    this.startElementPosition$.next(null);
-    this.dragElement$.next(null);
-    this.dragItem$.next(null);
   }
 
   private resetElement() {
@@ -54,8 +50,11 @@ export class DnDService {
     this.dragElement.style.top = this.startElementCoordinate.top;
     this.dragElement.style.zIndex = this.startElementCoordinate.zIndex;
     this.startElementCoordinate.parent.insertBefore(this.dragElement, this.startElementCoordinate.nextSibling);
-    // this.startElementPosition$.next(null);
-    // this.dragElement$.next(null);
   }
 
+  private resetVariables() {
+    this.startElementPosition$.next(null);
+    this.dragElement$.next(null);
+    this.dragItem$.next(null);
+  }
 }

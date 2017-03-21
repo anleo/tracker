@@ -19,8 +19,12 @@ export class DndComponent {
   tasks = Tasks;
   tasks2 = Tasks2;
 
-  updateArray(item): void {
-    this.tasks.splice(this.tasks.indexOf(item), 1);
-    this.tasks2.push(item);
+  updateArray(data): void {
+    if (data.params.status) {
+      data.item.status = data.params.status;
+    }
+
+    this.tasks.splice(this.tasks.indexOf(data.item), 1);
+    this.tasks2.push(data.item);
   }
 }

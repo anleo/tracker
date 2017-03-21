@@ -1,4 +1,4 @@
-import {HostListener, Directive, ElementRef, EventEmitter, Output} from "@angular/core";
+import {HostListener, Directive, ElementRef, EventEmitter, Output, Input, OnInit} from "@angular/core";
 import {DnDService} from "./dnd.service";
 
 @Directive({
@@ -9,7 +9,12 @@ export class DropDirective {
     this.DnDService.dragElement$.subscribe(dragElement => this.dragElement = dragElement);
     this.DnDService.turnonAction$.subscribe((data) => {
       if (data.flag) {
-        this.actionOnDrop.next(data.item);
+        let dropData = {
+          item: data.item,
+          params: data.params
+        };
+
+        this.actionOnDrop.next(dropData);
       }
     });
   }
@@ -21,44 +26,46 @@ export class DropDirective {
   onMouseUp(event) {
     if (this.dragElement) {
       this.dragElement.hidden = true;
-      let dropZone = this.findDropZone(event);
+      let dropData = this.findDropZoneAndParams(event);
       this.dragElement.hidden = false;
 
-      if (!dropZone) {
+      if (!dropData.dropZone) {
         this.DnDService.cancelDrop();
       } else {
-        this.DnDService.finishDrop();
+        this.DnDService.finishDrop(dropData.dropParams);
       }
     }
   }
 
-  private findDropZone(event) {
-    let dropZone = null;
+  private findDropZoneAndParams(event) {
+    let dropData = {dropZone: null, dropParams: null};
     let element = document.elementFromPoint(event.clientX, event.clientY);
-    if (element.attributes['class'] && element.attributes['class'].value === 'drop-zone') {
-      dropZone = element.attributes['class'].value;
+    if (element.attributes['class'] && /drop-zone/.test(element.attributes['class'].value)) {
+      dropData.dropZone = element;
+
+      if (dropData.dropZone.attributes['dropParams']) {
+        dropData.dropParams = JSON.parse(dropData.dropZone.attributes['dropParams'].value);
+      }
     }
 
-    return dropZone;
+    return dropData;
   }
 
 }
 
-// @Directive({
-//   selector: '[drop-zone]'
-// })
-// export class DropZoneDirective {
-//   constructor(private DnDService: DnDService,
-//               private elementRef: ElementRef) {
-//   }
-//
-//   @Output() action: EventEmitter <any> = new EventEmitter();
-//   el = this.elementRef.nativeElement;
-//
-//   @HostListener('mouseenter', ['$event'])
-//   onMouseOver(event) {
-//     event.stopPropagation();
-//     console.log('over enter', event);
-//     this.DnDService.dropZoneChange$.next(this.el);
-//   }
-// }
+@Directive({
+  selector: '[drop-zone]'
+})
+export class DropZoneDirective implements OnInit {
+  constructor(private elementRef: ElementRef) {
+  }
+
+  @Input() params: Object;
+  domElement = this.elementRef.nativeElement;
+
+  ngOnInit(): void {
+    if (this.params) {
+      this.domElement.setAttribute('dropParams', JSON.stringify(this.params))
+    }
+  }
+}
