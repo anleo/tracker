@@ -6,7 +6,7 @@ import {Task} from '../models/task';
 import {TaskWithStatus} from '../models/task-with-status';
 import {TaskResource} from "../resources/tasks.resource";
 import {User} from "../../user/models/user";
-import {Router} from "@angular/router";
+
 import {HistoryMessage} from "../models/history-message";
 
 @Injectable()
@@ -18,7 +18,6 @@ export class TaskService {
   taskMetricsViewType: number = null;
 
   task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
-  tasks$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>(null);
 
   editTask$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
   editTaskToggle$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
@@ -27,19 +26,13 @@ export class TaskService {
 
   taskMetricsViewType$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
-  constructor(private taskResource: TaskResource,
-              private router: Router) {
-    this.task$.subscribe((task: Task) => this.task = task);
+  constructor(private taskResource: TaskResource) {
 
-    this.tasks$.subscribe((tasks: Task[]) => this.tasks = tasks);
+    this.task$.subscribe((task: Task) => this.task = task);
 
     this.editTask$.subscribe((task: Task) => this.editTask = task);
 
     this.taskMetricsViewType$.subscribe(type => this.taskMetricsViewType = type);
-  }
-
-  setTasks(tasks: Task[]): void {
-    this.tasks$.next(tasks);
   }
 
   setTask(task: Task): void {

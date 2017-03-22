@@ -1,7 +1,6 @@
 module.exports = function (app, passport, flash) {
 
     var Tokenizer = app.container.get('Tokenizer');
-    var UserService = app.container.get('UserService');
     var Mailer = app.container.get('Mailer');
     var Host = app.container.get('Host');
     var User = app.container.get('User');
@@ -15,11 +14,6 @@ module.exports = function (app, passport, flash) {
         field("last").trim(),
         field("email").trim().required().isEmail()
     );
-
-    app.use(function (req, res, next) {
-        console.log(UserService.user);
-        next()
-    })
 
     app.post('/api/users/resetPassword', function (req, res, next) {
         Tokenizer.decode(req.query.token, function (err, decoded) {
@@ -92,8 +86,6 @@ module.exports = function (app, passport, flash) {
         });
 
     app.post('/api/logout', function (req, res) {
-        UserService.setUser(null);
-
         req.logout();
         res.status(200).send({});
     });
@@ -150,14 +142,9 @@ module.exports = function (app, passport, flash) {
                     }
                 });
 
-                user.save(function (err, _user) {
-                    if (err) {
-                        return next(err);
-                    }
-
-                    req.login(_user, function (err) {
+                user.save(function (err) {
+                    req.login(user, function (err) {
                         if (err) return next(err);
-
                         res.json(user);
                     });
                 });

@@ -85,7 +85,6 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
         .getTasksByTags(this.task._id, this.selectedTags)
         .subscribe(tasks => {
           this.tasks = tasks;
-          this.contextTaskService.setTasks(tasks);
         });
     } else {
       this.tasks = [];

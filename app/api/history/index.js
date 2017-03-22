@@ -30,7 +30,7 @@ module.exports = function (app) {
                     if (err) {
                         return next(err);
                     }
-                    TaskService.notifyUsersWithoutAuthor(req.Task, 'comment.save', function (err) {
+                    TaskService.notifyUsers(req.Task, 'comment.save', function (err) {
                         if (err) {
                             return next(err);
                         }

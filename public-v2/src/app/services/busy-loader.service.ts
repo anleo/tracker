@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 
@@ -8,21 +9,20 @@ export class BusyLoaderService {
   load(method, key) {
     let reqFound = this.requests.find((req) => req.key === key);
 
-    if (reqFound && reqFound.observable) {
-
-      return reqFound;
+    if (reqFound) {
+      return;
     } else {
-
       let requestItem = {
         key: key,
-        method: method()
+        method: method
       };
 
       this.requests.push(requestItem);
-      console.log('this.requests1', this.requests);
 
-      return;
+      method()
+        .subscribe(() => {
+          this.requests = this.requests.filter((request) => request.key !== key);
+        });
     }
   }
-
 }
