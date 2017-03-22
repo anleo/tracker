@@ -19,10 +19,10 @@ const routes: Routes = [
   {
     path: 'app/tasks',
     component: BlankComponent,
-    canActivate: [CanActivatePrivateGuard],
     resolve: {
       user: UserResolver
     },
+    canActivate: [CanActivatePrivateGuard],
     children: [
       {
         path: '',
