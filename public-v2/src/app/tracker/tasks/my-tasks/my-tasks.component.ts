@@ -8,6 +8,7 @@ import {User} from "../../../user/models/user";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
 import {SocketService} from "../../../services/socket.service";
+import {Location} from "@angular/common";
 
 @Component({
   templateUrl: 'my-tasks.component.html'
@@ -21,7 +22,8 @@ export class MyTasksComponent implements OnInit, OnDestroy {
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
-  constructor(private userService: UserService,
+  constructor(private location: Location,
+              private userService: UserService,
               private taskService: TaskService,
               private socketService: SocketService,
               private busyLoaderService: BusyLoaderService) {
@@ -52,6 +54,10 @@ export class MyTasksComponent implements OnInit, OnDestroy {
     this.$onDestroy.next(true);
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
+  }
+
+  back(): void {
+    this.location.back();
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
