@@ -13,11 +13,13 @@ import {BlankComponent} from "../blank/blank.component";
 import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search.component";
 import {UserResolver} from "../user/resolver/UserResolver";
 import {TaskComponent} from "./tasks/components/task/task.component";
+import {CanActivatePrivateGuard} from "../guards/can-activate-private.guard";
 
 const routes: Routes = [
   {
     path: 'app/tasks',
     component: BlankComponent,
+    canActivate: [CanActivatePrivateGuard],
     resolve: {
       user: UserResolver
     },
