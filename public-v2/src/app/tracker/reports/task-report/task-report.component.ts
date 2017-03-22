@@ -68,7 +68,6 @@ export class TaskReportComponent implements OnInit, OnDestroy {
     this.contextTaskService
       .getTaskReportByTask(taskId, date, userId)
       .subscribe(tasks => {
-        this.contextTaskService.setTasks(tasks);
         this.tasks = tasks;
       });
   }

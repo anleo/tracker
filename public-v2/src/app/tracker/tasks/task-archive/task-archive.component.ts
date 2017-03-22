@@ -6,6 +6,9 @@ import {Task} from '../../models/task';
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {CurrentTaskService} from "../../services/current-task.service";
+import {SocketService} from "../../../services/socket.service";
+import {BusyLoaderService} from "../../../services/busy-loader.service";
+import {Router} from "@angular/router";
 
 @Component({
   moduleId: module.id,
@@ -21,12 +24,19 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
   componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private location: Location,
+              private router: Router,
               private browserTitleService: BrowserTitleService,
+              private busyLoaderService: BusyLoaderService,
               private taskService: TaskService,
-              private currentTaskService: CurrentTaskService) {
+              private currentTaskService: CurrentTaskService,
+              private socketService: SocketService) {
   }
 
   ngOnInit(): void {
+    let self = this;
+    this.socketService.scopeOn(self, 'task.save', (data) => self.getTasks());
+    this.socketService.scopeOn(self, 'task.remove', (data) => self.socketOnRemove(data));
+
     this.currentTaskService.task$
       .takeUntil(this.componentDestroyed$)
       .subscribe((task) => this.task = task);
@@ -78,15 +88,37 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
     this.getTasks();
   }
 
-  private getTasks(): void {
-    if (this.task) {
-      this.taskService.getArchivedTasks(this.task._id).subscribe((tasks) => {
-        this.initTasks(tasks);
-        this.browserTitleService.setTitleWithPrefix('Archive', this.task.title);
-      });
+  private socketOnRemove(data): void {
+    if (this.task && this.task._id === data.task) {
+      if (data.parent) {
+        this.router.navigateByUrl('/app/tasks/' + data.parent);
+      } else {
+        this.router.navigateByUrl('/app/tasks/');
+      }
     } else {
-      this.taskService.getArchivedProjects().subscribe((tasks) => this.initTasks(tasks))
+      this.getTasks();
     }
+  }
+
+  private getTasks(): void {
+    let self = this;
+
+    let loader = function () {
+      if (self.task) {
+        return self.taskService.getArchivedTasks(self.task._id).map((tasks) => {
+          self.initTasks(tasks);
+          self.browserTitleService.setTitleWithPrefix('Archive', self.task.title);
+          return tasks;
+        });
+      } else {
+        return self.taskService.getArchivedProjects().map((tasks) => {
+          self.initTasks(tasks);
+          return tasks;
+        })
+      }
+    };
+
+    this.busyLoaderService.load(loader, 'getArchivedTasks')
   }
 
   private initTasks(tasks: Task[]): void {

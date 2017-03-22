@@ -9,9 +9,9 @@ export class SocketService {
   private socket = null;
   private events = {};
   private scopeEvents = {};
-  private uri = this.document.location.protocol +'//'+ this.document.location.hostname + ':' + this.document.location.port;
+  // private uri = this.document.location.protocol +'//'+ this.document.location.hostname + ':' + this.document.location.port;
   //@@@TODO: to get sockets in work condition, launch client from vagrant
-  // private uri = 'http://192.168.10.20:3000';
+  private uri = 'http://192.168.10.20:3000';
 
   constructor(@Inject(DOCUMENT) private document) {
     this.connect();

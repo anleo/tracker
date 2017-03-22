@@ -1,6 +1,7 @@
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import "rxjs/add/operator/mergeMap";
 
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
@@ -8,7 +9,9 @@ import {BrowserTitleService} from "../../../services/browser-title/browser-title
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {CurrentTaskService} from "../../services/current-task.service";
+import {SocketService} from "../../../services/socket.service";
 import {Subject} from "rxjs";
+import {BusyLoaderService} from "../../../services/busy-loader.service";
 
 @Component({
   selector: 'app-task-item',
@@ -29,14 +32,19 @@ export class TaskItemComponent implements OnInit, OnDestroy {
 
   constructor(private taskService: TaskService,
               private browserTitleService: BrowserTitleService,
+              private socketService: SocketService,
               private currentTaskService: CurrentTaskService,
+              private busyLoaderService: BusyLoaderService,
               private router: Router) {
-  }
-
-  ngOnInit() {
     this.taskService.editTaskUpdated$
       .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+  }
+
+  ngOnInit() {
+    let self = this;
+    this.socketService.scopeOn(self, 'task.save', (data) => self.init());
+    this.socketService.scopeOn(self, 'task.remove', (data) => self.socketOnRemove(data));
 
     this.taskService.editTaskToggle$
       .takeUntil(this.componentDestroyed$)
@@ -54,7 +62,7 @@ export class TaskItemComponent implements OnInit, OnDestroy {
       .takeUntil(this.componentDestroyed$)
       .subscribe((task) => {
         this.task = task || null;
-        this.initTask(this.task);
+        this.initTask(this.task).subscribe();
         this.editMode = false;
 
         if (this.root && this.task) {
@@ -67,22 +75,28 @@ export class TaskItemComponent implements OnInit, OnDestroy {
       });
   }
 
-  init() {
-    let taskId = this.task && this.task._id ? this.task._id : null;
-
-    if (taskId) {
-      this.taskService.getTask(taskId).subscribe((task) => this.initTask(task));
-    } else {
-      this.initTask(null);
-    }
-
-    this.editMode = false;
-  }
-
   ngOnDestroy(): void {
     this.$onDestroy.next(true);
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
+  }
+
+  init() {
+    let self = this;
+
+    let loader = function () {
+      let taskId = self.task && self.task._id ? self.task._id : null;
+
+      self.editMode = false;
+
+      if (taskId) {
+        return self.taskService.getTask(taskId).mergeMap((task) => self.initTask(task));
+      } else {
+        return self.initTask(null);
+      }
+    };
+
+    this.busyLoaderService.load(loader, 'taskItemInit')
   }
 
   actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
@@ -125,13 +139,27 @@ export class TaskItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  private socketOnRemove(data): void {
+    if (this.task && this.task._id === data.task) {
+      if (data.parent) {
+        this.router.navigateByUrl('/app/tasks/' + data.parent);
+      } else {
+        this.router.navigateByUrl('/app/tasks/');
+      }
+    } else {
+      this.init();
+    }
+  }
+
   initTask(task) {
     this.tasks = [];
 
     this.task = task;
     let taskId = task && task._id ? task._id : null;
 
-    this.loadTasks(taskId).subscribe(tasks => this.tasks = tasks);
+    return this.loadTasks(taskId).map(tasks => {
+      this.tasks = tasks;
+    });
   }
 
   loadTasks(taskId: string|null): Observable<Task[]> {

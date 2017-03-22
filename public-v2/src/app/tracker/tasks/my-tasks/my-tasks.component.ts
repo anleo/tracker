@@ -6,6 +6,9 @@ import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
 import {User} from "../../../user/models/user";
 import {TaskWithStatus} from "../../models/task-with-status";
+import {BusyLoaderService} from "../../../services/busy-loader.service";
+import {SocketService} from "../../../services/socket.service";
+import {Location} from "@angular/common";
 
 @Component({
   templateUrl: 'my-tasks.component.html'
@@ -19,11 +22,18 @@ export class MyTasksComponent implements OnInit, OnDestroy {
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
-  constructor(private userService: UserService,
-              private taskService: TaskService) {
+  constructor(private location: Location,
+              private userService: UserService,
+              private taskService: TaskService,
+              private socketService: SocketService,
+              private busyLoaderService: BusyLoaderService) {
   }
 
   ngOnInit(): void {
+    let self = this;
+    this.socketService.scopeOn(self, 'task.save', (data) => self.getTasks());
+    this.socketService.scopeOn(self, 'task.remove', (data) => self.getTasks());
+
     this.taskService.editTaskUpdated$
       .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
@@ -44,6 +54,10 @@ export class MyTasksComponent implements OnInit, OnDestroy {
     this.$onDestroy.next(true);
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
+  }
+
+  back(): void {
+    this.location.back();
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
@@ -75,7 +89,16 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   }
 
   private getTasks(): void {
-    this.user && this.user._id && this.taskService.getUserTasks(this.user._id)
-      .subscribe(tasks => this.tasks = tasks);
+    let self = this;
+
+    let loader = function () {
+      return self.taskService.getUserTasks(self.user._id)
+        .map(tasks => {
+          self.tasks = tasks;
+          return tasks;
+        });
+    };
+
+    self.user && self.user._id && this.busyLoaderService.load(loader, 'taskItemInit')
   }
 }
