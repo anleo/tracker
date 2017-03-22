@@ -39,10 +39,11 @@ export class DropDirective {
 
   private findDropZoneAndParams(event) {
     let dropData = {dropZone: null, dropParams: null};
-    let element = document.elementFromPoint(event.clientX, event.clientY);
-    console.log('element', element);
-    if (element.attributes['class'] && /drop-zone/.test(element.attributes['class'].value)) {
-      dropData.dropZone = element;
+    let elementByCoordinates = document.elementFromPoint(event.clientX, event.clientY);
+    let foundElement = elementByCoordinates.closest('.drop-zone');
+
+    if (foundElement.attributes['class'] && /drop-zone/.test(foundElement.attributes['class'].value)) {
+      dropData.dropZone = foundElement;
 
       if (dropData.dropZone.attributes['dropParams']) {
         dropData.dropParams = JSON.parse(dropData.dropZone.attributes['dropParams'].value);
@@ -61,11 +62,17 @@ export class DropZoneDirective implements OnInit {
   constructor(private elementRef: ElementRef) {
   }
 
-  @Input() params: Object;
+  @Input() params: any;
+  @Input() toItem: Object;
   domElement = this.elementRef.nativeElement;
 
   ngOnInit(): void {
     if (this.params) {
+
+      if (this.toItem) {
+        this.params.toItem = this.toItem;
+      }
+
       this.domElement.setAttribute('dropParams', JSON.stringify(this.params))
     }
   }

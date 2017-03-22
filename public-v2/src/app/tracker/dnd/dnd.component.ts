@@ -20,15 +20,28 @@ export class DndComponent {
   tasks2 = Tasks2;
 
   updateArray(data): void {
-    if (data.params.status) {
-      data.item.status = data.params.status;
+    // this[data.params.action](data.item, data.params.toItem);
+    if (data.params.action === 'updateStatus') {
+      this.updateStatus(data.item, data.params.status);
     }
 
-    if (data.params.parentId) {
-      data.item.parentId = data.params.parentId;
+    if (data.params.action === 'updateParent') {
+      this.updateParent(data.item, data.params.toItem);
     }
 
-    this.tasks.splice(this.tasks.indexOf(data.item), 1);
-    this.tasks2.push(data.item);
+    this.updateTasks(data.item);
+  }
+
+  updateTasks(item) {
+    this.tasks.splice(this.tasks.indexOf(item), 1);
+    this.tasks2.push(item);
+  }
+
+  updateParent(item, parentId) {
+    item.parentId = parentId;
+  }
+
+  updateStatus(item, status) {
+    item.status = status;
   }
 }
