@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewContainerRef, HostListener} from '@angular/core';
+import {Component, OnInit, Input, ViewContainerRef, HostListener, OnDestroy} from '@angular/core';
 import {ToastsManager} from "ng2-toastr";
 import {CurrentTaskService} from "../../services/current-task.service";
 
@@ -7,6 +7,7 @@ import {TaskStatus} from '../../models/task-status';
 import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
+import {Subject, BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-task-edit',
@@ -15,7 +16,7 @@ import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
     '(document:keyup)': 'onKeyUp($event)'
   }
 })
-export class TasksEditComponent implements OnInit {
+export class TasksEditComponent implements OnInit, OnDestroy {
   @Input() task: Task|null = null;
   parentTask: Task|null = null;
   parentTaskId: string|null = null;
@@ -23,6 +24,9 @@ export class TasksEditComponent implements OnInit {
   taskMoveToggle: boolean = false;
   statuses: TaskStatus[] = [];
   modalMode: boolean = false;
+  $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService,
@@ -40,14 +44,19 @@ export class TasksEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.taskService.editTaskModal$.subscribe((modalMode: boolean) => this.modalMode = modalMode);
+    this.taskService.editTaskModal$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((modalMode: boolean) => this.modalMode = modalMode);
 
     this.currentTaskService.task$
-      .subscribe(taskFromRoute => {
-        this.parentTaskId = taskFromRoute && taskFromRoute._id || null;
+      .takeUntil(this.componentDestroyed$)
+      .subscribe(currentTask => {
+        this.parentTaskId = currentTask && currentTask._id || null;
         this.initTask();
 
-        this.taskService.editTask$.subscribe((task) => {
+        this.taskService.editTask$
+          .takeUntil(this.componentDestroyed$)
+          .subscribe((task) => {
           if (task) {
             this.task = task ? task : new Task();
             let editTaskId = task && task._id ? task._id : null;
@@ -70,6 +79,12 @@ export class TasksEditComponent implements OnInit {
     this.taskStatusService
       .getTaskStatusList()
       .subscribe(taskStatusList => this.statuses = taskStatusList);
+  }
+
+  ngOnDestroy(): void {
+    this.$onDestroy.next(true);
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 
   initTask(): void {

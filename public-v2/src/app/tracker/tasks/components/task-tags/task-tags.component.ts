@@ -53,11 +53,15 @@ export class TaskTagsComponent implements OnInit {
         .map(tags => this.prepareTags(tags))
         .subscribe(tags => this.tagsList = tags);
     } else {
-      this.taskService
-        .getRoot(_root)
-        .map((root) => root.tagsList || [])
-        .map(tags => this.prepareTags(tags))
-        .subscribe(tags => this.tagsList = tags);
+      if (_root) {
+        this.taskService
+          .getRoot(_root)
+          .map((root) => root.tagsList || [])
+          .map(tags => this.prepareTags(tags))
+          .subscribe(tags => this.tagsList = tags);
+      } else {
+        this.tagsList = [];
+      }
     }
   }
 

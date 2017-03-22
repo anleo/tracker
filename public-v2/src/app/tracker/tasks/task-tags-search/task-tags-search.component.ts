@@ -31,11 +31,16 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTaskService.task$.subscribe((task) => this.task = task);
+    this.currentTaskService.task$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((task) => this.task = task);
+
     this.taskService.editTaskUpdated$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
 
     this.taskService.editTaskModal$
+      .takeUntil(this.componentDestroyed$)
       .subscribe((flag) => this.editMode = flag);
 
     this.router.events
