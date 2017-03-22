@@ -30,6 +30,7 @@ export class DnDService {
 
   cancelDrop() {
     this.resetElement();
+    // this.resetVariables();
   }
 
   finishDrop(dropData) {

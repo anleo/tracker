@@ -5,54 +5,62 @@ import {DnDService} from "./dnd.service";
   selector: '[drop-listener]'
 })
 export class DropDirective {
-  constructor(private DnDService: DnDService) {
-    this.DnDService.dragElement$.subscribe(dragElement => this.dragElement = dragElement);
-    this.DnDService.turnonAction$.subscribe((data) => {
-      if (data.flag) {
-        let dropData = {
-          item: data.item,
-          params: data.params
-        };
-
-        this.actionOnDrop.next(dropData);
-      }
-    });
-  }
-
   @Output() actionOnDrop: EventEmitter <any> = new EventEmitter();
   dragElement;
 
-  @HostListener('mouseup', ['$event'])
-  onMouseUp(event) {
-    if (this.dragElement) {
-      this.dragElement.hidden = true;
-      let dropData = this.findDropZoneAndParams(event);
-      this.dragElement.hidden = false;
+  constructor(private DnDService: DnDService) {
+    this.DnDService.dragElement$.subscribe(dragElement => this.dragElement = dragElement);
+    this.DnDService.turnonAction$.subscribe((data) => {
+      this.turnonAction(data);
+    });
+  }
 
-      if (!dropData.dropZone) {
-        this.DnDService.cancelDrop();
-      } else {
-        this.DnDService.finishDrop(dropData.dropParams);
-      }
+  @HostListener('mouseup', ['$event'])
+  mouseUp(event) {
+    if (this.dragElement) {
+      this.finishDrop(event);
     }
   }
 
-  private findDropZoneAndParams(event) {
+  private finishDrop(event) {
+    this.dragElement.hidden = true;
+    let dropData = this.findDropZoneAndParams(event);
+    this.dragElement.hidden = false;
+
+    if (!dropData.dropZone) {
+      this.DnDService.cancelDrop();
+    } else {
+      this.DnDService.finishDrop(dropData.dropParams);
+    }
+  }
+
+  private turnonAction(data) {
+    if (data.flag) {
+      let dropData = {
+        item: data.item,
+        params: data.params
+      };
+
+      this.actionOnDrop.next(dropData);
+    }
+  }
+
+  private  findDropZoneAndParams(event) {
     let dropData = {dropZone: null, dropParams: null};
     let elementByCoordinates = document.elementFromPoint(event.clientX, event.clientY);
-    let foundElement = elementByCoordinates.closest('.drop-zone');
+    let foundElement = elementByCoordinates.closest('[drop-zone]');
 
-    if (foundElement.attributes['class'] && /drop-zone/.test(foundElement.attributes['class'].value)) {
+    if (foundElement) {
       dropData.dropZone = foundElement;
+      let dropParams = dropData.dropZone.attributes['dropParams'];
 
-      if (dropData.dropZone.attributes['dropParams']) {
-        dropData.dropParams = JSON.parse(dropData.dropZone.attributes['dropParams'].value);
+      if (dropParams) {
+        dropData.dropParams = JSON.parse(dropParams.value);
       }
     }
 
     return dropData;
   }
-
 }
 
 @Directive({
