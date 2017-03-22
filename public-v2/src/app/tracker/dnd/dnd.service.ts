@@ -7,9 +7,11 @@ export class DnDService {
   startElementPositions;
   dragElement;
   dropParams;
+  cloneElement;
 
   dragItem$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   startElementPosition$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  cloneElement$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   dragElement$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   turnonAction$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
 
@@ -22,6 +24,10 @@ export class DnDService {
       this.startElementPositions = coordinates;
     });
 
+    this.cloneElement$.subscribe(cloneElement => {
+      this.cloneElement = cloneElement;
+    });
+
     this.dragElement$.subscribe(element => {
       this.dragElement = element;
     });
@@ -29,7 +35,7 @@ export class DnDService {
 
   cancelDrop() {
     this.resetElement();
-    // this.resetVariables();
+    this.resetVariables();
   }
 
   finishDrop(dropData) {
@@ -41,14 +47,16 @@ export class DnDService {
 
     this.turnonAction$.next(data);
     this.resetVariables();
+    this.cloneElement.parentNode.removeChild(this.cloneElement);
   }
 
   private resetElement() {
-    this.dragElement.style.position = this.startElementPositions.position;
+    this.dragElement.style.position = 'static';
     this.dragElement.style.left = this.startElementPositions.left;
     this.dragElement.style.top = this.startElementPositions.top;
     this.dragElement.style.zIndex = this.startElementPositions.zIndex;
     this.startElementPositions.parent.insertBefore(this.dragElement, this.startElementPositions.nextSibling);
+    this.cloneElement.parentNode.removeChild(this.cloneElement);
   }
 
   private resetVariables() {

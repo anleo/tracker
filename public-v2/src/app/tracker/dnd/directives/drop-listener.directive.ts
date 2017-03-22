@@ -22,6 +22,23 @@ export class DropListenerDirective {
     }
   }
 
+  @HostListener('mousedown', ['$event'])
+  mouseDown(event) {
+    document.documentElement.ondragstart = function () {
+      return false
+    };
+    document.documentElement.getElementsByTagName('body')[0].onselectstart = function () {
+      return false
+    }
+  }
+
+  @HostListener('mouseleave', ['$event'])
+  mouseLeave(event) {
+    if (this.dragElement) {
+      this.DnDService.cancelDrop();
+    }
+  }
+
   private finishDrop(event) {
     this.dragElement.hidden = true;
     let dropData = this.findDropZoneAndParams(event);
@@ -45,7 +62,7 @@ export class DropListenerDirective {
     }
   }
 
-  private  findDropZoneAndParams(event) {
+  private findDropZoneAndParams(event) {
     let dropData = {dropZone: null, dropParams: null};
     let elementByCoordinates = document.elementFromPoint(event.clientX, event.clientY);
     let foundElement = elementByCoordinates.closest('[drop-zone]');

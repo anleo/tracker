@@ -13,6 +13,7 @@ export class DragDirective {
   downEvent: Event = null;
   dragElement = this.elementRef.nativeElement;
   startElementCoordinates;
+  cloneElement;
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event) {
@@ -35,11 +36,18 @@ export class DragDirective {
 
   private init(event) {
     this.downEvent = event;
+    this.createClone();
     this.dragElement.style.position = 'absolute';
     this.dragElement.style.zIndex = '1000';
     this.DnDService.dragElement$.next(this.dragElement);
     this.DnDService.dragItem$.next(this.dragItem);
     this.DnDService.startElementPosition$.next(this.createStartElementPosition());
+    this.DnDService.cloneElement$.next(this.cloneElement);
+  }
+
+  private createClone() {
+    this.cloneElement = this.dragElement.cloneNode(true);
+    this.dragElement.parentNode.insertBefore(this.cloneElement, this.dragElement.nextSibling);
   }
 
   private recalculateCoordinates(element, event) {
@@ -60,6 +68,7 @@ export class DragDirective {
 
   private reset() {
     delete this.downEvent;
+    delete this.cloneElement;
     delete this.startElementCoordinates;
   }
 }
