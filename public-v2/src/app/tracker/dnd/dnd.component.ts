@@ -19,8 +19,7 @@ export class DndComponent {
   tasks = Tasks;
   tasks2 = Tasks2;
 
-  updateArray(data): void {
-    console.log('data', data);
+  onDrop(data): void {
     // this[data.params.action](data.item, data.params.toItem);
     if (data.params.action === 'updateStatus') {
       this.updateStatus(data.item, data.params.status);

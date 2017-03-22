@@ -4,15 +4,14 @@ import {BehaviorSubject} from "rxjs";
 @Injectable()
 export class DnDService {
   dragItem;
-  startElementCoordinate;
+  startElementPositions;
   dragElement;
+  dropParams;
 
   dragItem$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   startElementPosition$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   dragElement$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   turnonAction$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
-  dropParams: any;
-
 
   constructor() {
     this.dragItem$.subscribe(item => {
@@ -20,7 +19,7 @@ export class DnDService {
     });
 
     this.startElementPosition$.subscribe(coordinates => {
-      this.startElementCoordinate = coordinates;
+      this.startElementPositions = coordinates;
     });
 
     this.dragElement$.subscribe(element => {
@@ -34,7 +33,6 @@ export class DnDService {
   }
 
   finishDrop(dropData) {
-    console.log('dropData', dropData);
     let data = {
       flag: true,
       item: this.dragItem,
@@ -46,16 +44,17 @@ export class DnDService {
   }
 
   private resetElement() {
-    this.dragElement.style.position = this.startElementCoordinate.position;
-    this.dragElement.style.left = this.startElementCoordinate.left;
-    this.dragElement.style.top = this.startElementCoordinate.top;
-    this.dragElement.style.zIndex = this.startElementCoordinate.zIndex;
-    this.startElementCoordinate.parent.insertBefore(this.dragElement, this.startElementCoordinate.nextSibling);
+    this.dragElement.style.position = this.startElementPositions.position;
+    this.dragElement.style.left = this.startElementPositions.left;
+    this.dragElement.style.top = this.startElementPositions.top;
+    this.dragElement.style.zIndex = this.startElementPositions.zIndex;
+    this.startElementPositions.parent.insertBefore(this.dragElement, this.startElementPositions.nextSibling);
   }
 
   private resetVariables() {
     this.startElementPosition$.next(null);
     this.dragElement$.next(null);
     this.dragItem$.next(null);
+    this.turnonAction$.next({flag: false});
   }
 }

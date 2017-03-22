@@ -1,10 +1,10 @@
 import {HostListener, Input, Directive, ElementRef} from "@angular/core";
-import {DnDService} from "./dnd.service";
+import {DnDService} from "../dnd.service";
 
 @Directive({
   selector: '[drag]'
 })
-export class DragComponent {
+export class DragDirective {
   constructor(private elementRef: ElementRef,
               private DnDService: DnDService) {
   }
@@ -60,7 +60,6 @@ export class DragComponent {
 
   private reset() {
     delete this.downEvent;
-    delete this.dragItem;
     delete this.startElementCoordinates;
   }
 }

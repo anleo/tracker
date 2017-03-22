@@ -75,9 +75,7 @@ import {RootTaskResolver} from "./resolvers/root-task.resolver";
 import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {DndComponent} from "./dnd/dnd.component";
-import {DragComponent} from "./dnd/drag.component";
-import {DropDirective, DropZoneDirective} from "./dnd/drop.component";
-import {DnDService} from "./dnd/dnd.service";
+import {DragAndDropModule} from "./dnd/dnd.module";
 
 @NgModule({
   imports: [
@@ -96,7 +94,8 @@ import {DnDService} from "./dnd/dnd.service";
     LocalStorageModule.withConfig({
       prefix: '',
       storageType: 'localStorage'
-    })
+    }),
+    DragAndDropModule
   ],
   exports: [
     TaskSearchDirective,
@@ -157,10 +156,7 @@ import {DnDService} from "./dnd/dnd.service";
     TaskArchiveComponent,
     TaskSearchDirective,
     TaskSearchComponent,
-    DndComponent,
-    DragComponent,
-    DropDirective,
-    DropZoneDirective
+    DndComponent
   ],
   providers: [
     TaskResolver,
@@ -170,8 +166,7 @@ import {DnDService} from "./dnd/dnd.service";
     TaskService,
     CurrentTaskService,
     TaskStatusService,
-    TaskSearchService,
-    DnDService
+    TaskSearchService
   ]
 })
 export class TrackerModule {

@@ -1,10 +1,10 @@
-import {HostListener, Directive, ElementRef, EventEmitter, Output, Input, OnInit} from "@angular/core";
-import {DnDService} from "./dnd.service";
+import {HostListener, Directive, EventEmitter, Output} from "@angular/core";
+import {DnDService} from "../dnd.service";
 
 @Directive({
   selector: '[drop-listener]'
 })
-export class DropDirective {
+export class DropListenerDirective {
   @Output() actionOnDrop: EventEmitter <any> = new EventEmitter();
   dragElement;
 
@@ -60,28 +60,5 @@ export class DropDirective {
     }
 
     return dropData;
-  }
-}
-
-@Directive({
-  selector: '[drop-zone]'
-})
-export class DropZoneDirective implements OnInit {
-  constructor(private elementRef: ElementRef) {
-  }
-
-  @Input() params: any;
-  @Input() toItem: Object;
-  domElement = this.elementRef.nativeElement;
-
-  ngOnInit(): void {
-    if (this.params) {
-
-      if (this.toItem) {
-        this.params.toItem = this.toItem;
-      }
-
-      this.domElement.setAttribute('dropParams', JSON.stringify(this.params))
-    }
   }
 }
