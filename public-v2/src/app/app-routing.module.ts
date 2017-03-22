@@ -16,7 +16,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'tasks',
+        redirectTo: '/app/tasks',
         pathMatch: 'full'
       },
       {
