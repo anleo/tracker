@@ -39,6 +39,20 @@ export class DropListenerDirective {
     }
   }
 
+  @HostListener('mousemove', ['$event'])
+  mouseMove(event) {
+    if (this.dragElement) {
+   this.findClosestSibling(event);
+    }
+  }
+
+
+  findClosestSibling(event) {
+    this.dragElement.hidden = true;
+    let closestItem = document.elementFromPoint(event.clientX, event.clientY);
+    this.dragElement.hidden = false;
+  }
+
   private finishDrop(event) {
     this.dragElement.hidden = true;
     let dropData = this.findDropZoneAndParams(event);

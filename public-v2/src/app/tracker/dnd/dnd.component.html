@@ -19,7 +19,7 @@
       <div *ngFor="let task of tasks2">
 
         <div drop-zone [params]="{action: 'updateParent'}" [toItem]="task.id"
-             class="drop-zone" style="border: 1px solid #00b3ee;">
+             class="drop-zone" style="border: 1px solid #00b3ee; margin: 20px;">
           {{task.title}}
 
           <span *ngIf="task.status"> status: {{task.status}}</span>
