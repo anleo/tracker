@@ -6,14 +6,14 @@ export class DnDService {
   dragItem;
   startElementPositions;
   dragElement;
-  dropParams;
-  cloneElement;
 
   dragItem$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   startElementPosition$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  cloneElement$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   dragElement$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  turnonAction$: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+
+  setDropZone$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  hasDropZone$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  reset$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor() {
     this.dragItem$.subscribe(item => {
@@ -24,45 +24,35 @@ export class DnDService {
       this.startElementPositions = coordinates;
     });
 
-    this.cloneElement$.subscribe(cloneElement => {
-      this.cloneElement = cloneElement;
-    });
-
     this.dragElement$.subscribe(element => {
       this.dragElement = element;
     });
+
+    this.setDropZone$.subscribe(has => {
+      this.hasDropZone$.next(has);
+    });
+
   }
 
-  cancelDrop() {
+  reset() {
     this.resetElement();
     this.resetVariables();
   }
 
-  finishDrop(dropData) {
-    let data = {
-      flag: true,
-      item: this.dragItem,
-      params: dropData || null
-    };
-
-    this.turnonAction$.next(data);
-    this.resetVariables();
-    this.cloneElement.parentNode.removeChild(this.cloneElement);
-  }
-
   private resetElement() {
+    this.dragElement.classList = this.startElementPositions.classList;
     this.dragElement.style.position = 'static';
+    this.dragElement.style.opacity = this.startElementPositions.opacity;
     this.dragElement.style.left = this.startElementPositions.left;
     this.dragElement.style.top = this.startElementPositions.top;
     this.dragElement.style.zIndex = this.startElementPositions.zIndex;
     this.startElementPositions.parent.insertBefore(this.dragElement, this.startElementPositions.nextSibling);
-    this.cloneElement.parentNode.removeChild(this.cloneElement);
+    this.reset$.next(true);
   }
 
   private resetVariables() {
     this.startElementPosition$.next(null);
     this.dragElement$.next(null);
     this.dragItem$.next(null);
-    this.turnonAction$.next({flag: false});
   }
 }

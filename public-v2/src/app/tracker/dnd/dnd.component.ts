@@ -19,29 +19,18 @@ export class DndComponent {
   tasks = Tasks;
   tasks2 = Tasks2;
 
-  onDrop(data): void {
-    // this[data.params.action](data.item, data.params.toItem);
-    if (data.params.action === 'updateStatus') {
-      this.updateStatus(data.item, data.params.status);
-    }
-
-    if (data.params.action === 'updateParent') {
-      this.updateParent(data.item, data.params.toItem);
-    }
-
-    this.updateTasks(data.item);
-  }
-
   updateTasks(item) {
     this.tasks.splice(this.tasks.indexOf(item), 1);
     this.tasks2.push(item);
   }
 
-  updateParent(item, parentId) {
-    item.parentId = parentId;
+  updateParent(data) {
+    data.item.parentId = data.params.toItem;
+    this.updateTasks(data.item);
   }
 
-  updateStatus(item, status) {
-    item.status = status;
+  updateStatus(data) {
+    data.item.status = data.params.status;
+    this.updateTasks(data.item);
   }
 }

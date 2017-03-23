@@ -7,13 +7,20 @@ import {DnDService} from "../dnd.service";
 export class DragDirective {
   constructor(private elementRef: ElementRef,
               private DnDService: DnDService) {
+    this.DnDService.reset$.subscribe(flag => {
+        if (flag) {
+          this.reset();
+        }
+      }
+    )
   }
 
   @Input() dragItem;
   downEvent: Event = null;
   dragElement = this.elementRef.nativeElement;
   startElementCoordinates;
-  cloneElement;
+  dropListener = document.documentElement.querySelectorAll('[drop-listener]')[0];
+
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event) {
@@ -23,42 +30,31 @@ export class DragDirective {
   @HostListener('mousemove', ['$event'])
   onMouseMove(event) {
     if (this.downEvent) {
-      this.recalculateCoordinates(this.dragElement, event);
-    }
-  }
-
-  @HostListener('mouseup', ['$event'])
-  onMouseUp(event) {
-    if (this.downEvent) {
-      this.reset();
+      !this.dropListener.classList.contains('moveCursor') && this.dropListener.classList.add('moveCursor');
     }
   }
 
   private init(event) {
     this.downEvent = event;
-    this.createClone();
-    this.dragElement.style.position = 'absolute';
-    this.dragElement.style.zIndex = '1000';
     this.DnDService.dragElement$.next(this.dragElement);
     this.DnDService.dragItem$.next(this.dragItem);
     this.DnDService.startElementPosition$.next(this.createStartElementPosition());
-    this.DnDService.cloneElement$.next(this.cloneElement);
-  }
-
-  private createClone() {
-    this.cloneElement = this.dragElement.cloneNode(true);
-    this.dragElement.parentNode.insertBefore(this.cloneElement, this.dragElement.nextSibling);
-  }
-
-  private recalculateCoordinates(element, event) {
-    element.style.left = event.pageX - element.offsetWidth / 2 + 'px';
-    element.style.top = event.pageY - element.offsetHeight / 2 + 'px';
+    this.dragElement.style.opacity = '0.3';
+    this.dragElement.classList.contains('pointer') && this.dragElement.classList.remove('pointer');
+    document.ondragstart = function () {
+      return false
+    };
+    document.body.onselectstart = function () {
+      return false
+    };
   }
 
   private createStartElementPosition() {
     return this.startElementCoordinates = {
       parent: this.dragElement.parentNode,
       nextSibling: this.dragElement.nextSibling,
+      classList: this.dragElement.classList,
+      opacity: this.dragElement.style.opacity || '',
       position: this.dragElement.style.position || '',
       zIndex: this.dragElement.style.zIndex || '',
       left: this.dragElement.style.left || '',
@@ -68,7 +64,9 @@ export class DragDirective {
 
   private reset() {
     delete this.downEvent;
-    delete this.cloneElement;
     delete this.startElementCoordinates;
+    this.dropListener.classList.contains('moveCursor') && this.dropListener.classList.remove('moveCursor');
+    document.ondragstart = null;
+    document.body.onselectstart = null;
   }
 }
