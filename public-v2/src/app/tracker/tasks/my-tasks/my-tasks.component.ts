@@ -9,6 +9,8 @@ import {TaskWithStatus} from "../../models/task-with-status";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
 import {SocketService} from "../../../services/socket.service";
 import {Location} from "@angular/common";
+import {TaskStatusService} from "../../services/task-status.service";
+import {TaskStatus} from "../../models/task-status";
 
 @Component({
   templateUrl: 'my-tasks.component.html'
@@ -18,6 +20,7 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
   user: User | null = null;
   editMode: boolean = false;
+  statusTypes: TaskStatus[];
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   componentDestroyed$: Subject<boolean> = new Subject();
@@ -25,6 +28,7 @@ export class MyTasksComponent implements OnInit, OnDestroy {
   constructor(private location: Location,
               private userService: UserService,
               private taskService: TaskService,
+              private taskStatusService: TaskStatusService,
               private socketService: SocketService,
               private busyLoaderService: BusyLoaderService) {
   }
@@ -47,6 +51,12 @@ export class MyTasksComponent implements OnInit, OnDestroy {
       .subscribe(user => {
         this.user = user;
         user && this.getTasks();
+      });
+
+    this.taskStatusService
+      .getTaskStatusList()
+      .subscribe(taskStatusList => {
+        this.statusTypes = taskStatusList.filter((status) => status.id !== "accepted");
       });
   }
 
