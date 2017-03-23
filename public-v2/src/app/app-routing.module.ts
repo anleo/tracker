@@ -50,7 +50,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'tasks'
+        redirectTo: '/app/tasks'
       }
     ]
   },
@@ -66,12 +66,12 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'app/login',
+    redirectTo: '/app/login',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: 'app/login'
+    redirectTo: '/app/login'
   }
 ];
 

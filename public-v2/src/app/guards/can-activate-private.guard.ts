@@ -16,11 +16,11 @@ export class CanActivatePrivateGuard implements CanActivate {
     return this.userService.get()
       .map(user => {
         if (user) {
-          return false;
+          return true;
         }
 
         this.router.navigate(['/app/login']);
-        return true;
+        return false;
       })
       .catch((err) => {
         if (err.status === 401) {
