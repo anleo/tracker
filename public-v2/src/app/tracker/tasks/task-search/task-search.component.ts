@@ -9,6 +9,8 @@ import {BrowserTitleService} from "../../../services/browser-title/browser-title
 import {CurrentTaskService} from "../../services/current-task.service";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {BehaviorSubject, Subject} from "rxjs";
+import {SocketService} from "../../../services/socket.service";
+import {BusyLoaderService} from "../../../services/busy-loader.service";
 
 @Component({
   selector: 'app-task-search',
@@ -28,6 +30,8 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
               private taskSearchService: TaskSearchService,
               private currentTaskService: CurrentTaskService,
               private taskService: TaskService,
+              private socketService: SocketService,
+              private busyLoaderService: BusyLoaderService,
               public toastr: ToastsManager,
               private router: Router,
               private browserTitleService: BrowserTitleService,
@@ -35,11 +39,11 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
     this.toastr.setRootViewContainerRef(vcr);
   }
 
-  goBack(): void {
-    this.router.navigate(['/app/tasks', this.task._id]);
-  }
-
   ngOnInit(): void {
+    let self = this;
+    this.socketService.scopeOn(self, 'task.save', (data) => self.search());
+    this.socketService.scopeOn(self, 'task.remove', (data) => self.search());
+
     this.taskService.editTaskModal$
       .takeUntil(this.componentDestroyed$)
       .subscribe((flag) => this.editMode = flag);
@@ -67,15 +71,23 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
     this.componentDestroyed$.complete();
   }
 
+  goBack(): void {
+    this.router.navigate(['/app/tasks', this.task._id]);
+  }
+
   private search(): void {
-    this.task && this.taskSearchService
-      .search(this.query, this.task)
-      .then((tasks: Task[]) => {
-        this.tasks = tasks;
-      })
-      .catch((err: any) => {
-        this.toastr.error(err._body);
-      });
+    let self = this;
+
+    let loader = function () {
+      return self.taskSearchService
+        .search(self.query, self.task)
+        .map((tasks: Task[]) => {
+          self.tasks = tasks;
+          return tasks;
+        });
+    };
+
+    this.task && this.busyLoaderService.load(loader, 'taskSearch');
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {

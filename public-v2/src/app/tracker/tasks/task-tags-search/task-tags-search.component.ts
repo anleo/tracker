@@ -5,8 +5,10 @@ import {TaskService} from "../../services/task.service";
 import {Task} from "../../models/task";
 import {BrowserTitleService} from "../../../services/browser-title/browser-title.service";
 import {CurrentTaskService} from "../../services/current-task.service";
-import {Subject} from "rxjs";
+import {Subject, BehaviorSubject, Observable} from "rxjs";
 import {TaskWithStatus} from "../../models/task-with-status";
+import {SocketService} from "../../../services/socket.service";
+import {BusyLoaderService} from "../../../services/busy-loader.service";
 
 @Component({
   templateUrl: 'task-tags-search.component.html',
@@ -20,17 +22,24 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
   task: Task;
   editMode: boolean = false;
 
+  $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private contextTaskService: TaskService,
               private currentTaskService: CurrentTaskService,
               private taskService: TaskService,
+              private socketService: SocketService,
+              private busyLoaderService: BusyLoaderService,
               private route: ActivatedRoute,
               private router: Router,
               private browserTitleService: BrowserTitleService) {
   }
 
   ngOnInit(): void {
+    let self = this;
+    this.socketService.scopeOn(self, 'task.save', (data) => self.reinit());
+    this.socketService.scopeOn(self, 'task.remove', (data) => self.reinit());
+
     this.currentTaskService.task$
       .takeUntil(this.componentDestroyed$)
       .subscribe((task) => this.task = task);
@@ -52,18 +61,17 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
           this.selectedTags = this.route.snapshot.queryParams['tags'] ?
             this.route.snapshot.queryParams['tags'].split(',') : [];
 
-          this.getTasks();
+          this.getTasks().subscribe();
         }
       });
 
-    this.contextTaskService
-      .getTags(this.task)
-      .subscribe(tags => this.availableTags = tags);
+    this.getTags().subscribe();
 
     this.browserTitleService.setTitle('Search by tags');
   }
 
   ngOnDestroy(): void {
+    this.$onDestroy.next(true);
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
   }
@@ -75,19 +83,38 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
       this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
     }
 
-    this.getTasks();
+    this.getTasks().subscribe();
     this.navigateWithTags();
   }
 
-  private getTasks(): void {
+  private reinit() {
+    let self = this;
+
+    let loader = function () {
+      return self.getTags().mergeMap(() => self.getTasks());
+    };
+
+    this.busyLoaderService.load(loader, 'taskSearchByTags');
+  }
+
+  private getTags(): Observable<any> {
+    return this.contextTaskService
+      .getTags(this.task)
+      .map(tags => {
+        this.availableTags = tags;
+        return tags;
+      });
+  }
+
+  private getTasks(): Observable<Task[]> {
     if (this.selectedTags.length) {
-      this.contextTaskService
-        .getTasksByTags(this.task._id, this.selectedTags)
-        .subscribe(tasks => {
+      return this.contextTaskService.getTasksByTags(this.task._id, this.selectedTags)
+        .map(tasks => {
           this.tasks = tasks;
+          return tasks;
         });
     } else {
-      this.tasks = [];
+      return Observable.create(() => this.tasks = []);
     }
   }
 
@@ -124,18 +151,18 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
   }
 
   private onUpdate(): void {
-    this.getTasks();
+    this.reinit();
   }
 
   private onMove(): void {
-    this.getTasks();
+    this.reinit();
   }
 
   private onRemove(): void {
-    this.getTasks();
+    this.reinit();
   }
 
   private onClose(): void {
-    this.getTasks();
+    this.reinit();
   }
 }
