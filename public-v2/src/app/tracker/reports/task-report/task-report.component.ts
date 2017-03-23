@@ -18,7 +18,6 @@ import {CurrentTaskService} from "../../services/current-task.service";
 
 export class TaskReportComponent implements OnInit, OnDestroy {
   date: Date = new Date;
-  dateNow: Date = new Date;
   today: Date = new Date;
   tasks: Task[] = [];
   taskId: string;
