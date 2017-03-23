@@ -66,6 +66,10 @@ const routes: Routes = [
           {
             path: 'search/:query',
             component: TaskSearchComponent
+          },
+          {
+            path: '**',
+            redirectTo: ''
           }
         ]
       },
