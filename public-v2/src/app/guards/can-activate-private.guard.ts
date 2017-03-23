@@ -9,10 +9,6 @@ export class CanActivatePrivateGuard implements CanActivate {
   constructor(private router: Router, private userService: UserService) {}
 
   canActivate(): Observable<boolean> {
-    if (this.userService.user) {
-      return Observable.of(true);
-    }
-
     return this.userService.get()
       .map(user => {
         if (user) {
