@@ -86,6 +86,7 @@ export class TaskReportComponent implements OnInit, OnDestroy {
     date = this.prepareDate(date);
 
     this.initTasks(this.taskId, date, developer.id);
+    this.showDatePicker = false;
   }
 
   onChangeDeveloper(developer): void {
