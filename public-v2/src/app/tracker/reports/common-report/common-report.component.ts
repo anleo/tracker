@@ -52,6 +52,8 @@ export class CommonReportComponent implements OnInit {
       .subscribe(tasks => {
         this.tasks = tasks;
       });
+
+    this.showDatePicker = false;
   }
 
   getStatusById(id: string) {
