@@ -1,6 +1,7 @@
 <div drop-listener
      style="width: 1000px; height: 1000px; border: 1px solid #2aabd2; ">
-  <div style="float: left; width: 300px; height: 300px; border: 1px solid darkslateblue;">
+  <div drop-zone (onDrop)="updateStatus($event)" [dropParams]="{status:'new'}"
+       style="float: left; width: 300px; height: 300px; border: 1px solid darkslateblue;">
     Basket 1
 
     <div
@@ -8,17 +9,20 @@
       drag [dragItem]="task"
       class="drag-item pointer">
       {{task.title}}
+
+      <span *ngIf="task.status"> status: {{task.status}}</span>
+      <span *ngIf="task.parentId"> parentID: {{task.parentId}}</span>
     </div>
 
   </div>
 
   <div style="float: right; overflow: hidden;">
-    <div drop-zone (onDrop)="updateStatus($event)" [params]="{status:'accepted'}" class="drop-zone-class">
+    <div drop-zone (onDrop)="updateStatus($event)" [dropParams]="{status:'accepted'}" class="drop-zone-class">
       <h1>1</h1>
 
       <div *ngFor="let task of tasks2">
 
-        <div drop-zone (onDrop)="updateParent($event)" [params]="{toItem:task.id}"
+        <div drag [dragItem]="task" drop-zone (onDrop)="updateParent($event)" [dropParams]="{toItem:task.id}"
              style="border: 1px solid #00b3ee; margin: 20px;">
           {{task.title}}
 
@@ -47,8 +51,8 @@
     border: 1px solid crimson;
     padding: 5px;
     margin: 10px;
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
   }
 
   .moveCursor {
@@ -56,6 +60,6 @@
   }
 
   .drop-zone {
-    border: 2px dashed #000 !important;
+    border: 2px dashed #91eac2 !important;
   }
 </style>

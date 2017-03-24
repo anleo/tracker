@@ -40,6 +40,7 @@ export class DragDirective {
     this.DnDService.dragItem$.next(this.dragItem);
     this.DnDService.startElementPosition$.next(this.createStartElementPosition());
     this.dragElement.style.opacity = '0.3';
+    this.dragElement.classList.add('i-drag');
     this.dragElement.classList.contains('pointer') && this.dragElement.classList.remove('pointer');
     document.ondragstart = function () {
       return false
@@ -66,6 +67,7 @@ export class DragDirective {
     delete this.downEvent;
     delete this.startElementCoordinates;
     this.dropListener.classList.contains('moveCursor') && this.dropListener.classList.remove('moveCursor');
+    this.dragElement.classList.contains('i-drag') && this.dragElement.classList.remove('i-drag');
     document.ondragstart = null;
     document.body.onselectstart = null;
   }

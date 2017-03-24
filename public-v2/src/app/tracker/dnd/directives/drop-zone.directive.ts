@@ -6,7 +6,7 @@ import {DnDService} from "../dnd.service";
 })
 export class DropZoneDirective {
   @Output() onDrop: EventEmitter<any> = new EventEmitter();
-  @Input() params: any;
+  @Input() dropParams: any;
 
   domElement = this.elementRef.nativeElement;
   dragItem;
@@ -19,14 +19,18 @@ export class DropZoneDirective {
   @HostListener('mouseup', ['$event'])
   onMouseUp(event) {
     event.stopPropagation();
+    let imDrag = this.domElement.classList.contains('i-drag');
 
     if (this.dragItem) {
       let data = {
         item: this.dragItem,
-        params: this.params
+        params: this.dropParams
       };
 
-      this.onDrop.emit(data);
+      if (!imDrag) {
+        this.onDrop.emit(data);
+      }
+
       this.DnDService.reset();
       this.reset();
     }
@@ -34,7 +38,9 @@ export class DropZoneDirective {
 
   @HostListener('mouseover', ['$event'])
   onMouseEnter(event) {
-    if (this.dragItem) {
+    let imDrag = this.domElement.classList.contains('i-drag');
+
+    if (this.dragItem && !imDrag) {
       event.stopPropagation();
       this.DnDService.setDropZone$.next(true);
       this.domElement.classList.add('drop-zone');
