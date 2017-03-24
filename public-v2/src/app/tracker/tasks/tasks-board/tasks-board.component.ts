@@ -20,8 +20,8 @@ import {LocalStorageService} from "angular-2-local-storage";
 })
 export class TasksBoardComponent implements OnInit {
   @Input() tasks: Task[];
+  @Input() statusTypes: TaskStatus[];
 
-  statusTypes: TaskStatus[];
   boards: Board[] = BoardsMock;
   currentBoard: Board;
   orderByPriory: string = 'desc';
@@ -35,9 +35,11 @@ export class TasksBoardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.taskStatusService
-      .getTaskStatusList()
-      .subscribe(taskStatusList => this.statusTypes = taskStatusList);
+    if (!this.statusTypes) {
+      this.taskStatusService
+        .getTaskStatusList()
+        .subscribe(taskStatusList => this.statusTypes = taskStatusList);
+    }
 
     this.defaultBoard();
 

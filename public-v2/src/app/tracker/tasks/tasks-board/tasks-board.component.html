@@ -39,7 +39,7 @@
   <div class="clearfix">
     <div
       *ngIf="currentBoard.name == 'board'">
-      <board-view [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriory} | tasksSort: {field: 'updatedAt', type: orderByDate}"></board-view>
+      <board-view [statusTypes]="statusTypes" [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriory} | tasksSort: {field: 'updatedAt', type: orderByDate}"></board-view>
     </div>
     <div *ngIf="currentBoard.name == 'list'">
       <list-view [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriory} | tasksSort: {field: 'updatedAt', type: orderByDate}"></list-view>
