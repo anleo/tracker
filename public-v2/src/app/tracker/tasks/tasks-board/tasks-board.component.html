@@ -43,15 +43,15 @@
     <div
       *ngIf="currentBoard.name == 'board'">
       <board-view
-        [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriority} | tasksSort: {field: 'updatedAt', type: orderByDate}"></board-view>
+        [tasks]="tasks | tasksSort: {priority: orderByPriority, updatedAt: orderByDate}"></board-view>
     </div>
     <div *ngIf="currentBoard.name == 'list'">
       <list-view
-        [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriority} | tasksSort: {field: 'updatedAt', type: orderByDate}"></list-view>
+        [tasks]="tasks | tasksSort: {priority: orderByPriority, updatedAt: orderByDate}"></list-view>
     </div>
     <div *ngIf="currentBoard.name == 'tree'">
       <tree-view
-        [tasks]="tasks | tasksSort: {field: 'priority', type: orderByPriority} | tasksSort: {field: 'updatedAt', type: orderByDate}"></tree-view>
+        [tasks]="tasks | tasksSort: {priority: orderByPriority, updatedAt: orderByDate}"></tree-view>
     </div>
   </div>
 </div>

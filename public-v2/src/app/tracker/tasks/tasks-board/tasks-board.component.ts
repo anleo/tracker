@@ -54,12 +54,25 @@ export class TasksBoardComponent implements OnInit {
   }
 
   sortByPriority(): void {
-    this.orderByPriority = (this.orderByPriority === 'asc') ? 'desc' : 'asc';
+    if (this.orderByPriority === 'off') {
+      this.orderByPriority = 'asc';
+    } else if (this.orderByPriority === 'asc') {
+      this.orderByPriority = 'desc';
+    } else {
+      this.orderByPriority = 'off';
+    }
+
     this.localStorageService.set('orderByPriority', this.orderByPriority);
   }
 
   sortByDate(): void {
-    this.orderByDate = (this.orderByDate === 'asc') ? 'desc' : 'asc';
+    if (this.orderByDate === 'off') {
+      this.orderByDate = 'asc';
+    } else if (this.orderByDate === 'asc') {
+      this.orderByDate = 'desc';
+    } else {
+      this.orderByDate = 'off';
+    }
 
     this.localStorageService.set('orderByDate', this.orderByDate);
   }
