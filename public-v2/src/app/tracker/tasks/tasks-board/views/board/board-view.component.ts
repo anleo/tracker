@@ -13,4 +13,10 @@ export class BoardViewComponent extends BoardBaseComponent {
               protected taskStatusService: TaskStatusService) {
     super(taskService, taskStatusService);
   }
+
+  onDropByStatus(dropData) {
+    dropData.item.status = dropData.params.status.value;
+    console.log('dropData', dropData);
+    this.taskService.updateTask(dropData.item);
+  }
 }

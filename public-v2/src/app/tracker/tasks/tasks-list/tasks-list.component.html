@@ -8,7 +8,7 @@
        <!--task-on-edit="edit"-->
        <!--task-options="taskOptions">-->
   <!--</div>  -->
-  <div *ngFor="let task of tasks">
+  <div *ngFor="let task of tasks" drag [dragItem]="task">
     <app-task-panel [task]="task"></app-task-panel>
   </div>
 

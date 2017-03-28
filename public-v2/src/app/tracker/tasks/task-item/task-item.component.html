@@ -60,8 +60,8 @@
            [routerLink]="['/app/tasks/archived']">Archive</a>
       </div>
 
-      <app-tasks-board *ngIf="tasks && tasks.length" [tasks]="tasks"></app-tasks-board>
-    </div>
+        <app-tasks-board *ngIf="tasks && tasks.length" [tasks]="tasks" drop-listener></app-tasks-board>
+      </div>
 
     <div *ngIf="tasks && !tasks.length" class="align-center">
       <h4>No active tasks.</h4>
