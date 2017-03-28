@@ -24,7 +24,7 @@ export class TasksSortPipe implements PipeTransform {
         console.warn('Sort Type ' + order + 'doesn\'t supported');
       }
 
-      if (order !== 'off') {
+      if (order && order !== 'off') {
         this.sortingParams.fields.push(field);
         this.sortingParams.orders.push(order);
       }
