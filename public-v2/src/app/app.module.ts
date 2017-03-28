@@ -16,6 +16,8 @@ import {CanActivatePublicGuard} from "./guards/can-activate-public.guard";
 import {SocketService} from "./services/socket.service";
 import {BrowserTitleService} from "./services/browser-title/browser-title.service";
 import {TaskSearchDirective} from "./tracker/tasks/task-search/task-search.directive";
+import {BusyLoaderService} from "./services/busy-loader.service";
+import {CanActivatePrivateGuard} from "./guards/can-activate-private.guard";
 
 export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions, router: Router) {
   return new HttpService(xhrBackend, requestOptions, router);
@@ -43,9 +45,11 @@ export function httpUseFactory(xhrBackend: XHRBackend, requestOptions: RequestOp
       deps: [XHRBackend, RequestOptions, Router]
     },
     HttpService,
+    BusyLoaderService,
     SocketService,
     BrowserTitleService,
-    CanActivatePublicGuard
+    CanActivatePublicGuard,
+    CanActivatePrivateGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: [TaskSearchDirective]

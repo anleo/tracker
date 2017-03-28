@@ -13,7 +13,6 @@ module.exports = function (app) {
     );
 
     app.post('/api/tasks/:taskId/history/comments', commentForm, FormService.validate, function (req, res, next) {
-
         var comment = new TaskComment();
         comment.task = req.Task._id;
         comment.user = UserService.getUserId(req.user);

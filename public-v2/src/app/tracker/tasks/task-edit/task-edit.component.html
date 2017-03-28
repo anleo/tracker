@@ -1,6 +1,6 @@
 <div class="overlay" *ngIf="modalMode" (click)="close()"></div>
 <div [ngClass]="{'modal': modalMode}">
-  <form (submit)="save()" id="form" *ngIf="task">
+  <form (submit)="task.title && save()" id="form" *ngIf="task">
 
     <div class="row">
       <!--left-side-->
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <!--<hr ng-if="task.simple" class="mg"/>-->
+      <hr *ngIf="task.simple" class="mg"/>
       <!--<div class="form-group clearfix" ng-show="task.title" ng-if="task.simple">-->
       <!--</div>-->
 

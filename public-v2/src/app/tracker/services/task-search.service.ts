@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {TaskResource} from "../resources/tasks.resource";
 
 import {Task} from '../models/task';
+import {Observable} from "rxjs";
 
 @Injectable()
 
@@ -11,13 +12,12 @@ export class TaskSearchService {
   constructor(private taskResource: TaskResource) {
   }
 
-  search(query: string, task:Task): Promise<Task[]> {
+  search(query: string, task: Task): Observable<Task[]> {
     return this.taskResource
       .search({
         taskId: task._id,
         query: query
       })
-      .$observable
-      .toPromise();
+      .$observable;
   }
 }

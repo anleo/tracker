@@ -27,7 +27,6 @@ export class CommonReportComponent implements OnInit {
     this.contextTaskService
       .getTaskReportByDate(this.date.toString())
       .subscribe(tasks => {
-        this.contextTaskService.setTasks(tasks);
         this.tasks = tasks;
       });
   }
@@ -51,9 +50,10 @@ export class CommonReportComponent implements OnInit {
     this.contextTaskService
       .getTaskReportByDate(date)
       .subscribe(tasks => {
-        this.contextTaskService.setTasks(tasks);
         this.tasks = tasks;
       });
+
+    this.showDatePicker = false;
   }
 
   getStatusById(id: string) {
