@@ -16,30 +16,32 @@ export class TaskSearchDirective implements OnInit {
   query: string = '';
   focused: boolean = false;
   queryControl = new FormControl();
+  private firstLoad = true;
 
   constructor(private router: Router,
               private currentTaskService: CurrentTaskService) {
   }
 
   ngOnInit(): void {
-    this.currentTaskService.task$.subscribe((task) => {
-      this.taskId = task && task._id;
-
-      if (!task) {
-        this.query = '';
-      }
-    });
+    this.currentTaskService.task$.subscribe((task) => this.taskId = task && task._id);
 
     this.queryControl
       .valueChanges
       .debounceTime(400)
-      .subscribe(newValue => this.searchQuery(newValue));
+      .subscribe(newValue => {
+        this.searchQuery(newValue)
+      });
   }
 
-  searchQuery(query: string) {
+  searchQuery(query: string|null) {
     let q = query ? query : '';
 
-    if (q.length && this.currentTaskService.task) {
+    if (this.firstLoad) {
+      this.firstLoad = false;
+      return;
+    }
+
+    if (q && q.length && this.currentTaskService.task) {
       this.router.navigate(['/app/tasks', this.currentTaskService.task._id, 'search', q]);
     } else {
       this.router.navigate(['/app/tasks', this.currentTaskService.task._id]);
