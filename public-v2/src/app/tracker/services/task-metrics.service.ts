@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Subject} from "rxjs/Subject";
 
 import {Task} from '../models/task';
 
@@ -7,7 +7,7 @@ import {Task} from '../models/task';
 export class TaskMetricsService {
   task: Task|null = null;
 
-  task$: BehaviorSubject<Task> = new BehaviorSubject<Task>(null);
+  task$: Subject<Task> = new Subject<Task>();
 
   constructor() {
     this.task$.subscribe((task: Task) => this.task = task);

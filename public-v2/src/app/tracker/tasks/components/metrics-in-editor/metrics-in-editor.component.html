@@ -1,4 +1,4 @@
-<ul ng-if="task.simple" class="task-metrics pull-right edit-panel-metrics-info">
+<ul *ngIf="task && task.simple" class="task-metrics pull-right edit-panel-metrics-info">
   <li>
     <i class="fa fa-clock-o" tooltip="Time"></i>&nbsp;<span tooltip="Estimated" class="text-right">{{task.estimatedTime | round}}</span>
     / <span tooltip="Spent" class="text-right">{{task.spenttime | round}}</span>
