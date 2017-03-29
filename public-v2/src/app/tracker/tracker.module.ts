@@ -72,6 +72,7 @@ import {TaskSearchService} from "./services/task-search.service";
 import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search.component";
 import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
+import {TaskMetricsService} from "./services/task-metrics.service";
 
 @NgModule({
   imports: [
@@ -156,6 +157,7 @@ import {TaskComponent} from "./tasks/components/task/task.component";
     TaskResolver,
     TaskResource,
     TaskService,
+    TaskMetricsService,
     CurrentTaskService,
     TaskStatusService,
     TaskSearchService
