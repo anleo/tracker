@@ -20,24 +20,8 @@ export class DndComponent {
   tasks = Tasks;
   tasks2 = Tasks2;
 
-  updateTasks(item) {
-    if (this.tasks.indexOf(item) >= 0) {
-      this.tasks.splice(this.tasks.indexOf(item), 1);
-      this.tasks2.push(item);
-      this.tasks2 = _.uniq(this.tasks2, (task) => task.id);
-    }
-
-
-    if (this.tasks2.indexOf(item) >= 0) {
-      this.tasks2.splice(this.tasks2.indexOf(item), 1);
-      this.tasks.push(item);
-      this.tasks = _.uniq(this.tasks, (task) => task.id);
-    }
-  }
-
   updateParent(data) {
     data.item.parentId = data.params.toItem;
-    this.updateTasks(data.item);
   }
 
   updateStatus(data) {

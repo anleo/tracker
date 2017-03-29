@@ -24,8 +24,9 @@
 
         <div drag [dragItem]="task" drop-zone (onDrop)="updateParent($event)" [dropParams]="{toItem:task.id}"
              style="border: 1px solid #00b3ee; margin: 20px;">
-          {{task.title}}
 
+
+          <a href="https://www.google.com.ua/?gws_rd=ssl"> {{task.title}}</a>
           <span *ngIf="task.status"> status: {{task.status}}</span>
           <span *ngIf="task.parentId"> parentID: {{task.parentId}}</span>
         </div>
