@@ -2,7 +2,9 @@
      *ngIf="task"
      [ngClass]="{
      'panel-success': task.status == 'accepted',
-     'panel-warning': task.status == 'in progress'}">
+     'panel-warning': task.status == 'in progress'}"
+     drop-zone
+     [dropParams]="{status: status}" (onDrop)="onDropToTask($event)">
 
   <!--"{-->
   <!--'panel-success': task.status == 'accepted',-->

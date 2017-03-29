@@ -8,8 +8,7 @@
   <!--task-on-edit="edit"-->
   <!--task-options="taskOptions">-->
   <!--</div>  -->
-  <div *ngFor="let task of tasks" drop-zone
-       [dropParams]="{status: status}" (onDrop)="onDropToTask($event)">
+  <div *ngFor="let task of tasks">
     <app-task-panel [task]="task"></app-task-panel>
   </div>
 

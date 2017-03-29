@@ -26,4 +26,8 @@ export class TaskPanelComponent implements OnInit {
   edit(task: Task) {
     this.taskService.setEditTaskModal(task);
   }
+
+  onDropToTask(dropData) {
+    console.log('dropDarta to task', dropData);
+  }
 }
