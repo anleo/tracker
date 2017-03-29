@@ -24,7 +24,9 @@ export class DragDirective {
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event) {
-    this.init(event);
+    if (event.which === 1) {
+      this.init(event);
+    }
   }
 
   @HostListener('mousemove', ['$event'])

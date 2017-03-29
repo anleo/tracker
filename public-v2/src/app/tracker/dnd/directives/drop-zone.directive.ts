@@ -18,16 +18,17 @@ export class DropZoneDirective {
 
   @HostListener('mouseup', ['$event'])
   onMouseUp(event) {
-    event.stopPropagation();
-    let imDrag = this.domElement.classList.contains('i-drag');
-
     if (this.dragItem) {
+
+      let imDrag = this.domElement.classList.contains('i-drag');
+
       let data = {
         item: this.dragItem,
         params: this.dropParams
       };
 
       if (!imDrag) {
+        event.stopPropagation();
         this.onDrop.emit(data);
       }
 
