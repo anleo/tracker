@@ -1,43 +1,55 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {Task} from "../models/task";
 
+import * as _ from "lodash";
+
 @Pipe({name: 'tasksSort'})
 
 export class TasksSortPipe implements PipeTransform {
-  private sortTypes: Array<string> = ['asc', 'desc'];
-  private sortType: string = 'asc';
+  private sortOrders: Array<string> = ['asc', 'desc', 'off'];
+  private defaultSortingParams = {
+    fields: ['priority', 'updatedAt'],
+    orders: ['desc', 'asc']
+  };
 
-  transform(tasks: Task[], sortParams: {field: string, type: string}): Task[] {
+  private offCount: number = 0;
+  private sortingParams;
 
-    if (sortParams.hasOwnProperty('type')) {
-      if (this.sortTypeExist(sortParams.type)) {
-        this.sortType = sortParams.type;
-      } else {
-        console.warn('Sort Type ' + sortParams.type + ' no supported');
+  transform(tasks: Task[], sortParams): Task[] {
+    this.resetParams();
+    this.offCount = _.values(sortParams).filter((order) => order === 'off').length;
+
+    _.forEach(sortParams, (order, field) => {
+      if (!this.sortOrderExist(order)) {
+        console.warn('Sort Type ' + order + 'doesn\'t supported');
       }
-    }
 
-    tasks.sort((curr: Task, next: Task) => {
-      if (
-        curr.hasOwnProperty(sortParams.field) &&
-        next.hasOwnProperty(sortParams.field)
-      ) {
-        if (curr[sortParams.field] < next[sortParams.field]) {
-          return this.sortType === 'asc' ? -1 : 1;
-        }
-        else if (curr[sortParams.field] > next[sortParams.field]) {
-          return this.sortType === 'asc' ? 1 : -1;
-        }
-        else {
-          return 0
-        }
+      if (order && order !== 'off') {
+        this.sortingParams.fields.push(field);
+        this.sortingParams.orders.push(order);
       }
     });
 
-    return tasks;
+    if (this.offCount !== _.values(sortParams).length) {
+      return this.sortByOrder(tasks, this.sortingParams);
+    } else {
+      return this.sortByOrder(tasks, this.defaultSortingParams)
+    }
+
   }
 
-  private sortTypeExist(type): boolean {
-    return this.sortTypes.indexOf(type) >= 0 ? true : false;
+  private resetParams() {
+    this.sortingParams = {
+      fields: [],
+      orders: []
+    }
+  }
+
+  private sortByOrder(tasks, params) {
+    return _.orderBy(tasks, params.fields, params.orders);
+  }
+
+  private sortOrderExist(type): boolean {
+    return this.sortOrders.indexOf(type) >= 0;
   }
 }

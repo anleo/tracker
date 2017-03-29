@@ -152,8 +152,6 @@ export class TaskItemComponent implements OnInit, OnDestroy {
   }
 
   initTask(task) {
-    this.tasks = [];
-
     this.task = task;
     let taskId = task && task._id ? task._id : null;
 
