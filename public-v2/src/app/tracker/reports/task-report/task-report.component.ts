@@ -68,7 +68,6 @@ export class TaskReportComponent implements OnInit, OnDestroy {
     this.contextTaskService
       .getTaskReportByTask(taskId, date, userId)
       .subscribe(tasks => {
-        this.contextTaskService.setTasks(tasks);
         this.tasks = tasks;
       });
   }
@@ -87,6 +86,7 @@ export class TaskReportComponent implements OnInit, OnDestroy {
     date = this.prepareDate(date);
 
     this.initTasks(this.taskId, date, developer.id);
+    this.showDatePicker = false;
   }
 
   onChangeDeveloper(developer): void {

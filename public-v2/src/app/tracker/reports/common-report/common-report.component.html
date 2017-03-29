@@ -25,11 +25,11 @@
           <i class="fa fa-calendar" (click)="toggleDatePicker()"></i>
 
           <div *ngIf="showDatePicker" style="position: absolute; z-index:10; min-height:290px;">
-            <datepicker
-              [ngModel]="date"
-              (click)="onClose()"
-              (ngModelChange)="onChangeDate($event)"
-              [showWeeks]="false">
+              <datepicker
+                [ngModel]="date"
+                (selectionDone)="onChangeDate($event)"
+                [maxDate]="today"
+                [showWeeks]="false">
             </datepicker>
           </div>
         </div>

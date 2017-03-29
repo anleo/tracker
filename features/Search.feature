@@ -58,6 +58,7 @@ Feature: Search
     Then I tag this task with "super-tag"
     Then I sleep 1
     Then I save task
+    Then I sleep 1
 
     Then I switch metrics settings
 

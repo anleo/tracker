@@ -24,15 +24,14 @@ export class TasksBoardComponent implements OnInit {
   statusTypes: TaskStatus[];
   boards: Board[] = BoardsMock;
   currentBoard: Board;
-  orderByPriory: string = 'desc';
+  orderByPriority: string = 'desc';
   orderByDate: string = 'asc';
   metricsViewType: number = 0;
 
-  constructor(
-    private taskStatusService: TaskStatusService,
-    private taskService: TaskService,
-    private localStorageService:LocalStorageService
-  ) {}
+  constructor(private taskStatusService: TaskStatusService,
+              private taskService: TaskService,
+              private localStorageService: LocalStorageService) {
+  }
 
   ngOnInit() {
     this.taskStatusService
@@ -55,21 +54,31 @@ export class TasksBoardComponent implements OnInit {
   }
 
   sortByPriority(): void {
-    this.orderByPriory = (this.orderByPriory === 'asc')
-      ? 'desc'
-      : 'asc';
+    if (this.orderByPriority === 'off') {
+      this.orderByPriority = 'asc';
+    } else if (this.orderByPriority === 'asc') {
+      this.orderByPriority = 'desc';
+    } else {
+      this.orderByPriority = 'off';
+    }
+
+    this.localStorageService.set('orderByPriority', this.orderByPriority);
   }
 
   sortByDate(): void {
-    this.orderByDate = (this.orderByDate === 'asc')
-      ? 'desc'
-      : 'asc';
+    if (this.orderByDate === 'off') {
+      this.orderByDate = 'asc';
+    } else if (this.orderByDate === 'asc') {
+      this.orderByDate = 'desc';
+    } else {
+      this.orderByDate = 'off';
+    }
 
     this.localStorageService.set('orderByDate', this.orderByDate);
   }
 
   changeMetricsView(): void {
-    if(this.metricsViewType < 2){
+    if (this.metricsViewType < 2) {
       this.metricsViewType++;
     } else {
       this.metricsViewType = 0;
@@ -80,10 +89,11 @@ export class TasksBoardComponent implements OnInit {
     this.taskService.setTaskMetricsViewType(this.metricsViewType);
   }
 
-  getLocalConfig(){
+  getLocalConfig() {
     this.metricsViewType = this.localStorageService.get('metricsViewType') as number || 0;
     this.taskService.setTaskMetricsViewType(this.metricsViewType);
 
     this.orderByDate = this.localStorageService.get('orderByDate') as string || 'asc';
+    this.orderByPriority = this.localStorageService.get('orderByPriority') as string || 'asc';
   }
 }
