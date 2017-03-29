@@ -9,4 +9,8 @@ import {Task} from '../../models/task'
 export class TasksListComponent {
   @Input() tasks: Task[];
   @Input() board;
+
+  onDropToTask(dropData) {
+    console.log('dropDarta to task', dropData);
+  }
 }
