@@ -1,4 +1,5 @@
 import {Directive, ElementRef, Input, HostListener} from "@angular/core";
+import * as _ from "lodash";
 import {DnDService} from "../dnd.service";
 
 @Directive({
@@ -6,6 +7,7 @@ import {DnDService} from "../dnd.service";
 })
 export class DropZoneDirective {
   @Input() dropParams: any;
+  @Input() check = [];
 
   domElement = this.elementRef.nativeElement;
   dragItem;
@@ -40,7 +42,7 @@ export class DropZoneDirective {
   onMouseOver(event) {
     let imDrag = this.domElement.classList.contains('i-drag');
 
-    if (this.dragItem && !imDrag) {
+    if (this.dragItem && !imDrag && this.checking()) {
       event.stopPropagation();
       this.dnDService.setDropZone$.next(true);
       this.domElement.classList.add('drop-zone');
@@ -59,6 +61,19 @@ export class DropZoneDirective {
   reset() {
     this.dnDService.setDropZone$.next(false);
     this.domElement.classList.remove('drop-zone');
+  }
+
+  private checking() {
+    let checkResult = true;
+    let self = this;
+
+    _.isArray(this.check) && _.forEach(this.check, (check) => {
+      if (_.isFunction(check) && !check(self.dragItem)) {
+        checkResult = false;
+      }
+    });
+
+    return checkResult;
   }
 
 }
