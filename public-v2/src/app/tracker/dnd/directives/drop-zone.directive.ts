@@ -38,7 +38,7 @@ export class DropZoneDirective {
   }
 
   @HostListener('mouseover', ['$event'])
-  onMouseEnter(event) {
+  onMouseOver(event) {
     let imDrag = this.domElement.classList.contains('i-drag');
 
     if (this.dragItem && !imDrag) {
@@ -49,7 +49,7 @@ export class DropZoneDirective {
   }
 
   @HostListener('mouseout', ['$event'])
-  onMouseLeave(event) {
+  onMouseOut(event) {
     if (this.dragItem) {
       event.stopPropagation();
       this.DnDService.setDropZone$.next(false);
