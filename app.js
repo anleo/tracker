@@ -31,7 +31,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(__dirname + '/public-v2/src'));
+app.use(express.static(__dirname + '/public-v2/dist'));
 app.use('/node_modules', express.static(__dirname + '/public-v2/node_modules'));
 
 // passport
