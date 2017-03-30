@@ -14,9 +14,7 @@ export class BoardViewComponent extends BoardBaseComponent {
     super(taskService, taskStatusService);
   }
 
-  onDropByStatus(dropData) {
-    dropData.item.status = dropData.params.status.value;
-    console.log('dropData', dropData);
-    this.taskService.updateTask(dropData.item);
+  checkComplexity(item) {
+    return item.simple;
   }
 }

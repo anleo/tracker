@@ -1,6 +1,6 @@
 <div class="row board-view" *ngIf="tasks && tasks.length">
   <div class="col-sm-4" *ngFor="let status of statusTypes"
-       drop-zone [dropParams]="{status: status}">
+       drop-zone [dropParams]="{status: status}" [check]="[checkComplexity,checkLol]">
     <h3 class="list-name">{{status.name}}</h3>
     <app-tasks-list [tasks]="tasks | tasksBoardFilter: status" [board]="status"></app-tasks-list>
   </div>
