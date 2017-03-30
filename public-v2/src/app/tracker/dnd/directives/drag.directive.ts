@@ -24,7 +24,9 @@ export class DragDirective {
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event) {
-    if (event.which === 1) {
+    let clickOnDragButton = event.target.classList.contains('drag-button');
+
+    if (event.which === 1 && clickOnDragButton) {
       this.init(event);
     }
   }
