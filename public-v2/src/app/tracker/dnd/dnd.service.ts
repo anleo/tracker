@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 
 @Injectable()
 export class DnDService {
@@ -14,6 +14,7 @@ export class DnDService {
   setDropZone$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   hasDropZone$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   reset$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  onDrop$: Subject<any> = new Subject <any>();
 
   constructor() {
     this.dragItem$.subscribe(item => {
