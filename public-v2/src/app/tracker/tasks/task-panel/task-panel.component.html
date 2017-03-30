@@ -3,9 +3,7 @@
      [ngClass]="{
      'panel-success': task.status == 'accepted',
      'panel-warning': task.status == 'in progress'}"
-     drop-zone
-     [dropParams]="{parentTaskId: task._id}" (onDrop)="onDropToTask($event)"
-     drag [dragItem]="task">
+     drop-zone [dropParams]="{parentTaskId: task._id}" drag [dragItem]="task">
 
   <!--"{-->
   <!--'panel-success': task.status == 'accepted',-->

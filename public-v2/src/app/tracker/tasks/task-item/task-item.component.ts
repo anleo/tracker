@@ -12,6 +12,7 @@ import {CurrentTaskService} from "../../services/current-task.service";
 import {SocketService} from "../../../services/socket.service";
 import {Subject} from "rxjs";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
+import {DnDService} from "../../dnd/dnd.service";
 
 @Component({
   selector: 'app-task-item',
@@ -35,7 +36,8 @@ export class TaskItemComponent implements OnInit, OnDestroy {
               private socketService: SocketService,
               private currentTaskService: CurrentTaskService,
               private busyLoaderService: BusyLoaderService,
-              private router: Router) {
+              private router: Router,
+              private dndService: DnDService) {
     this.taskService.editTaskUpdated$
       .takeUntil(this.componentDestroyed$)
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
@@ -72,6 +74,20 @@ export class TaskItemComponent implements OnInit, OnDestroy {
             this.browserTitleService.setTitle(this.task.title);
           }
         }
+      });
+
+    this.dndService.onDrop$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((dropData) => {
+        dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
+          dropData.item.parentTaskId;
+
+        if (dropData.params.status) {
+          let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
+          dropData.item.status = status;
+        }
+
+        this.taskService.updateTask(dropData.item).toPromise().then((task) => this.init())
       });
   }
 

@@ -26,9 +26,4 @@ export class TaskPanelComponent implements OnInit {
   edit(task: Task) {
     this.taskService.setEditTaskModal(task);
   }
-
-  onDropToTask(dropData) {
-    dropData.item.parentTaskId = dropData.params.parentTaskId;
-    this.taskService.updateTask(dropData.item);
-  }
 }
