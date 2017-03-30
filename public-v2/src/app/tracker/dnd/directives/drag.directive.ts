@@ -56,14 +56,8 @@ export class DragDirective {
 
   private createStartElementPosition() {
     return this.startElementCoordinates = {
-      parent: this.dragElement.parentNode,
-      nextSibling: this.dragElement.nextSibling,
       classList: this.dragElement.classList,
       opacity: this.dragElement.style.opacity || '',
-      position: this.dragElement.style.position || '',
-      zIndex: this.dragElement.style.zIndex || '',
-      left: this.dragElement.style.left || '',
-      top: this.dragElement.style.top || ''
     };
   }
 
