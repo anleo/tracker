@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import * as _ from 'lodash';
+import {DnDService} from "./dnd.service";
 
 const Tasks = [
   {id: 1, title: 'task 1', status: 'new'},
@@ -17,6 +17,18 @@ const Tasks2 = [
 })
 
 export class DndComponent {
+  constructor(private dnDService: DnDService) {
+    this.dnDService.onDrop$.subscribe((dropData) => {
+      if (dropData.params.status) {
+        dropData.item.status = dropData.params.status;
+      }
+
+      if (dropData.params.toItem) {
+        dropData.item.parentId = dropData.params.toItem;
+      }
+    })
+  }
+
   tasks = Tasks;
   tasks2 = Tasks2;
 
