@@ -42,12 +42,7 @@ export class DnDService {
 
   private resetElement() {
     this.dragElement.classList = this.startElementPositions.classList;
-    this.dragElement.style.position = 'static';
     this.dragElement.style.opacity = this.startElementPositions.opacity;
-    this.dragElement.style.left = this.startElementPositions.left;
-    this.dragElement.style.top = this.startElementPositions.top;
-    this.dragElement.style.zIndex = this.startElementPositions.zIndex;
-    this.startElementPositions.parent.insertBefore(this.dragElement, this.startElementPositions.nextSibling);
     this.reset$.next(true);
   }
 
