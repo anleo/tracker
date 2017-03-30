@@ -28,6 +28,7 @@ export class TaskPanelComponent implements OnInit {
   }
 
   onDropToTask(dropData) {
-    console.log('dropDarta to task', dropData);
+    dropData.item.parentTaskId = dropData.params.parentTaskId;
+    this.taskService.updateTask(dropData.item);
   }
 }
