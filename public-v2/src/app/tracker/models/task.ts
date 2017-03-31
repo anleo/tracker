@@ -14,8 +14,8 @@ export class Task {
   date?: string;
   updatedAt?: string;
   simple?: boolean = true;
-  estimatedTime?: number;
-  timeToDo?: number;
+  estimatedTime?: number = 0;
+  timeToDo?: number = 0;
   owner?: string|any;
   developer?: User;
   team?: Array<string>;
