@@ -7,7 +7,7 @@
     <div
       *ngFor="let task of tasks"
       drag [dragItem]="task"
-      class="drag-item pointer">
+      class="drag-item pointer drag-button">
       {{task.title}}
 
       <span *ngIf="task.status"> status: {{task.status}}</span>
@@ -23,7 +23,7 @@
       <div *ngFor="let task of tasks2">
 
         <div drag [dragItem]="task" drop-zone [dropParams]="{toItem:task.id}"
-             style="border: 1px solid #00b3ee; margin: 20px;">
+             style="border: 1px solid #00b3ee; margin: 20px;" class="drag-button">
 
 
           <a href="https://www.google.com.ua/?gws_rd=ssl"> {{task.title}}</a>
