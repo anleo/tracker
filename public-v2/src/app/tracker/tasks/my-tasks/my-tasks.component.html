@@ -4,4 +4,4 @@
   Back
 </a>
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
-<app-tasks-board *ngIf="tasks?.length" [tasks]="tasks"></app-tasks-board>
+<app-tasks-board *ngIf="tasks?.length" [tasks]="tasks" drop-listener></app-tasks-board>

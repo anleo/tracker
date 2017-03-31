@@ -1,12 +1,12 @@
 <div *ngIf="tasks && tasks.length" class="tasks-list">
   <!--<div task-panel-->
-       <!--task="task"-->
-       <!--*ngFor="let task of tasks"-->
-       <!--ui-tree-node-->
-       <!--ng-model="list.tasks"-->
-       <!--metrics-details="metricsDetails"-->
-       <!--task-on-edit="edit"-->
-       <!--task-options="taskOptions">-->
+  <!--task="task"-->
+  <!--*ngFor="let task of tasks"-->
+  <!--ui-tree-node-->
+  <!--ng-model="list.tasks"-->
+  <!--metrics-details="metricsDetails"-->
+  <!--task-on-edit="edit"-->
+  <!--task-options="taskOptions">-->
   <!--</div>  -->
   <div *ngFor="let task of tasks">
     <app-task-panel [task]="task"></app-task-panel>

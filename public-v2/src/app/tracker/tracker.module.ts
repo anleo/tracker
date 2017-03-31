@@ -73,6 +73,7 @@ import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search
 import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {TaskMetricsService} from "./services/task-metrics.service";
+import {DragAndDropModule} from "./dnd/dnd.module";
 
 @NgModule({
   imports: [
@@ -91,7 +92,8 @@ import {TaskMetricsService} from "./services/task-metrics.service";
     LocalStorageModule.withConfig({
       prefix: '',
       storageType: 'localStorage'
-    })
+    }),
+    DragAndDropModule
   ],
   exports: [
     TaskSearchDirective,
