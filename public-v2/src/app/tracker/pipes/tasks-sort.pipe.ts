@@ -15,7 +15,7 @@ export class TasksSortPipe implements PipeTransform {
   private offCount: number = 0;
   private sortingParams;
 
-  transform(tasks: Task[], sortParams): Task[] {
+  transform(tasks: Task[], sortParams): any {
     this.resetParams();
     this.offCount = _.values(sortParams).filter((order) => order === 'off').length;
 
@@ -35,7 +35,6 @@ export class TasksSortPipe implements PipeTransform {
     } else {
       return this.sortByOrder(tasks, this.defaultSortingParams)
     }
-
   }
 
   private resetParams() {
