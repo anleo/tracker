@@ -72,7 +72,6 @@ import {TaskSearchService} from "./services/task-search.service";
 import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search.component";
 import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
-import {DndComponent} from "./dnd/dnd.component";
 import {DragAndDropModule} from "./dnd/dnd.module";
 
 @NgModule({
@@ -153,8 +152,7 @@ import {DragAndDropModule} from "./dnd/dnd.module";
     MetricsInEditorComponent,
     TaskArchiveComponent,
     TaskSearchDirective,
-    TaskSearchComponent,
-    DndComponent
+    TaskSearchComponent
   ],
   providers: [
     TaskResolver,
