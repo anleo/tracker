@@ -14,7 +14,6 @@ import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search
 import {UserResolver} from "../user/resolver/UserResolver";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {CanActivatePrivateGuard} from "../guards/can-activate-private.guard";
-import {DndComponent} from "./dnd/dnd.component";
 
 const routes: Routes = [
   {
@@ -40,10 +39,6 @@ const routes: Routes = [
       {
         path: 'archived',
         component: TaskArchiveComponent
-      },
-      {
-        path: 'dnd',
-        component: DndComponent
       },
       {
         path: ':taskId',

@@ -54,15 +54,7 @@ export class MyTasksComponent implements OnInit, OnDestroy {
     this.dndService.onDrop$
       .takeUntil(this.componentDestroyed$)
       .subscribe((dropData) => {
-        dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
-          dropData.item.parentTaskId;
-
-        if (dropData.params.status) {
-          let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
-          dropData.item.status = status;
-        }
-
-        this.taskService.updateTask(dropData.item).toPromise().then((task) => this.getTasks())
+        this.onDrop(dropData);
       });
   }
 
@@ -116,5 +108,17 @@ export class MyTasksComponent implements OnInit, OnDestroy {
     };
 
     self.user && self.user._id && this.busyLoaderService.load(loader, 'taskItemInit')
+  }
+
+  private onDrop(dropData) {
+    dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
+      dropData.item.parentTaskId;
+
+    if (dropData.params.status) {
+      let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
+      dropData.item.status = status;
+    }
+
+    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.getTasks())
   }
 }
