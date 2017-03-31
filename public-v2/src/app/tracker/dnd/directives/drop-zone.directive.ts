@@ -28,7 +28,7 @@ export class DropZoneDirective {
         params: this.dropParams
       };
 
-      if (!imDrag) {
+      if (!imDrag && this.checking()) {
         event.stopPropagation();
         this.dnDService.onDrop$.next(data);
       }
