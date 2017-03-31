@@ -58,42 +58,49 @@ export class DropZoneDirective {
     }
   }
 
-  @HostListener('touchleave', ['$event'])
-  onTouchLeave(event) {
-    if (this.dragItem) {
-      event.stopPropagation();
-      this.dnDService.setDropZone$.next(false);
-      this.domElement.classList.remove('drop-zone');
-    }
-  }
+  // @HostListener('touchleave', ['$event'])
+  // onTouchLeave(event) {
+  //   console.log('touchleave');
+  //   if (this.dragItem) {
+  //     event.stopPropagation();
+  //     this.dnDService.setDropZone$.next(false);
+  //     this.domElement.classList.remove('drop-zone');
+  //   }
+  // }
+  //
+  // @HostListener('touchenter', ['$event'])
+  // onTouchEnter(event) {
+  //   console.log('touchenter');
+  //   event.stopPropagation();
+  //   this.dnDService.setDropZone$.next(true);
+  //   this.domElement.classList.add('drop-zone');
+  // }
 
-  @HostListener('touchenter', ['$event'])
-  onTouchEnter(event) {
-    event.stopPropagation();
-    this.dnDService.setDropZone$.next(true);
-    this.domElement.classList.add('drop-zone');
-  }
-
-  @HostListener('touchend', ['$event'])
-  onTouchEnd(event) {
-    if (this.dragItem) {
-
-      let imDrag = this.domElement.classList.contains('i-drag');
-
-      let data = {
-        item: this.dragItem,
-        params: this.dropParams
-      };
-
-      if (!imDrag) {
-        event.stopPropagation();
-        this.dnDService.onDrop$.next(data);
-      }
-
-      this.dnDService.reset();
-      this.reset();
-    }
-  }
+  // @HostListener('touchend', ['$event'])
+  // onTouchEnd(event) {
+  //   if (this.dragItem) {
+  //     console.log('touchend');
+  //
+  //     event.stopPropagation();
+  //     this.dnDService.setDropZone$.next(true);
+  //     this.domElement.classList.add('drop-zone');
+  //
+  //     let imDrag = this.domElement.classList.contains('i-drag');
+  //
+  //     let data = {
+  //       item: this.dragItem,
+  //       params: this.dropParams
+  //     };
+  //
+  //     if (!imDrag) {
+  //       event.stopPropagation();
+  //       this.dnDService.onDrop$.next(data);
+  //     }
+  //
+  //     this.dnDService.reset();
+  //     this.reset();
+  //   }
+  // }
 
   reset() {
     this.dnDService.setDropZone$.next(false);

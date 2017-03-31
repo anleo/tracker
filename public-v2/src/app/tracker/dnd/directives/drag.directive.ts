@@ -38,21 +38,21 @@ export class DragDirective {
     }
   }
 
-  @HostListener('touchstart', ['$event'])
-  onTouchStart(event) {
-    let clickOnDragButton = event.target.classList.contains('drag-button');
-
-    if (clickOnDragButton) {
-      this.init(event);
-    }
-  }
-
-  @HostListener('touchmove', ['$event'])
-  onTouchMove(event) {
-    if (this.downEvent) {
-      !this.dropListener.classList.contains('moveCursor') && this.dropListener.classList.add('moveCursor');
-    }
-  }
+  // @HostListener('touchstart', ['$event'])
+  // onTouchStart(event) {
+  //   let clickOnDragButton = event.target.classList.contains('drag-button');
+  //
+  //   if (clickOnDragButton) {
+  //     this.init(event);
+  //   }
+  // }
+  //
+  // @HostListener('touchmove', ['$event'])
+  // onTouchMove(event) {
+  //   if (this.downEvent) {
+  //     !this.dropListener.classList.contains('moveCursor') && this.dropListener.classList.add('moveCursor');
+  //   }
+  // }
 
   private init(event) {
     this.downEvent = event;
