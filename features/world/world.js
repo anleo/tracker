@@ -207,7 +207,6 @@ module.exports = function () {
             this.addToChain(name, this[name]);
         }
 
-
         this.createApiTester = function () {
 
             var tester = require('supertest');
@@ -226,5 +225,4 @@ module.exports = function () {
         callback();
 
     }
-
 }
