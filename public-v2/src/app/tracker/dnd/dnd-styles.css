@@ -1,0 +1,7 @@
+.moveCursor {
+  cursor: move !important;
+}
+
+.drop-zone {
+  border: 2px dashed #91eac2 !important;
+}
