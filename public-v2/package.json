@@ -30,10 +30,10 @@
     "core-js": "^2.4.1",
     "font-awesome": "~4.7.0",
     "jquery": "^3.1.1",
-    "lodash": "^4.17.4",
+    "lodash": "4.17.4",
     "moment": "^2.17.1",
     "ng2-bootstrap": "^1.4.2",
-    "ng2-resource-rest": "^1.10.1",
+    "ng2-resource-rest": "1.10.1",
     "ng2-select": "^1.2.0",
     "ng2-toastr": "^1.4.1",
     "ngx-uploader": "^2.2.0",
@@ -46,7 +46,7 @@
     "@angular/cli": "1.0.0-beta.30",
     "@angular/compiler-cli": "^2.3.1",
     "@types/jasmine": "2.5.38",
-    "@types/lodash": "^4.14.53",
+    "@types/lodash": "ts2.0",
     "@types/node": "^6.0.42",
     "codelyzer": "~2.0.0-beta.1",
     "jasmine-core": "2.5.2",
@@ -59,6 +59,6 @@
     "protractor": "~4.0.13",
     "ts-node": "1.2.1",
     "tslint": "^4.3.0",
-    "typescript": "~2.0.3"
+    "typescript": "2.0.3"
   }
 }
