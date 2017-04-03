@@ -4,8 +4,8 @@
   "description": "Tracker",
   "main": "index.js",
   "scripts": {
-    "setup": "npm install && bower install --config.interactive=false --allow-root && gulp",
-    "setup.dev": "npm install && bower install --config.interactive=false --allow-root && gulp dev",
+    "setup": "npm install && cd public-v2/ && npm install --config.interactive=false --allow-root",
+    "setup.dev": "npm install && cd public-v2/ && npm install --config.interactive=false --allow-root",
     "start.dev": "nodemon -e js -e json --delay 100ms -i node_modules/ -i public/ -i features/ -L -w app/ app.js",
     "start.dev.debug": "nodemon -e js -e json --delay 200ms -i node_modules/ -i public/ -i features/ -L -w app.js -w app --debug app.js",
     "test": "NODE_ENV=development node_modules/.bin/cucumber.js --format pretty",
