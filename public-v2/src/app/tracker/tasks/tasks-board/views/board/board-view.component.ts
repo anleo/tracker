@@ -13,4 +13,8 @@ export class BoardViewComponent extends BoardBaseComponent {
               protected taskStatusService: TaskStatusService) {
     super(taskService, taskStatusService);
   }
+
+  checkComplexity(item) {
+    return item.simple;
+  }
 }

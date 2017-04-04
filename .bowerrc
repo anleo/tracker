@@ -1,6 +1,0 @@
-{
-  "directory": "public/lib",
-  "storage": {
-    "packages" : "/tmp/bower"
-  }
-}

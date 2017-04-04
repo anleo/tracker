@@ -2,10 +2,8 @@
 /Vagrantfile
 /.vagrant
 /node_modules
-/public/lib
-/public/uploads
-/public/dist/
-/public/index.html
+/public-v2/node_modules
+/public-v2/dist
 .nodemon*
 *.log
 /app/config/parameters.json
