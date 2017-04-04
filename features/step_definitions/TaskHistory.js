@@ -9,7 +9,7 @@ module.exports = function () {
     });
 
     this.Then(/^I see history message "([^"]*)"$/, function (arg1, callback) {
-        this.iSee("p.history-message:contains('" + arg1 + "')", callback);
+        this.iSee('p.history-message:contains("' + arg1 + '")', callback);
     });
 
     this.Then(/^I type description "([^"]*)"$/, function (arg1, callback) {

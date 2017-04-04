@@ -25,10 +25,7 @@ module.exports = function () {
         this.webdriver = require('selenium-webdriver');
 
         this.initDriver = function () {
-            // var name = process.env.BROWSER;
-            // var browserDriver = this.webdriver.Capabilities.chrome();
-
-            this.driver = this.webdriver.Builder().forBrowser('firefox')
+        this.driver = new this.webdriver.Builder().forBrowser('chrome')
                 .usingServer(this.seleniumUrl)
                 .build();
 
@@ -70,7 +67,6 @@ module.exports = function () {
 
         //takes String or Array
         this.iSee = function (path, callback) {
-            console.log('argumaents', arguments);
             this.browser.wait(function () {
                 return this.iFind(path).then(function (elements) {
                     return elements.length > 0;

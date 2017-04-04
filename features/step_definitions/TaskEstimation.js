@@ -48,7 +48,7 @@ module.exports = function () {
     this.Then(/^I see task "([^"]*)" velocity "([^"]*)"$/, function (arg1, arg2, callback) {
         this.chain
             .iSee('.board-view a:contains("' + arg1 + '")')
-            .iSee('.board-view ul li[tooltip="Velocity"]("' + arg2 + '")')
+            .iSee('.board-view ul li[tooltip="Velocity"]:contains("' + arg2 + '")')
             .then(callback);
     });
 
