@@ -17,7 +17,10 @@ module.exports = function () {
     });
 
     this.When(/^I search "([^"]*)"$/, function (arg1, callback) {
-        this.iType(".nav task-search input[name='query']", arg1, callback);
+        this.chain
+            .iType(".nav task-search input[name='query']", arg1)
+            .iPressEnter(".nav task-search input[name='query']")
+            .then(callback);
     });
 
     this.When(/^I clear search input$/, function (callback) {
