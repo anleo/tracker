@@ -52,7 +52,7 @@ Feature: Search
     Then I click on task link "task 1.1"
     Then I am on "task 1.1" page
 
-    Then I click on edit button of task "task 1.1"
+    Then I click on edit button of task "task 1.1.1"
     Then I see edit form
 
     Then I tag this task with "super-tag"
@@ -66,10 +66,10 @@ Feature: Search
 
     When I search "super-tag"
     Then I sleep 1
-    And I see task "task 1.1"
+    And I see task "task 1.1.1"
 
     When I search "not-super-tag"
-    And I don't see task "task 1.1"
+    And I don't see task "task 1.1.1"
 
     When I search "super-tag"
     And I see task "task 1.1"
