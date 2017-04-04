@@ -69,7 +69,7 @@ exports.tasks = [
         "_id" : ObjectId("551540ec210f64444cde2359"),
         "description": "",
         "title" : "task 1.1.1",
-        "status" : "",
+        "status" : "accepted",
         "estimatedTime" : 0,
         "simple" : true,
         "date" : ISODate("2015-03-27T11:37:16.072Z"),
