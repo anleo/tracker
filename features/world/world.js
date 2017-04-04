@@ -155,6 +155,18 @@ module.exports = function () {
             }.bind(this));
         };
 
+        this.iPressEnter = function (path, callback) {
+            this.iSee(path, function (err) {
+                if (err) return callback.call(this, err);
+
+                setTimeout(function () {
+                    this.iFindOne(path).sendKeys(this.webdriver.Key.ENTER).then(function () {
+                        callback.call(this);
+                    }.bind(this));
+                }.bind(this), 200);
+            }.bind(this));
+        };
+
         this.iType = function (arg1, arg2, arg3) {
             var paths = arg1, callback = arg2;
 
