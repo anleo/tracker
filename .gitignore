@@ -10,6 +10,8 @@
 *.log
 /app/config/parameters.json
 /chromedriver
+/operadriver
+/geckodriver
 /selenium-server-standalone-*
 .DS_Store
 /app/config/local.js

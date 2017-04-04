@@ -21,16 +21,19 @@ module.exports = function () {
         this.chai.should();
         this.assert = this.chai.assert;
 
+        var sizzle = require('plus.webdriver-sizzle');
         this.webdriver = require('selenium-webdriver');
 
         this.initDriver = function () {
-            this.driver = new this.webdriver.Builder()
-                .withCapabilities(this.webdriver.Capabilities.chrome())
+            // var name = process.env.BROWSER;
+            // var browserDriver = this.webdriver.Capabilities.chrome();
+
+            this.driver = this.webdriver.Builder().forBrowser('firefox')
                 .usingServer(this.seleniumUrl)
                 .build();
 
             this.browser = this.driver;
-            this.$ = require('webdriver-sizzle')(this.browser);
+            this.$ = sizzle(this.browser);
         };
 
         this.iVisit = function (url, next) {
@@ -67,6 +70,7 @@ module.exports = function () {
 
         //takes String or Array
         this.iSee = function (path, callback) {
+            console.log('argumaents', arguments);
             this.browser.wait(function () {
                 return this.iFind(path).then(function (elements) {
                     return elements.length > 0;
