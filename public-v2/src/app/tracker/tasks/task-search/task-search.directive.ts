@@ -23,14 +23,15 @@ export class TaskSearchDirective implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentTaskService.task$.subscribe((task) => this.taskId = task && task._id);
+    this.currentTaskService.task$.subscribe((task) => {
+      this.taskId = task && task._id;
+      this.query = '';
+    });
 
     this.queryControl
       .valueChanges
       .debounceTime(400)
-      .subscribe(newValue => {
-        this.searchQuery(newValue)
-      });
+      .subscribe(newValue => this.searchQuery(newValue));
   }
 
   searchQuery(query: string|null) {
