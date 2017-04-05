@@ -9,6 +9,7 @@ import {Subject, BehaviorSubject, Observable} from "rxjs";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {SocketService} from "../../../services/socket.service";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
+import {DnDService} from "../../dnd/dnd.service";
 
 @Component({
   templateUrl: 'task-tags-search.component.html',
@@ -32,7 +33,8 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
               private busyLoaderService: BusyLoaderService,
               private route: ActivatedRoute,
               private router: Router,
-              private browserTitleService: BrowserTitleService) {
+              private browserTitleService: BrowserTitleService,
+              private dndService: DnDService) {
   }
 
   ngOnInit(): void {
@@ -51,6 +53,12 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
     this.taskService.editTaskModal$
       .takeUntil(this.componentDestroyed$)
       .subscribe((flag) => this.editMode = flag);
+
+    this.dndService.onDrop$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((dropData) => {
+        this.onDrop(dropData);
+      });
 
     this.router.events
       .takeUntil(this.componentDestroyed$)
@@ -164,5 +172,17 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
 
   private onClose(): void {
     this.reinit();
+  }
+
+  private onDrop(dropData) {
+    dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
+      dropData.item.parentTaskId;
+
+    if (dropData.params.status) {
+      let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
+      dropData.item.status = status;
+    }
+
+    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.reinit())
   }
 }
