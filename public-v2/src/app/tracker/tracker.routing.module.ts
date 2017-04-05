@@ -14,6 +14,7 @@ import {TaskTagsSearchComponent} from "./tasks/task-tags-search/task-tags-search
 import {UserResolver} from "../user/resolver/UserResolver";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {CanActivatePrivateGuard} from "../guards/can-activate-private.guard";
+import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
 
 const routes: Routes = [
   {
@@ -50,6 +51,10 @@ const routes: Routes = [
           {
             path: '',
             component: TaskItemComponent
+          },
+          {
+            path: 'boards',
+            component: TaskBoardsComponent
           },
           {
             path: 'archive',

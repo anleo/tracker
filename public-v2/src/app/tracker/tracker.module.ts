@@ -74,6 +74,7 @@ import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {TaskMetricsService} from "./services/task-metrics.service";
 import {DragAndDropModule} from "./dnd/dnd.module";
+import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
 
 @NgModule({
   imports: [
@@ -110,6 +111,7 @@ import {DragAndDropModule} from "./dnd/dnd.module";
     TasksListComponent,
     TasksEditComponent,
     TasksBoardComponent,
+    TaskBoardsComponent,
     BoardViewComponent,
     ListViewComponent,
     TreeViewComponent,
