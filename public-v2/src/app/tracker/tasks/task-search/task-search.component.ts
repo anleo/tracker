@@ -11,6 +11,7 @@ import {TaskWithStatus} from "../../models/task-with-status";
 import {BehaviorSubject, Subject} from "rxjs";
 import {SocketService} from "../../../services/socket.service";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
+import {DnDService} from "../../dnd/dnd.service";
 
 @Component({
   selector: 'app-task-search',
@@ -35,6 +36,7 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
               public toastr: ToastsManager,
               private router: Router,
               private browserTitleService: BrowserTitleService,
+              private dndService: DnDService,
               vcr: ViewContainerRef) {
     this.toastr.setRootViewContainerRef(vcr);
   }
@@ -62,6 +64,12 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
       .subscribe((params: Params) => {
         this.query = params['query'];
         this.search();
+      });
+
+    this.dndService.onDrop$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((dropData) => {
+        this.onDrop(dropData);
       });
   }
 
@@ -120,6 +128,18 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
 
   private onClose(): void {
     this.search();
+  }
+
+  private onDrop(dropData) {
+    dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
+      dropData.item.parentTaskId;
+
+    if (dropData.params.status) {
+      let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
+      dropData.item.status = status;
+    }
+
+    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.search())
   }
 
 }
