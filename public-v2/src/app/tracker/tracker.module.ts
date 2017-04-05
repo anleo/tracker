@@ -75,6 +75,7 @@ import {TaskComponent} from "./tasks/components/task/task.component";
 import {TaskMetricsService} from "./services/task-metrics.service";
 import {DragAndDropModule} from "./dnd/dnd.module";
 import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
+import {TaskBacklogComponent} from "./tasks/task-backlog/task-backlog.component";
 
 @NgModule({
   imports: [
@@ -103,6 +104,7 @@ import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
   declarations: [
     BlankComponent,
     TaskComponent,
+    TaskBacklogComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
