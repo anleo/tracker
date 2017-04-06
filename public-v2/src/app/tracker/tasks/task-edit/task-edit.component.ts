@@ -44,6 +44,7 @@ export class TasksEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('>>>>> modalMode', this.modalMode)
     this.taskService.editTaskModal$
       .takeUntil(this.componentDestroyed$)
       .subscribe((modalMode: boolean) => this.modalMode = modalMode);
