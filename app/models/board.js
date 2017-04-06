@@ -2,7 +2,7 @@ module.exports = function (mongoose) {
     const Schema = mongoose.Schema;
 
     let BoardSchema = new Schema({
-        title: String,
+        title: {type: String, required: true},
         status: String,
         time: {type: Number, default: 0},
         owner: {type: Schema.Types.ObjectId, ref: 'User'},
