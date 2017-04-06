@@ -1,37 +1,22 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {BoardService} from "../../services/board.service";
 import {TaskBoard} from "../../models/task-board";
 import {CurrentTaskService} from "../../services/current-task.service";
+import {DnDService} from "../../dnd/dnd.service";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'task-boards',
   templateUrl: 'task-boards.component.html'
 })
 
-export class TaskBoardsComponent implements OnInit {
-  boards: TaskBoard[] | null = [
-    {
-      title: 'sprint 1',
-      status: 'in progress',
-      _id: 'asdawdawd1231',
-      project: '23ewef23r2',
-      shared: ['213qd23', '1231edasd23'],
-      owner: '213qd23',
-      time: 8
-    },
-    {
-      title: 'sprint 2',
-      status: 'accepted',
-      _id: 'asdawawd1232',
-      project: '23ewef23r2',
-      shared: ['213qd23', '1241edasd23'],
-      owner: '213qd23',
-      time: 5
-    }
-  ];
+export class TaskBoardsComponent implements OnInit, OnDestroy {
+  boards: TaskBoard[] | null = [];
   newBoard: TaskBoard | null;
 
-  statusTypess: [{
+  componentDestroyed$: Subject<boolean> = new Subject();
+
+  statusTypess = [{
     id: 'new',
     name: 'New',
     value: ''
@@ -49,7 +34,8 @@ export class TaskBoardsComponent implements OnInit {
 
 
   constructor(private boardService: BoardService,
-              private currentTaskService: CurrentTaskService) {
+              private currentTaskService: CurrentTaskService,
+              private dndService: DnDService) {
   }
 
   ngOnInit(): void {
@@ -61,9 +47,33 @@ export class TaskBoardsComponent implements OnInit {
       this.initBoard();
 
 
-      // this.boardService.getBoards(task)
-      //   .subscribe((boards) => this.boards = boards)
+      this.boardService.getBoards(task)
+        .subscribe((boards) => this.boards = boards)
     });
+
+    this.dndService.onDrop$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((dropData) => {
+        this.onDrop(dropData);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
+  private onDrop(dropData) {
+    console.log(111)
+    // dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
+    //   dropData.item.parentTaskId;
+    //
+    // if (dropData.params.status) {
+    //   let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
+    //   dropData.item.status = status;
+    // }
+
+    // this.taskService.updateTask(dropData.item).toPromise().then((task) => this.search())
   }
 
   save(): void {

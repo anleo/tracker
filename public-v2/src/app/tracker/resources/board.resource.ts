@@ -7,7 +7,7 @@ import {TaskBoard} from '../models/task-board';
 
 @Injectable()
 @ResourceParams({
-  url: '/{!taskId}/tasks/boards'
+  url: '/api/projects/{!projectId}/boards'
 })
 
 export class BoardResource extends Resource {
@@ -19,11 +19,11 @@ export class BoardResource extends Resource {
     path: '/',
     method: RequestMethod.Post
   })
-  save: ResourceMethodStrict<TaskBoard, {taskId: string}, TaskBoard>;
+  save: ResourceMethodStrict<TaskBoard, {projectId: string}, TaskBoard>;
 
   @ResourceAction({
     path: '/',
     isArray: true
   })
-  getBoards: ResourceMethodStrict<any, {taskId: string}, TaskBoard[]>;
+  getBoards: ResourceMethodStrict<any, {projectId: string}, TaskBoard[]>;
 }

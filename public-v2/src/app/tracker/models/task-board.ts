@@ -6,5 +6,6 @@ export class TaskBoard {
   shared?: Array<string>;
   owner?: string;
   time?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
-

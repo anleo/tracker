@@ -77,6 +77,7 @@ import {DragAndDropModule} from "./dnd/dnd.module";
 import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
 import {BoardService} from "./services/board.service";
 import {BoardResource} from "./resources/board.resource";
+import {BoardsByStatusFilter} from "./pipes/board-by-status.pipe";
 
 @NgModule({
   imports: [
@@ -131,6 +132,7 @@ import {BoardResource} from "./resources/board.resource";
     TaskSpentTimeComponent,
     TaskTagsComponent,
     TaskSearchPipe,
+    BoardsByStatusFilter,
     TaskMoveComponent,
     TaskDescriptionEditor,
     TaskDescriptionViewer,
