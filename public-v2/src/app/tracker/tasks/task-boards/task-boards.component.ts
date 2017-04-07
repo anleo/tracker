@@ -4,6 +4,7 @@ import {TaskBoard} from "../../models/task-board";
 import {CurrentTaskService} from "../../services/current-task.service";
 import {DnDService} from "../../dnd/dnd.service";
 import {Subject} from "rxjs";
+import {Task} from "../../models/task";
 
 @Component({
   selector: 'task-boards',
@@ -45,10 +46,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       }
 
       this.initBoard();
-
-
-      this.boardService.getBoards(task)
-        .subscribe((boards) => this.boards = boards)
+      this.getBoards();
     });
 
     this.dndService.onDrop$
@@ -63,21 +61,29 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     this.componentDestroyed$.complete();
   }
 
+  getBoards(): void {
+    this.boardService.getBoards(this.currentTaskService.task)
+      .subscribe((boards) => this.boards = boards)
+  }
+
   private onDrop(dropData) {
-    console.log(111)
-    // dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
-    //   dropData.item.parentTaskId;
+    let item : Task = dropData.item
+    console.log('dropData.item', dropData.item, item instanceof Task);
+    // if () {
     //
-    // if (dropData.params.status) {
-    //   let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
-    //   dropData.item.status = status;
     // }
 
-    // this.taskService.updateTask(dropData.item).toPromise().then((task) => this.search())
+    dropData.item.parent = dropData.params.parent ? dropData.params.parent :
+      dropData.item.parent;
+
+    this.boardService.moveBoard(dropData.item._id, dropData.item.parent).toPromise().then(() => this.getBoards())
   }
 
   save(): void {
-    this.boardService.saveBoard(this.newBoard)
+    this.boardService.saveBoard(this.newBoard).toPromise().then((board) => {
+      this.boards.push(board);
+      this.initBoard();
+    });
   }
 
   initBoard(): void {

@@ -26,4 +26,10 @@ export class BoardResource extends Resource {
     isArray: true
   })
   getBoards: ResourceMethodStrict<any, {projectId: string}, TaskBoard[]>;
+
+  @ResourceAction({
+    url: '/api/move/item/{!itemId}/to/{!toId}',
+    method: RequestMethod.Post
+  })
+  moveBoard: ResourceMethodStrict<any, {itemId: string, toId: string}, TaskBoard>;
 }

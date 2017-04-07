@@ -79,6 +79,7 @@ import {TaskBacklogComponent} from "./tasks/task-backlog/task-backlog.component"
 import {BoardService} from "./services/board.service";
 import {BoardResource} from "./resources/board.resource";
 import {BoardsByStatusFilter} from "./pipes/board-by-status.pipe";
+import {BoardsListComponent} from "./tasks/boards-list/boards-list.component";
 
 @NgModule({
   imports: [
@@ -108,6 +109,7 @@ import {BoardsByStatusFilter} from "./pipes/board-by-status.pipe";
     BlankComponent,
     TaskComponent,
     TaskBacklogComponent,
+    BoardsListComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
