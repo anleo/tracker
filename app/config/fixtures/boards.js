@@ -33,5 +33,17 @@ exports.boards = [
         "createdAt": ISODate(moment().toDate()),
         "updatedAt": ISODate(moment().toDate()),
         "__v": 0
+    },
+    {
+        "_id": ObjectId("551540d7210f67464cde2666"),
+        "title": "board 3",
+        "status": "accepted",
+        "time": 6,
+        "owner": ObjectId("5514462ae4eb270b4f115c2c"),
+        "shared": [ObjectId("5514462ae4eb270b4f115c2c")],
+        "project": ObjectId("551540d7210f64444cde2327"),
+        "createdAt": ISODate(moment().toDate()),
+        "updatedAt": ISODate(moment().toDate()),
+        "__v": 0
     }
 ];

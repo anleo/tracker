@@ -3,7 +3,7 @@ module.exports = function (mongoose) {
     let options = {discriminatorKey: 'type'};
 
     let BoardItemSchema = new Schema({
-        parent: {type: Schema.Types.ObjectId, ref: 'Board'},
+        board: {type: Schema.Types.ObjectId, ref: 'Board'},
         createdAt: {type: Date, default: Date.now, index: true},
         updatedAt: {type: Date, default: Date.now, index: true}
     }, options);
