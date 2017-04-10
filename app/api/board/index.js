@@ -33,11 +33,11 @@ module.exports = function (app) {
         board.title = req.body.title;
         board.project = req.params.project;
         board.status = '';
-        board.time = req.body.title || 0;
+        board.time = req.body.time || 0;
 
         // board.owner = "5514462ae4eb270b4f115c2c";
         board.owner = req.user;
-        board.share = req.body.share;
+        board.shared = req.body.shared;
 
         board.save().then((board) => {
             new BoardItemBoard({
@@ -82,6 +82,17 @@ module.exports = function (app) {
                 .catch((err) => res.status(400).json(err));
         });
     });
+
+    app.get('/api/boards/:board/boardItems', function (req, res) {
+        BoardItem
+            .find({board: req.params.board})
+            .populate('item')
+            .lean()
+            .exec()
+            .then((boardItems) => res.json(boardItems))
+            .catch((err) => res.status(400).json(err));
+    });
+
 
     // app.post('/api/move/boardItem/to/:boardItemId', function (req, res) {
     //     let boardItem = new BoardItemBoard();
