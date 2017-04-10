@@ -1,9 +1,32 @@
 module.exports = function (app) {
+    let Board = app.container.get('Board');
     let BoardItem = app.container.get('BoardItem');
     let BoardItemTask = app.container.get('BoardItemTask');
     let BoardItemBoard = app.container.get('BoardItemBoard');
 
-    app.post('/api/boards/:board/boardItems', function (req, res) {
+    // TODO @@@id: move to service (get boardItem)
+    app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
+        Board.find({project: req.params.projectId})
+            .lean()
+            .exec()
+            .then((boards) => {
+                if (!boards.length) {
+                    return res.json(boards);
+                }
+
+                boards = boards.map((board) => board._id);
+                BoardItem
+                    .find({board: {$in: boards}, type: 'board', isRoot: true})
+                    .populate('item')
+                    .lean()
+                    .exec()
+                    .then((boardItems) => res.json(boardItems))
+                    .catch((err) => res.status(400).json(err));
+            })
+            .catch((err) => res.status(400).json(err));
+    });
+
+    app.post('/api/boards/:boardId/boardItems', function (req, res) {
         // TODO @@@id: move to service (createBoardItem)
         const methods = [{
             type: 'task',
@@ -22,7 +45,7 @@ module.exports = function (app) {
         method = method.method;
 
         let boardItem = {
-            board: req.params.board,
+            board: req.params.boardId,
             item: req.body.item
         };
 
@@ -47,5 +70,13 @@ module.exports = function (app) {
             .then((boardItems) => res.json(boardItems))
             .catch((err) => res.status(400).json(err));
     });
+
+    // app.post('/api/move/boardItem/to/:boardItemId', function (req, res) {
+    //     let boardItem = new BoardItemBoard();
+    //     boardItem.item = req.params.itemId;
+    //     boardItem.parent = req.params.toId;
+    //     boardItem.status = '';
+    //     boardItem.save().then((boardItem) => res.json(boardItem)).catch((err) => res.status(400).json(err));
+    // });
 
 };
