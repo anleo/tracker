@@ -12,6 +12,7 @@ function ISODate(date) {
 exports.boarditems = [
     {
         "_id": ObjectId("58e5f677cc02295c0bfed2a0"),
+        "isRoot": false,
         "item": ObjectId("551540ec210f64444cde2359"),
         "type": "task",
         "board": ObjectId("551540d7210f67464cde2657"),
@@ -21,6 +22,7 @@ exports.boarditems = [
     },
     {
         "_id": ObjectId("58e5f679cc02295c0bfed2a1"),
+        "isRoot": false,
         "item": ObjectId("551540ec210f64444cde2329"),
         "type": "task",
         "board": ObjectId("551540d7210f67464cde2657"),

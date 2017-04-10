@@ -10,7 +10,11 @@ export class BoardItemService {
   constructor(private boardItemResource: BoardItemResource) {}
 
   getRootBoardItemsByProject(projectId: string): Observable<TaskBoardItem[]> {
-    return this.boardItemResource.getRootBoardItemsByProject(null, {projectId: projectId}).$observable;
+    return this.boardItemResource.getRootBoardItemsByProject({projectId: projectId}).$observable;
+  }
+
+  getBoardItemsByBoardId(boardId: string): Observable<TaskBoardItem[]> {
+    return this.boardItemResource.getBoardItemsByBoardId({boardId: boardId}).$observable;
   }
 
   save(boardItem: TaskBoardItem): Observable<TaskBoardItem> {

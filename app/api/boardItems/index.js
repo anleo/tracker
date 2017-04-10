@@ -5,6 +5,7 @@ module.exports = function (app) {
     let BoardItemBoard = app.container.get('BoardItemBoard');
 
     // TODO @@@id: move to service (get boardItem)
+    //@@@ TODO check access to this board
     app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
         Board.find({project: req.params.projectId})
             .lean()
@@ -61,9 +62,10 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/api/boards/:board/boardItems', function (req, res) {
+    //@@@ TODO check access to this board
+    app.get('/api/boards/:boardId/boardItems', function (req, res) {
         BoardItem
-            .find({board: req.params.board})
+            .find({board: req.params.boardId, isRoot: false})
             .populate('item')
             .lean()
             .exec()
