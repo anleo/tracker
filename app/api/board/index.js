@@ -5,6 +5,7 @@ module.exports = function (app) {
     let BoardItemTask = app.container.get('BoardItemTask');
     let BoardItemBoard = app.container.get('BoardItemBoard');
 
+    // TODO @@@id: move to service (get boardItem)
     app.get('/api/projects/:project/boards', function (req, res) {
         Board.find({project: req.params.project})
             .lean()
@@ -26,24 +27,29 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json(err));
     });
 
+// TODO @@@id: move to service (createBoard)
     app.post('/api/projects/:project/boards', function (req, res) {
         let board = new Board();
         board.title = req.body.title;
         board.project = req.params.project;
+        board.status = '';
+        board.time = req.body.title || 0;
+
         // board.owner = "5514462ae4eb270b4f115c2c";
         board.owner = req.user;
-        board.save()
-            .then((board) => {
-                new BoardItemBoard({
-                    item: board
-                }).save()
-                    .then(() => res.json(board))
-                    .catch((err) => res.status(400).json(err));
-            })
-            .catch((err) => res.status(400).json(err));
+        board.share = req.body.share;
+
+        board.save().then((board) => {
+            new BoardItemBoard({
+                item: board
+            }).save()
+                .then(() => res.json(board))
+                .catch((err) => res.status(400).json(err));
+        }).catch((err) => res.status(400).json(err));
     });
 
     app.post('/api/boards/:board/boardItems', function (req, res) {
+        // TODO @@@id: move to service (createBoardItem)
         const methods = [{
             type: 'task',
             method: BoardItemTask
