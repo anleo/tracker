@@ -17,9 +17,5 @@ export class BoardService {
   saveBoard(board: TaskBoard): Observable<TaskBoard> {
     return this.boardResource.save(board, {projectId: board.project}).$observable;
   }
-
-  moveBoard(fromBoard: string, toBoard: string): Observable<TaskBoard> {
-    return this.boardResource.moveBoard(null, {itemId: fromBoard, toId: toBoard}).$observable;
-  }
 }
 

@@ -5,7 +5,7 @@ module.exports = function (app) {
     let BoardItemTask = app.container.get('BoardItemTask');
     let BoardItemBoard = app.container.get('BoardItemBoard');
 
-    app.get('/api/projects/:projectId/boards', function (req, res) {
+    app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
         Board.find({project: req.params.projectId})
             .lean()
             .exec()
@@ -30,7 +30,6 @@ module.exports = function (app) {
         let board = new Board();
         board.title = req.body.title;
         board.project = req.params.projectId;
-        // board.owner = "5514462ae4eb270b4f115c2c";
         board.owner = req.user;
         board.save()
             .then((board) => {

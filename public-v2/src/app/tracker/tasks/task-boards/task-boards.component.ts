@@ -4,7 +4,8 @@ import {TaskBoard} from "../../models/task-board";
 import {CurrentTaskService} from "../../services/current-task.service";
 import {DnDService} from "../../dnd/dnd.service";
 import {Subject} from "rxjs";
-import {Task} from "../../models/task";
+import {BoardItemService} from "../../services/board-item.service";
+import {TaskBoardItem} from "../../models/task-board-item";
 
 @Component({
   selector: 'task-boards',
@@ -12,7 +13,7 @@ import {Task} from "../../models/task";
 })
 
 export class TaskBoardsComponent implements OnInit, OnDestroy {
-  boards: TaskBoard[] | null = [];
+  boardItems: TaskBoardItem[] | null = [];
   newBoard: TaskBoard | null;
 
   componentDestroyed$: Subject<boolean> = new Subject();
@@ -35,19 +36,21 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
 
 
   constructor(private boardService: BoardService,
+              private boardItemService: BoardItemService,
               private currentTaskService: CurrentTaskService,
               private dndService: DnDService) {
   }
 
   ngOnInit(): void {
-    this.currentTaskService.task$.subscribe((task) => {
-      if (!task) {
-        return;
-      }
+    this.currentTaskService.task$
+      .subscribe((task) => {
+        if (!task) {
+          return;
+        }
 
-      this.initBoard();
-      this.getBoards();
-    });
+        this.initBoard();
+        this.getBoards();
+      });
 
     this.dndService.onDrop$
       .takeUntil(this.componentDestroyed$)
@@ -62,28 +65,28 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   }
 
   getBoards(): void {
-    this.boardService.getBoards(this.currentTaskService.task)
-      .subscribe((boards) => this.boards = boards)
+    this.boardItemService
+      .getRootBoardItemsByProject(this.currentTaskService.task._id)
+      .toPromise()
+      .then((boardItems) => this.boardItems = boardItems)
+      .catch((err) => console.log(err));
   }
 
   private onDrop(dropData) {
-    let item : Task = dropData.item
-    console.log('dropData.item', dropData.item, item instanceof Task);
-    // if () {
-    //
-    // }
+
 
     dropData.item.parent = dropData.params.parent ? dropData.params.parent :
       dropData.item.parent;
-
-    this.boardService.moveBoard(dropData.item._id, dropData.item.parent).toPromise().then(() => this.getBoards())
   }
 
   save(): void {
-    this.boardService.saveBoard(this.newBoard).toPromise().then((board) => {
-      this.boards.push(board);
-      this.initBoard();
-    });
+    this.boardService
+      .saveBoard(this.newBoard)
+      .toPromise()
+      .then((board) => {
+        // this.boards.push(board);
+        this.initBoard();
+      });
   }
 
   initBoard(): void {

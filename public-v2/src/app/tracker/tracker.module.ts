@@ -78,8 +78,10 @@ import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
 import {TaskBacklogComponent} from "./tasks/task-backlog/task-backlog.component";
 import {BoardService} from "./services/board.service";
 import {BoardResource} from "./resources/board.resource";
-import {BoardsByStatusFilter} from "./pipes/board-by-status.pipe";
-import {BoardsListComponent} from "./tasks/boards-list/boards-list.component";
+import {BoardItemsByStatusFilter} from "./pipes/board-items-by-status.pipe";
+import {BoardItemsListComponent} from "./tasks/board-items-list/board-items-list.component";
+import {BoardItemResource} from "./resources/board-item.resource";
+import {BoardItemService} from "./services/board-item.service";
 
 @NgModule({
   imports: [
@@ -109,7 +111,7 @@ import {BoardsListComponent} from "./tasks/boards-list/boards-list.component";
     BlankComponent,
     TaskComponent,
     TaskBacklogComponent,
-    BoardsListComponent,
+    BoardItemsListComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
@@ -136,7 +138,7 @@ import {BoardsListComponent} from "./tasks/boards-list/boards-list.component";
     TaskSpentTimeComponent,
     TaskTagsComponent,
     TaskSearchPipe,
-    BoardsByStatusFilter,
+    BoardItemsByStatusFilter,
     TaskMoveComponent,
     TaskDescriptionEditor,
     TaskDescriptionViewer,
@@ -169,8 +171,10 @@ import {BoardsListComponent} from "./tasks/boards-list/boards-list.component";
     TaskResolver,
     TaskResource,
     BoardResource,
+    BoardItemResource,
     TaskService,
     BoardService,
+    BoardItemService,
     TaskMetricsService,
     CurrentTaskService,
     TaskStatusService,
