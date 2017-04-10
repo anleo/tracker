@@ -30,6 +30,7 @@ exports.boarditems = [
     },
     {
         "_id": ObjectId("58e5f679cc02295c0bfed2a2"),
+        "isRoot": true,
         "item": ObjectId("551540d7210f67464cde2666"),
         "type": "board",
         "board": ObjectId("551540d7210f67464cde2657"),
