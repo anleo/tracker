@@ -1,7 +1,34 @@
 module.exports = function (app) {
+    let Board = app.container.get('Board');
     let BoardItem = app.container.get('BoardItem');
     let BoardItemTask = app.container.get('BoardItemTask');
     let BoardItemBoard = app.container.get('BoardItemBoard');
+
+    app.get('/api/boards/:board/boardItems', function (req, res) {
+        Board.findById(req.params.board)
+            .then(function (board) {
+                if (!board) {
+                    return res.status(400).json(new Error('Board was not found'));
+                }
+
+                let hasAccess = board.shared.map((user) => {
+                    return user === req.user._id;
+                });
+
+                if (hasAccess) {
+                    BoardItem
+                        .find({board: req.params.board})
+                        .populate('item')
+                        .lean()
+                        .exec()
+                        .then((boardItems) => res.json(boardItems))
+                        .catch((err) => res.status(400).json(err));
+                } else {
+                    res.status(403).json(new Error('You haven\'t access to this board'));
+                }
+            })
+            .catch((err) => res.status(400).json(err));
+    });
 
     app.post('/api/boards/:board/boardItems', function (req, res) {
         // TODO @@@id: move to service (createBoardItem)
@@ -37,15 +64,4 @@ module.exports = function (app) {
                 .catch((err) => res.status(400).json(err));
         });
     });
-
-    app.get('/api/boards/:board/boardItems', function (req, res) {
-        BoardItem
-            .find({board: req.params.board})
-            .populate('item')
-            .lean()
-            .exec()
-            .then((boardItems) => res.json(boardItems))
-            .catch((err) => res.status(400).json(err));
-    });
-
 };

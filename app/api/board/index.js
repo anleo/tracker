@@ -2,6 +2,7 @@ module.exports = function (app) {
     let Board = app.container.get('Board');
     let BoardItem = app.container.get('BoardItem');
     let BoardItemBoard = app.container.get('BoardItemBoard');
+    let _ = require('lodash');
 
     // TODO @@@id: move to service (get boardItem)
     app.get('/api/projects/:project/boards', function (req, res) {
@@ -13,9 +14,21 @@ module.exports = function (app) {
                     return res.json(boards);
                 }
 
-                boards = boards.map((board) => board._id);
+                let boardsId = [];
+                // let user = req.user._id.toString();
+                let user = '5514462ae4eb270b4f115c2c';
+
+                boards.forEach(board => {
+                    let shared = board.shared.map((user) => user.toString());
+                    let contains = _.contains(shared, user);
+
+                    if (contains) {
+                        boardsId.push(board._id);
+                    }
+                });
+
                 BoardItem
-                    .find({board: {$in: boards}, type: 'board', isRoot: true})
+                    .find({board: {$in: boardsId}, type: 'board', isRoot: true})
                     .populate('item')
                     .lean()
                     .exec()
