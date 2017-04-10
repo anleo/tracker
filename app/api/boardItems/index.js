@@ -47,7 +47,8 @@ module.exports = function (app) {
 
         let boardItem = {
             board: req.params.boardId,
-            item: req.body.item
+            item: req.body.item,
+            isRoot: req.body.isRoot || false
         };
 
         method.count(boardItem).exec().then((count) => {

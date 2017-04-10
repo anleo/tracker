@@ -7,6 +7,8 @@ import {TaskWithStatus} from "../../models/task-with-status";
 import {SocketService} from "../../../services/socket.service";
 import {DnDService} from "../../dnd/dnd.service";
 
+import {isNull} from "util";
+
 @Component({
   selector: 'task-backlog',
   templateUrl: 'task-backlog.component.html'
@@ -21,6 +23,8 @@ export class TaskBacklogComponent implements OnInit {
   addTaskToggle: boolean = false;
   editMode: boolean = false;
 
+  metricsDetails: number;
+
   constructor(private taskService: TaskService,
               private socketService: SocketService,
               private dndService: DnDService,
@@ -31,6 +35,12 @@ export class TaskBacklogComponent implements OnInit {
     // let self = this;
     // this.socketService.scopeOn(self, 'task.save', (data) => this.loadTasks());
     // this.socketService.scopeOn(self, 'task.remove', (data) => this.loadTasks());
+    this.taskService.taskMetricsViewType$
+      .map(type => !isNull(type) ? type : 0)
+      .subscribe(type => {
+        this.metricsDetails = type;
+      });
+
 
     this.currentTaskService.rootTask$.subscribe((root) => {
       this.root = root;
@@ -39,17 +49,17 @@ export class TaskBacklogComponent implements OnInit {
 
     this.taskService.editTaskUpdated$
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
-      // .takeUntil(this.componentDestroyed$)
+    // .takeUntil(this.componentDestroyed$)
 
     this.taskService.editTaskModal$
       .subscribe((flag) => this.editMode = flag);
-      // .takeUntil(this.componentDestroyed$)
+    // .takeUntil(this.componentDestroyed$)
 
     // this.dndService.onDrop$
     //   .subscribe((dropData) => {
     //     this.onDrop(dropData);
     //   });
-      // .takeUntil(this.componentDestroyed$)
+    // .takeUntil(this.componentDestroyed$)
   }
 
   loadTasks() {
@@ -62,6 +72,10 @@ export class TaskBacklogComponent implements OnInit {
     this.task.parentTaskId = this.root && this.root._id;
 
     this.loadTasks();
+  }
+
+  edit(task: Task) {
+    this.taskService.setEditTaskModal(task);
   }
 
   private onDrop(dropData) {
@@ -93,6 +107,14 @@ export class TaskBacklogComponent implements OnInit {
 
   checkInput(event) {
     this.addTaskToggle = !!(event && event.target && event.target.value);
+  }
+
+  wrapToBoardItem(task: Task) {
+    return {
+      board: null,
+      type: 'task',
+      item: task._id
+    };
   }
 
   private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {

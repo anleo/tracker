@@ -171,7 +171,32 @@ exports.tasks = [
         "commentsCounter":0,
         "updatedBy": ObjectId("5514462ae4eb270b4f115c2c"),
         "__v" : 0
+    },
+    {
+        "_id" : ObjectId("551540d7210f64444cde2346"),
+        "description": "",
+        "title" : "task 4",
+        "status" : "",
+        "estimatedTime" : 0,
+        "simple" : true,
+        "date" : ISODate("2015-03-27T11:36:55.983Z"),
+        "updatedAt" : ISODate(moment().toDate()),
+        "parentTaskId" : null,
+        "velocity" : 1,
+        "points" : 3,
+        "complexity" : null,
+        "spenttime" : 0,
+        "timeToDo": 0,
+        "priority" : null,
+        "owner":ObjectId("5514462ae4eb270b4f115c2c"),
+        "developer":ObjectId("5514462ae4eb270b4f115c2c"),
+        "team": [],
+        "files": [],
+        "tags": [],
+        "tagsList": ['aaa', 'bbb', 'ccc'],
+        "archived":  false,
+        "commentsCounter":0,
+        "updatedBy": ObjectId("5514462ae4eb270b4f115c2c"),
+        "__v" : 0
     }
-
-
 ];

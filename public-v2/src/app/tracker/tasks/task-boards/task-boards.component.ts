@@ -7,6 +7,8 @@ import {Subject} from "rxjs";
 import {BoardItemService} from "../../services/board-item.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 
+import * as _ from 'lodash';
+
 @Component({
   selector: 'task-boards',
   templateUrl: 'task-boards.component.html'
@@ -73,10 +75,11 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   }
 
   private onDrop(dropData) {
+    let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type']);
+    console.log(newBoardItem);
 
-
-    dropData.item.parent = dropData.params.parent ? dropData.params.parent :
-      dropData.item.parent;
+    newBoardItem['board'] = dropData.params.parent;
+    this.boardItemService.save(newBoardItem).toPromise().then((boardItem) => console.log(boardItem))
   }
 
   save(): void {

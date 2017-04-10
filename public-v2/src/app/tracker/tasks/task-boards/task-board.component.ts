@@ -39,7 +39,6 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('init')
     this.getBoardItems();
 
     this.dndService.onDrop$
@@ -59,9 +58,9 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
   }
 
   private onDrop(dropData) {
+    let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type']);
+    newBoardItem['board'] = dropData.params.parent;
 
-
-    dropData.item.parent = dropData.params.parent ? dropData.params.parent :
-      dropData.item.parent;
+    this.boardItemService.save(newBoardItem).toPromise().then((boardItem) => console.log(boardItem))
   }
 }
