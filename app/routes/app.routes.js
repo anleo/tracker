@@ -7,4 +7,5 @@ module.exports = function (app, passport) {
     require('../api/files')(app);
     require('../api/user')(app);
     require('../api/board')(app);
+    require('../api/boardItems')(app);
 };
