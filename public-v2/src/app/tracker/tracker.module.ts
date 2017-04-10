@@ -82,6 +82,9 @@ import {BoardItemsByStatusFilter} from "./pipes/board-items-by-status.pipe";
 import {BoardItemsListComponent} from "./tasks/board-items-list/board-items-list.component";
 import {BoardItemResource} from "./resources/board-item.resource";
 import {BoardItemService} from "./services/board-item.service";
+import { BasketComponent } from './tasks/basket/basket.component';
+import {BasketResource} from "./resources/basket.resource";
+import {BasketService} from "./services/basket.service";
 
 @NgModule({
   imports: [
@@ -165,7 +168,8 @@ import {BoardItemService} from "./services/board-item.service";
     MetricsInEditorComponent,
     TaskArchiveComponent,
     TaskSearchDirective,
-    TaskSearchComponent
+    TaskSearchComponent,
+    BasketComponent
   ],
   providers: [
     TaskResolver,
@@ -178,7 +182,9 @@ import {BoardItemService} from "./services/board-item.service";
     TaskMetricsService,
     CurrentTaskService,
     TaskStatusService,
-    TaskSearchService
+    TaskSearchService,
+    BasketResource,
+    BasketService
   ]
 })
 export class TrackerModule {

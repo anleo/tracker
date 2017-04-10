@@ -18,6 +18,7 @@ module.exports = function (container) {
   container.register('BoardItem', require('../models/boardItem'), ['Mongoose']);
   container.register('BoardItemTask', require('../models/boardItemTask'), ['Mongoose', 'BoardItem']);
   container.register('BoardItemBoard', require('../models/boardItemBoard'), ['Mongoose', 'BoardItem']);
+  container.register('BoardItemUserBoard', require('../models/boardItemUserBoard'), ['Mongoose', 'BoardItem']);
 
     // classes
   container.register('StatusWriter', require('../historyWriters/StatusWriter'), ['TaskStatus']);
