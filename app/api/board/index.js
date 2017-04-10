@@ -15,7 +15,9 @@ module.exports = function (app) {
                 }
 
                 boards = boards.map((board) => board._id);
-                BoardItem.find({board: {$in: boards}, type: 'board'})
+                BoardItem
+                    .find({board: {$in: boards}, type: 'board', isRoot: true})
+                    .populate('item')
                     .lean()
                     .exec()
                     .then((boardItems) => res.json(boardItems))
@@ -30,13 +32,15 @@ module.exports = function (app) {
         board.project = req.params.project;
         // board.owner = "5514462ae4eb270b4f115c2c";
         board.owner = req.user;
-        board.save().then((board) => {
-            new BoardItemBoard({
-                item: board
-            }).save()
-                .then(() => res.json(board))
-                .catch((err) => res.status(400).json(err));
-        }).catch((err) => res.status(400).json(err));
+        board.save()
+            .then((board) => {
+                new BoardItemBoard({
+                    item: board
+                }).save()
+                    .then(() => res.json(board))
+                    .catch((err) => res.status(400).json(err));
+            })
+            .catch((err) => res.status(400).json(err));
     });
 
     app.post('/api/boards/:board/boardItems', function (req, res) {
@@ -66,7 +70,8 @@ module.exports = function (app) {
                 return res.status(400).json(new Error('This BoardItem already exists'));
             }
 
-            new method(boardItem).save()
+            new method(boardItem)
+                .save()
                 .then((boardItem) => res.json(boardItem))
                 .catch((err) => res.status(400).json(err));
         });
