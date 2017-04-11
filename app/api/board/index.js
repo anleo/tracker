@@ -1,69 +1,37 @@
 module.exports = function (app) {
-    let Board = app.container.get('Board');
-    let BoardItem = app.container.get('BoardItem');
-    let BoardItemBoard = app.container.get('BoardItemBoard');
-    let _ = require('lodash');
+    let BoardService = app.container.get('BoardService');
+    let BoardItemService = app.container.get('BoardItemService');
 
-    // TODO @@@id: move to service (get boardItem)
     app.get('/api/projects/:project/boards', function (req, res) {
-        Board.find({project: req.params.project})
-            .lean()
-            .exec()
-            .then((boards) => {
-                if (!boards.length) {
-                    return res.json(boards);
-                }
+        let options = {
+            $or: [
+                {board: {$exists: false}},
+                {board: null}
+            ],
+            type: 'board',
+            project: req.params.project,
+            isRoot: true
+        };
 
-                let boardsId = [];
-                // let user = req.user._id.toString();
-                let user = '5514462ae4eb270b4f115c2c';
-
-                boards.forEach(board => {
-                    let shared = board.shared.map((user) => user.toString());
-                    let contains = _.contains(shared, user);
-
-                    if (contains) {
-                        boardsId.push(board._id);
-                    }
-                });
-
-                BoardItem
-                    .find({board: {$in: boardsId}, type: 'board', isRoot: true})
-                    .populate('item')
-                    .lean()
-                    .exec()
-                    .then((boardItems) => res.json(boardItems))
-                    .catch((err) => res.status(400).json(err));
-            })
-            .catch((err) => res.status(400).json(err));
+        BoardItemService
+            .getItemsByOptions(options)
+            .then((boardItems) => res.json(boardItems))
+            .catch((err) => res.status(400).json({error: err}));
     });
 
-// TODO @@@id: move to service (createBoard)
     app.post('/api/projects/:project/boards', function (req, res) {
-        let board = new Board();
-        board.title = req.body.title;
-        board.project = req.params.project;
-        board.status = '';
-        board.time = req.body.time || 0;
+        let data = {
+            title: req.body.title,
+            project: req.params.project,
+            status: '',
+            time: req.body.time || 0,
+            owner: req.user,
+            shared: req.body.shared
+        };
 
-        // board.owner = "5514462ae4eb270b4f115c2c";
-        board.owner = req.user;
-        board.shared = req.body.shared;
-
-        board.save().then((board) => {
-            new BoardItemBoard({
-                item: board
-            }).save()
-                .then(() => res.json(board))
-                .catch((err) => res.status(400).json(err));
-        }).catch((err) => res.status(400).json(err));
+        BoardService
+            .create(data)
+            .then((board) => res.json(board))
+            .catch((err) => res.status(400).json({error: err}));
     });
-
-    // app.post('/api/move/boardItem/to/:boardItemId', function (req, res) {
-    //     let boardItem = new BoardItemBoard();
-    //     boardItem.item = req.params.itemId;
-    //     boardItem.parent = req.params.toId;
-    //     boardItem.status = '';
-    //     boardItem.save().then((boardItem) => res.json(boardItem)).catch((err) => res.status(400).json(err));
-    // });
 };

@@ -1,67 +1,45 @@
 module.exports = function (app) {
-    let Board = app.container.get('Board');
-    let BoardItem = app.container.get('BoardItem');
-    let BoardItemTask = app.container.get('BoardItemTask');
-    let BoardItemBoard = app.container.get('BoardItemBoard');
+    let BoardItemService = app.container.get('BoardItemService');
+    let BoardService = app.container.get('BoardService');
+    let _ = require('lodash');
 
     app.get('/api/boards/:board/boardItems', function (req, res) {
-        Board.findById(req.params.board)
-            .then(function (board) {
+        BoardService
+            .getById(req.params.board)
+            .then((board) => {
                 if (!board) {
-                    return res.status(400).json(new Error('Board was not found'));
+                    return res.status(400).json({error: 'Board was not found'});
                 }
 
-                let hasAccess = board.shared.map((user) => {
-                    return user === req.user._id;
-                });
+                let user = req.user && req.user._id ? req.user._id : user;
+                // let user = '5514462ae4eb270b4f115c2c';
 
-                if (hasAccess) {
-                    BoardItem
-                        .find({board: req.params.board})
-                        .populate('item')
-                        .lean()
-                        .exec()
+                if (BoardService.hasInShared(board, user)) {
+                    BoardItemService.getItemsByOptions({board: board, isRoot: false})
                         .then((boardItems) => res.json(boardItems))
-                        .catch((err) => res.status(400).json(err));
+                        .catch((err) => res.status(400).json({error: err}));
                 } else {
-                    res.status(403).json(new Error('You haven\'t access to this board'));
+                    res.status(400).json({error: 'You haven\'t access to this board'});
                 }
             })
-            .catch((err) => res.status(400).json(err));
+            .catch((err) => res.status(400).json({error: err}));
     });
 
     app.post('/api/boards/:board/boardItems', function (req, res) {
-        // TODO @@@id: move to service (createBoardItem)
-        const methods = [{
-            type: 'task',
-            method: BoardItemTask
-        }, {
-            type: 'board',
-            method: BoardItemBoard
-        }];
+        BoardService
+            .getById(req.params.board)
+            .then((board) => {
+                let data = {
+                    board: board,
+                    type: req.body.type,
+                    item: req.body.item,
+                    project: board.project
+                };
 
-        let method = methods.find((method) => method.type === req.body.type);
-
-        if (!method) {
-            return res.status(400).json(new Error('No right method to create BoardItem'));
-        }
-
-        method = method.method;
-
-        let boardItem = {
-            board: req.params.board,
-            item: req.body.item
-        };
-
-        method.count(boardItem).exec().then((count) => {
-            if (count) {
-                return res.status(400).json(new Error('This BoardItem already exists'));
-            }
-
-            new method(boardItem)
-                .save()
-                .then((boardItem) => res.json(boardItem))
-                .catch((err) => res.status(400).json(err));
-        });
+                BoardItemService.create(data)
+                    .then((boardItem) => res.json(boardItem))
+                    .catch((err) => res.status(400).json({error: err}));
+            })
+            .catch((err) => res.status(400).json({error: err}))
     });
 };
