@@ -6,6 +6,7 @@ module.exports = function (mongoose) {
         status: String,
         time: {type: Number, default: 0},
         owner: {type: Schema.Types.ObjectId, ref: 'User'},
+        type: String,
         shared: [{type: Schema.Types.ObjectId, ref: 'User'}],
         project: {type: Schema.Types.ObjectId, ref: 'Task'},
         createdAt: {type: Date, default: Date.now, index: true},

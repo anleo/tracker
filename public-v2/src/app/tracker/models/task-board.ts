@@ -1,6 +1,6 @@
 export class TaskBoard {
   _id?: string;
-  title: string = null;
+  title?: string = null;
   project?: string;
   status?: string = '';
   shared?: Array<string>;
@@ -8,4 +8,5 @@ export class TaskBoard {
   time?: number;
   createdAt?: string;
   updatedAt?: string;
+  type?: string;
 }

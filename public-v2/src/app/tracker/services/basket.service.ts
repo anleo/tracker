@@ -3,14 +3,41 @@ import {Observable} from 'rxjs/Observable';
 
 import {BasketResource} from "../resources/basket.resource";
 import {User} from "../../user/models/user";
+import {UserService} from "../../user/services/user.service";
+import {TaskBoard} from "../models/task-board";
 
 
 @Injectable()
 export class BasketService {
-  constructor(private basketResource: BasketResource) {}
+  constructor(private basketResource: BasketResource,
+              private userService: UserService) {
+    this.getUser();
+  }
 
-  get(user: User): Observable<any> {
-    return this.basketResource.get({userId: user._id}).$observable;
+  basket: TaskBoard | null;
+  user: User;
+
+  getUser(): void {
+    this.userService.get()
+      .subscribe((user) => {
+        this.user = user;
+      })
+  }
+
+  getBasket(): Observable<TaskBoard> {
+    return this.basketResource.get({userId: this.user._id})
+      .$observable
+  }
+
+  get(): Observable<TaskBoard> {
+    if (this.basket) {
+      return Observable.of(this.basket);
+    }
+    return this.getBasket()
+      .map((basket) => {
+        return this.basket = basket;
+      })
+
   }
 
 }

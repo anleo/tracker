@@ -3,7 +3,6 @@ import {Component, OnInit} from '@angular/core';
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
 import {CurrentTaskService} from "../../services/current-task.service";
-import {UserService} from "../../../user/services/user.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoard} from "../../models/task-board";
 
@@ -24,7 +23,6 @@ export class BasketComponent implements OnInit {
 
 
   constructor(private taskService: TaskService,
-              private userService: UserService,
               private basketService: BasketService) {
   }
 
@@ -37,14 +35,11 @@ export class BasketComponent implements OnInit {
   }
 
   getBasket() {
-    this.userService.get()
-      .subscribe((user) => {
-        this.basketService.get(user)
+        this.basketService.get()
           .subscribe((basket) => {
             console.log('basket', basket);
             this.basket = basket;
           })
-      })
   }
 
   getList() {

@@ -16,7 +16,7 @@ export class BoardItemResource extends Resource {
   }
 
   @ResourceAction({
-    url: '/',
+    path: '/',
     method: RequestMethod.Post
   })
   save: ResourceMethodStrict<TaskBoardItem, {boardId: string}, TaskBoardItem>;
