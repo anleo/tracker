@@ -5,7 +5,7 @@ import {BasketService} from "../../services/basket.service";
 import {TaskBoard} from "../../models/task-board";
 
 @Component({
-  selector: 'basket',
+  selector: '[basket]',
   templateUrl: './basket.component.html'
 })
 export class BasketComponent implements OnInit {

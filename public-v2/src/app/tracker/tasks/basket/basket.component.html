@@ -1,26 +1,14 @@
-<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
+<a (click)="toggleBasket()" [ngClass]="{active:showBasket}" style="cursor: pointer">Basket</a>
 
-<div>
-  <a (click)="toggleBasket()" class="btn btn-default" [ngClass]="{active:showBasket}">Basket</a>
-</div>
+<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
 <div class="backlog" [ngClass]="{show: showBasket}">
   <div class="wrap text-left">
-    <h3 style="margin: 10px 0 20px; line-height: 24px;">BASKET
-      <small (click)="toggleBasket()" class="text-muted pull-right"><i class="glyphicon glyphicon-remove"></i></small>
+    <h3 style="margin: 10px 0 20px; line-height: 24px;">Basket
+      <small (click)="toggleBasket()" class="text-muted pull-right" style="cursor: pointer">
+        <i class="glyphicon glyphicon-remove"></i>
+      </small>
     </h3>
-
-    <!--<form (submit)="save()">-->
-      <!--<div class="input-group" style="margin: 0 0 20px;">-->
-        <!--<input [(ngModel)]="task.title" name="title" type="text"-->
-               <!--class="form-control input-sm" placeholder="Add Task"-->
-               <!--(input)="checkInput($event)"-->
-               <!--id="title" autocomplete="off"/>-->
-        <!--<span class="input-group-btn">-->
-        <!--<button class="btn btn-default btn-sm" [ngClass]="{'btn-success': addTaskToggle}" type="button">Save</button>-->
-      <!--</span>-->
-      <!--</div>-->
-    <!--</form>-->
 
     <div *ngIf="tasks?.length">
       <div *ngFor="let task of tasks" class="text-left">
@@ -30,7 +18,6 @@
     <div *ngIf="!tasks?.length">No tasks yet</div>
   </div>
 </div>
-
 
 <style>
   .backlog {
@@ -52,5 +39,6 @@
 
   .backlog.show {
     right: 0;
+    z-index: 2;
   }
 </style>

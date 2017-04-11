@@ -112,7 +112,8 @@ import {BasketService} from "./services/basket.service";
   ],
   exports: [
     TaskSearchDirective,
-    BlankComponent
+    BlankComponent,
+    BasketComponent
   ],
   declarations: [
     BlankComponent,
