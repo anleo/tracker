@@ -3,6 +3,9 @@ import {Component, OnInit} from '@angular/core';
 import {BasketService} from "../../services/basket.service";
 import {TaskBoard} from "../../models/task-board";
 import {TaskBoardItem} from "../../models/task-board-item";
+import {TaskService} from "../../services/task.service";
+import {TaskWithStatus} from "../../models/task-with-status";
+import {BoardItemService} from "../../services/board-item.service";
 
 @Component({
   selector: '[basket]',
@@ -16,11 +19,15 @@ export class BasketComponent implements OnInit {
   basket: TaskBoard;
 
 
-  constructor(private basketService: BasketService) {
+  constructor(private basketService: BasketService,
+              private taskService: TaskService,
+              private boardItemService: BoardItemService) {
+
     this.basketService.basketList$
-      .subscribe((taskItems) => {
-        this.taskItems = taskItems;
-      })
+      .subscribe((taskItems) => this.taskItems = taskItems)
+
+    this.taskService.editTaskUpdated$
+      .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
 
   ngOnInit() {
@@ -39,8 +46,24 @@ export class BasketComponent implements OnInit {
       })
   }
 
+  actionProvider(taskWithStatus: TaskWithStatus): void | boolean {
+    if (!taskWithStatus) {
+      return false;
+    }
 
-  deleteTask() {
+    if (taskWithStatus.status === 'update') {
+      this.basketService.setBasketList();
+    } else if (taskWithStatus.status === 'remove') {
+      this.onRemove(taskWithStatus);
+    }
+  }
+
+  onRemove(taskWithStatus: TaskWithStatus) {
+    this.taskItems.filter((boardItem) => {
+      if (boardItem.item._id == taskWithStatus.task._id) {
+        this.boardItemService.remove(boardItem);
+      }
+    })
   }
 
 
