@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Task} from '../../models/task';
 import {BasketService} from "../../services/basket.service";
 import {TaskBoard} from "../../models/task-board";
+import {TaskBoardItem} from "../../models/task-board-item";
 
 @Component({
   selector: '[basket]',
@@ -10,8 +10,7 @@ import {TaskBoard} from "../../models/task-board";
 })
 export class BasketComponent implements OnInit {
 
-  tasks: Task[] = [];
-  task: Task|null = null;
+  taskItems: TaskBoardItem[] = [];
 
   showBasket: boolean = false;
   addTaskToggle: boolean = false;
@@ -20,6 +19,10 @@ export class BasketComponent implements OnInit {
 
 
   constructor(private basketService: BasketService) {
+    this.basketService.basketList$
+      .subscribe((taskItems) => {
+        this.taskItems = taskItems;
+      })
   }
 
   ngOnInit() {
@@ -38,13 +41,6 @@ export class BasketComponent implements OnInit {
       })
   }
 
-  getList() {
-    this.basketService.basketList$
-      .subscribe((basketItems) => {
-        console.log('basketItems', basketItems);
-      })
-
-  }
 
   deleteTask() {
   }
