@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from "@angular/core";
+import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
 import {BoardService} from "../../services/board.service";
 import {TaskBoard} from "../../models/task-board";
 import {CurrentTaskService} from "../../services/current-task.service";
@@ -6,6 +6,9 @@ import {DnDService} from "../../dnd/dnd.service";
 import {Subject} from "rxjs";
 import {BoardItemService} from "../../services/board-item.service";
 import {TaskBoardItem} from "../../models/task-board-item";
+import {Task} from '../../models/task';
+
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import * as _ from 'lodash';
 
@@ -17,6 +20,7 @@ import * as _ from 'lodash';
 export class TaskBoardsComponent implements OnInit, OnDestroy {
   boardItems: TaskBoardItem[] | null = [];
   newBoard: TaskBoard | null;
+  project: Task | null = null;
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
@@ -34,13 +38,16 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       id: 'accepted',
       name: 'Accepted',
       value: 'accepted'
-    }]
+    }];
 
 
   constructor(private boardService: BoardService,
               private boardItemService: BoardItemService,
               private currentTaskService: CurrentTaskService,
-              private dndService: DnDService) {
+              private dndService: DnDService,
+              public toastr: ToastsManager,
+              vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
@@ -49,6 +56,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
         if (!task) {
           return;
         }
+
+        this.project = task || null;
 
         this.initBoard();
         this.getBoards();
@@ -76,19 +85,20 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
 
   private onDrop(dropData) {
     let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type']);
-    console.log(newBoardItem);
-
     newBoardItem['board'] = dropData.params.parent;
-    this.boardItemService.save(newBoardItem).toPromise().then((boardItem) => console.log(boardItem))
+
+    this.boardItemService.save(newBoardItem).toPromise()
+      .then((boardItem) => console.log(boardItem))
+      .catch((err) => this.toastr.error(JSON.parse(err._body)));
   }
 
   save(): void {
     this.boardService
       .saveBoard(this.newBoard)
       .toPromise()
-      .then((board) => {
-        // this.boards.push(board);
+      .then(() => {
         this.initBoard();
+        this.getBoards();
       });
   }
 

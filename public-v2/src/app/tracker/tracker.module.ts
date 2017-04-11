@@ -83,6 +83,9 @@ import {BoardItemsByStatusFilter} from "./pipes/board-items-by-status.pipe";
 import {BoardItemsListComponent} from "./tasks/board-items-list/board-items-list.component";
 import {BoardItemResource} from "./resources/board-item.resource";
 import {BoardItemService} from "./services/board-item.service";
+import {BoardItemViewComponent} from "./tasks/board-item-views/board-item-view";
+import {BoardItemBoardComponent} from "./tasks/board-item-views/board-item-board/board-item-board";
+import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/board-item-task";
 
 @NgModule({
   imports: [
@@ -113,6 +116,9 @@ import {BoardItemService} from "./services/board-item.service";
     TaskComponent,
     TaskBacklogComponent,
     BoardItemsListComponent,
+    BoardItemViewComponent,
+    BoardItemBoardComponent,
+    BoardItemTaskComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,

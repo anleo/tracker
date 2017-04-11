@@ -1,4 +1,8 @@
 <div drop-listener>
+  <a [routerLink]="['/app/tasks', project?._id, 'boards']">
+    <button class="btn btn-link">Back</button>
+  </a>
+
   <task-backlog></task-backlog>
 
   <form (ngSubmit)="save()">
@@ -7,7 +11,6 @@
     </div>
     <button *ngIf="newBoard.title && newBoard.title.length" class="btn btn-success btn-sm">Save</button>
   </form>
-
 
   <div class="row board-view" *ngIf="boardItems && boardItems.length" drop-listener>
     <div class="col-sm-4" *ngFor="let status of statusTypess">

@@ -40,7 +40,7 @@ module.exports = function (app) {
         let method = methods.find((method) => method.type === req.body.type);
 
         if (!method) {
-            return res.status(400).json(new Error('No right method to create BoardItem'));
+            return res.status(400).json('No right method to create BoardItem');
         }
 
         method = method.method;
@@ -53,7 +53,7 @@ module.exports = function (app) {
 
         method.count(boardItem).exec().then((count) => {
             if (count) {
-                return res.status(400).json(new Error('This BoardItem already exists'));
+                return res.status(400).json('This BoardItem already exists');
             }
 
             new method(boardItem)

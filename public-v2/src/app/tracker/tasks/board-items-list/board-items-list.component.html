@@ -1,18 +1,5 @@
 <div class="tasks-list" *ngIf="boardItems && boardItems.length">
   <div *ngFor="let boardItem of boardItems">
-    <div class="panel panel-default"
-         [ngClass]="{
-    'panel-success': boardItem.item.status == 'accepted',
-    'panel-warning': boardItem.item.status == 'in progress'}"
-         drop-zone [dropParams]="{parent: boardItem.board._id || boardItem.board}" drag [dragItem]="boardItem">
-
-      <div class="panel-heading overflow-hidden">
-        <h4 class="panel-title">
-          <a>{{boardItem.item.title}}</a>
-          <span class="fa fa-arrows vcenter pull-right pointer ng-scope drag-button"></span>
-        </h4>
-      </div>
-    </div>
+    <board-item-view [boardItem]="boardItem"></board-item-view>
   </div>
 </div>
-

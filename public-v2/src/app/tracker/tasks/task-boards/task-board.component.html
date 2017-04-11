@@ -1,4 +1,7 @@
 <div drop-listener>
+  <a [routerLink]="['/app/tasks', project?._id, 'boards']">
+    <button class="btn btn-link">Back</button>
+  </a>
   <task-backlog></task-backlog>
 
   <div class="row board-view" *ngIf="boardItems && boardItems.length" drop-listener>
