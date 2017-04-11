@@ -12,7 +12,7 @@
 
     <div *ngIf="taskItems?.length">
       <div *ngFor="let taskItem of taskItems" class="text-left">
-        <app-task-panel [task]="taskItem.item" [basket]="true"></app-task-panel>
+        <app-task-panel [task]="taskItem.item" [boardItem]="taskItem"></app-task-panel>
       </div>
     </div>
     <div *ngIf="!taskItems?.length">No tasks yet</div>

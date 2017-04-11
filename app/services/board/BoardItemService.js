@@ -64,6 +64,20 @@ let BoardItemService = function (BoardItem,
         });
     };
 
+    this.removeBoardItem = function (id) {
+        return new Promise(function (resolve, reject) {
+            BoardItem.findById(id)
+                .then((boardItem) => {
+                        boardItem.remove()
+                            .then(() => {
+                                    resolve();
+                                },
+                                (err) => reject(err))
+                    },
+                    (err) => reject(err));
+        });
+    }
+
 };
 
 module.exports = BoardItemService;

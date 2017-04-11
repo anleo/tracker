@@ -11,9 +11,7 @@ import {TaskBoardItem} from "../../models/task-board-item";
 export class BasketComponent implements OnInit {
 
   taskItems: TaskBoardItem[] = [];
-
   showBasket: boolean = false;
-  addTaskToggle: boolean = false;
   editMode: boolean = false;
   basket: TaskBoard;
 
