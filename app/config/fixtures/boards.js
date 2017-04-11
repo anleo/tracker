@@ -64,7 +64,7 @@ exports.boards = [
         "type": "basket",
         "time": 0,
         "owner": ObjectId("5514462ae4eb270b4f115c2c"),
-        "shared": [],
+        "shared": [ObjectId("5514462ae4eb270b4f115c2c")],
         "createdAt": ISODate("2017-03-27T11:36:55.983Z"),
         "updatedAt": ISODate(moment().toDate()),
         "__v": 0
@@ -75,7 +75,7 @@ exports.boards = [
         "type": "basket",
         "time": 0,
         "owner": ObjectId("5514462ae4eb270b4f115c2c"),
-        "shared": [],
+        "shared": [ObjectId("5514462ae4eb270b4f115c2c")],
         "createdAt": ISODate(moment().toDate()),
         "updatedAt": ISODate(moment().toDate()),
         "__v": 0

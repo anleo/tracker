@@ -43,8 +43,8 @@ export class TaskPanelComponent implements OnInit {
         boardItem.type = "task";
         this.boardItemService.save(boardItem)
           .subscribe((response) => {
-          this.showBasket = false;
-              console.log('save to basket', response);
+              this.showBasket = false;
+              this.basketService.setBasketList();
             },
             (err) => {
               console.log('err', err);
