@@ -6,6 +6,6 @@ import {TaskBoardItem} from '../../models/task-board-item'
   selector: 'app-board-items-list',
   templateUrl: './board-items-list.component.html'
 })
-export class BoardItemsListComponent {
+export class BoardItemsListComponent{
   @Input() boardItems: TaskBoardItem[];
 }

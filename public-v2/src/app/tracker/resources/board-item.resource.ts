@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {RequestMethod, Http} from '@angular/http';
 
-import {Resource, ResourceParams, ResourceAction, ResourceMethodStrict} from 'ng2-resource-rest';
+import {Resource, ResourceParams, ResourceAction, ResourceMethodStrict, ResourceMethod} from 'ng2-resource-rest';
 
 import {TaskBoardItem} from '../models/task-board-item';
 
@@ -17,6 +17,13 @@ export class BoardItemResource extends Resource {
 
   @ResourceAction({
     path: '/',
+    isArray: true,
+    method: RequestMethod.Get
+  })
+  getBoardItemsByBoardId: ResourceMethod<{boardId: string}, TaskBoardItem[]>;
+
+  @ResourceAction({
+    path: '/',
     method: RequestMethod.Post
   })
   save: ResourceMethodStrict<TaskBoardItem, {boardId: string}, TaskBoardItem>;
@@ -26,5 +33,5 @@ export class BoardItemResource extends Resource {
     isArray: true,
     method: RequestMethod.Get
   })
-  getRootBoardItemsByProject: ResourceMethodStrict<any, {projectId: string}, TaskBoardItem[]>;
+  getRootBoardItemsByProject: ResourceMethod<{projectId: string}, TaskBoardItem[]>;
 }

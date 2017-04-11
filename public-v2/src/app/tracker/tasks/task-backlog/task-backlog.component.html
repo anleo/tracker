@@ -17,14 +17,56 @@
              (input)="checkInput($event)"
              id="title" autocomplete="off"/>
       <span class="input-group-btn">
-        <button class="btn btn-default btn-sm" [ngClass]="{'btn-success': addTaskToggle}" type="button">Save</button>
+        <button class="btn btn-default btn-sm" [ngClass]="{'btn-success': addTaskToggle}" type="submit">Save</button>
       </span>
     </div>
     </form>
 
     <div *ngIf="tasks?.length">
       <div *ngFor="let task of tasks" class="text-left">
-        <app-task-panel [task]="task"></app-task-panel>
+        <div class="panel panel-default"
+             *ngIf="task"
+             [ngClass]="{
+     'panel-success': task.status == 'accepted',
+     'panel-warning': task.status == 'in progress'}"
+             drop-zone [dropParams]="{parentTaskId: task._id}" drag [dragItem]="wrapToBoardItem(task)">
+
+          <!--"{-->
+          <!--'panel-success': task.status == 'accepted',-->
+          <!--'panel-warning': task.status == 'in progress',-->
+          <!--'task-todo-low-time' : (task.timeToDo|round) < 0,-->
+          <!--'task-not-estimated' : !task.points}"-->
+
+          <div class="panel-heading overflow-hidden">
+            <h4 class="panel-title">
+              <a [routerLink]="['/app/tasks/', task._id]">{{task.title}}</a>
+              <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
+              <span class="fa fa-arrows vcenter pull-right pointer ng-scope drag-button"></span>
+              <span class="label label-info vcenter pull-right" *ngIf="!task.simple">complex</span>
+            </h4>
+          </div>
+
+          <!--<div class="panel-body" *ngIf="metricsDetails || task.description || task.tags && task.tags.length">-->
+          <!--<div class="panel-body" *ngIf="metricsDetails">-->
+            <!--<app-task-metrics [task]="task"-->
+                              <!--[showStatus]="false"-->
+                              <!--[metricsDetails]="metricsDetails"-->
+                              <!--(click)="edit(task)"-->
+                              <!--class="fs-sm "-->
+                              <!--style="display: inline-block">-->
+            <!--</app-task-metrics>-->
+
+            <!--<div *ngIf="task.description">-->
+              <!--<hr *ngIf="metricsDetails"/>-->
+              <!--<task-description-viewer [description]="task.description"></task-description-viewer>-->
+            <!--</div>-->
+
+            <!--<hr *ngIf="task.tags && task.tags.length && (task.description || metricsDetails > 0)"/>-->
+
+            <!--<task-tags-panel [task]="task" *ngIf="task.tags && task.tags.length"></task-tags-panel>-->
+          <!--</div>-->
+
+        </div>
       </div>
     </div>
     <div *ngIf="!tasks?.length">No tasks yet</div>
@@ -34,6 +76,7 @@
 
 <style>
   .backlog {
+    z-index: 10;
     display: block;
     position: fixed;
     height: 100vH;

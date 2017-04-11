@@ -1,26 +1,26 @@
 import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
-import {BoardService} from "../../services/board.service";
-import {TaskBoard} from "../../models/task-board";
-import {CurrentTaskService} from "../../services/current-task.service";
-import {DnDService} from "../../dnd/dnd.service";
+import {ActivatedRoute} from "@angular/router";
 import {Subject} from "rxjs";
+import * as _ from 'lodash';
+
+import {DnDService} from "../../dnd/dnd.service";
 import {BoardItemService} from "../../services/board-item.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {Task} from '../../models/task';
+import {CurrentTaskService} from "../../services/current-task.service";
 
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
-import * as _ from 'lodash';
 
 @Component({
-  selector: 'task-boards',
-  templateUrl: 'task-boards.component.html'
+  selector: 'task-board',
+  templateUrl: 'task-board.component.html'
 })
 
-export class TaskBoardsComponent implements OnInit, OnDestroy {
+export class TaskBoardComponent implements OnInit, OnDestroy {
   boardItems: TaskBoardItem[] | null = [];
-  newBoard: TaskBoard | null;
   project: Task | null = null;
+  boardId: string | null = null;
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
@@ -41,9 +41,9 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     }];
 
 
-  constructor(private boardService: BoardService,
-              private boardItemService: BoardItemService,
+  constructor(private route: ActivatedRoute,
               private currentTaskService: CurrentTaskService,
+              private boardItemService: BoardItemService,
               private dndService: DnDService,
               public toastr: ToastsManager,
               vcr: ViewContainerRef) {
@@ -51,23 +51,20 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTaskService.task$
-      .subscribe((task) => {
-        if (!task) {
-          return;
-        }
-
-        this.project = task || null;
-
-        this.initBoard();
-        this.getBoards();
-      });
+    this.route.params.subscribe((params) => {
+      this.boardId = params['boardId'];
+      this.getBoardItems();
+    });
 
     this.dndService.onDrop$
       .takeUntil(this.componentDestroyed$)
       .subscribe((dropData) => {
         this.onDrop(dropData);
       });
+
+    this.currentTaskService.task$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((task) => this.project = task || null);
   }
 
   ngOnDestroy(): void {
@@ -75,12 +72,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     this.componentDestroyed$.complete();
   }
 
-  getBoards(): void {
-    this.boardItemService
-      .getRootBoardItemsByProject(this.currentTaskService.task._id)
-      .toPromise()
-      .then((boardItems) => this.boardItems = boardItems)
-      .catch((err) => console.log(err));
+  getBoardItems(): void {
+    this.boardItemService.getBoardItemsByBoardId(this.route.snapshot.params['boardId']).subscribe((boardItems) => this.boardItems = boardItems);
   }
 
   private onDrop(dropData) {
@@ -90,20 +83,5 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     this.boardItemService.save(newBoardItem).toPromise()
       .then((boardItem) => console.log(boardItem))
       .catch((err) => this.toastr.error(JSON.parse(err._body)));
-  }
-
-  save(): void {
-    this.boardService
-      .saveBoard(this.newBoard)
-      .toPromise()
-      .then(() => {
-        this.initBoard();
-        this.getBoards();
-      });
-  }
-
-  initBoard(): void {
-    this.newBoard = new TaskBoard();
-    this.newBoard.project = this.currentTaskService.task._id;
   }
 }
