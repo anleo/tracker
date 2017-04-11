@@ -13,7 +13,7 @@ import {TaskBoardItem} from "../../models/task-board-item";
 })
 export class TaskPanelComponent implements OnInit {
   @Input() task: Task;
-  @Input() basket: boolean = false;
+  @Input() inBasket: boolean = false;
   metricsDetails: number;
   showBasket: boolean = true;
 

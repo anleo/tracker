@@ -1,8 +1,6 @@
-<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
+<a (click)="toggleBasket()" [ngClass]="{active:showBasket}" style="cursor: pointer">Basket</a>
 
-<div>
-  <a (click)="toggleBasket()" class="btn btn-default" [ngClass]="{active:showBasket}">Basket</a>
-</div>
+<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
 <div class="backlog" [ngClass]="{show: showBasket}">
   <div class="wrap text-left">
@@ -12,9 +10,9 @@
       </small>
     </h3>
 
-    <div *ngIf="tasks?.length">
-      <div *ngFor="let task of tasks" class="text-left">
-        <app-task-panel [task]="task"></app-task-panel>
+    <div *ngIf="taskItems?.length">
+      <div *ngFor="let taskItem of taskItems" class="text-left">
+        <app-task-panel [task]="taskItem.item" [inBasket]="true"></app-task-panel>
       </div>
     </div>
     <div *ngIf="!taskItems?.length">No tasks yet</div>
