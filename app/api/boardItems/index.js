@@ -11,7 +11,6 @@ module.exports = function (app) {
                 }
 
                 let user = req.user && req.user._id ? req.user._id : user;
-                // let user = '5514462ae4eb270b4f115c2c';
 
                 if (BoardService.hasInShared(board, user)) {
                     BoardItemService.getItemsByOptions({board: board, isRoot: false})

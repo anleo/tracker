@@ -4,18 +4,34 @@ module.exports = function (app) {
 
     app.get('/api/projects/:projectId/boards', function (req, res) {
         let options = {
-            $or: [
-                {board: {$exists: false}},
-                {board: null}
-            ],
-            type: 'board',
-            project: req.params.projectId,
-            isRoot: true
+            shared: req.user._id,
+            project: req.params.projectId
         };
 
-        BoardItemService
-            .getItemsByOptions(options)
-            .then((boardItems) => res.json(boardItems))
+        BoardService.getBoardsByOptions(options)
+            .then((boards) => {
+                if (!boards.length) {
+                    return res.status(404).json({error: 'Boards were not found'});
+                }
+
+                let boardsIds = boards.map((board) => board._id);
+
+                let options = {
+                    $or: [
+                        {board: {$exists: false}},
+                        {board: null}
+                    ],
+                    item: {$in: boardsIds},
+                    type: 'board',
+                    project: req.params.projectId,
+                    isRoot: true
+                };
+
+                BoardItemService
+                    .getItemsByOptions(options)
+                    .then((boardItems) => res.json(boardItems))
+                    .catch((err) => res.status(400).json({error: err}));
+            })
             .catch((err) => res.status(400).json({error: err}));
     });
 

@@ -47,7 +47,6 @@ let BoardItemService = function (BoardItem,
                 board: parentBoard
             })
                 .save()
-                .exec()
                 .then((item) => resolve(item), (err) => reject(err));
         });
     };
@@ -60,7 +59,6 @@ let BoardItemService = function (BoardItem,
                 board: parentBoard
             })
                 .save()
-                .exec()
                 .then((item) => resolve(item), (err) => reject(err));
         });
     };

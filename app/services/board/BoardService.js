@@ -7,6 +7,16 @@ let BoardService = function (Board,
         return new Promise(function (resolve, reject) {
             Board
                 .find({project: project})
+                .exec()
+                .then((boards) => resolve(boards), (err) => reject(err))
+        });
+    };
+
+    this.getBoardsByOptions = function (options) {
+        return new Promise(function (resolve, reject) {
+            Board
+                .find(options)
+                .exec()
                 .then((boards) => resolve(boards), (err) => reject(err))
         });
     };
@@ -15,8 +25,6 @@ let BoardService = function (Board,
         return new Promise(function (resolve, reject) {
             let board = new Board();
             _.assign(board, data);
-// TODO @@@id: remove it
-            // board.owner = "5514462ae4eb270b4f115c2c";
 
             board
                 .save()
