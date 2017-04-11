@@ -14,6 +14,8 @@ exports.boarditems = [
         "_id": ObjectId("58e5f677cc02295c0bfed2a0"),
         "isRoot": false,
         "item": ObjectId("551540ec210f64444cde2359"),
+        "isRoot": false,
+        "project": ObjectId("551540d7210f64444cde2327"),
         "type": "task",
         "board": ObjectId("551540d7210f67464cde2657"),
         "createdAt": ISODate(moment().toDate()),
@@ -34,6 +36,8 @@ exports.boarditems = [
         "_id": ObjectId("58e5f679cc02295c0bfed2a1"),
         "isRoot": false,
         "item": ObjectId("551540ec210f64444cde2329"),
+        "isRoot": false,
+        "project": ObjectId("551540d7210f64444cde2327"),
         "type": "task",
         "board": ObjectId("551540d7210f67464cde2657"),
         "createdAt": ISODate(moment().toDate()),
@@ -43,9 +47,9 @@ exports.boarditems = [
     {
         "_id": ObjectId("58e5f679cc02295c0bfed2a2"),
         "isRoot": true,
+        "project": ObjectId("551540d7210f64444cde2327"),
         "item": ObjectId("551540d7210f67464cde2666"),
         "type": "board",
-        "board": ObjectId("551540d7210f67464cde2657"),
         "createdAt": ISODate(moment().toDate()),
         "updatedAt": ISODate(moment().toDate()),
         "__v": 0
