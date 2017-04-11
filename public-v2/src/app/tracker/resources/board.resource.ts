@@ -26,4 +26,9 @@ export class BoardResource extends Resource {
     isArray: true
   })
   getBoards: ResourceMethodStrict<any, {projectId: string}, TaskBoard[]>;
+
+  @ResourceAction({
+    url: '/api/boards/{!boardId}'
+  })
+  getBoard: ResourceMethodStrict<any, {boardId: string}, TaskBoard>;
 }

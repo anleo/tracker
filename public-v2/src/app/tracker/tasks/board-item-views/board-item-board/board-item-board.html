@@ -9,7 +9,8 @@
     <h4 class="panel-title">
       <a [routerLink]="['..', boardItem?.item?._id]">{{boardItem.item.title}}</a>
 
-      <span class="fa fa-arrows vcenter pull-right pointer ng-scope drag-button"></span>
+      <span class="fa fa-edit vcenter pull-right pointer" (click)="edit(boardItem?.item)"></span>
+      <span class="fa fa-arrows vcenter pull-right pointer drag-button"></span>
     </h4>
   </div>
 </div>
