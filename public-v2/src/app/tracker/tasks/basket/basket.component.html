@@ -10,24 +10,12 @@
       <small (click)="toggleBasket()" class="text-muted pull-right"><i class="glyphicon glyphicon-remove"></i></small>
     </h3>
 
-    <!--<form (submit)="save()">-->
-      <!--<div class="input-group" style="margin: 0 0 20px;">-->
-        <!--<input [(ngModel)]="task.title" name="title" type="text"-->
-               <!--class="form-control input-sm" placeholder="Add Task"-->
-               <!--(input)="checkInput($event)"-->
-               <!--id="title" autocomplete="off"/>-->
-        <!--<span class="input-group-btn">-->
-        <!--<button class="btn btn-default btn-sm" [ngClass]="{'btn-success': addTaskToggle}" type="button">Save</button>-->
-      <!--</span>-->
-      <!--</div>-->
-    <!--</form>-->
-
-    <div *ngIf="tasks?.length">
-      <div *ngFor="let task of tasks" class="text-left">
-        <app-task-panel [task]="task"></app-task-panel>
+    <div *ngIf="taskItems?.length">
+      <div *ngFor="let taskItem of taskItems" class="text-left">
+        <app-task-panel [task]="taskItem.item" [basket]="true"></app-task-panel>
       </div>
     </div>
-    <div *ngIf="!tasks?.length">No tasks yet</div>
+    <div *ngIf="!taskItems?.length">No tasks yet</div>
   </div>
 </div>
 
