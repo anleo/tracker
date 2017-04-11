@@ -11,7 +11,7 @@ module.exports = function (app) {
         BoardService.getBoardsByOptions(options)
             .then((boards) => {
                 if (!boards.length) {
-                    return res.status(404).json({error: 'Boards were not found'});
+                    return res.json([]);
                 }
 
                 let boardsIds = boards.map((board) => board._id);
