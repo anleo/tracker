@@ -74,6 +74,18 @@ import {CurrentTaskService} from "./services/current-task.service";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {TaskMetricsService} from "./services/task-metrics.service";
 import {DragAndDropModule} from "./dnd/dnd.module";
+import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
+import {TaskBoardComponent} from "./tasks/task-boards/task-board.component";
+import {TaskBacklogComponent} from "./tasks/task-backlog/task-backlog.component";
+import {BoardService} from "./services/board.service";
+import {BoardResource} from "./resources/board.resource";
+import {BoardItemsByStatusFilter} from "./pipes/board-items-by-status.pipe";
+import {BoardItemsListComponent} from "./tasks/board-items-list/board-items-list.component";
+import {BoardItemResource} from "./resources/board-item.resource";
+import {BoardItemService} from "./services/board-item.service";
+import {BoardItemViewComponent} from "./tasks/board-item-views/board-item-view";
+import {BoardItemBoardComponent} from "./tasks/board-item-views/board-item-board/board-item-board";
+import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/board-item-task";
 
 @NgModule({
   imports: [
@@ -102,6 +114,11 @@ import {DragAndDropModule} from "./dnd/dnd.module";
   declarations: [
     BlankComponent,
     TaskComponent,
+    TaskBacklogComponent,
+    BoardItemsListComponent,
+    BoardItemViewComponent,
+    BoardItemBoardComponent,
+    BoardItemTaskComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
@@ -110,6 +127,8 @@ import {DragAndDropModule} from "./dnd/dnd.module";
     TasksListComponent,
     TasksEditComponent,
     TasksBoardComponent,
+    TaskBoardsComponent,
+    TaskBoardComponent,
     BoardViewComponent,
     ListViewComponent,
     TreeViewComponent,
@@ -127,6 +146,7 @@ import {DragAndDropModule} from "./dnd/dnd.module";
     TaskSpentTimeComponent,
     TaskTagsComponent,
     TaskSearchPipe,
+    BoardItemsByStatusFilter,
     TaskMoveComponent,
     TaskDescriptionEditor,
     TaskDescriptionViewer,
@@ -158,7 +178,11 @@ import {DragAndDropModule} from "./dnd/dnd.module";
   providers: [
     TaskResolver,
     TaskResource,
+    BoardResource,
+    BoardItemResource,
     TaskService,
+    BoardService,
+    BoardItemService,
     TaskMetricsService,
     CurrentTaskService,
     TaskStatusService,

@@ -1,6 +1,5 @@
-import {Component, OnInit, ViewContainerRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import {TaskSearchService} from "../../services/task-search.service";
 import {Task} from "../../models/task";
@@ -33,12 +32,9 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
               private taskService: TaskService,
               private socketService: SocketService,
               private busyLoaderService: BusyLoaderService,
-              public toastr: ToastsManager,
               private router: Router,
               private browserTitleService: BrowserTitleService,
-              private dndService: DnDService,
-              vcr: ViewContainerRef) {
-    this.toastr.setRootViewContainerRef(vcr);
+              private dndService: DnDService) {
   }
 
   ngOnInit(): void {

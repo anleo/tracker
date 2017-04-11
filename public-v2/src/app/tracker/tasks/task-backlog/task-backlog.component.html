@@ -1,0 +1,99 @@
+<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
+
+<div>
+  <a (click)="toggleBacklog()" class="btn btn-default" [ngClass]="{active: showBacklog}">Backlog</a>
+</div>
+
+<div class="backlog" [ngClass]="{show: showBacklog}">
+  <div class="wrap text-left">
+    <h3 style="margin: 10px 0 20px; line-height: 24px;">BACKLOG
+      <small (click)="toggleBacklog()" class="text-muted pull-right"><i class="glyphicon glyphicon-remove"></i></small>
+    </h3>
+
+    <form (submit)="save()">
+    <div class="input-group" style="margin: 0 0 20px;">
+      <input [(ngModel)]="task.title" name="title" type="text"
+             class="form-control input-sm" placeholder="Add Task"
+             (input)="checkInput($event)"
+             id="title" autocomplete="off"/>
+      <span class="input-group-btn">
+        <button class="btn btn-default btn-sm" [ngClass]="{'btn-success': addTaskToggle}" type="submit">Save</button>
+      </span>
+    </div>
+    </form>
+
+    <div *ngIf="tasks?.length">
+      <div *ngFor="let task of tasks" class="text-left">
+        <div class="panel panel-default"
+             *ngIf="task"
+             [ngClass]="{
+     'panel-success': task.status == 'accepted',
+     'panel-warning': task.status == 'in progress'}"
+             drop-zone [dropParams]="{parentTaskId: task._id}" drag [dragItem]="wrapToBoardItem(task)">
+
+          <!--"{-->
+          <!--'panel-success': task.status == 'accepted',-->
+          <!--'panel-warning': task.status == 'in progress',-->
+          <!--'task-todo-low-time' : (task.timeToDo|round) < 0,-->
+          <!--'task-not-estimated' : !task.points}"-->
+
+          <div class="panel-heading overflow-hidden">
+            <h4 class="panel-title">
+              <a [routerLink]="['/app/tasks/', task._id]">{{task.title}}</a>
+              <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
+              <span class="fa fa-arrows vcenter pull-right pointer ng-scope drag-button"></span>
+              <span class="label label-info vcenter pull-right" *ngIf="!task.simple">complex</span>
+            </h4>
+          </div>
+
+          <!--<div class="panel-body" *ngIf="metricsDetails || task.description || task.tags && task.tags.length">-->
+          <!--<div class="panel-body" *ngIf="metricsDetails">-->
+            <!--<app-task-metrics [task]="task"-->
+                              <!--[showStatus]="false"-->
+                              <!--[metricsDetails]="metricsDetails"-->
+                              <!--(click)="edit(task)"-->
+                              <!--class="fs-sm "-->
+                              <!--style="display: inline-block">-->
+            <!--</app-task-metrics>-->
+
+            <!--<div *ngIf="task.description">-->
+              <!--<hr *ngIf="metricsDetails"/>-->
+              <!--<task-description-viewer [description]="task.description"></task-description-viewer>-->
+            <!--</div>-->
+
+            <!--<hr *ngIf="task.tags && task.tags.length && (task.description || metricsDetails > 0)"/>-->
+
+            <!--<task-tags-panel [task]="task" *ngIf="task.tags && task.tags.length"></task-tags-panel>-->
+          <!--</div>-->
+
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!tasks?.length">No tasks yet</div>
+  </div>
+</div>
+
+
+<style>
+  .backlog {
+    z-index: 10;
+    display: block;
+    position: fixed;
+    height: 100vH;
+    width: 40vW;
+    text-align: center;
+    background: #fff;
+    top: 0;
+    right: -100%;
+    transition: all 400ms ease;
+    box-shadow: 0 0 100px -50px #000;
+  }
+
+  .backlog .wrap {
+    padding: 10px 30px;
+  }
+
+  .backlog.show {
+    right: 0;
+  }
+</style>

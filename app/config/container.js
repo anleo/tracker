@@ -14,8 +14,12 @@ module.exports = function (container) {
   container.register('TaskDescription', require('../models/taskDescription'), ['Mongoose', 'TaskHistory']);
   container.register('TaskDeveloper', require('../models/taskDeveloper'), ['Mongoose', 'TaskHistory']);
   container.register('TaskComplexity', require('../models/taskComplexity'), ['Mongoose', 'TaskHistory']);
+  container.register('Board', require('../models/board'), ['Mongoose']);
+  container.register('BoardItem', require('../models/boardItem'), ['Mongoose']);
+  container.register('BoardItemTask', require('../models/boardItemTask'), ['Mongoose', 'BoardItem']);
+  container.register('BoardItemBoard', require('../models/boardItemBoard'), ['Mongoose', 'BoardItem']);
 
-  // classes
+    // classes
   container.register('StatusWriter', require('../historyWriters/StatusWriter'), ['TaskStatus']);
   container.register('MetricsWriter', require('../historyWriters/MetricsWriter'), ['TaskMetrics']);
   container.register('SpenttimeWriter', require('../historyWriters/SpenttimeWriter'), ['TaskSpenttime']);
@@ -28,8 +32,10 @@ module.exports = function (container) {
   container.register('FileService', require('../services/FileService'), ['GridFS']);
   container.register('TaskService', require('../services/TaskService'), ['Task', 'FileService', 'UserService', 'SocketService','HistoryService', 'TaskComment']);
   container.register('UserService', require('../services/UserService'), ['User']);
+  container.register('BoardService', require('../services/board/BoardService'), ['Board', 'BoardItemBoard', 'BoardItemService']);
+  container.register('BoardItemService', require('../services/board/BoardItemService'), ['BoardItem', 'BoardItemBoard', 'BoardItemTask']);
 
-  container.register('HistoryService', require('../services/HistoryService'), ['HistoryService.historyWriters']);
+    container.register('HistoryService', require('../services/HistoryService'), ['HistoryService.historyWriters']);
 
   container.register('HistoryService.historyWriters', function () {
     return container.find(['taskHistoryWriter']);
