@@ -5,19 +5,19 @@ let BoardItemService = function (BoardItem,
     this.create = function (data) {
         let self = this;
         return new Promise(function (resolve, reject) {
-            const methods = [{
+            const models = [{
                 type: 'task',
-                model: BoardItemTask,
-                method: self.createTaskItem
+                collection: BoardItemTask,
+                create: self.createTaskItem
             }, {
                 type: 'board',
-                model: BoardItemBoard,
-                method: self.createBoardItem
+                collection: BoardItemBoard,
+                create: self.createBoardItem
             }];
 
-            let method = methods.find((method) => method.type === data.type);
+            let model = models.find((model) => model.type === data.type);
 
-            if (!method) {
+            if (!model) {
                 return reject(new Error('No right type to create BoardItem'));
             }
 
@@ -27,12 +27,12 @@ let BoardItemService = function (BoardItem,
                 project: data.project
             };
 
-            method.model.count(boardItem).exec().then((count) => {
+            model.collection.count(boardItem).exec().then((count) => {
                 if (count) {
                     return reject(new Error('This BoardItem already exists'));
                 }
 
-                method.method(data.item, data.project, data.board)
+                model.create(data.item, data.project, data.board)
                     .then((boardItem) => resolve(boardItem))
                     .catch((err) => reject(err));
             });
@@ -47,8 +47,8 @@ let BoardItemService = function (BoardItem,
                 board: parentBoard
             })
                 .save()
-                .then((item) => resolve(item))
-                .catch((err) => reject(err));
+                .exec()
+                .then((item) => resolve(item), (err) => reject(err));
         });
     };
 
@@ -60,8 +60,8 @@ let BoardItemService = function (BoardItem,
                 board: parentBoard
             })
                 .save()
-                .then((item) => resolve(item))
-                .catch((err) => reject(err));
+                .exec()
+                .then((item) => resolve(item), (err) => reject(err));
         });
     };
 
@@ -72,8 +72,7 @@ let BoardItemService = function (BoardItem,
                 .populate('item')
                 .lean()
                 .exec()
-                .then((boardItems) => resolve(boardItems))
-                .catch((err) => reject(err))
+                .then((boardItems) => resolve(boardItems), (err) => reject(err))
         });
     };
 

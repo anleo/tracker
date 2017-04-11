@@ -7,7 +7,7 @@ module.exports = function (app) {
             .getById(req.params.boardId)
             .then((board) => {
                 if (!board) {
-                    return res.status(400).json({error: 'Board was not found'});
+                    return res.status(404).json({error: 'Board was not found'});
                 }
 
                 let user = req.user && req.user._id ? req.user._id : user;
@@ -18,7 +18,7 @@ module.exports = function (app) {
                         .then((boardItems) => res.json(boardItems))
                         .catch((err) => res.status(400).json({error: err}));
                 } else {
-                    res.status(400).json({error: 'You haven\'t access to this board'});
+                    res.status(403).json({error: 'You haven\'t access to this board'});
                 }
             })
             .catch((err) => res.status(400).json({error: err}));
@@ -28,6 +28,10 @@ module.exports = function (app) {
         BoardService
             .getById(req.params.boardId)
             .then((board) => {
+                if (!board) {
+                    return res.status(404).json({error: 'Board was not found'});
+                }
+
                 let data = {
                     board: board,
                     type: req.body.type,

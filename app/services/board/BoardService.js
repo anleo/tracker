@@ -7,8 +7,7 @@ let BoardService = function (Board,
         return new Promise(function (resolve, reject) {
             Board
                 .find({project: project})
-                .then((boards) => resolve(boards))
-                .catch((err) => reject(err));
+                .then((boards) => resolve(boards), (err) => reject(err))
         });
     };
 
@@ -16,6 +15,7 @@ let BoardService = function (Board,
         return new Promise(function (resolve, reject) {
             let board = new Board();
             _.assign(board, data);
+// TODO @@@id: remove it
             // board.owner = "5514462ae4eb270b4f115c2c";
 
             board
@@ -25,7 +25,7 @@ let BoardService = function (Board,
                         .createBoardItem(board, data.project)
                         .then(() => resolve(board))
                         .catch((err) => reject(err));
-                }).catch((err) => reject(err));
+                }, (err) => reject(err));
         });
     };
 
@@ -33,8 +33,8 @@ let BoardService = function (Board,
         return new Promise(function (resolve, reject) {
             Board
                 .findById(id)
-                .then((board) => resolve(board))
-                .catch((err) => reject(err))
+                .exec()
+                .then((board) => resolve(board), (err) => reject(err))
         });
     };
 
