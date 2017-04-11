@@ -1,3 +1,5 @@
+let _ = require('lodash');
+
 let BoardItemService = function (BoardItem,
                                  BoardItemBoard,
                                  BoardItemTask) {
@@ -21,43 +23,31 @@ let BoardItemService = function (BoardItem,
                 return reject(new Error('No right type to create BoardItem'));
             }
 
-            let boardItem = {
-                board: data.board,
-                item: data.item,
-                project: data.project
-            };
+            let boardItem = _.omit(data, ['type']);
 
             model.collection.count(boardItem).exec().then((count) => {
                 if (count) {
                     return reject(new Error('This BoardItem already exists'));
                 }
 
-                model.create(data.item, data.project, data.board)
+                model.create(boardItem)
                     .then((boardItem) => resolve(boardItem))
                     .catch((err) => reject(err));
             });
         });
     };
 
-    this.createBoardItem = function (item, project, parentBoard) {
+    this.createBoardItem = function (data) {
         return new Promise(function (resolve, reject) {
-            new BoardItemBoard({
-                item: item,
-                project: project,
-                board: parentBoard
-            })
+            new BoardItemBoard(data)
                 .save()
                 .then((item) => resolve(item), (err) => reject(err));
         });
     };
 
-    this.createTaskItem = function (item, project, parentBoard) {
+    this.createTaskItem = function (data) {
         return new Promise(function (resolve, reject) {
-            new BoardItemTask({
-                item: item,
-                project: project,
-                board: parentBoard
-            })
+            new BoardItemTask(data)
                 .save()
                 .then((item) => resolve(item), (err) => reject(err));
         });

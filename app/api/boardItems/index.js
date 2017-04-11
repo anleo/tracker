@@ -47,7 +47,8 @@ module.exports = function (app) {
                     board: board,
                     type: req.body.type,
                     item: req.body.item,
-                    project: board.project
+                    project: board.project,
+                    isRoot: req.body.isRoot || false
                 };
 
                 BoardItemService.create(data)
