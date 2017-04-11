@@ -1,11 +1,10 @@
 module.exports = function (app) {
     let BoardItemService = app.container.get('BoardItemService');
     let BoardService = app.container.get('BoardService');
-    let _ = require('lodash');
 
-    app.get('/api/boards/:board/boardItems', function (req, res) {
+    app.get('/api/boards/:boardId/boardItems', function (req, res) {
         BoardService
-            .getById(req.params.board)
+            .getById(req.params.boardId)
             .then((board) => {
                 if (!board) {
                     return res.status(400).json({error: 'Board was not found'});
@@ -25,9 +24,9 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json({error: err}));
     });
 
-    app.post('/api/boards/:board/boardItems', function (req, res) {
+    app.post('/api/boards/:boardId/boardItems', function (req, res) {
         BoardService
-            .getById(req.params.board)
+            .getById(req.params.boardId)
             .then((board) => {
                 let data = {
                     board: board,
