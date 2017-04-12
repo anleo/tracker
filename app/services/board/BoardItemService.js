@@ -20,14 +20,14 @@ let BoardItemService = function (BoardItem,
             let model = models.find((model) => model.type === data.type);
 
             if (!model) {
-                return reject(new Error('No right type to create BoardItem'));
+                return reject('No right type to create BoardItem');
             }
 
             let boardItem = _.omit(data, ['type']);
 
             model.collection.count(boardItem).exec().then((count) => {
                 if (count) {
-                    return reject(new Error('This BoardItem already exists'));
+                    return reject('This BoardItem already exists');
                 }
 
                 model.create(boardItem)
