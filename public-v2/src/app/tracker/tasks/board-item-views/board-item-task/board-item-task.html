@@ -9,7 +9,10 @@
     <h4 class="panel-title">
       <a [routerLink]="['/app/tasks/', boardItem?.item?._id]">{{boardItem.item.title}}</a>
 
-      <span class="fa fa-arrows vcenter pull-right pointer ng-scope drag-button"></span>
+
+      <!--@@@ add edit for tasks-->
+      <span class="fa fa-edit vcenter pull-right pointer"></span>
+      <span class="fa fa-arrows vcenter pull-right pointer drag-button"></span>
     </h4>
   </div>
 </div>

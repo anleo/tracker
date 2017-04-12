@@ -1,14 +1,29 @@
 <div drop-listener>
-  <a [routerLink]="['/app/tasks', project?._id, 'boards']">
-    <button class="btn btn-link">Back</button>
+  <h2 class="clearfix" *ngIf="boardItem">
+    {{boardItem?.title}}
+  </h2>
+
+  <a class="back-button" (click)="back()">
+    <i class="fa fa-long-arrow-left"></i>
+    Back
   </a>
+
   <task-backlog></task-backlog>
 
-  <div class="row board-view" *ngIf="boardItems && boardItems.length">
-    <div class="col-sm-4" *ngFor="let status of statusTypess">
-      <h3 class="list-name">{{status.name}}</h3>
+  <form (ngSubmit)="save()">
+    <div class="form-group">
+      <input type="text" name="title" [(ngModel)]="newBoard.title" class="form-control" placeholder="Add Board" autocomplete="off">
+    </div>
+    <button *ngIf="newBoard.title && newBoard.title.length" class="btn btn-success btn-sm">Save</button>
+  </form>
 
-      <app-board-items-list [boardItems]="boardItems | boardItemsByStatusFilter: status"></app-board-items-list>
+  <div class="board-view boards" *ngIf="boardItems && boardItems.length">
+    <div class="row">
+      <div class="col-sm-4" *ngFor="let status of statusTypess">
+        <h3 class="list-name">{{status.name}}</h3>
+
+        <app-board-items-list [boardItems]="boardItems | boardItemsByStatusFilter: status"></app-board-items-list>
+      </div>
     </div>
   </div>
 </div>

@@ -3,6 +3,8 @@ let BoardService = function (Board,
                              BoardItemService) {
     let _ = require('lodash');
 
+    let self = this;
+
     this.get = function (project) {
         return new Promise(function (resolve, reject) {
             Board
@@ -47,9 +49,18 @@ let BoardService = function (Board,
         });
     };
 
+    this.hasAccess = function(board, user) {
+        user = user && user._id ? user._id : user;
+        return self.isOwner(board, user) || self.hasInShared(board, user);
+    };
+
+    this.isOwner = function(board, user) {
+        return board.owner && board.owner.toString() === user.toString();
+    };
+
     this.hasInShared = function (board, user) {
         let shared = board.shared.map((user) => user.toString());
         return _.contains(shared, user.toString());
-    }
+    };
 };
 module.exports = BoardService;

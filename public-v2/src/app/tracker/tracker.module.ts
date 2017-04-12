@@ -86,6 +86,8 @@ import {BoardItemService} from "./services/board-item.service";
 import {BoardItemViewComponent} from "./tasks/board-item-views/board-item-view";
 import {BoardItemBoardComponent} from "./tasks/board-item-views/board-item-board/board-item-board";
 import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/board-item-task";
+import {TaskBoardResolver} from "./resolvers/task-board.resolver";
+import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
 
 @NgModule({
   imports: [
@@ -129,6 +131,7 @@ import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/b
     TasksBoardComponent,
     TaskBoardsComponent,
     TaskBoardComponent,
+    BoardEditComponent,
     BoardViewComponent,
     ListViewComponent,
     TreeViewComponent,
@@ -177,6 +180,7 @@ import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/b
   ],
   providers: [
     TaskResolver,
+    TaskBoardResolver,
     TaskResource,
     BoardResource,
     BoardItemResource,
