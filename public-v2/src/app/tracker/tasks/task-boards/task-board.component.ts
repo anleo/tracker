@@ -14,7 +14,8 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 @Component({
   selector: 'task-board',
-  templateUrl: 'task-board.component.html'
+  templateUrl: 'task-board.component.html',
+  providers: [DnDService]
 })
 
 export class TaskBoardComponent implements OnInit, OnDestroy {
