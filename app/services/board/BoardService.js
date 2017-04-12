@@ -28,7 +28,6 @@ let BoardService = function (Board,
             let board = new Board();
             _.assign(board, data);
 
-            // TODO @@@id: need to add field isRoot
             board
                 .save()
                 .then((board) => {
