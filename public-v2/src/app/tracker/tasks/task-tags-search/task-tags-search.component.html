@@ -16,7 +16,7 @@
 
 <div *ngIf="tasks.length">
   <metrics-widget></metrics-widget>
-  <app-tasks-board [tasks]="tasks"></app-tasks-board>
+  <app-tasks-board [tasks]="tasks" drop-listener></app-tasks-board>
 </div>
 
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>

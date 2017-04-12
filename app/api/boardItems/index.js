@@ -22,9 +22,7 @@ module.exports = function (app) {
                         {board: null}
                     ],
                     item: {$in: boardsIds},
-                    type: 'board',
-                    project: req.params.projectId,
-                    isRoot: true
+                    type: 'board'
                 };
 
                 BoardItemService
@@ -46,9 +44,7 @@ module.exports = function (app) {
                 let data = {
                     board: board,
                     type: req.body.type,
-                    item: req.body.item,
-                    project: board.project,
-                    isRoot: req.body.isRoot || false
+                    item: req.body.item
                 };
 
                 BoardItemService.create(data)
@@ -66,10 +62,8 @@ module.exports = function (app) {
                     return res.status(404).json({error: 'Board was not found'});
                 }
 
-                let user = req.user && req.user._id ? req.user._id : user;
-
-                if (BoardService.hasInShared(board, user)) {
-                    BoardItemService.getItemsByOptions({board: board, isRoot: false})
+                if (BoardService.hasAccess(board, req.user)) {
+                    BoardItemService.getItemsByOptions({board: board})
                         .then((boardItems) => res.json(boardItems))
                         .catch((err) => res.status(400).json({error: err}));
                 } else {
