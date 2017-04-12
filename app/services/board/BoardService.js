@@ -48,6 +48,27 @@ let BoardService = function (Board,
         });
     };
 
+    this.getByQuery = function (query) {
+        return new Promise(function (resolve, reject) {
+            Board
+                .findOne(query)
+                .exec()
+                .then((board) => resolve(board), (err) => reject(err))
+        });
+    };
+
+    this.remove = function (board) {
+        return new Promise(function (resolve, reject) {
+            Board
+                .remove({_id: board.id})
+                .then(() => {
+                    BoardItemService.removeBoardItemsByItem(board)
+                        .then(() => resolve(true))
+                        .catch((err) => reject(err));
+                }, (err) => reject(err));
+        });
+    };
+
     this.hasAccess = function(board, user) {
         user = user && user._id ? user._id : user;
         return self.isOwner(board, user) || self.hasInShared(board, user);
