@@ -1,0 +1,11 @@
+<form (submit)="task.title.length && save()">
+  <div class="input-group" style="margin: 0 0 20px;">
+    <input [(ngModel)]="task.title" name="title" type="text"
+           class="form-control input-sm" placeholder="Add Task"
+           id="title" autocomplete="off"/>
+    <span class="input-group-btn">
+        <button class="btn btn-default btn-sm" [ngClass]="{'btn-success': task?.title?.length}" type="submit">Save</button>
+        <button class="btn btn-default btn-sm btn-danger" (click)="reset()">Reset</button>
+      </span>
+  </div>
+</form>

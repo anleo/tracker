@@ -16,5 +16,7 @@
 
     </h4>
   </div>
+
+  <simple-task-form [parentTask]="boardItem.item"></simple-task-form>
   <board-item-subitems *ngIf="showSubitems" [boardItem]="boardItem"></board-item-subitems>
 </div>

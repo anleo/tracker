@@ -89,6 +89,7 @@ import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/b
 import {BoardItemSubitemsComponent} from "./tasks/board-item-subitems/board-item-subitems.component";
 import {BoardItemSubitemsBoardComponent} from "./tasks/board-item-subitems/board-item-subitems-board/board-item-subitems-board.component";
 import {BoardItemSubitemsTaskComponent} from "./tasks/board-item-subitems/board-item-subitems-task/board-item-subitems-task.component";
+import {SimpleTaskFormComponent} from "./tasks/simple-task-form/simple-task-form.component";
 
 @NgModule({
   imports: [
@@ -132,6 +133,7 @@ import {BoardItemSubitemsTaskComponent} from "./tasks/board-item-subitems/board-
     TasksComponent,
     TasksListComponent,
     TasksEditComponent,
+    SimpleTaskFormComponent,
     TasksBoardComponent,
     TaskBoardsComponent,
     TaskBoardComponent,
