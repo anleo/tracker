@@ -3,12 +3,10 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {BoardService} from "../services/board.service";
 import {TaskBoard} from "../models/task-board";
-import {CurrentTaskService} from "../services/current-task.service";
 
 @Injectable()
 export class TaskBoardResolver implements Resolve<TaskBoard> {
-  constructor(private boardService: BoardService,
-  private currentTaskService:CurrentTaskService) {
+  constructor(private boardService: BoardService) {
   }
 
   resolve(route: ActivatedRouteSnapshot): Observable<TaskBoard> {

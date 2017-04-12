@@ -51,7 +51,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.currentTaskService.task$
+    this.currentTaskService.rootTask$
       .subscribe((task) => {
         if (!task) {
           return;
@@ -104,6 +104,6 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
 
   initBoard(): void {
     this.newBoard = new TaskBoard();
-    this.newBoard.project = this.currentTaskService.task._id;
+    this.newBoard.project = this.currentTaskService.rootTask && this.currentTaskService.rootTask._id;
   }
 }

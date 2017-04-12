@@ -50,7 +50,7 @@ let BoardService = function (Board,
     };
 
     this.hasAccess = function(board, user) {
-        console.log('>>>>> ', board, user)
+        user = user && user._id ? user._id : user;
         return self.isOwner(board, user) || self.hasInShared(board, user);
     };
 

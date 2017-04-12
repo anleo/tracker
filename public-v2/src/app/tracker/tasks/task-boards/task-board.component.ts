@@ -72,7 +72,7 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
         this.onDrop(dropData);
       });
 
-    this.currentTaskService.task$
+    this.currentTaskService.rootTask$
       .takeUntil(this.componentDestroyed$)
       .subscribe((task) => {
         this.project = task || null;
@@ -124,6 +124,6 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
 
   initBoard() {
     this.newBoard = new TaskBoard();
-    this.newBoard.project = this.currentTaskService.task._id;
+    this.newBoard.project = this.currentTaskService.rootTask && this.currentTaskService.rootTask._id;
   }
 }

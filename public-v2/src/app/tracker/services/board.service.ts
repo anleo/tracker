@@ -14,7 +14,7 @@ export class BoardService {
   constructor(private boardResource: BoardResource) {}
 
   getBoard(boardId: string): Observable<TaskBoard> {
-    return this.boardResource.getBoard({}, {boardId: boardId}).$observable;
+    return this.boardResource.getBoard({boardId: boardId}).$observable;
   }
 
   getBoards(task: Task): Observable<TaskBoard[]> {

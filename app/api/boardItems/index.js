@@ -64,9 +64,7 @@ module.exports = function (app) {
                     return res.status(404).json({error: 'Board was not found'});
                 }
 
-                let user = req.user && req.user._id ? req.user._id : user;
-
-                if (BoardService.hasAccess(board, user)) {
+                if (BoardService.hasAccess(board, req.user)) {
                     BoardItemService.getItemsByOptions({board: board, isRoot: false})
                         .then((boardItems) => res.json(boardItems))
                         .catch((err) => res.status(400).json({error: err}));

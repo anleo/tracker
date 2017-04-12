@@ -1,7 +1,7 @@
 import {Injectable, Injector} from '@angular/core';
 import {RequestMethod, Http} from '@angular/http';
 
-import {Resource, ResourceParams, ResourceAction, ResourceMethodStrict} from 'ng2-resource-rest';
+import {Resource, ResourceParams, ResourceAction, ResourceMethodStrict, ResourceMethod} from 'ng2-resource-rest';
 
 import {TaskBoard} from '../models/task-board';
 
@@ -30,5 +30,5 @@ export class BoardResource extends Resource {
   @ResourceAction({
     url: '/api/boards/{!boardId}'
   })
-  getBoard: ResourceMethodStrict<any, {boardId: string}, TaskBoard>;
+  getBoard: ResourceMethod<{boardId: string}, TaskBoard>;
 }
