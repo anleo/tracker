@@ -5,11 +5,14 @@ import * as _ from 'lodash';
 
 import {DnDService} from "../../dnd/dnd.service";
 import {BoardItemService} from "../../services/board-item.service";
+import {TaskBoard} from "../../models/task-board";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {Task} from '../../models/task';
+import {Location} from "@angular/common";
 import {CurrentTaskService} from "../../services/current-task.service";
 
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+import {BoardService} from "../../services/board.service";
 
 
 @Component({
@@ -18,6 +21,8 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 })
 
 export class TaskBoardComponent implements OnInit, OnDestroy {
+  newBoard: TaskBoard | null;
+  boardItem: TaskBoardItem | null = [];
   boardItems: TaskBoardItem[] | null = [];
   project: Task | null = null;
   boardId: string | null = null;
@@ -41,7 +46,9 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
     }];
 
 
-  constructor(private route: ActivatedRoute,
+  constructor(private boardService: BoardService,
+              private location: Location,
+              private route: ActivatedRoute,
               private currentTaskService: CurrentTaskService,
               private boardItemService: BoardItemService,
               private dndService: DnDService,
@@ -56,20 +63,30 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
       this.getBoardItems();
     });
 
+    this.route.data
+      .subscribe((data: {board: TaskBoardItem}) => this.boardItem = data && data.board);
+
     this.dndService.onDrop$
       .takeUntil(this.componentDestroyed$)
       .subscribe((dropData) => {
         this.onDrop(dropData);
       });
 
-    this.currentTaskService.task$
+    this.currentTaskService.rootTask$
       .takeUntil(this.componentDestroyed$)
-      .subscribe((task) => this.project = task || null);
+      .subscribe((task) => {
+        this.project = task || null;
+        this.initBoard();
+      });
   }
 
   ngOnDestroy(): void {
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
+  }
+
+  back(): void {
+    this.location.back();
   }
 
   getBoardItems(): void {
@@ -83,5 +100,30 @@ export class TaskBoardComponent implements OnInit, OnDestroy {
     this.boardItemService.save(newBoardItem).toPromise()
       .then((boardItem) => console.log(boardItem))
       .catch((err) => this.toastr.error(JSON.parse(err._body)));
+  }
+
+  save(): void {
+    this.boardService
+      .saveBoard(this.newBoard)
+      .toPromise()
+      .then((board) => {
+        let newBoardItem = new TaskBoardItem();
+        newBoardItem.item = board && board._id;
+        newBoardItem.board = this.boardId;
+        newBoardItem.type = 'board';
+
+        this.boardItemService
+          .save(newBoardItem)
+          .toPromise()
+          .then(() => {
+            this.initBoard();
+            this.getBoardItems();
+          });
+      });
+  }
+
+  initBoard() {
+    this.newBoard = new TaskBoard();
+    this.newBoard.project = this.currentTaskService.rootTask && this.currentTaskService.rootTask._id;
   }
 }

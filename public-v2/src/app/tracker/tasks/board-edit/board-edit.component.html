@@ -1,0 +1,26 @@
+<form (submit)="editBoard.title && save()" id="form" *ngIf="editBoard">
+
+  <div class="row">
+    <!--left-side-->
+    <!--<div [ngClass]="task.title ? 'col-md-6' : 'col-md-12'">-->
+    <div class="col-md-12">
+
+      <!--<pre>{{editBoard | json}}</pre>-->
+
+      <!--// @@@ fix taskId snapshot-->
+      <!--<div class="form-group">-->
+      <!--<input ng-if="taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Task" id="title"/>-->
+      <!--<input ng-if="!taskId" ng-model="task.title" type="text" class="form-control" placeholder="Add Project" id="title"/>-->
+      <!--</div>-->
+
+      <div class="form-group">
+        <input *ngIf="editBoard" [(ngModel)]="editBoard.title"
+               name="title" type="text" class="form-control"
+               placeholder="Add Board"
+               (input)="checkInput($event)"
+               id="title" autocomplete="off"/>
+      </div>
+
+    </div>
+  </div>
+</form>
