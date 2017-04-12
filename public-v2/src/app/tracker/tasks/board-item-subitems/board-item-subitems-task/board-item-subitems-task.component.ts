@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit, Input, OnChanges, SimpleChanges} from "@angular/core";
 import {TaskBoardItem} from "../../../models/task-board-item";
 import {TaskService} from "../../../services/task.service";
 
@@ -7,14 +7,26 @@ import {TaskService} from "../../../services/task.service";
   templateUrl: 'board-item-subitems-task.component.html'
 })
 
-export class BoardItemSubitemsTaskComponent implements OnInit {
+export class BoardItemSubitemsTaskComponent implements OnInit, OnChanges {
   @Input() parentBoardItem: TaskBoardItem | null;
+  @Input() refreshCount;
+  oldRefreshCount: number;
   boardItems: TaskBoardItem[] = [];
 
-  constructor(private taskService: TaskService) {
-  }
+  constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
+    this.loadChildrenTasks();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.oldRefreshCount !== this.refreshCount) {
+      this.loadChildrenTasks();
+      this.oldRefreshCount = this.refreshCount;
+    }
+  }
+
+  private loadChildrenTasks() {
     let taskId = this.parentBoardItem && this.parentBoardItem.item && this.parentBoardItem.item._id ?
       this.parentBoardItem.item._id : this.parentBoardItem.item;
 

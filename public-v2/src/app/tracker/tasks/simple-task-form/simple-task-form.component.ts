@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 
 import {Task} from '../../models/task';
 import {TaskService} from "../../services/task.service";
@@ -9,6 +9,7 @@ import {TaskService} from "../../services/task.service";
 })
 export class SimpleTaskFormComponent implements OnInit {
   @Input() parentTask: Task|null = null;
+  @Output() taskSaved = new EventEmitter();
   task: Task|null = null;
 
   constructor(private taskService: TaskService) {
@@ -25,9 +26,23 @@ export class SimpleTaskFormComponent implements OnInit {
 
   save(): void {
     if (this.task && this.task.parentTaskId) {
-      this.taskService.saveChildTask(this.task).subscribe((task) => setTimeout(() => this.initTask(), 0));
+      this.taskService
+        .saveChildTask(this.task)
+        .toPromise()
+        .then((task) => setTimeout(() => {
+          this.initTask();
+          this.taskSaved.emit(task);
+        }, 0))
+        .catch((err) => console.log(err));
     } else {
-      this.taskService.save(this.task).subscribe((task) => setTimeout(() => this.initTask(), 0));
+      this.taskService
+        .save(this.task)
+        .toPromise()
+        .then((task) => setTimeout(() => {
+          this.initTask();
+          this.taskSaved.emit(task);
+        }, 0))
+        .catch((err) => console.log(err));
     }
   }
 

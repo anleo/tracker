@@ -8,4 +8,5 @@ import {TaskBoardItem} from "../../models/task-board-item";
 
 export class BoardItemSubitemsComponent {
   @Input() boardItem: TaskBoardItem | null;
+  @Input() refreshCount;
 }

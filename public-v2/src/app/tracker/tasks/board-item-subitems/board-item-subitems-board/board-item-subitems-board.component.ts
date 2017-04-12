@@ -9,6 +9,7 @@ import {TaskBoardItem} from "../../../models/task-board-item";
 
 export class BoardItemSubitemsBoardComponent implements OnInit{
   @Input() parentBoardItem: TaskBoardItem | null;
+  @Input() refreshCount;
   boardItems: TaskBoardItem[] = [];
 
   constructor(private boardItemService: BoardItemService) {}

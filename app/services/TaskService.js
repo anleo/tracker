@@ -1,4 +1,4 @@
-var TaskService = function (Task, FileService, UserService, SocketService, HistoryService, TaskComment) {
+var TaskService = function (Task, FileService, UserService, SocketService, HistoryService, TaskComment, BoardItemService) {
     var self = this;
     var _ = require('lodash');
     var async = require('async');
@@ -647,8 +647,14 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                     }
 
                     self.updateParentByTask(task, function (err) {
-                        if (err) return next(err);
-                        next();
+                        if (err) {
+                            return next(err);
+                        }
+
+                        BoardItemService
+                            .removeBoardItemsByItem(task)
+                            .then(() => next())
+                            .catch((err) => next(err));
                     });
                 });
             });

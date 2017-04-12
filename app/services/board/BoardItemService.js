@@ -1,6 +1,7 @@
 let _ = require('lodash');
 
-let BoardItemService = function (BoardItem,
+let BoardItemService = function (Board,
+                                 BoardItem,
                                  BoardItemBoard,
                                  BoardItemTask) {
 
@@ -64,6 +65,36 @@ let BoardItemService = function (BoardItem,
         });
     };
 
+    this.removeBoardItemsByItem = function (item) {
+        let itemId = item && item._id ? item._id : item;
+
+        return new Promise(function (resolve, reject) {
+            if (!itemId) {
+                reject('No itemId during boardItems remove!')
+            }
+
+            let query = {
+                $or: [
+                    {item: itemId}
+                ]
+            };
+
+            Board
+                .findById(itemId)
+                .then((board) => {
+                    if (board) {
+                        query.$or.push({
+                            board: itemId
+                        })
+                    }
+
+                    BoardItem
+                        .remove(query)
+                        .exec()
+                        .then(() => resolve(true), (err) => reject(err))
+                }, (err) => reject(err));
+        });
+    };
 };
 
 module.exports = BoardItemService;
