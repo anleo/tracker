@@ -1,0 +1,5 @@
+<div *ngIf="boardItems.length">
+  <div *ngFor="let boardItem of boardItems">
+    <board-item-task [boardItem]="boardItem"></board-item-task>
+  </div>
+</div>

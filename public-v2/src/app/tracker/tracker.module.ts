@@ -86,6 +86,9 @@ import {BoardItemService} from "./services/board-item.service";
 import {BoardItemViewComponent} from "./tasks/board-item-views/board-item-view";
 import {BoardItemBoardComponent} from "./tasks/board-item-views/board-item-board/board-item-board";
 import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/board-item-task";
+import {BoardItemSubitemsComponent} from "./tasks/board-item-subitems/board-item-subitems.component";
+import {BoardItemSubitemsBoardComponent} from "./tasks/board-item-subitems/board-item-subitems-board/board-item-subitems-board.component";
+import {BoardItemSubitemsTaskComponent} from "./tasks/board-item-subitems/board-item-subitems-task/board-item-subitems-task.component";
 
 @NgModule({
   imports: [
@@ -119,6 +122,9 @@ import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/b
     BoardItemViewComponent,
     BoardItemBoardComponent,
     BoardItemTaskComponent,
+    BoardItemSubitemsComponent,
+    BoardItemSubitemsBoardComponent,
+    BoardItemSubitemsTaskComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,

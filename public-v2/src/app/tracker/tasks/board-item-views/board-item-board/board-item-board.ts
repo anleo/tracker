@@ -9,4 +9,9 @@ import {TaskBoardItem} from "../../../models/task-board-item";
 
 export class BoardItemBoardComponent {
   @Input() boardItem: TaskBoardItem | null;
+  showSubitems: boolean = false;
+
+  toggleSubitems(): void {
+    this.showSubitems = !this.showSubitems;
+  }
 }
