@@ -89,6 +89,7 @@ import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/b
 import {BasketComponent} from './tasks/basket/basket.component';
 import {BasketResource} from "./resources/basket.resource";
 import {BasketService} from "./services/basket.service";
+import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-panel.component";
 
 @NgModule({
   imports: [
@@ -178,7 +179,8 @@ import {BasketService} from "./services/basket.service";
     TaskArchiveComponent,
     TaskSearchDirective,
     TaskSearchComponent,
-    BasketComponent
+    BasketComponent,
+    BasketTaskPanelComponent
   ],
   providers: [
     TaskResolver,
