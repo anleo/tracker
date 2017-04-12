@@ -14,7 +14,8 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'task-boards',
-  templateUrl: 'task-boards.component.html'
+  templateUrl: 'task-boards.component.html',
+  providers: [DnDService]
 })
 
 export class TaskBoardsComponent implements OnInit, OnDestroy {

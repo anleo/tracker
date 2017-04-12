@@ -1,6 +1,7 @@
 import {Directive, ElementRef, Input, HostListener} from "@angular/core";
 import * as _ from "lodash";
 import {DnDService} from "../dnd.service";
+import {DnDMessenger} from "../dnd.messenger";
 
 @Directive({
   selector: '[drop-zone]'
@@ -13,8 +14,9 @@ export class DropZoneDirective {
   dragItem;
 
   constructor(private elementRef: ElementRef,
-              private dnDService: DnDService) {
-    this.dnDService.dragItem$.subscribe((item) => this.dragItem = item);
+              private dndService: DnDService,
+              private dndMessenger: DnDMessenger) {
+    this.dndMessenger.dragItem$.subscribe((item) => this.dragItem = item);
   }
 
   @HostListener('mouseup', ['$event'])
@@ -30,10 +32,10 @@ export class DropZoneDirective {
 
       if (!imDrag && this.checking()) {
         event.stopPropagation();
-        this.dnDService.onDrop$.next(data);
+        this.dndService.onDrop$.next(data);
       }
 
-      this.dnDService.reset();
+      this.dndMessenger.reset();
       this.reset();
     }
   }
@@ -44,7 +46,7 @@ export class DropZoneDirective {
 
     if (this.dragItem && !imDrag && this.checking()) {
       event.stopPropagation();
-      this.dnDService.setDropZone$.next(true);
+      this.dndService.hasDropZone$.next(true);
       this.domElement.classList.add('drop-zone');
     }
   }
@@ -53,13 +55,13 @@ export class DropZoneDirective {
   onMouseOut(event) {
     if (this.dragItem) {
       event.stopPropagation();
-      this.dnDService.setDropZone$.next(false);
+      this.dndService.hasDropZone$.next(false);
       this.domElement.classList.remove('drop-zone');
     }
   }
 
   reset() {
-    this.dnDService.setDropZone$.next(false);
+    this.dndService.hasDropZone$.next(false);
     this.domElement.classList.remove('drop-zone');
   }
 

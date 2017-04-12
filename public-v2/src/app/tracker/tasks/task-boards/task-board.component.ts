@@ -17,7 +17,8 @@ import {BoardService} from "../../services/board.service";
 
 @Component({
   selector: 'task-board',
-  templateUrl: 'task-board.component.html'
+  templateUrl: 'task-board.component.html',
+  providers: [DnDService]
 })
 
 export class TaskBoardComponent implements OnInit, OnDestroy {
