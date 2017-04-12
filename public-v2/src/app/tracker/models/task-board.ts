@@ -8,4 +8,5 @@ export class TaskBoard {
   time?: number;
   createdAt?: string;
   updatedAt?: string;
+  priority?: number = 5;
 }

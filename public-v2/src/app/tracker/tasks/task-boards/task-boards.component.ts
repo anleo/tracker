@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
 import {BoardService} from "../../services/board.service";
-import {TaskBoard} from "../../models/task-board";
+import {Location} from "@angular/common";
 import {CurrentTaskService} from "../../services/current-task.service";
 import {DnDService} from "../../dnd/dnd.service";
 import {Subject} from "rxjs";
@@ -11,6 +11,8 @@ import {Task} from '../../models/task';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import * as _ from 'lodash';
+import {BoardWithStatus} from "../../models/board-with-status";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'task-boards',
@@ -18,17 +20,19 @@ import * as _ from 'lodash';
 })
 
 export class TaskBoardsComponent implements OnInit, OnDestroy {
+  boardItem: TaskBoardItem | null;
   boardItems: TaskBoardItem[] | null = [];
-  newBoard: TaskBoard | null;
   project: Task | null = null;
+  boardId: string;
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
-  statusTypess = [{
-    id: 'new',
-    name: 'New',
-    value: ''
-  },
+  statusTypes = [
+    {
+      id: 'new',
+      name: 'New',
+      value: ''
+    },
     {
       id: 'in_progress',
       name: 'In progress',
@@ -38,10 +42,13 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       id: 'accepted',
       name: 'Accepted',
       value: 'accepted'
-    }];
+    }
+  ];
 
 
-  constructor(private boardService: BoardService,
+  constructor(private route: ActivatedRoute,
+              private location: Location,
+              private boardService: BoardService,
               private boardItemService: BoardItemService,
               private currentTaskService: CurrentTaskService,
               private dndService: DnDService,
@@ -51,23 +58,24 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.route.data
+      .subscribe((data: {board: TaskBoardItem}) => this.boardItem = data && data.board);
+
     this.currentTaskService.rootTask$
-      .subscribe((task) => {
-        if (!task) {
-          return;
-        }
-
-        this.project = task || null;
-
-        this.initBoard();
-        this.getBoards();
-      });
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((task) => this.project = task || null);
 
     this.dndService.onDrop$
       .takeUntil(this.componentDestroyed$)
       .subscribe((dropData) => {
         this.onDrop(dropData);
       });
+
+    this.route.params.subscribe((params) => {
+      this.boardId = params['boardId'];
+      this.getBoards();
+      this.boardService.editBoardUpdated$.subscribe((res: BoardWithStatus) => res && this.afterBoardUpdate(res));
+    });
   }
 
   ngOnDestroy(): void {
@@ -75,12 +83,33 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     this.componentDestroyed$.complete();
   }
 
+  afterBoardUpdate(res: BoardWithStatus) {
+    if (!res) {
+      return false;
+    }
+
+    if (res.status === 'update') {
+      this.getBoards();
+    }
+  }
+
+  back(): void {
+    this.location.back();
+  }
+
   getBoards(): void {
-    this.boardItemService
-      .getRootBoardItemsByProject(this.currentTaskService.task._id)
-      .toPromise()
-      .then((boardItems) => this.boardItems = boardItems)
-      .catch((err) => console.log(err));
+    if (this.boardId) {
+      this.boardItemService.getBoardItemsByBoardId(this.boardId)
+        .toPromise()
+        .then((boardItems) => this.boardItems = boardItems)
+        .catch((err) => console.log(err));
+    } else {
+      this.boardItemService
+        .getRootBoardItemsByProject(this.currentTaskService.rootTask._id)
+        .toPromise()
+        .then((boardItems) => this.boardItems = boardItems)
+        .catch((err) => console.log(err));
+    }
   }
 
   private onDrop(dropData) {
@@ -90,20 +119,5 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     this.boardItemService.save(newBoardItem).toPromise()
       .then((boardItem) => console.log(boardItem))
       .catch((err) => this.toastr.error(JSON.parse(err._body)));
-  }
-
-  save(): void {
-    this.boardService
-      .saveBoard(this.newBoard)
-      .toPromise()
-      .then(() => {
-        this.initBoard();
-        this.getBoards();
-      });
-  }
-
-  initBoard(): void {
-    this.newBoard = new TaskBoard();
-    this.newBoard.project = this.currentTaskService.rootTask && this.currentTaskService.rootTask._id;
   }
 }

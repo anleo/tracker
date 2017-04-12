@@ -63,7 +63,6 @@ let BoardItemService = function (BoardItem,
                 .then((boardItems) => resolve(boardItems), (err) => reject(err))
         });
     };
-
 };
 
 module.exports = BoardItemService;
