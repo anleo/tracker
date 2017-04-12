@@ -23,7 +23,6 @@ module.exports = function (app) {
                     ],
                     item: {$in: boardsIds},
                     type: 'board',
-                    project: req.params.projectId,
                     isRoot: true
                 };
 
@@ -47,7 +46,6 @@ module.exports = function (app) {
                     board: board,
                     type: req.body.type,
                     item: req.body.item,
-                    project: board.project,
                     isRoot: req.body.isRoot || false
                 };
 

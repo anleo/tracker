@@ -26,11 +26,12 @@ let BoardService = function (Board,
             let board = new Board();
             _.assign(board, data);
 
+            // TODO @@@id: check creation BoardItem
             board
                 .save()
                 .then((board) => {
                     BoardItemService
-                        .createBoardItem(board, data.project)
+                        .createBoardItem(board)
                         .then(() => resolve(board))
                         .catch((err) => reject(err));
                 }, (err) => reject(err));
