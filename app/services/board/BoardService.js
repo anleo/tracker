@@ -26,11 +26,12 @@ let BoardService = function (Board,
             let board = new Board();
             _.assign(board, data);
 
+            // TODO @@@id: need to add field isRoot
             board
                 .save()
                 .then((board) => {
                     BoardItemService
-                        .createBoardItem(board, data.project)
+                        .createBoardItem({item: board})
                         .then(() => resolve(board))
                         .catch((err) => reject(err));
                 }, (err) => reject(err));
