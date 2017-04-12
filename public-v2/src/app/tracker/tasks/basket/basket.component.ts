@@ -24,7 +24,7 @@ export class BasketComponent implements OnInit {
               private boardItemService: BoardItemService) {
 
     this.basketService.basketList$
-      .subscribe((taskItems) => this.taskItems = taskItems)
+      .subscribe((taskItems) => this.taskItems = taskItems);
 
     this.taskService.editTaskUpdated$
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
@@ -64,6 +64,20 @@ export class BasketComponent implements OnInit {
         this.boardItemService.remove(boardItem);
       }
     })
+  }
+
+  finish(): void {
+    this.basket.status = 'finished';
+    this.basketService.updateBasket(this.basket)
+      .subscribe(() => {
+          this.basketService.createBasket()
+            .subscribe((basket) => {
+                this.basket = basket;
+                this.basketService.setBasketList();
+              },
+              (err) => console.log('err', err))
+        },
+        (err) => console.log('err', err))
   }
 
 

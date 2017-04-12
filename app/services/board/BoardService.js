@@ -2,6 +2,7 @@ let BoardService = function (Board,
                              BoardItemBoard,
                              BoardItemService) {
     let _ = require('lodash');
+    let self = this;
 
     this.get = function (project) {
         return new Promise(function (resolve, reject) {
@@ -49,6 +50,21 @@ let BoardService = function (Board,
     this.hasInShared = function (board, user) {
         let shared = board.shared.map((user) => user.toString());
         return _.contains(shared, user.toString());
+    };
+
+    this.update = function (updatedBoard) {
+        return new Promise(function (resolve, reject) {
+            self.getById(updatedBoard._id)
+                .then((board) => {
+                    _.assign(board, updatedBoard);
+                    board
+                        .save()
+                        .then((board) => {
+                            resolve(board)
+                        }, (err) => reject(err));
+                })
+        });
+
     }
 };
 module.exports = BoardService;

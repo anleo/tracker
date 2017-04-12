@@ -16,9 +16,20 @@ export class BasketResource extends Resource {
   }
 
   @ResourceAction({
-    path: '/{!:userId}',
+    path: '/{!userId}',
     method: RequestMethod.Get
   })
   get: ResourceMethod<{userId: string}, TaskBoard>;
 
+  @ResourceAction({
+    path: '/{!basketId}',
+    method: RequestMethod.Put
+  })
+  update: ResourceMethodStrict<TaskBoard,{basketId: string}, TaskBoard>;
+
+  @ResourceAction({
+    path: '/',
+    method: RequestMethod.Post
+  })
+  create: ResourceMethod<any, TaskBoard>;
 }

@@ -68,7 +68,7 @@ module.exports = function (app) {
 
                 let user = req.user && req.user._id ? req.user._id : user;
 
-                if (BoardService.hasInShared(board, user)) {
+                if (BoardService.hasInShared(board, user) || (board.owner == user.toString())) {
                     BoardItemService.getItemsByOptions({board: board, isRoot: false})
                         .then((boardItems) => res.json(boardItems))
                         .catch((err) => res.status(400).json({error: err}));

@@ -34,6 +34,19 @@ export class BasketService {
       .$observable
   }
 
+  createBasket(): Observable<TaskBoard> {
+    return this.basketResource.create()
+      .$observable
+      .map((basket) => {
+        return this.basket = basket;
+      })
+  }
+
+  updateBasket(basket: TaskBoard): Observable<TaskBoard> {
+    return this.basketResource.update(basket, {basketId: basket._id})
+      .$observable
+  }
+
   get(): Observable<TaskBoard> {
     if (this.basket) {
       return Observable.of(this.basket);

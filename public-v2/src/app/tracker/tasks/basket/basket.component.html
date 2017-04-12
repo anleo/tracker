@@ -16,6 +16,7 @@
       </div>
     </div>
     <div *ngIf="!taskItems?.length">No tasks yet</div>
+    <button *ngIf="taskItems?.length" (click)="finish()" class="btn btn-success btn-sm">Finish</button>
   </div>
 </div>
 
