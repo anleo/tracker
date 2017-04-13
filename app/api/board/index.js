@@ -9,11 +9,11 @@ module.exports = function (app) {
             .getById(id)
             .then((board) => {
                 if (!board) {
-                    return res.status(404).send();
+                    return res.status(404).json('Board was not found');
                 }
 
                 if (!BoardService.hasAccess(board, req.user)) {
-                    return res.status(403).send();
+                    return res.status(403).send('You haven\'t access to this board');
                 }
 
                 req.Board = board;
@@ -41,7 +41,7 @@ module.exports = function (app) {
 
     app.put('/api/projects/:projectId/boards/:boardId', function (req, res) {
         BoardService
-            .updateBoard(req.params.boardId, req.body, req.user)
+            .updateBoard(req.Board, req.body)
             .then((board) => res.json(board))
             .catch((err) => res.status(400).json({error: err}));
     });
