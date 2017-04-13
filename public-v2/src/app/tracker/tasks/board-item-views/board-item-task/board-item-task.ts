@@ -56,7 +56,6 @@ export class BoardItemTaskComponent implements OnInit {
     } else if (taskWithStatus.status === 'move') {
       this.taskSaveHandler();
     } else if (taskWithStatus.status === 'remove') {
-      console.log('remove')
       this.taskSaveHandler();
     } else if (taskWithStatus.status === 'close') {
       this.editMode = false;
