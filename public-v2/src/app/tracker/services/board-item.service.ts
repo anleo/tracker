@@ -22,6 +22,10 @@ export class BoardItemService {
     return this.boardItemResource.save(boardItem, {boardId: boardItem.board}).$observable;
   }
 
+  update(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
+    return this.boardItemResource.update(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
+  }
+
   remove(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
     return this.boardItemResource.remove(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
   }

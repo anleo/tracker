@@ -30,6 +30,12 @@ export class BoardItemResource extends Resource {
 
   @ResourceAction({
     path: '/{!boardItemId}',
+    method: RequestMethod.Put
+  })
+  update: ResourceMethodStrict<TaskBoardItem, {boardId: string, boardItemId: string}, TaskBoardItem>;
+
+  @ResourceAction({
+    path: '/{!boardItemId}',
     method: RequestMethod.Delete
   })
   remove: ResourceMethodStrict<TaskBoardItem, {boardId: string, boardItemId: string}, any>;
