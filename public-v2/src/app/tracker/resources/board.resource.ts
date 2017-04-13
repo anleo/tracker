@@ -28,6 +28,12 @@ export class BoardResource extends Resource {
   update: ResourceMethodStrict<TaskBoard, {projectId: string, boardId: string}, TaskBoard>;
 
   @ResourceAction({
+    path: '/{!boardId}',
+    method: RequestMethod.Delete
+  })
+  remove: ResourceMethod<{projectId: string, boardId: string}, null>;
+
+  @ResourceAction({
     path: '/',
     isArray: true
   })

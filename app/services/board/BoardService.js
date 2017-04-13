@@ -73,9 +73,7 @@ let BoardService = function (Board,
 
     this.updateBoard = function (board, data) {
         return new Promise(function (resolve, reject) {
-            board = _.assign({}, board, data);
-
-            Board.update({_id: board._id}, {$set: board}, {new: true})
+            Board.findOneAndUpdate({_id: board._id}, {$set: data}, {new: true})
                 .then((board) => resolve(board), (err) => reject(err));
         });
     };

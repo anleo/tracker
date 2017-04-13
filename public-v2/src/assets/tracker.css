@@ -1025,3 +1025,22 @@ hr {
   border: none;
   color: #fff;
 }
+
+.sub-item-wrap {
+  margin: 15px 3px 3px;
+  padding: 0 0 0 3px;
+  border: 2px solid #fffdc1;
+  border-width: 0 0 0 3px;
+}
+
+.sub-item-wrap input {
+  margin: 0;
+}
+
+simple-task-form > board-item-subitems {
+  margin-top: 15px;
+}
+
+.drag-button {
+  cursor: move !important;
+}

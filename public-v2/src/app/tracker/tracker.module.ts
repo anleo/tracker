@@ -91,6 +91,7 @@ import {BoardItemSubitemsTaskComponent} from "./tasks/board-item-subitems/board-
 import {SimpleTaskFormComponent} from "./tasks/simple-task-form/simple-task-form.component";
 import {TaskBoardResolver} from "./resolvers/task-board.resolver";
 import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
+import {BoardTeamComponent} from "./tasks/components/board-team/board-team.component";
 
 @NgModule({
   imports: [
@@ -163,6 +164,7 @@ import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
     TaskTagsSearchComponent,
     TaskMetricsComponent,
     TaskTeamComponent,
+    BoardTeamComponent,
     TaskTagsComponent,
     UploaderComponent,
     FileViewerComponent,

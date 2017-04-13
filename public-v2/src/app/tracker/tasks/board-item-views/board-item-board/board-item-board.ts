@@ -20,7 +20,7 @@ export class BoardItemBoardComponent {
   }
 
   edit(board: TaskBoard): void {
-    let boardToEdit = _.clone(board);
-    this.boardService.editBoard$.next(boardToEdit);
+    this.boardService.editBoardModal$.next(true);
+    this.boardService.editBoard$.next(_.cloneDeep(board));
   }
 }
