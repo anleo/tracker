@@ -39,42 +39,20 @@ module.exports = function (app) {
     });
 
     app.post('/api/boards/:boardId/boardItems', function (req, res) {
-        BoardService
-            .getById(req.params.boardId)
-            .then((board) => {
-                if (!board) {
-                    return res.status(404).json({error: 'Board was not found'});
-                }
+        let data = {
+            board: req.Board,
+            type: req.body.type,
+            item: req.body.item
+        };
 
-                let data = {
-                    board: board,
-                    type: req.body.type,
-                    item: req.body.item
-                };
-
-                BoardItemService.create(data)
-                    .then((boardItem) => res.json(boardItem))
-                    .catch((err) => res.status(400).json({error: err}));
-            })
-            .catch((err) => res.status(400).json({error: err}))
+        BoardItemService.create(data)
+            .then((boardItem) => res.json(boardItem))
+            .catch((err) => res.status(400).json({error: err}));
     });
 
     app.get('/api/boards/:boardId/boardItems', function (req, res) {
-        BoardService
-            .getById(req.params.boardId)
-            .then((board) => {
-                if (!board) {
-                    return res.status(404).json({error: 'Board was not found'});
-                }
-
-                if (BoardService.hasAccess(board, req.user)) {
-                    BoardItemService.getItemsByOptions({board: board})
-                        .then((boardItems) => res.json(boardItems))
-                        .catch((err) => res.status(400).json({error: err}));
-                } else {
-                    res.status(403).json({error: 'You haven\'t access to this board'});
-                }
-            })
+        BoardItemService.getItemsByOptions({board: req.Board._id})
+            .then((boardItems) => res.json(boardItems))
             .catch((err) => res.status(400).json({error: err}));
     });
 

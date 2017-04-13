@@ -11,8 +11,12 @@ import * as _ from 'lodash';
 
 export class BoardItemBoardComponent {
   @Input() boardItem: TaskBoardItem | null;
+  showSubitems: boolean = false;
 
-  constructor(private boardService: BoardService){
+  constructor(private boardService: BoardService){}
+
+  toggleSubitems(): void {
+    this.showSubitems = !this.showSubitems;
   }
 
   edit(board: TaskBoard): void {

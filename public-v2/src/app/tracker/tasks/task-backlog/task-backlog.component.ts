@@ -8,6 +8,7 @@ import {SocketService} from "../../../services/socket.service";
 import {DnDService} from "../../dnd/dnd.service";
 
 import {isNull} from "util";
+import {TaskBoardItem} from "../../models/task-board-item";
 
 @Component({
   selector: 'task-backlog',
@@ -19,6 +20,7 @@ export class TaskBacklogComponent implements OnInit {
   root: Task|null = null;
   tasks: Task[] = [];
   task: Task|null = null;
+  boardItems: TaskBoardItem[] = [];
 
   showBacklog: boolean = false;
   addTaskToggle: boolean = false;
@@ -65,7 +67,12 @@ export class TaskBacklogComponent implements OnInit {
 
   loadTasks() {
     this.root && this.root._id && this.taskService.getChildrenTasks(this.root._id)
-      .subscribe((tasks) => this.tasks = tasks);
+      .toPromise()
+      .then((tasks) => {
+        this.boardItems = tasks.map((task) => {
+          return this.wrapToBoardItem(task);
+        })
+      });
   }
 
   initTask() {
@@ -114,7 +121,7 @@ export class TaskBacklogComponent implements OnInit {
     return {
       board: null,
       type: 'task',
-      item: task._id
+      item: task
     };
   }
 

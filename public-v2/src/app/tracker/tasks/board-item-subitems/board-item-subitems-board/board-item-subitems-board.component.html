@@ -1,0 +1,5 @@
+<div *ngIf="boardItems.length">
+  <div *ngFor="let boardItem of boardItems">
+    <board-item-view [boardItem]="boardItem"></board-item-view>
+  </div>
+</div>

@@ -85,6 +85,10 @@ import {BoardItemService} from "./services/board-item.service";
 import {BoardItemViewComponent} from "./tasks/board-item-views/board-item-view";
 import {BoardItemBoardComponent} from "./tasks/board-item-views/board-item-board/board-item-board";
 import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/board-item-task";
+import {BoardItemSubitemsComponent} from "./tasks/board-item-subitems/board-item-subitems.component";
+import {BoardItemSubitemsBoardComponent} from "./tasks/board-item-subitems/board-item-subitems-board/board-item-subitems-board.component";
+import {BoardItemSubitemsTaskComponent} from "./tasks/board-item-subitems/board-item-subitems-task/board-item-subitems-task.component";
+import {SimpleTaskFormComponent} from "./tasks/simple-task-form/simple-task-form.component";
 import {TaskBoardResolver} from "./resolvers/task-board.resolver";
 import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
 
@@ -120,6 +124,9 @@ import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
     BoardItemViewComponent,
     BoardItemBoardComponent,
     BoardItemTaskComponent,
+    BoardItemSubitemsComponent,
+    BoardItemSubitemsBoardComponent,
+    BoardItemSubitemsTaskComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
@@ -127,6 +134,7 @@ import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
     TasksComponent,
     TasksListComponent,
     TasksEditComponent,
+    SimpleTaskFormComponent,
     TasksBoardComponent,
     TaskBoardsComponent,
     BoardEditComponent,

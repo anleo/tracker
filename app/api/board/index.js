@@ -4,17 +4,26 @@ module.exports = function (app) {
     let Board = app.container.get('Board');
     let BoardItemService = app.container.get('BoardItemService');
 
-    app.get('/api/boards/:boardId', function (req, res) {
-        let boardId = req.param && req.params.boardId;
+    app.param('boardId', function(req, res, next, id) {
+        BoardService
+            .getById(id)
+            .then((board) => {
+                if (!board) {
+                    return res.status(404).json('Board was not found');
+                }
 
-        if (boardId) {
-            BoardService
-                .getById(boardId)
-                .then((board) => res.json(board))
-                .catch((err) => res.status(400).json({error: err}));
-        } else {
-            return res.status(400).json({error: 'boardId was not present'})
-        }
+                if (!BoardService.hasAccess(board, req.user)) {
+                    return res.status(403).send('You haven\'t access to this board');
+                }
+
+                req.Board = board;
+                next();
+            })
+            .catch((err) => next(err))
+    });
+
+    app.get('/api/boards/:boardId', function (req, res) {
+        res.json(req.Board);
     });
 
     app.post('/api/projects/:projectId/boards', function (req, res) {
@@ -32,8 +41,15 @@ module.exports = function (app) {
 
     app.put('/api/projects/:projectId/boards/:boardId', function (req, res) {
         BoardService
-            .updateBoard(req.params.boardId, req.body, req.user)
+            .updateBoard(req.Board, req.body)
             .then((board) => res.json(board))
+            .catch((err) => res.status(400).json({error: err}));
+    });
+
+    app.delete('/api/projects/:projectId/boards/:boardId', function (req, res) {
+        BoardService
+            .remove(req.Board)
+            .then(() => res.status(200).send())
             .catch((err) => res.status(400).json({error: err}));
     });
 };

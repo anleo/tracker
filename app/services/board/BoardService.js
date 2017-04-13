@@ -50,30 +50,37 @@ let BoardService = function (Board,
         });
     };
 
-    this.updateBoard = function (boardId, data, user) {
-        let userId = user && user._id ? user._id : user;
-
+    this.getByQuery = function (query) {
         return new Promise(function (resolve, reject) {
-            Board.findById(boardId)
+            Board
+                .findOne(query)
                 .exec()
-                .then((board) => {
-                    if (!board) {
-                        return reject(new Error('Board not found'));
-                    }
-
-                    if (!self.hasAccess(board, userId)) {
-                        return reject(new Error('You cannot modify this board'));
-                    }
-
-                    board = _.assign({}, board, data);
-
-                    Board.update({_id: board._id}, {$set: board}, {new: true})
-                        .then((board) => resolve(board), (err) => reject(err));
-                });
+                .then((board) => resolve(board), (err) => reject(err))
         });
     };
 
-    this.hasAccess = function (board, user) {
+    this.remove = function (board) {
+        return new Promise(function (resolve, reject) {
+            Board
+                .remove({_id: board.id})
+                .then(() => {
+                    BoardItemService.removeBoardItemsByItem(board)
+                        .then(() => resolve(true))
+                        .catch((err) => reject(err));
+                }, (err) => reject(err));
+        });
+    };
+
+    this.updateBoard = function (board, data) {
+        return new Promise(function (resolve, reject) {
+            board = _.assign({}, board, data);
+
+            Board.update({_id: board._id}, {$set: board}, {new: true})
+                .then((board) => resolve(board), (err) => reject(err));
+        });
+    };
+
+    this.hasAccess = function(board, user) {
         user = user && user._id ? user._id : user;
         return !!(self.isOwner(board, user) || self.hasInShared(board, user));
     };
