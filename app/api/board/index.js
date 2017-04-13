@@ -10,7 +10,7 @@ module.exports = function (app) {
                     return res.status(404).send();
                 }
 
-                if (!BoardService.hasAccess(board, user)) {
+                if (!BoardService.hasAccess(board, req.user)) {
                     return res.status(403).send();
                 }
 
