@@ -17,7 +17,7 @@ export class TaskPanelComponent implements OnInit {
   showBasket: boolean = true;
 
   constructor(private taskService: TaskService,
-              private  boardItemService: BoardItemService,
+              private boardItemService: BoardItemService,
               private basketService: BasketService) {
   }
 

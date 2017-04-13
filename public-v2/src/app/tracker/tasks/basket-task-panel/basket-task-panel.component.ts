@@ -32,7 +32,7 @@ export class BasketTaskPanelComponent implements OnInit {
     if (this.task.simple) {
       this.calculateApproximateTime();
     }
-
+//TODO @@@dr check
     this.countTaskSpentTime(this.boardItem);
 
     if(this.boardItem.item.status === 'in progress'){
@@ -40,7 +40,6 @@ export class BasketTaskPanelComponent implements OnInit {
 
       this.startTimer();
     }
-
   }
 
   edit(task: Task) {

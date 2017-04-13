@@ -96,6 +96,8 @@ let BoardService = function (Board,
         return _.contains(shared, user.toString());
     };
 
+    //TODO @@@ira check this method
+
     this.update = function (updatedBoard) {
         return new Promise(function (resolve, reject) {
             SimpleMetricsService.calculatePointCostByBoard(updatedBoard)

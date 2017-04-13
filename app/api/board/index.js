@@ -54,7 +54,9 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json({error: err}));
     });
 
-    app.get('/api/boards/:boardId/metrics', function (req, res) {
+    // @@IraU req.Board exist, rethink route and metrics service
+
+    app.put('/api/boards/:boardId/metrics', function (req, res) {
         BoardService.getById(req.params.boardId)
             .then((board) => {
                 BoardService.update(board)
