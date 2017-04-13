@@ -5,19 +5,16 @@ let BasketService = function (Board, BoardService, BoardItemService) {
     this.create = function (user) {
         return new Promise(function (resolve, reject) {
             let basket = new Board();
-            basket.owner = user;
+            basket.owner = user._id;
             // @@IraU change title
             basket.title = "Basket";
             basket.type = "basket";
             basket
                 .save()
                 .then((basket) => {
-                    let query = {owner: user, type: 'basket', status: "finished"};
+                    let query = {owner: user._id, type: 'basket', status: "finished"};
                     self.prepareBoardItem(basket, query)
                         .then((boardItems) => {
-                            if (!boardItems) {
-                                reject();
-                            }
                             resolve(basket);
                         }, (err) => reject(err))
 

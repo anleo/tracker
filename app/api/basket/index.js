@@ -42,7 +42,7 @@ module.exports = function (app) {
     });
 
     app.post('/api/baskets', function (req, res) {
-        BasketService.create(req)
+        BasketService.create(req.user)
             .then((board) => {
                 res.json(board);
             })

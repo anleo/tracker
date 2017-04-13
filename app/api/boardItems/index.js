@@ -71,27 +71,6 @@ module.exports = function (app) {
     })
 
     app.get('/api/boards/:boardId/boardItems', function (req, res) {
-        BoardService
-            .getById(req.params.boardId)
-            .then((board) => {
-                if (!board) {
-                    return res.status(404).json({error: 'Board was not found'});
-                }
-
-                let user = req.user && req.user._id ? req.user._id : user;
-
-                if (BoardService.hasInShared(board, user) || (board.owner == user.toString())) {
-                    BoardItemService.getItemsByOptions({board: board, isRoot: false})
-                        .then((boardItems) => res.json(boardItems))
-                        .catch((err) => res.status(400).json({error: err}));
-                } else {
-                    res.status(403).json({error: 'You haven\'t access to this board'});
-                }
-            })
-            .catch((err) => res.status(400).json({error: err}));
-    });
-
-    app.get('/api/boards/:boardId/boardItems', function (req, res) {
         BoardItemService.getItemsByOptions({board: req.Board._id})
             .then((boardItems) => res.json(boardItems))
             .catch((err) => res.status(400).json({error: err}));
