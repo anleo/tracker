@@ -64,7 +64,7 @@ const routes: Routes = [
               },
               {
                 path: ':boardId',
-                component: TaskBoardComponent,
+                component: TaskBoardsComponent,
                 resolve: {
                   board: TaskBoardResolver
                 }

@@ -2,7 +2,7 @@ import {Component, Input} from "@angular/core";
 import {TaskBoard} from "../../../models/task-board";
 import {TaskBoardItem} from "../../../models/task-board-item";
 import {BoardService} from "../../../services/board.service";
-
+import * as _ from 'lodash';
 
 @Component({
   selector: 'board-item-board',
@@ -20,6 +20,7 @@ export class BoardItemBoardComponent {
   }
 
   edit(board: TaskBoard): void {
-    this.boardService.editBoard$.next(board);
+    let boardToEdit = _.clone(board);
+    this.boardService.editBoard$.next(boardToEdit);
   }
 }
