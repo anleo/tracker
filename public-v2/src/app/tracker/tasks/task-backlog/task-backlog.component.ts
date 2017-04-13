@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
 import {TaskService} from "../../services/task.service";
 import {CurrentTaskService} from "../../services/current-task.service";
 
@@ -9,6 +9,7 @@ import {DnDService} from "../../dnd/dnd.service";
 
 import {isNull} from "util";
 import {TaskBoardItem} from "../../models/task-board-item";
+import {ToastsManager} from "ng2-toastr";
 
 @Component({
   selector: 'task-backlog',
@@ -31,7 +32,10 @@ export class TaskBacklogComponent implements OnInit {
   constructor(private taskService: TaskService,
               private socketService: SocketService,
               private dndService: DnDService,
-              private currentTaskService: CurrentTaskService) {
+              private currentTaskService: CurrentTaskService,
+              private toastr: ToastsManager,
+              vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
@@ -97,7 +101,14 @@ export class TaskBacklogComponent implements OnInit {
     }
 
     dropData.item.item.parentTaskId = dropData.params.parent;
-    this.taskService.updateTask(dropData.item.item).toPromise().then((task) => this.loadTasks());
+
+    this.taskService
+      .updateTask(dropData.item.item)
+      .toPromise()
+      .then((task) => this.loadTasks())
+      .catch((err) => {
+        this.toastr.error(err._body.toString(), 'Something was wrong');
+      });
   }
 
   toggleBacklog() {
