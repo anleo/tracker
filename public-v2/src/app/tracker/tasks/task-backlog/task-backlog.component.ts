@@ -91,7 +91,9 @@ export class TaskBacklogComponent implements OnInit {
   }
 
   private onDrop(dropData) {
-    if (!dropData.item) {
+    let boardItem = dropData.item;
+
+    if (!boardItem) {
       return false;
     }
 
@@ -99,10 +101,10 @@ export class TaskBacklogComponent implements OnInit {
       return false;
     }
 
-    dropData.item.item.parentTaskId = dropData.params.parent;
+    boardItem.item.parentTaskId = dropData.params.parent;
 
     this.taskService
-      .updateTask(dropData.item.item)
+      .updateTask(boardItem.item)
       .toPromise()
       .then((task) => this.loadTasks())
       .catch((err) => {
