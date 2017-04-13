@@ -91,7 +91,7 @@ export class TaskBacklogComponent implements OnInit {
   }
 
   private onDrop(dropData) {
-// TODO @@@id: need to refactor dropData.item -> dropData.boardItem, dropData.item.item ->dropData.boardItem.item
+    // TODO @@@id: need to refactor dropData.item -> dropData.boardItem, dropData.item.item ->dropData.boardItem.item
     if (!dropData.item) {
       return false;
     }
