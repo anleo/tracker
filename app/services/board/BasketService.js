@@ -6,6 +6,7 @@ let BasketService = function (Board, BoardService, BoardItemService) {
         return new Promise(function (resolve, reject) {
             let basket = new Board();
             basket.owner = user;
+            // @@IraU change title
             basket.title = "Basket";
             basket.type = "basket";
             basket
