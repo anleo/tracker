@@ -61,4 +61,8 @@ export class BoardItemTaskComponent implements OnInit {
       this.editMode = false;
     }
   }
+
+  checkType(item) {
+    return item.type === 'task';
+  }
 }

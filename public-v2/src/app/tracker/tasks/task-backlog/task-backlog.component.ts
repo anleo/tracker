@@ -87,18 +87,17 @@ export class TaskBacklogComponent implements OnInit {
   }
 
   private onDrop(dropData) {
+// TODO @@@id: need to refactor dropData.item -> dropData.boardItem, dropData.item.item ->dropData.boardItem.item
     if (!dropData.item) {
       return false;
     }
 
-    dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
-      dropData.item.parentTaskId;
-
-    if (dropData.params.status) {
-      dropData.item.status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
+    if (!dropData.params && !dropData.params.parent) {
+      return false;
     }
 
-    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.loadTasks());
+    dropData.item.item.parentTaskId = dropData.params.parent;
+    this.taskService.updateTask(dropData.item.item).toPromise().then((task) => this.loadTasks());
   }
 
   toggleBacklog() {
