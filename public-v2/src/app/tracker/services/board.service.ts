@@ -17,5 +17,10 @@ export class BoardService {
   saveBoard(board: TaskBoard): Observable<TaskBoard> {
     return this.boardResource.save(board, {projectId: board.project}).$observable;
   }
+
+  getboardMetrics(boardId: string): Observable<TaskBoard> {
+    return this.boardResource.getboardMetrics({boardId: boardId}).$observable;
+  }
+
 }
 

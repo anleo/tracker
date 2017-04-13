@@ -33,11 +33,13 @@ module.exports = function (container) {
   container.register('FileService', require('../services/FileService'), ['GridFS']);
   container.register('TaskService', require('../services/TaskService'), ['Task', 'FileService', 'UserService', 'SocketService','HistoryService', 'TaskComment']);
   container.register('UserService', require('../services/UserService'), ['User']);
-  container.register('BoardService', require('../services/board/BoardService'), ['Board', 'BoardItemBoard', 'BoardItemService']);
+  container.register('BoardService', require('../services/board/BoardService'), ['Board', 'BoardItemBoard', 'BoardItemService', 'SimpleMetricsService']);
   container.register('BoardItemService', require('../services/board/BoardItemService'), ['BoardItem', 'BoardItemBoard', 'BoardItemTask']);
-  container.register('BasketService', require('../services/board/BasketService'), ['Board']);
+  container.register('BasketService', require('../services/board/BasketService'), ['Board', 'BoardService', 'BoardItemService']);
 
-    container.register('HistoryService', require('../services/HistoryService'), ['HistoryService.historyWriters']);
+  container.register('SimpleMetricsService', require('../services/SimpleMetricsService'), ['BoardItemService']);
+
+  container.register('HistoryService', require('../services/HistoryService'), ['HistoryService.historyWriters']);
 
   container.register('HistoryService.historyWriters', function () {
     return container.find(['taskHistoryWriter']);

@@ -13,7 +13,6 @@ import {TaskBoardItem} from "../../models/task-board-item";
 })
 export class TaskPanelComponent implements OnInit {
   @Input() task: Task;
-  @Input() boardItem: TaskBoardItem = null;
   metricsDetails: number;
   showBasket: boolean = true;
 
@@ -45,22 +44,11 @@ export class TaskPanelComponent implements OnInit {
         this.boardItemService.save(boardItem)
           .subscribe((response) => {
               this.showBasket = false;
-              this.basketService.setBasketList();
+              this.basketService.getBasketMetrics();
             },
             (err) => {
               console.log('err', err);
             })
       })
   }
-
-  remove(boardItem: TaskBoardItem){
-    this.boardItemService.remove(boardItem)
-      .subscribe(() => {
-          this.basketService.setBasketList();
-        },
-        (err) => {
-          console.log('err', err);
-        })
-  }
-
 }

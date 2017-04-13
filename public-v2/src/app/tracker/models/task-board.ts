@@ -5,7 +5,8 @@ export class TaskBoard {
   status?: string = '';
   shared?: Array<string>;
   owner?: string;
-  time?: number;
+  time?: number = 0;
+  pointCost?: number = 0;
   createdAt?: string;
   updatedAt?: string;
   type?: string;

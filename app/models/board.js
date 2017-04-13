@@ -10,7 +10,8 @@ module.exports = function (mongoose) {
         shared: [{type: Schema.Types.ObjectId, ref: 'User'}],
         project: {type: Schema.Types.ObjectId, ref: 'Task'},
         createdAt: {type: Date, default: Date.now, index: true},
-        updatedAt: {type: Date, default: Date.now, index: true}
+        updatedAt: {type: Date, default: Date.now, index: true},
+        pointCost:{type: Number, default: 0}
     });
 
     BoardSchema.pre('save', function (next) {

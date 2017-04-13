@@ -5,15 +5,18 @@ import {TaskService} from "../../services/task.service";
 import {BoardItemService} from "../../services/board-item.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
+import {BoardService} from "../../services/board.service";
 
 @Component({
   selector: 'basket-task-panel',
   templateUrl: 'basket-task-panel.component.html'
 })
 export class BasketTaskPanelComponent implements OnInit {
-  @Input() task: Task;
   @Input() boardItem: TaskBoardItem = null;
+  @Input() pointCost: number = null;
+  task: Task;
   showBasket: boolean = true;
+  approximateTime: string = null;
 
   constructor(private taskService: TaskService,
               private  boardItemService: BoardItemService,
@@ -21,6 +24,10 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.task = this.boardItem.item;
+    if (this.task.simple) {
+      this.calculateApproximateTime();
+    }
 
   }
 
@@ -47,22 +54,29 @@ export class BasketTaskPanelComponent implements OnInit {
       })
   }
 
-  remove(boardItem: TaskBoardItem){
+  remove(boardItem: TaskBoardItem) {
     this.boardItemService.remove(boardItem)
       .subscribe(() => {
-          this.basketService.setBasketList();
+          this.basketService.getBasketMetrics();
         },
         (err) => {
           console.log('err', err);
         })
   }
 
-  start(boardItem){
+
+  start(boardItem) {
     console.log('boardItem', boardItem);
   }
 
-  pause(boardItem){}
+  calculateApproximateTime(): void {
+    this.approximateTime = this.pointCost ? (this.task.points * this.pointCost).toFixed(2) : null;
+  }
 
-  accept(boardItem){}
+  pause(boardItem) {
+  }
+
+  accept(boardItem) {
+  }
 
 }

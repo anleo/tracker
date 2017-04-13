@@ -9,14 +9,26 @@
         <i class="glyphicon glyphicon-remove"></i>
       </small>
     </h3>
-
+    <div *ngIf="basket">
+      <form (submit)="save()">
+        <div class="input-group" style="margin: 0 0 20px;">
+          <input [(ngModel)]="basket.time" name="time" type="text"
+                 class="form-control input-sm" placeholder="Time"
+                 id="time"/>
+          <span class="input-group-btn">
+        <button class="btn btn-default btn-sm" type="submit">Save</button>
+      </span>
+        </div>
+      </form>
+    </div>
     <div *ngIf="taskItems?.length">
       <div *ngFor="let taskItem of taskItems" class="text-left">
-        <basket-task-panel [task]="taskItem.item" [boardItem]="taskItem"></basket-task-panel>
+        <basket-task-panel [boardItem]="taskItem"
+                           [pointCost]="basket.pointCost"></basket-task-panel>
       </div>
+      <button (click)="finish()" class="btn btn-success btn-sm">Finish</button>
     </div>
     <div *ngIf="!taskItems?.length">No tasks yet</div>
-    <button *ngIf="taskItems?.length" (click)="finish()" class="btn btn-success btn-sm">Finish</button>
   </div>
 </div>
 

@@ -8,17 +8,22 @@ import {TaskBoard} from "../models/task-board";
 import {BehaviorSubject} from "rxjs";
 import {TaskBoardItem} from "../models/task-board-item";
 import {BoardItemService} from "./board-item.service";
+import {BoardService} from "./board.service";
 
 
 @Injectable()
 export class BasketService {
   constructor(private basketResource: BasketResource,
               private userService: UserService,
-              private  boardItemService: BoardItemService) {
+              private  boardItemService: BoardItemService,
+              private boardService: BoardService) {
     this.getUser();
+    this.basket$
+      .subscribe((basket) => this.basket = basket);
   }
 
   basketList$: BehaviorSubject<TaskBoardItem[]> = new BehaviorSubject<TaskBoardItem[]>(null);
+  basket$: BehaviorSubject<TaskBoard> = new BehaviorSubject<TaskBoard>(null);
   basket: TaskBoard | null;
   user: User;
 
@@ -27,6 +32,10 @@ export class BasketService {
       .subscribe((user) => {
         this.user = user;
       })
+  }
+
+  setBasket(basket): void {
+    this.basket$.next(basket);
   }
 
   getBasket(): Observable<TaskBoard> {
@@ -38,13 +47,18 @@ export class BasketService {
     return this.basketResource.create()
       .$observable
       .map((basket) => {
-        return this.basket = basket;
+        this.setBasket(basket);
+        return basket;
       })
   }
 
   updateBasket(basket: TaskBoard): Observable<TaskBoard> {
     return this.basketResource.update(basket, {basketId: basket._id})
       .$observable
+      .map((basket) => {
+        this.setBasket(basket);
+        return basket;
+      })
   }
 
   get(): Observable<TaskBoard> {
@@ -53,7 +67,8 @@ export class BasketService {
     }
     return this.getBasket()
       .map((basket) => {
-        return this.basket = basket;
+        this.setBasket(basket);
+        return basket;
       })
   }
 
@@ -62,6 +77,15 @@ export class BasketService {
       .subscribe((boardItems) => {
         this.basketList$.next(boardItems);
       })
+  }
+
+  getBasketMetrics(): void {
+    this.boardService.getboardMetrics(this.basket._id)
+      .subscribe((basket) => {
+          this.setBasket(basket);
+          this.setBasketList();
+        },
+        (err) => console.log('err', err))
   }
 
 }

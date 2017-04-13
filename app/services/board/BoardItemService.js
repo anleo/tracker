@@ -1,8 +1,8 @@
-let _ = require('lodash');
-
 let BoardItemService = function (BoardItem,
                                  BoardItemBoard,
                                  BoardItemTask) {
+    let _ = require('lodash');
+    let self = this;
 
     this.create = function (data) {
         let self = this;
@@ -76,6 +76,18 @@ let BoardItemService = function (BoardItem,
                     },
                     (err) => reject(err));
         });
+    };
+
+    this.getUnfinishedBoardItems = function (boardId) {
+        let query = {board: boardId};
+        return self.getItemsByOptions(query)
+            .then((boardItems) => {
+                    return Promise.all(_.filter(boardItems, (boardItem) => {
+                        return boardItem.item.status !== "accepted";
+                    }));
+
+                },
+                (err) => console.log('err', err))
     }
 
 };

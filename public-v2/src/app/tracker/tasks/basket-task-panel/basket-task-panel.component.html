@@ -11,6 +11,7 @@
       <span class="fa fa-times vcenter pull-right" (click)="remove(boardItem)" *ngIf="boardItem"></span>
       <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
       <span class="label label-info vcenter pull-right" *ngIf="!task.simple">complex</span>
+      <span class="vcenter pull-right" *ngIf="approximateTime">{{approximateTime}} h</span>
 
       <span class="glyphicon glyphicon-play" (click)="start(boardItem)"></span>
       <span class="glyphicon glyphicon-pause" (click)="pause(boardItem)"></span>

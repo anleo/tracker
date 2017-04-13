@@ -6,6 +6,7 @@ import {TaskBoardItem} from "../../models/task-board-item";
 import {TaskService} from "../../services/task.service";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {BoardItemService} from "../../services/board-item.service";
+import {BoardService} from "../../services/board.service";
 
 @Component({
   selector: '[basket]',
@@ -26,6 +27,9 @@ export class BasketComponent implements OnInit {
     this.basketService.basketList$
       .subscribe((taskItems) => this.taskItems = taskItems);
 
+    this.basketService.basket$
+      .subscribe((basket) => this.basket = basket);
+
     this.taskService.editTaskUpdated$
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
   }
@@ -41,7 +45,6 @@ export class BasketComponent implements OnInit {
   getBasket() {
     this.basketService.get()
       .subscribe((basket) => {
-        this.basket = basket;
         this.basketService.setBasketList();
       })
   }
@@ -52,7 +55,7 @@ export class BasketComponent implements OnInit {
     }
 
     if (taskWithStatus.status === 'update') {
-      this.basketService.setBasketList();
+      this.basketService.getBasketMetrics();
     } else if (taskWithStatus.status === 'remove') {
       this.onRemove(taskWithStatus);
     }
@@ -61,7 +64,10 @@ export class BasketComponent implements OnInit {
   onRemove(taskWithStatus: TaskWithStatus) {
     this.taskItems.filter((boardItem) => {
       if (boardItem.item._id == taskWithStatus.task._id) {
-        this.boardItemService.remove(boardItem);
+        this.boardItemService.remove(boardItem)
+          .subscribe(() => {
+            this.basketService.getBasketMetrics();
+          })
       }
     })
   }
@@ -72,7 +78,6 @@ export class BasketComponent implements OnInit {
       .subscribe(() => {
           this.basketService.createBasket()
             .subscribe((basket) => {
-                this.basket = basket;
                 this.basketService.setBasketList();
               },
               (err) => console.log('err', err))
@@ -80,5 +85,12 @@ export class BasketComponent implements OnInit {
         (err) => console.log('err', err))
   }
 
+  save(): void {
+    this.basketService.updateBasket(this.basket)
+      .subscribe((basket) => {
+          this.basketService.setBasketList();
+        },
+        (err) => console.log('err', err))
+  }
 
 }
