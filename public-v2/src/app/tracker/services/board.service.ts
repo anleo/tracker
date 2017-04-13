@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class BoardService {
   editBoard$: BehaviorSubject<TaskBoard> = new BehaviorSubject<TaskBoard>(null);
+  editBoardModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   editBoardUpdated$: BehaviorSubject<BoardWithStatus> = new BehaviorSubject<BoardWithStatus>(null);
 
   constructor(private boardResource: BoardResource) {}
@@ -36,6 +37,10 @@ export class BoardService {
     } else {
       return this.boardResource.save(data, {projectId: board.project}).$observable;
     }
+  }
+
+  removeBoard(board: TaskBoard): Observable<TaskBoard> {
+    return this.boardResource.remove({projectId: board.project, boardId: board._id}).$observable;
   }
 }
 

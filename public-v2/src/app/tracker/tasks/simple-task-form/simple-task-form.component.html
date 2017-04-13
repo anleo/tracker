@@ -1,11 +1,17 @@
-<form (submit)="task.title.length && save()">
-  <div class="input-group" style="margin: 0 0 20px;">
+<form (submit)="task?.title?.length && save()">
+  <div class="input-group" style="margin: 0 0 15px;">
     <input [(ngModel)]="task.title" name="title" type="text"
            class="form-control input-sm" placeholder="Add Task"
            id="title" autocomplete="off"/>
     <span class="input-group-btn">
-        <button class="btn btn-default btn-sm" [ngClass]="{'btn-success': task?.title?.length}" type="submit">Save</button>
-        <button class="btn btn-default btn-sm btn-danger" (click)="reset()">Reset</button>
+        <button class="btn btn-default btn-sm"
+                [ngClass]="{'btn-success': task?.title?.length}"
+                type="submit">
+          <i class="fa fa-check"></i>
+        </button>
+        <button class="btn btn-default btn-sm" type="reset" (click)="reset()">
+          <i class="fa fa-close"></i>
+        </button>
       </span>
   </div>
 </form>

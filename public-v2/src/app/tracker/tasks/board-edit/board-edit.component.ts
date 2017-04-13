@@ -4,6 +4,7 @@ import {TaskBoard} from '../../models/task-board';
 import {Subject, BehaviorSubject} from "rxjs";
 import {BoardService} from "../../services/board.service";
 import {TaskPrioritiesMock} from "../../mocks/task-priorities.mock";
+import * as _ from 'lodash';
 
 // import {BoardItemService} from "../../services/board-item.service";
 // import {TaskBoardItem} from '../../models/task-board-item';
@@ -23,6 +24,7 @@ export class BoardEditComponent implements OnInit, OnDestroy {
   editBoard: TaskBoard|null = null;
   priorities: number[] = TaskPrioritiesMock;
   project: any;
+  modalMode: boolean = false;
   $onDestroy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   componentDestroyed$: Subject<boolean> = new Subject();
@@ -39,6 +41,10 @@ export class BoardEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.boardService.editBoardModal$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((modalMode: boolean) => this.modalMode = modalMode);
+
     this.boardService.editBoard$.subscribe((board) => this.editBoard = board);
     this.currentTaskService.rootTask$.subscribe((rootTask) => {
       this.project = rootTask;
@@ -50,6 +56,7 @@ export class BoardEditComponent implements OnInit, OnDestroy {
     this.editBoard = new TaskBoard();
     this.editBoard.project = this.project && this.project._id;
     this.boardService.editBoard$.next(this.editBoard);
+    this.closeModal();
   }
 
   ngOnDestroy(): void {
@@ -70,12 +77,29 @@ export class BoardEditComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
+    this.closeModal();
     this.boardService.editBoardUpdated$.next({board: null, status: 'close'});
     setTimeout(() => this.initBoard(), 0);
   }
 
+  remove(board: TaskBoard): void {
+    this.boardService.removeBoard(board).subscribe(() => {
+      this.boardService.editBoardUpdated$.next({board: board, status: 'remove'});
+      this.closeModal();
+      setTimeout(() => this.initBoard(), 0);
+    });
+  }
+
+  private closeModal() {
+    this.boardService.editBoardModal$.next(false);
+  }
+
   setField(key: string, value: string): void {
     this.editBoard[key] = value;
+  }
+
+  boardChangeHandler(board: TaskBoard): void {
+    this.editBoard = board;
   }
 
   // reinitTask(task: Task): void {

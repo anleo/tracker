@@ -91,6 +91,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
 
     if (res.status === 'update') {
       this.getBoards();
+    } else if (res.status === 'remove') {
+      this.getBoards();
     }
   }
 
