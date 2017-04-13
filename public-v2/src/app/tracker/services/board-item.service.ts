@@ -7,7 +7,8 @@ import {BoardItemResource} from "../resources/board-item.resource";
 
 @Injectable()
 export class BoardItemService {
-  constructor(private boardItemResource: BoardItemResource) {}
+  constructor(private boardItemResource: BoardItemResource) {
+  }
 
   getRootBoardItemsByProject(projectId: string): Observable<TaskBoardItem[]> {
     return this.boardItemResource.getRootBoardItemsByProject({projectId: projectId}).$observable;
@@ -19,6 +20,14 @@ export class BoardItemService {
 
   save(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
     return this.boardItemResource.save(boardItem, {boardId: boardItem.board}).$observable;
+  }
+
+  update(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
+    return this.boardItemResource.update(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
+  }
+
+  remove(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
+    return this.boardItemResource.remove(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
   }
 }
 

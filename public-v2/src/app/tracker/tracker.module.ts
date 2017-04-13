@@ -86,6 +86,10 @@ import {BoardItemService} from "./services/board-item.service";
 import {BoardItemViewComponent} from "./tasks/board-item-views/board-item-view";
 import {BoardItemBoardComponent} from "./tasks/board-item-views/board-item-board/board-item-board";
 import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/board-item-task";
+import {BasketComponent} from './tasks/basket/basket.component';
+import {BasketResource} from "./resources/basket.resource";
+import {BasketService} from "./services/basket.service";
+import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-panel.component";
 import {TaskBoardResolver} from "./resolvers/task-board.resolver";
 import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
 
@@ -111,7 +115,8 @@ import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
   ],
   exports: [
     TaskSearchDirective,
-    BlankComponent
+    BlankComponent,
+    BasketComponent
   ],
   declarations: [
     BlankComponent,
@@ -176,7 +181,9 @@ import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
     MetricsInEditorComponent,
     TaskArchiveComponent,
     TaskSearchDirective,
-    TaskSearchComponent
+    TaskSearchComponent,
+    BasketComponent,
+    BasketTaskPanelComponent
   ],
   providers: [
     TaskResolver,
@@ -190,7 +197,9 @@ import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
     TaskMetricsService,
     CurrentTaskService,
     TaskStatusService,
-    TaskSearchService
+    TaskSearchService,
+    BasketResource,
+    BasketService
   ]
 })
 export class TrackerModule {

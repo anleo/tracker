@@ -4,6 +4,17 @@ let BoardItemService = function (BoardItem,
                                  BoardItemBoard,
                                  BoardItemTask) {
 
+    this.getById = function (id) {
+        return new Promise((resolve, reject) => {
+            BoardItem
+                .findById(id)
+                .populate('item')
+                .lean()
+                .exec()
+                .then((item) => resolve(item), (err) => reject(err));
+        })
+    }
+
     this.create = function (data) {
         let self = this;
         return new Promise(function (resolve, reject) {
@@ -37,6 +48,20 @@ let BoardItemService = function (BoardItem,
         });
     };
 
+    //TODO @@@dr converse update with @feya because create different
+    this.update = function (boardItem, data) {
+        return new Promise(function (resolve, reject) {
+            BoardItem.findById(boardItem._id)
+                .then((boardItem) => {
+                        _.assign(boardItem, data);
+
+                        boardItem.save()
+                            .then((boardItem) => resolve(boardItem), (err) => reject(err))
+                    },
+                    (err) => reject(err));
+        });
+    }
+
     this.createBoardItem = function (data) {
         return new Promise(function (resolve, reject) {
             new BoardItemBoard(data)
@@ -63,6 +88,20 @@ let BoardItemService = function (BoardItem,
                 .then((boardItems) => resolve(boardItems), (err) => reject(err))
         });
     };
+
+    this.removeBoardItem = function (id) {
+        return new Promise(function (resolve, reject) {
+            BoardItem.findById(id)
+                .then((boardItem) => {
+                        boardItem.remove()
+                            .then(() => {
+                                    resolve();
+                                },
+                                (err) => reject(err))
+                    },
+                    (err) => reject(err));
+        });
+    }
 
 };
 
