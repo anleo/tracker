@@ -9,7 +9,14 @@
     <h4 class="panel-title">
       <a [routerLink]="['/app/tasks/', boardItem?.item?._id]">{{boardItem.item.title}}</a>
 
-      <span class="fa fa-arrows vcenter pull-right pointer ng-scope drag-button"></span>
+      <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(boardItem.item)"></span>
+      <span class="fa fa-angle-down vcenter pull-right pointer" (click)="toggleSubitems()"></span>
+      <span class="fa fa-arrows vcenter pull-right pointer drag-button"></span>
+      <span class="label label-info vcenter pull-right" *ngIf="!boardItem.item.simple">complex</span>
+
     </h4>
   </div>
+
+  <simple-task-form [parentTask]="boardItem.item" (taskSaved)="taskSaveHandler($event)"></simple-task-form>
+  <board-item-subitems *ngIf="showSubitems" [boardItem]="boardItem" [refreshCount]="refreshCount"></board-item-subitems>
 </div>

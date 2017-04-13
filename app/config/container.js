@@ -30,10 +30,11 @@ module.exports = function (container) {
 
   // services
   container.register('FileService', require('../services/FileService'), ['GridFS']);
-  container.register('TaskService', require('../services/TaskService'), ['Task', 'FileService', 'UserService', 'SocketService','HistoryService', 'TaskComment']);
+  container.register('TaskService', require('../services/TaskService'), ['Task', 'FileService', 'UserService',
+      'SocketService','HistoryService', 'TaskComment', 'BoardItemService']);
   container.register('UserService', require('../services/UserService'), ['User']);
+  container.register('BoardItemService', require('../services/board/BoardItemService'), ['Board', 'BoardItem', 'BoardItemBoard', 'BoardItemTask']);
   container.register('BoardService', require('../services/board/BoardService'), ['Board', 'BoardItemBoard', 'BoardItemService', 'SimpleMetricsService']);
-  container.register('BoardItemService', require('../services/board/BoardItemService'), ['BoardItem', 'BoardItemBoard', 'BoardItemTask']);
   container.register('BasketService', require('../services/board/BasketService'), ['Board', 'BoardService', 'BoardItemService']);
 
   container.register('SimpleMetricsService', require('../services/SimpleMetricsService'), ['BoardItemService']);

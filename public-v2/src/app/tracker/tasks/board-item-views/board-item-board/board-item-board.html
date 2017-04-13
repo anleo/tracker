@@ -9,7 +9,10 @@
     <h4 class="panel-title">
       <a [routerLink]="['..', boardItem?.item?._id]">{{boardItem.item.title}}</a>
 
-      <span class="fa fa-arrows vcenter pull-right pointer ng-scope drag-button"></span>
+      <span class="fa fa-angle-down vcenter pull-right pointer" (click)="toggleSubitems()"></span>
+      <span class="fa fa-arrows vcenter pull-right pointer drag-button"></span>
+      <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(boardItem?.item)"></span>
     </h4>
   </div>
+  <board-item-subitems *ngIf="showSubitems" [boardItem]="boardItem"></board-item-subitems>
 </div>

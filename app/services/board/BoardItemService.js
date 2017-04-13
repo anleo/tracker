@@ -1,4 +1,5 @@
-let BoardItemService = function (BoardItem,
+let BoardItemService = function (Board,
+                                 BoardItem,
                                  BoardItemBoard,
                                  BoardItemTask) {
     let _ = require('lodash');
@@ -32,14 +33,14 @@ let BoardItemService = function (BoardItem,
             let model = models.find((model) => model.type === data.type);
 
             if (!model) {
-                return reject(new Error('No right type to create BoardItem'));
+                return reject('No right type to create BoardItem');
             }
 
             let boardItem = _.omit(data, ['type']);
 
             model.collection.count(boardItem).exec().then((count) => {
                 if (count) {
-                    return reject(new Error('This BoardItem already exists'));
+                    return reject('This BoardItem already exists');
                 }
 
                 model.create(boardItem)
@@ -90,6 +91,36 @@ let BoardItemService = function (BoardItem,
         });
     };
 
+    this.removeBoardItemsByItem = function (item) {
+        let itemId = item && item._id ? item._id : item;
+
+        return new Promise(function (resolve, reject) {
+            if (!itemId) {
+                reject('No itemId during boardItems remove!')
+            }
+
+            let query = {
+                $or: [
+                    {item: itemId}
+                ]
+            };
+
+            Board
+                .findById(itemId)
+                .then((board) => {
+                    if (board) {
+                        query.$or.push({
+                            board: itemId
+                        })
+                    }
+
+                    BoardItem
+                        .remove(query)
+                        .exec()
+                        .then(() => resolve(true), (err) => reject(err))
+                }, (err) => reject(err));
+        });
+    };
     this.removeBoardItem = function (id) {
         return new Promise(function (resolve, reject) {
             BoardItem.findById(id)

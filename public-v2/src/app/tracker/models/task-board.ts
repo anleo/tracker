@@ -9,5 +9,6 @@ export class TaskBoard {
   pointCost?: number = 0;
   createdAt?: string;
   updatedAt?: string;
+  priority?: number = 5;
   type?: string;
 }

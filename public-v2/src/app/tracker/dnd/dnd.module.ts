@@ -4,6 +4,7 @@ import {DragDirective} from "./directives/drag.directive";
 import {DropListenerDirective} from "./directives/drop-listener.directive";
 import {DropZoneDirective} from "./directives/drop-zone.directive";
 import {DnDService} from "./dnd.service";
+import {DnDMessenger} from "./dnd.messenger";
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import {DnDService} from "./dnd.service";
     DropZoneDirective
   ],
   providers: [
-    DnDService
+    DnDService,
+    DnDMessenger
   ]
 })
 export class DragAndDropModule {

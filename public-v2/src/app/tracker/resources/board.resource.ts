@@ -22,6 +22,12 @@ export class BoardResource extends Resource {
   save: ResourceMethodStrict<TaskBoard, {projectId: string}, TaskBoard>;
 
   @ResourceAction({
+    path: '/{!boardId}',
+    method: RequestMethod.Put
+  })
+  update: ResourceMethodStrict<TaskBoard, {projectId: string, boardId: string}, TaskBoard>;
+
+  @ResourceAction({
     path: '/',
     isArray: true
   })
@@ -32,4 +38,9 @@ export class BoardResource extends Resource {
     method: RequestMethod.Get
   })
   getboardMetrics: ResourceMethod<{boardId: string}, TaskBoard>;
+
+  @ResourceAction({
+    url: '/api/boards/{!boardId}'
+  })
+  getBoard: ResourceMethod<{boardId: string}, TaskBoard>;
 }

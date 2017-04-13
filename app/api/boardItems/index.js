@@ -17,8 +17,13 @@ module.exports = function (app) {
 
     app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
         let options = {
-            shared: req.user._id,
-            project: req.params.projectId
+            $or: [{
+                shared: req.user._id,
+                project: req.params.projectId
+            }, {
+                owner: req.user._id,
+                project: req.params.projectId
+            }]
         };
 
         BoardService.getBoardsByOptions(options)
@@ -35,9 +40,7 @@ module.exports = function (app) {
                         {board: null}
                     ],
                     item: {$in: boardsIds},
-                    type: 'board',
-                    project: req.params.projectId,
-                    isRoot: true
+                    type: 'board'
                 };
 
                 BoardItemService
@@ -49,26 +52,15 @@ module.exports = function (app) {
     });
 
     app.post('/api/boards/:boardId/boardItems', function (req, res) {
-        BoardService
-            .getById(req.params.boardId)
-            .then((board) => {
-                if (!board) {
-                    return res.status(404).json({error: 'Board was not found'});
-                }
+        let data = {
+            board: req.Board,
+            type: req.body.type,
+            item: req.body.item
+        };
 
-                let data = {
-                    board: board,
-                    type: req.body.type,
-                    item: req.body.item,
-                    project: board.project,
-                    isRoot: req.body.isRoot || false
-                };
-
-                BoardItemService.create(data)
-                    .then((boardItem) => res.json(boardItem))
-                    .catch((err) => res.status(400).json({error: err}));
-            })
-            .catch((err) => res.status(400).json({error: err}))
+        BoardItemService.create(data)
+            .then((boardItem) => res.json(boardItem))
+            .catch((err) => res.status(400).json({error: err}));
     });
 
     app.put('/api/boards/:boardId/boardItems/:boardItem', function (req, res) {
@@ -96,6 +88,12 @@ module.exports = function (app) {
                     res.status(403).json({error: 'You haven\'t access to this board'});
                 }
             })
+            .catch((err) => res.status(400).json({error: err}));
+    });
+
+    app.get('/api/boards/:boardId/boardItems', function (req, res) {
+        BoardItemService.getItemsByOptions({board: req.Board._id})
+            .then((boardItems) => res.json(boardItems))
             .catch((err) => res.status(400).json({error: err}));
     });
 

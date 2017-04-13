@@ -15,7 +15,7 @@ import {UserResolver} from "../user/resolver/UserResolver";
 import {TaskComponent} from "./tasks/components/task/task.component";
 import {CanActivatePrivateGuard} from "../guards/can-activate-private.guard";
 import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
-import {TaskBoardComponent} from "./tasks/task-boards/task-board.component";
+import {TaskBoardResolver} from "./resolvers/task-board.resolver";
 
 const routes: Routes = [
   {
@@ -63,10 +63,12 @@ const routes: Routes = [
               },
               {
                 path: ':boardId',
-                component: TaskBoardComponent
+                component: TaskBoardsComponent,
+                resolve: {
+                  board: TaskBoardResolver
+                }
               }
             ]
-
           },
           {
             path: 'archive',

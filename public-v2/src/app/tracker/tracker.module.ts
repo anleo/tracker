@@ -75,7 +75,6 @@ import {TaskComponent} from "./tasks/components/task/task.component";
 import {TaskMetricsService} from "./services/task-metrics.service";
 import {DragAndDropModule} from "./dnd/dnd.module";
 import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
-import {TaskBoardComponent} from "./tasks/task-boards/task-board.component";
 import {TaskBacklogComponent} from "./tasks/task-backlog/task-backlog.component";
 import {BoardService} from "./services/board.service";
 import {BoardResource} from "./resources/board.resource";
@@ -86,6 +85,12 @@ import {BoardItemService} from "./services/board-item.service";
 import {BoardItemViewComponent} from "./tasks/board-item-views/board-item-view";
 import {BoardItemBoardComponent} from "./tasks/board-item-views/board-item-board/board-item-board";
 import {BoardItemTaskComponent} from "./tasks/board-item-views/board-item-task/board-item-task";
+import {BoardItemSubitemsComponent} from "./tasks/board-item-subitems/board-item-subitems.component";
+import {BoardItemSubitemsBoardComponent} from "./tasks/board-item-subitems/board-item-subitems-board/board-item-subitems-board.component";
+import {BoardItemSubitemsTaskComponent} from "./tasks/board-item-subitems/board-item-subitems-task/board-item-subitems-task.component";
+import {SimpleTaskFormComponent} from "./tasks/simple-task-form/simple-task-form.component";
+import {TaskBoardResolver} from "./resolvers/task-board.resolver";
+import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
 import {BasketComponent} from './tasks/basket/basket.component';
 import {BasketResource} from "./resources/basket.resource";
 import {BasketService} from "./services/basket.service";
@@ -124,6 +129,9 @@ import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-pa
     BoardItemViewComponent,
     BoardItemBoardComponent,
     BoardItemTaskComponent,
+    BoardItemSubitemsComponent,
+    BoardItemSubitemsBoardComponent,
+    BoardItemSubitemsTaskComponent,
     TasksBoardFilter,
     RoundPipe,
     TextLimitPipe,
@@ -131,9 +139,10 @@ import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-pa
     TasksComponent,
     TasksListComponent,
     TasksEditComponent,
+    SimpleTaskFormComponent,
     TasksBoardComponent,
     TaskBoardsComponent,
-    TaskBoardComponent,
+    BoardEditComponent,
     BoardViewComponent,
     ListViewComponent,
     TreeViewComponent,
@@ -184,6 +193,7 @@ import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-pa
   ],
   providers: [
     TaskResolver,
+    TaskBoardResolver,
     TaskResource,
     BoardResource,
     BoardItemResource,
