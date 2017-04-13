@@ -11,7 +11,8 @@ import {isNull} from "util";
 
 @Component({
   selector: 'task-backlog',
-  templateUrl: 'task-backlog.component.html'
+  templateUrl: 'task-backlog.component.html',
+  providers: [DnDService]
 })
 
 export class TaskBacklogComponent implements OnInit {
@@ -55,10 +56,10 @@ export class TaskBacklogComponent implements OnInit {
       .subscribe((flag) => this.editMode = flag);
     // .takeUntil(this.componentDestroyed$)
 
-    // this.dndService.onDrop$
-    //   .subscribe((dropData) => {
-    //     this.onDrop(dropData);
-    //   });
+    this.dndService.onDrop$
+      .subscribe((dropData) => {
+        this.onDrop(dropData);
+      });
     // .takeUntil(this.componentDestroyed$)
   }
 

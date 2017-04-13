@@ -30,7 +30,6 @@ let BoardService = function (Board,
         return new Promise(function (resolve, reject) {
             let board = new Board(data);
 
-            // TODO @@@id: need to add field isRoot
             board
                 .save()
                 .then((board) => {

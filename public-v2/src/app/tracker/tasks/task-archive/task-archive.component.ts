@@ -9,6 +9,7 @@ import {CurrentTaskService} from "../../services/current-task.service";
 import {SocketService} from "../../../services/socket.service";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
 import {Router} from "@angular/router";
+import {DnDService} from "../../dnd/dnd.service";
 
 @Component({
   moduleId: module.id,
@@ -29,7 +30,8 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
               private busyLoaderService: BusyLoaderService,
               private taskService: TaskService,
               private currentTaskService: CurrentTaskService,
-              private socketService: SocketService) {
+              private socketService: SocketService,
+              private dndService: DnDService) {
   }
 
   ngOnInit(): void {
@@ -48,6 +50,12 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
     this.taskService.editTaskModal$
       .takeUntil(this.componentDestroyed$)
       .subscribe((flag) => this.editMode = flag);
+
+    this.dndService.onDrop$
+      .takeUntil(this.componentDestroyed$)
+      .subscribe((dropData) => {
+        this.onDrop(dropData);
+      });
 
     this.getTasks();
   }
@@ -86,6 +94,18 @@ export class TaskArchiveComponent implements OnInit, OnDestroy {
 
   private onRemove(): void {
     this.getTasks();
+  }
+
+  private onDrop(dropData) {
+    dropData.item.parentTaskId = dropData.params.parentTaskId ? dropData.params.parentTaskId :
+      dropData.item.parentTaskId;
+
+    if (dropData.params.status) {
+      let status = dropData.params.status.id === 'new' ? '' : dropData.params.status.value;
+      dropData.item.status = status;
+    }
+
+    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.getTasks())
   }
 
   private socketOnRemove(data): void {

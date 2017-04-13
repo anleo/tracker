@@ -49,8 +49,7 @@ module.exports = function (app) {
                 let data = {
                     board: board,
                     type: req.body.type,
-                    item: req.body.item,
-                    isRoot: req.body.isRoot || false
+                    item: req.body.item
                 };
 
                 BoardItemService.create(data)
@@ -69,7 +68,7 @@ module.exports = function (app) {
                 }
 
                 if (BoardService.hasAccess(board, req.user)) {
-                    BoardItemService.getItemsByOptions({board: board, isRoot: false})
+                    BoardItemService.getItemsByOptions({board: board})
                         .then((boardItems) => res.json(boardItems))
                         .catch((err) => res.status(400).json({error: err}));
                 } else {
