@@ -22,6 +22,12 @@ export class BoardResource extends Resource {
   save: ResourceMethodStrict<TaskBoard, {projectId: string}, TaskBoard>;
 
   @ResourceAction({
+    path: '/{!boardId}',
+    method: RequestMethod.Put
+  })
+  update: ResourceMethodStrict<TaskBoard, {projectId: string, boardId: string}, TaskBoard>;
+
+  @ResourceAction({
     path: '/',
     isArray: true
   })

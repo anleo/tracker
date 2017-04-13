@@ -1,5 +1,7 @@
 module.exports = function (app) {
+    let _ = require('lodash');
     let BoardService = app.container.get('BoardService');
+    let Board = app.container.get('Board');
     let BoardItemService = app.container.get('BoardItemService');
 
     app.get('/api/boards/:boardId', function (req, res) {
@@ -16,17 +18,21 @@ module.exports = function (app) {
     });
 
     app.post('/api/projects/:projectId/boards', function (req, res) {
-        let data = {
-            title: req.body.title,
+        let data = _.assign({}, req.body, {
             project: req.params.projectId,
-            status: req.body.status || '',
-            time: req.body.time || 0,
             owner: req.user,
-            shared: req.body.shared
-        };
+            board: req.body.board
+        });
 
         BoardService
             .create(data)
+            .then((board) => res.json(board))
+            .catch((err) => res.status(400).json({error: err}));
+    });
+
+    app.put('/api/projects/:projectId/boards/:boardId', function (req, res) {
+        BoardService
+            .updateBoard(req.params.boardId, req.body, req.user)
             .then((board) => res.json(board))
             .catch((err) => res.status(400).json({error: err}));
     });

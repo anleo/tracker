@@ -3,13 +3,14 @@ module.exports = function (mongoose) {
 
     let BoardSchema = new Schema({
         title: {type: String, required: true},
-        status: String,
+        status: {type: String, default: ''},
         time: {type: Number, default: 0},
         owner: {type: Schema.Types.ObjectId, ref: 'User'},
         shared: [{type: Schema.Types.ObjectId, ref: 'User'}],
         project: {type: Schema.Types.ObjectId, ref: 'Task'},
         createdAt: {type: Date, default: Date.now, index: true},
-        updatedAt: {type: Date, default: Date.now, index: true}
+        updatedAt: {type: Date, default: Date.now, index: true},
+        priority: {type: Number, default: 5, index: true}
     });
 
     BoardSchema.pre('save', function (next) {

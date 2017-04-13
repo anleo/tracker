@@ -4,8 +4,13 @@ module.exports = function (app) {
 
     app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
         let options = {
-            shared: req.user._id,
-            project: req.params.projectId
+            $or: [{
+                shared: req.user._id,
+                project: req.params.projectId
+            }, {
+                owner: req.user._id,
+                project: req.params.projectId
+            }]
         };
 
         BoardService.getBoardsByOptions(options)
