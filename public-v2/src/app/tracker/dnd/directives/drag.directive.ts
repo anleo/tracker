@@ -26,6 +26,7 @@ export class DragDirective {
     let clickOnDragButton = event.target.classList.contains('drag-button');
 
     if (event.which === 1 && clickOnDragButton) {
+      event.stopPropagation();
       this.init(event);
     }
   }

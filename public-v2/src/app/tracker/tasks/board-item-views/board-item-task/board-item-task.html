@@ -2,8 +2,8 @@
      [ngClass]="{
     'panel-success': boardItem.item.status == 'accepted',
     'panel-warning': boardItem.item.status == 'in progress'}"
-     drop-zone [dropParams]="{parent: boardItem.item._id || boardItem.item}" drag [dragItem]="boardItem">
-  <!--@@@TODO forbid to move board into tasks-->
+     drop-zone [dropParams]="{parent: boardItem.item._id || boardItem.item}" [check]="[checkType]"
+     drag [dragItem]="boardItem">
 
   <div class="panel-heading overflow-hidden">
     <h4 class="panel-title">
