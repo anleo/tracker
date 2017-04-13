@@ -42,5 +42,10 @@ export class BoardService {
   removeBoard(board: TaskBoard): Observable<TaskBoard> {
     return this.boardResource.remove({projectId: board.project, boardId: board._id}).$observable;
   }
+
+  getboardMetrics(boardId: string): Observable<TaskBoard> {
+    return this.boardResource.getboardMetrics({boardId: boardId}).$observable;
+  }
+
 }
 

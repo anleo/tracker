@@ -3,6 +3,7 @@ module.exports = function (app) {
     let BoardService = app.container.get('BoardService');
     let Board = app.container.get('Board');
     let BoardItemService = app.container.get('BoardItemService');
+    let SimpleMetricsService = app.container.get('SimpleMetricsService');
 
     app.param('boardId', function(req, res, next, id) {
         BoardService
@@ -52,4 +53,16 @@ module.exports = function (app) {
             .then(() => res.status(200).send())
             .catch((err) => res.status(400).json({error: err}));
     });
+
+    app.get('/api/boards/:boardId/metrics', function (req, res) {
+        BoardService.getById(req.params.boardId)
+            .then((board) => {
+                BoardService.update(board)
+                    .then((board) => {
+                        res.json(board);
+                    })
+                    .catch((err) => res.status(400).json({error: err}));
+            })
+            .catch((err) => res.status(400).json({error: err}));
+    })
 };

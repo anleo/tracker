@@ -29,6 +29,18 @@ export class BoardItemResource extends Resource {
   save: ResourceMethodStrict<TaskBoardItem, {boardId: string}, TaskBoardItem>;
 
   @ResourceAction({
+    path: '/{!boardItemId}',
+    method: RequestMethod.Put
+  })
+  update: ResourceMethodStrict<TaskBoardItem, {boardId: string, boardItemId: string}, TaskBoardItem>;
+
+  @ResourceAction({
+    path: '/{!boardItemId}',
+    method: RequestMethod.Delete
+  })
+  remove: ResourceMethodStrict<TaskBoardItem, {boardId: string, boardItemId: string}, any>;
+
+  @ResourceAction({
     url: '/api/projects/{!projectId}/boardItems/root',
     isArray: true,
     method: RequestMethod.Get

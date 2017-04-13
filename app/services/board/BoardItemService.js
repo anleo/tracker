@@ -1,9 +1,21 @@
-let _ = require('lodash');
-
 let BoardItemService = function (Board,
                                  BoardItem,
                                  BoardItemBoard,
                                  BoardItemTask) {
+    let _ = require('lodash');
+    let self = this;
+
+    //TODO @@@dr try without lean
+    this.getById = function (id) {
+        return new Promise((resolve, reject) => {
+            BoardItem
+                .findById(id)
+                .populate('item')
+                .lean()
+                .exec()
+                .then((item) => resolve(item), (err) => reject(err));
+        })
+    }
 
     this.create = function (data) {
         let self = this;
@@ -37,6 +49,20 @@ let BoardItemService = function (Board,
             });
         });
     };
+
+    //TODO @@@dr converse update with @feya because create different
+    this.update = function (boardItem, data) {
+        return new Promise(function (resolve, reject) {
+            BoardItem.findById(boardItem._id)
+                .then((boardItem) => {
+                        _.assign(boardItem, data);
+
+                        boardItem.save()
+                            .then((boardItem) => resolve(boardItem), (err) => reject(err))
+                    },
+                    (err) => reject(err));
+        });
+    }
 
     this.createBoardItem = function (data) {
         return new Promise(function (resolve, reject) {
@@ -95,6 +121,32 @@ let BoardItemService = function (Board,
                 }, (err) => reject(err));
         });
     };
+    this.removeBoardItem = function (id) {
+        return new Promise(function (resolve, reject) {
+            BoardItem.findById(id)
+                .then((boardItem) => {
+                        boardItem.remove()
+                            .then(() => {
+                                    resolve();
+                                },
+                                (err) => reject(err))
+                    },
+                    (err) => reject(err));
+        });
+    };
+
+    this.getUnfinishedBoardItems = function (boardId) {
+        let query = {board: boardId};
+        return self.getItemsByOptions(query)
+            .then((boardItems) => {
+                    return Promise.all(_.filter(boardItems, (boardItem) => {
+                        return boardItem.item.status !== "accepted";
+                    }));
+
+                },
+                (err) => console.log('err', err))
+    }
+
 };
 
 module.exports = BoardItemService;

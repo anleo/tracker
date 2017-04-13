@@ -2,6 +2,19 @@ module.exports = function (app) {
     let BoardItemService = app.container.get('BoardItemService');
     let BoardService = app.container.get('BoardService');
 
+    //TODO @@@dr try move to service without lean
+    app.param('boardItem', (req, res, next, boardItemId) => {
+        BoardItemService.getById(boardItemId)
+            .then((boardItem) => {
+                if (!boardItem) {
+                    return res.status(404).json();
+                }
+
+                req.BoardItem = boardItem;
+                next();
+            })
+    })
+
     app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
         let options = {
             $or: [{
@@ -50,10 +63,25 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json({error: err}));
     });
 
+    app.put('/api/boards/:boardId/boardItems/:boardItem', function (req, res) {
+        BoardItemService
+            .update(req.BoardItem, {timeLog: req.body.timeLog})
+            .then((boardItem) => res.json(boardItem))
+            .catch((err) => res.status(400).json({error: err}))
+    })
+
     app.get('/api/boards/:boardId/boardItems', function (req, res) {
         BoardItemService.getItemsByOptions({board: req.Board._id})
             .then((boardItems) => res.json(boardItems))
             .catch((err) => res.status(400).json({error: err}));
     });
 
+    app.delete('/api/boards/:boardId/boardItems/:boardItemId', function (req, res) {
+        BoardItemService
+            .removeBoardItem(req.params.boardItemId)
+            .then(() => {
+                res.json({});
+            })
+            .catch((err) => res.status(400).json({error: err}));
+    });
 };

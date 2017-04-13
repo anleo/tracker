@@ -40,6 +40,12 @@ export class BoardResource extends Resource {
   getBoards: ResourceMethodStrict<any, {projectId: string}, TaskBoard[]>;
 
   @ResourceAction({
+    url: '/api/boards/{!boardId}/metrics',
+    method: RequestMethod.Get
+  })
+  getboardMetrics: ResourceMethod<{boardId: string}, TaskBoard>;
+
+  @ResourceAction({
     url: '/api/boards/{!boardId}'
   })
   getBoard: ResourceMethod<{boardId: string}, TaskBoard>;

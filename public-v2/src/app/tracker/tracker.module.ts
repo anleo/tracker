@@ -92,6 +92,10 @@ import {SimpleTaskFormComponent} from "./tasks/simple-task-form/simple-task-form
 import {TaskBoardResolver} from "./resolvers/task-board.resolver";
 import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
 import {BoardTeamComponent} from "./tasks/components/board-team/board-team.component";
+import {BasketComponent} from './tasks/basket/basket.component';
+import {BasketResource} from "./resources/basket.resource";
+import {BasketService} from "./services/basket.service";
+import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-panel.component";
 
 @NgModule({
   imports: [
@@ -115,7 +119,8 @@ import {BoardTeamComponent} from "./tasks/components/board-team/board-team.compo
   ],
   exports: [
     TaskSearchDirective,
-    BlankComponent
+    BlankComponent,
+    BasketComponent
   ],
   declarations: [
     BlankComponent,
@@ -184,7 +189,9 @@ import {BoardTeamComponent} from "./tasks/components/board-team/board-team.compo
     MetricsInEditorComponent,
     TaskArchiveComponent,
     TaskSearchDirective,
-    TaskSearchComponent
+    TaskSearchComponent,
+    BasketComponent,
+    BasketTaskPanelComponent
   ],
   providers: [
     TaskResolver,
@@ -198,7 +205,9 @@ import {BoardTeamComponent} from "./tasks/components/board-team/board-team.compo
     TaskMetricsService,
     CurrentTaskService,
     TaskStatusService,
-    TaskSearchService
+    TaskSearchService,
+    BasketResource,
+    BasketService
   ]
 })
 export class TrackerModule {

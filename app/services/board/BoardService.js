@@ -1,8 +1,8 @@
 let BoardService = function (Board,
                              BoardItemBoard,
-                             BoardItemService) {
+                             BoardItemService,
+                             SimpleMetricsService) {
     let _ = require('lodash');
-
     let self = this;
 
     this.get = function (project) {
@@ -93,5 +93,36 @@ let BoardService = function (Board,
         let shared = board.shared.map((user) => user.toString());
         return _.contains(shared, user.toString());
     };
+
+    this.update = function (updatedBoard) {
+        return new Promise(function (resolve, reject) {
+            SimpleMetricsService.calculatePointCostByBoard(updatedBoard)
+                .then((pointCost) => {
+                    updatedBoard.pointCost = pointCost;
+                    self.getById(updatedBoard._id)
+                        .then((board) => {
+                            _.assign(board, updatedBoard);
+                            board
+                                .save()
+                                .then((board) => {
+                                    resolve(board)
+                                }, (err) => reject(err));
+                        })
+
+                })
+        });
+
+    };
+
+    this.getLastBoardByQuery = function (query) {
+        return new Promise(function (resolve, reject) {
+            Board.findOne(query)
+                .lean()
+                .sort('-createdAt')
+                .exec()
+                .then((board) => resolve(board), (err) => reject(err))
+        });
+    };
+
 };
 module.exports = BoardService;
