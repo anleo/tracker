@@ -15,7 +15,6 @@ module.exports = function (app) {
                             res.json(basket);
                         })
                         .catch((err) => {
-                            console.log('err', err);
                             res.status(400).json(err)
                         });
 
@@ -23,14 +22,12 @@ module.exports = function (app) {
                 res.json(basket);
             })
             .catch((err) => {
-                console.log('err', err);
                 res.status(400).json(err)
             });
     });
 
 // @@ IraU need to check
     app.put('/api/baskets/:basketId', function (req, res) {
-        console.log('req.body', req.body);
         BoardService.update(req.body)
             .then((board) => {
                 res.json(board);
@@ -43,11 +40,10 @@ module.exports = function (app) {
 
     app.post('/api/baskets', function (req, res) {
         BasketService.create(req.user)
-            .then((board) => {
-                res.json(board);
+            .then((basket) => {
+                res.json(basket);
             })
             .catch((err) => {
-                console.log('err', err);
                 res.status(400).json(err)
             });
 

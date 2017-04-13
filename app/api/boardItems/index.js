@@ -2,7 +2,7 @@ module.exports = function (app) {
     let BoardItemService = app.container.get('BoardItemService');
     let BoardService = app.container.get('BoardService');
 
-    //TODO @@@dr try move to service without lean
+    //TODO @@@dr try move to service without lean and think about boardItemId
     app.param('boardItem', (req, res, next, boardItemId) => {
         BoardItemService.getById(boardItemId)
             .then((boardItem) => {
@@ -62,6 +62,8 @@ module.exports = function (app) {
             .then((boardItem) => res.json(boardItem))
             .catch((err) => res.status(400).json({error: err}));
     });
+
+    //TODO @@@dr change on boardItemId
 
     app.put('/api/boards/:boardId/boardItems/:boardItem', function (req, res) {
         BoardItemService

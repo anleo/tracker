@@ -8,7 +8,7 @@ let SimpleMetricsService = function (BoardItemService) {
             BoardItemService.getItemsByOptions(query)
                 .then((boardItems) => {
                         let points = 0;
-                        if (boardItems && !boardItems) {
+                        if (boardItems && !boardItems.length) {
                             resolve(points);
                         }
                         _.forEach(boardItems, (boardItem) => {
@@ -34,7 +34,6 @@ let SimpleMetricsService = function (BoardItemService) {
                     (err) => reject(err))
         })
     }
-
 
 };
 module.exports = SimpleMetricsService;

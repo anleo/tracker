@@ -125,6 +125,7 @@ let BoardItemService = function (Board,
         return new Promise(function (resolve, reject) {
             BoardItem.findById(id)
                 .then((boardItem) => {
+                //TODO @@@ira if !boardItem check
                         boardItem.remove()
                             .then(() => {
                                     resolve();
@@ -144,7 +145,7 @@ let BoardItemService = function (Board,
                     }));
 
                 },
-                (err) => console.log('err', err))
+                (err) => Promise.reject(err))
     }
 
 };

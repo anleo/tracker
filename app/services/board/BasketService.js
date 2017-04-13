@@ -13,8 +13,8 @@ let BasketService = function (Board, BoardService, BoardItemService) {
                 .save()
                 .then((basket) => {
                     let query = {owner: user._id, type: 'basket', status: "finished"};
-                    self.prepareBoardItem(basket, query)
-                        .then((boardItems) => {
+                    self.prepareBoardItems(basket, query)
+                        .then(() => {
                             resolve(basket);
                         }, (err) => reject(err))
 
@@ -22,13 +22,17 @@ let BasketService = function (Board, BoardService, BoardItemService) {
         });
     };
 
-    this.prepareBoardItem = function (newBoard, query) {
+    this.prepareBoardItems = function (newBoard, query) {
         return BoardService.getLastBoardByQuery(query)
             .then((board) => {
+                if (!board) {
+                    //TODO @@@ira check this case
+                    return Promise.resolve();
+                }
                 return BoardItemService.getUnfinishedBoardItems(board._id)
                     .then((boardItems) => {
                         if (boardItems && !boardItems.length) {
-                            return Promise.resolve([]);
+                            return Promise.resolve();
                         }
                         return Promise.all(_.map(boardItems, (boardItem) => {
                             let item = {};
@@ -37,7 +41,7 @@ let BasketService = function (Board, BoardService, BoardItemService) {
                             return BoardItemService.createTaskItem(item)
 
                         }));
-                    }, (err) => console.log('err', err))
+                    }, (err) => Promise.reject(err))
 
             });
     }

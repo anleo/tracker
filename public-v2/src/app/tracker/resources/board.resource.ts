@@ -41,7 +41,7 @@ export class BoardResource extends Resource {
 
   @ResourceAction({
     url: '/api/boards/{!boardId}/metrics',
-    method: RequestMethod.Get
+    method: RequestMethod.Put
   })
   getboardMetrics: ResourceMethod<{boardId: string}, TaskBoard>;
 
