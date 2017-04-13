@@ -10,7 +10,7 @@ module.exports = function (app) {
             .then((basket) => {
                 if (!basket) {
 
-                    return BasketService.create(req)
+                    return BasketService.create(req.user)
                         .then((basket) => {
                             res.json(basket);
                         })

@@ -2,17 +2,16 @@ let BasketService = function (Board, BoardService, BoardItemService) {
     let _ = require('lodash');
     let self = this;
 
-    this.create = function (req, res) {
+    this.create = function (user) {
         return new Promise(function (resolve, reject) {
             let basket = new Board();
-            basket.owner = req.user;
-            basket.title = "Basket 22.03";
+            basket.owner = user;
+            basket.title = "Basket";
             basket.type = "basket";
-
             basket
                 .save()
                 .then((basket) => {
-                    let query = {owner: req.user, type: 'basket', status: "finished"};
+                    let query = {owner: user, type: 'basket', status: "finished"};
                     self.prepareBoardItem(basket, query)
                         .then((boardItems) => {
                             if (!boardItems) {
