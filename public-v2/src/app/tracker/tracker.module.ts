@@ -90,6 +90,8 @@ import {BasketComponent} from './tasks/basket/basket.component';
 import {BasketResource} from "./resources/basket.resource";
 import {BasketService} from "./services/basket.service";
 import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-panel.component";
+import {TaskBoardResolver} from "./resolvers/task-board.resolver";
+import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
 
 @NgModule({
   imports: [
@@ -134,6 +136,7 @@ import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-pa
     TasksBoardComponent,
     TaskBoardsComponent,
     TaskBoardComponent,
+    BoardEditComponent,
     BoardViewComponent,
     ListViewComponent,
     TreeViewComponent,
@@ -184,6 +187,7 @@ import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-pa
   ],
   providers: [
     TaskResolver,
+    TaskBoardResolver,
     TaskResource,
     BoardResource,
     BoardItemResource,
