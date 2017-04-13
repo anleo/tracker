@@ -4,13 +4,6 @@ import {TaskBoard} from '../../models/task-board';
 import {Subject, BehaviorSubject} from "rxjs";
 import {BoardService} from "../../services/board.service";
 import {TaskPrioritiesMock} from "../../mocks/task-priorities.mock";
-import * as _ from 'lodash';
-
-// import {BoardItemService} from "../../services/board-item.service";
-// import {TaskBoardItem} from '../../models/task-board-item';
-// import {TaskStatus} from '../../models/task-status';
-// import {TaskService} from "../../services/task.service";
-// import {TaskStatusService} from "../../services/task-status.service";
 
 @Component({
   selector: 'board-edit',
@@ -102,65 +95,7 @@ export class BoardEditComponent implements OnInit, OnDestroy {
     this.editBoard = board;
   }
 
-  // reinitTask(task: Task): void {
-  //   this.closeModal();
-  //   this.taskService.editTaskUpdated$.next({task: task, status: 'update'});
-  //   setTimeout(() => this.initTask(), 0);
-  // }
-
-  // save(): void {
-  //   if (this.task && this.task.parentTaskId) {
-  //     this.taskService.saveChildTask(this.task).subscribe((task) => this.reinitTask(task));
-  //   } else {
-  //     this.taskService.save(this.task).subscribe((task) => this.reinitTask(task));
-  //   }
-  // }
-
-  // remove(task: Task): void {
-  //   this.taskService.remove(this.task).subscribe(() => {
-  //     this.closeModal();
-  //     this.taskService.editTaskUpdated$.next({task: task, status: 'remove'});
-  //     setTimeout(() => this.initTask(), 0);
-  //   });
-  // }
-  //
-  // onMove(task: Task): void {
-  //   this.closeModal();
-  //   this.taskService.editTaskUpdated$.next({task: task, status: 'move'});
-  //   setTimeout(() => this.initTask(), 0);
-  // }
-  //
-  //
-  // setField(key: string, value: string): void {
-  //   this.task[key] = value;
-  // }
-  //
-  // taskChangeHandler(task: Task): void {
-  //   this.task = task;
-  // }
-  //
-  // handleOnUpload(file: any): void {
-  //   this.task.files.push(file);
-  // }
-  //
-  // handleOnDelete(file: any): void {
-  //   this.taskService.deleteFile(file, this.task)
-  //     .subscribe(() => {
-  //       this.task.files.splice(this.task.files.indexOf(file), 1);
-  //       this.toastr.error('Deleted');
-  //     })
-  // }
-  //
-  // showTaskMove(): void {
-  //   this.taskMoveToggle = !this.taskMoveToggle;
-  // }
-  //
-  // private closeModal() {
-  //   this.taskService.editTaskModal$.next(false);
-  // }
-  //
   checkInput(event) {
     let toggle = !!(event && event.target && event.target.value);
-    // this.taskService.editTaskToggle$.next(toggle);
   }
 }
