@@ -4,21 +4,26 @@
 
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
-<div class="backlog" [ngClass]="{show: showBasket}" drop-zone [check]="[checkDropDataType]">
+<div class="basket"
+     [ngClass]="{show: showBasket}"
+     drop-zone
+     [check]="[checkDropDataType]">
   <div class="wrap text-left">
-    <h3 style="margin: 10px 0 20px; line-height: 24px;">BASKET
+    <h4 style="margin: 10px 0 20px; line-height: 24px;">BASKET
       <small (click)="toggleBasket()" class="text-muted pull-right" style="cursor: pointer">
         <i class="glyphicon glyphicon-remove"></i>
       </small>
-    </h3>
+    </h4>
     <div *ngIf="basket">
-      <form class="form-inline" (submit)="save()">
-        <div class="form-group" style="margin: 0 0 20px;">
+      <form (submit)="save()" class="form-inline">
+        <div class="form-group form-group-sm" style="margin: 0 0 20px;">
           <label for="time">Init time:</label>
-          <input [(ngModel)]="basket.time" name="time" type="text"
-                 class="form-control btn-sm" placeholder="Time"
+          <input [(ngModel)]="basket.time" name="time" type="number"
+                 class="form-control input-sm" placeholder="Time"
+                 (ngModelChange)="onModelChange()"
                  id="time"/>
-          <button class="btn btn-default btn-sm" type="submit">Save</button>
+          <span class="input-group-btn">
+      </span>
         </div>
 
       </form>
@@ -33,3 +38,4 @@
     <div *ngIf="!taskItems?.length">No tasks yet</div>
   </div>
 </div>
+

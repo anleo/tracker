@@ -112,6 +112,10 @@ export class BasketComponent implements OnInit {
     return true;
   }
 
+  onModelChange() {
+    this.save();
+  }
+
   private onDrop(dropData) {
     if (!dropData.item) {
       return;
