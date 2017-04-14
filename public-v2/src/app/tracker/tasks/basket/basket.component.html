@@ -4,16 +4,16 @@
 
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
-<div class="backlog"
+<div class="basket"
      [ngClass]="{show: showBasket}"
      drop-zone
      [check]="[checkDropDataType]">
   <div class="wrap text-left">
-    <h3 style="margin: 10px 0 20px; line-height: 24px;">BASKET
+    <h4 style="margin: 10px 0 20px; line-height: 24px;">BASKET
       <small (click)="toggleBasket()" class="text-muted pull-right" style="cursor: pointer">
         <i class="glyphicon glyphicon-remove"></i>
       </small>
-    </h3>
+    </h4>
     <div *ngIf="basket">
       <form (submit)="save()" class="form-inline">
         <div class="form-group form-group-sm" style="margin: 0 0 20px;">
