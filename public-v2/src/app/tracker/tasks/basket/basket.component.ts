@@ -88,7 +88,7 @@ export class BasketComponent implements OnInit {
     this.basketService.updateBasket(this.basket)
       .subscribe(() => {
           this.basketService.createBasket()
-            .subscribe((basket) => {
+            .subscribe(() => {
                 this.basketService.setBasketList();
               },
               (err) => console.log('err', err))
@@ -98,7 +98,7 @@ export class BasketComponent implements OnInit {
 
   save(): void {
     this.basketService.updateBasket(this.basket)
-      .subscribe((basket) => {
+      .subscribe(() => {
           this.basketService.setBasketList();
         },
         (err) => console.log('err', err))

@@ -21,6 +21,9 @@
           <input [(ngModel)]="basket.time" name="time" type="number"
                  class="form-control input-sm" placeholder="Time"
                  (ngModelChange)="onModelChange()"
+                 step="0.1"
+                 autocomplete="off"
+                 min="0"
                  id="time"/>
           <span class="input-group-btn">
       </span>
