@@ -5,7 +5,6 @@ let BoardItemService = function (Board,
     let _ = require('lodash');
     let self = this;
 
-    //TODO @@@dr try without lean
     this.getById = function (id) {
         return new Promise((resolve, reject) => {
             BoardItem

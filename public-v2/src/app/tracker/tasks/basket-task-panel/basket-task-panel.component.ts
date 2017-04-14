@@ -32,12 +32,10 @@ export class BasketTaskPanelComponent implements OnInit {
     if (this.task.simple) {
       this.calculateApproximateTime();
     }
-//TODO @@@dr check
+
     this.countTaskSpentTime(this.boardItem);
 
-    if(this.boardItem.item.status === 'in progress'){
-      this.countTaskSpentTime(this.boardItem);
-
+    if (this.boardItem.item.status === 'in progress') {
       this.startTimer();
     }
   }
@@ -85,19 +83,12 @@ export class BasketTaskPanelComponent implements OnInit {
     return (boardItem.timeLog && boardItem.timeLog.length) ? true : false;
   }
 
-  //TODO @@@dr refact it
   addTimeLog(boardItem, status): TaskBoardItem {
-    if (this.hasTimeLog(boardItem)) {
-      boardItem.timeLog.push({
-        status: status,
-        time: Date.now()
-      });
-    } else {
-      boardItem.timeLog = [{
-        status: status,
-        time: Date.now()
-      }];
-    }
+    let timeLogRecord = {status: status, time: Date.now()};
+
+    this.hasTimeLog(boardItem)
+      ? boardItem.timeLog.push(timeLogRecord)
+      : boardItem.timeLog = [timeLogRecord];
 
     boardItem.item.status = status;
 
