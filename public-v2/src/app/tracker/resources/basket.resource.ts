@@ -32,4 +32,11 @@ export class BasketResource extends Resource {
     method: RequestMethod.Post
   })
   create: ResourceMethod<any, TaskBoard>;
+
+  @ResourceAction({
+    path: '/{!userId}/history',
+    isArray: true
+  })
+  getBasketHistory: ResourceMethod<{userId: string}, TaskBoard[]>;
+
 }

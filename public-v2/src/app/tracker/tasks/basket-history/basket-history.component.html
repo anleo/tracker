@@ -1,0 +1,24 @@
+<div class="row">
+
+  <div class="col-md-12">
+    <h3>Basket history</h3>
+    <a class="back-button" (click)="back()">
+      <i class="fa fa-long-arrow-left"></i>
+      Back
+    </a>
+  </div>
+
+  <div class="row">
+    <div *ngIf="baskets?.length" class="col-md-12">
+      <ul class="list-group" *ngFor="let basket of baskets">
+        <li class="list-group-item">
+          <h5>{{basket.title}} ({{basket.createdAt| date : 'yyyy/MM/dd'}})</h5>
+          <a (click)="show(basket._id)" *ngIf="showBasket!==basket._id"><span class="caret"></span></a>
+          <a (click)="hide()" *ngIf="showBasket==basket._id" class="dropup"><span class="caret"></span></a>
+          <basket-content [basketId]="basket._id" *ngIf="showBasket==basket._id"></basket-content>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,8 @@
+<div *ngIf="boardItems" class="col-md-12">
+  <ul class="list-group" *ngFor="let boardItem of boardItems">
+    <li>
+      <span>{{boardItem.item.title}}</span>
+      <span >{{showStatus(boardItem.item.status)}}</span>
+    </li>
+  </ul>
+</div>

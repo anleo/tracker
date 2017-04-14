@@ -16,8 +16,16 @@ import {TaskComponent} from "./tasks/components/task/task.component";
 import {CanActivatePrivateGuard} from "../guards/can-activate-private.guard";
 import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
 import {TaskBoardResolver} from "./resolvers/task-board.resolver";
+import {BasketHistoryComponent} from "./tasks/basket-history/basket-history.component";
 
 const routes: Routes = [
+  {
+    path: 'app/baskets',
+    component: BasketHistoryComponent,
+    resolve: {
+      user: UserResolver
+    }
+  },
   {
     path: 'app/tasks',
     component: BlankComponent,

@@ -96,6 +96,8 @@ import {BasketComponent} from './tasks/basket/basket.component';
 import {BasketResource} from "./resources/basket.resource";
 import {BasketService} from "./services/basket.service";
 import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-panel.component";
+import { BasketHistoryComponent } from './tasks/basket-history/basket-history.component';
+import { BasketContentComponent } from './tasks/basket-content/basket-content.component';
 
 @NgModule({
   imports: [
@@ -191,7 +193,9 @@ import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-pa
     TaskSearchDirective,
     TaskSearchComponent,
     BasketComponent,
-    BasketTaskPanelComponent
+    BasketTaskPanelComponent,
+    BasketHistoryComponent,
+    BasketContentComponent
   ],
   providers: [
     TaskResolver,

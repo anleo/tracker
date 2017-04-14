@@ -46,6 +46,18 @@ module.exports = function (app) {
             .catch((err) => {
                 res.status(400).json(err)
             });
+    });
 
+    //TODO @@@ira check route(maybe without user?)
+    app.get('/api/baskets/:userId/history', function (req, res) {
+        let query = {owner: req.user._id, type: 'basket'};
+
+        BoardService.getBoardsByOptions(query)
+            .then((baskets) => {
+                res.json(baskets);
+            })
+            .catch((err) => {
+                res.status(400).json(err)
+            });
     });
 };
