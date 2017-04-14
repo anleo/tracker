@@ -1,5 +1,5 @@
 <div drop-listener>
-  <h2 class="clearfix" *ngIf="boardItem">
+  <h2 class="clearfix" *ngIf="boardItem" drop-zone [dropParams]="{parent: boardItem._id}">
     {{boardItem?.title}}
   </h2>
 
@@ -14,7 +14,7 @@
 
   <board-edit [parentBoard]="boardItem"></board-edit>
 
-  <div class="board-view boards" *ngIf="boardItems && boardItems.length">
+  <div class="board-view boards" >
     <div class="row">
       <div class="col-sm-4" *ngFor="let status of statusTypes">
         <h3 class="list-name">{{status.name}}</h3>
