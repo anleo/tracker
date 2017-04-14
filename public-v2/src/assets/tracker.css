@@ -1044,3 +1044,39 @@ simple-task-form > board-item-subitems {
 .drag-button {
   cursor: move !important;
 }
+
+
+.basket {
+  display: block;
+  position: fixed;
+  height: 100vH;
+  width: 40vW;
+  text-align: center;
+  background: #fff;
+  top: 0;
+  right: -100%;
+  transition: all 400ms ease;
+  box-shadow: 0 0 100px -50px #000;
+  z-index: 10;
+}
+
+.basket .wrap {
+  padding: 10px 30px;
+}
+
+.basket.show {
+  right: 0;
+}
+
+.btn-basket {
+  z-index: 9;
+  position: fixed;
+  right: -20px;
+  top: 160px;
+  padding: 5px 10px;
+  border-radius: 10px 10px 0 0;
+  width: 70px;
+  transform: rotate(-90deg);
+  border: none;
+  color: #fff;
+}

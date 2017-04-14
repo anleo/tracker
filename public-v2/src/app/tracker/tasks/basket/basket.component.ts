@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 
 import {BasketService} from "../../services/basket.service";
 import {TaskBoard} from "../../models/task-board";
@@ -6,11 +6,15 @@ import {TaskBoardItem} from "../../models/task-board-item";
 import {TaskService} from "../../services/task.service";
 import {TaskWithStatus} from "../../models/task-with-status";
 import {BoardItemService} from "../../services/board-item.service";
-import {BoardService} from "../../services/board.service";
+import {DnDService} from "../../dnd/dnd.service";
+
+import *as _ from 'lodash';
+import {ToastsManager} from "ng2-toastr";
 
 @Component({
-  selector: '[basket]',
-  templateUrl: './basket.component.html'
+  selector: 'basket',
+  templateUrl: './basket.component.html',
+  providers: [DnDService]
 })
 export class BasketComponent implements OnInit {
 
@@ -22,7 +26,11 @@ export class BasketComponent implements OnInit {
 
   constructor(private basketService: BasketService,
               private taskService: TaskService,
-              private boardItemService: BoardItemService) {
+              private boardItemService: BoardItemService,
+              private dndService: DnDService,
+              private toastr: ToastsManager,
+              vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);
 
     this.basketService.basketList$
       .subscribe((taskItems) => this.taskItems = taskItems);
@@ -32,6 +40,9 @@ export class BasketComponent implements OnInit {
 
     this.taskService.editTaskUpdated$
       .subscribe((taskWithStatus: TaskWithStatus) => this.actionProvider(taskWithStatus));
+
+    this.dndService.onDrop$
+      .subscribe((dropData) => this.onDrop(dropData));
   }
 
   ngOnInit() {
@@ -93,4 +104,37 @@ export class BasketComponent implements OnInit {
         (err) => console.log('err', err))
   }
 
+  checkDropDataType(item) {
+    if (item.type && item.type === 'board') {
+      return false;
+    }
+
+    return true;
+  }
+
+  onModelChange() {
+    this.save();
+  }
+
+  private onDrop(dropData) {
+    if (!dropData.item) {
+      return;
+    }
+
+    let item = dropData.item && dropData.item.item ? dropData.item.item : dropData.item;
+
+    let newItem = {
+      board: this.basket._id,
+      item: item,
+      type: 'task'
+    };
+
+    this.boardItemService
+      .save(newItem)
+      .subscribe(() => {
+        this.basketService.setBasketList();
+      }, (err) => {
+        this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong');
+      });
+  }
 }

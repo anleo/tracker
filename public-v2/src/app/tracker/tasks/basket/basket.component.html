@@ -1,24 +1,31 @@
-<a (click)="toggleBasket()" [ngClass]="{active:showBasket}" style="cursor: pointer">Basket</a>
+<a (click)="toggleBasket()" class="btn btn-success btn-basket" [ngClass]="{active:showBasket}">
+  Basket
+</a>
 
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
-<div class="backlog" [ngClass]="{show: showBasket}">
+<div class="basket"
+     [ngClass]="{show: showBasket}"
+     drop-zone
+     [check]="[checkDropDataType]">
   <div class="wrap text-left">
-    <h3 style="margin: 10px 0 20px; line-height: 24px;">Basket
+    <h4 style="margin: 10px 0 20px; line-height: 24px;">BASKET
       <small (click)="toggleBasket()" class="text-muted pull-right" style="cursor: pointer">
         <i class="glyphicon glyphicon-remove"></i>
       </small>
-    </h3>
+    </h4>
     <div *ngIf="basket">
-      <form (submit)="save()">
-        <div class="input-group" style="margin: 0 0 20px;">
-          <input [(ngModel)]="basket.time" name="time" type="text"
+      <form (submit)="save()" class="form-inline">
+        <div class="form-group form-group-sm" style="margin: 0 0 20px;">
+          <label for="time">Init time:</label>
+          <input [(ngModel)]="basket.time" name="time" type="number"
                  class="form-control input-sm" placeholder="Time"
+                 (ngModelChange)="onModelChange()"
                  id="time"/>
           <span class="input-group-btn">
-        <button class="btn btn-default btn-sm" type="submit">Save</button>
       </span>
         </div>
+
       </form>
     </div>
     <div *ngIf="taskItems?.length">
@@ -32,26 +39,3 @@
   </div>
 </div>
 
-<style>
-  .backlog {
-    display: block;
-    position: fixed;
-    height: 100vH;
-    width: 40vW;
-    text-align: center;
-    background: #fff;
-    top: 0;
-    right: -100%;
-    transition: all 400ms ease;
-    box-shadow: 0 0 100px -50px #000;
-  }
-
-  .backlog .wrap {
-    padding: 10px 30px;
-  }
-
-  .backlog.show {
-    right: 0;
-    z-index: 2;
-  }
-</style>

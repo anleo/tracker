@@ -24,7 +24,6 @@
           <li><a [routerLink]="['/app/tasks']">Projects</a></li>
           <li><a [routerLink]="['/app/tasks/reports']">Report</a></li>
           <li><a [routerLink]="['/app/tasks/my']">My tasks</a></li>
-          <li *ngIf="user" basket></li>
           <li><a [routerLink]="['/app/baskets']">Basket history</a></li>
         </ul>
 
@@ -50,6 +49,7 @@
 
   </nav>
   <div class="container">
+    <basket *ngIf="user"></basket>
     <router-outlet></router-outlet>
   </div>
 </div>
