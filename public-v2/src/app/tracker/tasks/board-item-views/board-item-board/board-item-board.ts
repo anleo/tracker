@@ -11,9 +11,18 @@ import * as _ from 'lodash';
 
 export class BoardItemBoardComponent {
   @Input() boardItem: TaskBoardItem | null;
+  refreshCount: number = null;
   showSubitems: boolean = false;
+  showForm: string = 'task';
 
   constructor(private boardService: BoardService){}
+
+  boardSaveHandler(): void {
+    this.refreshCount++;
+  }
+  taskSaveHandler(): void {
+    this.refreshCount++;
+  }
 
   toggleSubitems(): void {
     this.showSubitems = !this.showSubitems;
