@@ -99,6 +99,7 @@ import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-pa
 import { BasketHistoryComponent } from './tasks/basket-history/basket-history.component';
 import { BasketContentComponent } from './tasks/basket-content/basket-content.component';
 import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-form.component";
+import {BoardSortPipe} from "./pipes/board-sort.pipe";
 
 @NgModule({
   imports: [
@@ -153,6 +154,7 @@ import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-f
     TreeViewComponent,
     PanelTreeComponent,
     TasksSortPipe,
+    BoardSortPipe,
     TaskPanelComponent,
     TaskItemComponent,
     CommonReportComponent,
