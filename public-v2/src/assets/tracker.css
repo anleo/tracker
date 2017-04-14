@@ -1082,3 +1082,25 @@ simple-task-form > board-item-subitems {
   border: none;
   color: #fff;
 }
+
+
+.tb-ico {
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 16px;
+  color: white !important;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.tb-ico.bb {
+  background: #72dbec;
+}
+
+.tb-ico.tt {
+  background: #ebca79;
+}
