@@ -12,15 +12,15 @@
       </small>
     </h3>
     <div *ngIf="basket">
-      <form (submit)="save()">
-        <div class="input-group" style="margin: 0 0 20px;">
+      <form class="form-inline" (submit)="save()">
+        <div class="form-group" style="margin: 0 0 20px;">
+          <label for="time">Init time:</label>
           <input [(ngModel)]="basket.time" name="time" type="text"
-                 class="form-control input-sm" placeholder="Time"
+                 class="form-control btn-sm" placeholder="Time"
                  id="time"/>
-          <span class="input-group-btn">
-        <button class="btn btn-default btn-sm" type="submit">Save</button>
-      </span>
+          <button class="btn btn-default btn-sm" type="submit">Save</button>
         </div>
+
       </form>
     </div>
     <div *ngIf="taskItems?.length">
