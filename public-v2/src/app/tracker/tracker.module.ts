@@ -96,6 +96,8 @@ import {BasketComponent} from './tasks/basket/basket.component';
 import {BasketResource} from "./resources/basket.resource";
 import {BasketService} from "./services/basket.service";
 import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-panel.component";
+import { BasketHistoryComponent } from './tasks/basket-history/basket-history.component';
+import { BasketContentComponent } from './tasks/basket-content/basket-content.component';
 import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-form.component";
 
 @NgModule({
@@ -193,7 +195,9 @@ import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-f
     TaskSearchDirective,
     TaskSearchComponent,
     BasketComponent,
-    BasketTaskPanelComponent
+    BasketTaskPanelComponent,
+    BasketHistoryComponent,
+    BasketContentComponent
   ],
   providers: [
     TaskResolver,

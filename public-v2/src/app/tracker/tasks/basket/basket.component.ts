@@ -55,7 +55,7 @@ export class BasketComponent implements OnInit {
 
   getBasket() {
     this.basketService.get()
-      .subscribe((basket) => {
+      .subscribe(() => {
         this.basketService.setBasketList();
       })
   }

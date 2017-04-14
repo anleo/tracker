@@ -79,6 +79,7 @@ export class BasketService {
       })
   }
 
+//TODO @@@ira maybe change on observable and get err in copm
   getBasketMetrics(): void {
     this.boardService.getboardMetrics(this.basket._id)
       .subscribe((basket) => {
@@ -86,6 +87,11 @@ export class BasketService {
           this.setBasketList();
         },
         (err) => console.log('err', err))
+  }
+
+  getBasketHistory(): Observable<TaskBoard[]> {
+    return this.basketResource.getBasketHistory({userId: this.user._id})
+      .$observable
   }
 
 }

@@ -1,0 +1,9 @@
+<div *ngIf="boardItems?.length" style="margin: 10px 0 0; padding: 10px 0 0 20px; border-top: 1px solid #ccc">
+  <ul class="list-group" *ngFor="let boardItem of boardItems"
+      style="margin: 0;">
+    <li>
+      <span>{{boardItem.item.title}}</span>
+      <span *ngIf="boardItem.item.status" class="text-muted">({{showStatus(boardItem.item.status)}})</span>
+    </li>
+  </ul>
+</div>

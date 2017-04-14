@@ -93,4 +93,14 @@ exports.boarditems = [
         "updatedAt": ISODate(moment().toDate()),
         "__v": 0
     },
+    {
+        "_id": ObjectId("58e0f679cc77775c0bfed2a1"),
+        "item": ObjectId("551540ec210f64444cde23cf"),
+        "type": "task",
+        'timeLog': [],
+        "board": ObjectId("58ebdc9dda195f3c1edf6ece"),
+        "createdAt": ISODate(moment().toDate()),
+        "updatedAt": ISODate(moment().toDate()),
+        "__v": 0
+    },
 ];
