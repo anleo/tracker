@@ -114,7 +114,7 @@ export class BasketComponent implements OnInit {
     }
 
     let newItem = _.pick(dropData.item, ['board', 'type', 'item']);
-    newItem.board = this.basket._id;
+    newItem['board'] = this.basket._id;
 
     this.boardItemService
       .save(newItem)

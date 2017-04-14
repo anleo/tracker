@@ -38,17 +38,16 @@ export class BoardItemService {
     let lastInProgress = null;
 
     boardItem.timeLog.forEach(log => {
-      if(log.status === 'in progress' && !lastInProgress){
+      if (log.status === 'in progress' && !lastInProgress) {
         lastInProgress = log.time;
-      }else if(log.status === 'in progress' && lastInProgress){
+      } else if (log.status === 'in progress' && lastInProgress) {
         lastInProgress = log.time;
-
-      }else if(log.status === ''){
+      } else if (log.status === '') {
         spentTime += log.time - lastInProgress;
       }
     });
 
-    if(boardItem.item.status === 'in progress'){
+    if (boardItem.item.status === 'in progress') {
       spentTime += Date.now() - lastInProgress;
     }
 
