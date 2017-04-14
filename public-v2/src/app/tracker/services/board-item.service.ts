@@ -6,7 +6,7 @@ import {TaskBoardItem} from '../models/task-board-item';
 import {BoardItemResource} from "../resources/board-item.resource";
 import * as moment from 'moment/moment';
 import {Moment} from "moment";
-
+import {TaskBoard} from "../models/task-board";
 
 @Injectable()
 export class BoardItemService {
@@ -31,6 +31,10 @@ export class BoardItemService {
 
   remove(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
     return this.boardItemResource.remove(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
+  }
+
+  removeBoardItemByBoard(board: TaskBoard): Observable<TaskBoard> {
+    return this.boardItemResource.removeBoardItemByBoard({boardId: board._id}).$observable;
   }
 
   getBoardItemSpendTime(boardItem: TaskBoardItem): Observable <Moment> {
