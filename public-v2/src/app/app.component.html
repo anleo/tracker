@@ -24,19 +24,22 @@
           <li><a [routerLink]="['/app/tasks']">Projects</a></li>
           <li><a [routerLink]="['/app/tasks/reports']">Report</a></li>
           <li><a [routerLink]="['/app/tasks/my']">My tasks</a></li>
-          <li><a [routerLink]="['/app/baskets']">Basket history</a></li>
+          <li><a [routerLink]="['/app/baskets']">My baskets</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
 
           <li *ngIf="user">
             <a [routerLink]="['/app/users/me']" class="profileLink"><i class="fa fa-user"></i>
-              {{user.first? (user.first+ ' ' +user.last): user.local.username}}
+              <span class="hidden-xs hidden-sm">{{user.first? (user.first+ ' ' +user.last): user.local.username}}</span>
             </a>
           </li>
           <li *ngIf="!user"><a [routerLink]="['/app/login']">Login</a></li>
           <li *ngIf="!user"><a [routerLink]="['/app/register']">Register</a></li>
-          <li *ngIf="user"><a [routerLink]="['/app/logout']">Logout</a></li>
+          <li *ngIf="user"><a [routerLink]="['/app/logout']">
+            <span class="hidden-xs hidden-sm">Logout</span>
+            <span class="visible-xs visible-sm"><i class="glyphicon glyphicon-log-out"></i></span>
+          </a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
