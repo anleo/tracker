@@ -18,6 +18,18 @@
   </div>
 
   <div *ngIf="showSubitems" class="sub-item-wrap">
-    <board-item-subitems [boardItem]="boardItem"></board-item-subitems>
+    <div>
+      <a class="btn btn-sm btn-link" (click)="showForm = 'task'">+ Task</a>
+      <a class="btn btn-sm btn-link" (click)="showForm = 'board'">+ Board</a>
+    </div>
+
+    <div *ngIf="showForm === 'task'">
+      <simple-task-form [parentBoard]="boardItem.item" (taskSaved)="taskSaveHandler($event)"></simple-task-form>
+    </div>
+
+    <div *ngIf="showForm === 'board'">
+      <simple-board-form [parentBoard]="boardItem.item" (boardSaved)="boardSaveHandler($event)"></simple-board-form>
+    </div>
+    <board-item-subitems [boardItem]="boardItem" [refreshCount]="refreshCount"></board-item-subitems>
   </div>
 </div>
