@@ -1,4 +1,6 @@
-<a (click)="toggleBasket()" [ngClass]="{active:showBasket}" style="cursor: pointer">Basket</a>
+<a (click)="toggleBasket()" class="btn btn-success btn-basket" [ngClass]="{active:showBasket}">
+  Basket
+</a>
 
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
@@ -7,7 +9,7 @@
      drop-zone
      [check]="[checkDropDataType]">
   <div class="wrap text-left">
-    <h3 style="margin: 10px 0 20px; line-height: 24px;">Basket
+    <h3 style="margin: 10px 0 20px; line-height: 24px;">BASKET
       <small (click)="toggleBasket()" class="text-muted pull-right" style="cursor: pointer">
         <i class="glyphicon glyphicon-remove"></i>
       </small>
@@ -15,7 +17,7 @@
     <div *ngIf="basket">
       <form (submit)="save()" class="form-inline">
         <div class="form-group form-group-sm" style="margin: 0 0 20px;">
-          <label for="time">Timeframe</label>
+          <label for="time">Init time:</label>
           <input [(ngModel)]="basket.time" name="time" type="number"
                  class="form-control input-sm" placeholder="Time"
                  (ngModelChange)="onModelChange()"
@@ -23,6 +25,7 @@
           <span class="input-group-btn">
       </span>
         </div>
+
       </form>
     </div>
     <div *ngIf="taskItems?.length">
