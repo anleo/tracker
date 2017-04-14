@@ -108,6 +108,10 @@ export class BasketComponent implements OnInit {
     return item.type === 'task';
   }
 
+  onModelChange() {
+    this.save();
+  }
+
   private onDrop(dropData) {
     if (!dropData.item) {
       return;
