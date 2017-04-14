@@ -120,7 +120,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     newBoardItem['board'] = dropData.params.parent;
 
     this.boardItemService.save(newBoardItem).toPromise()
-      .then((boardItem) => this.toastr.info('Item was added'))
+      .then(() => this.toastr.info('Item was added'))
+      .then(() => this.getBoards())
       .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
   }
 }

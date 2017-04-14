@@ -3,7 +3,7 @@ export class TaskBoard {
   title?: string = null;
   project?: string;
   status?: string = '';
-  shared?: Array<string>;
+  shared?: Array<string> = [];
   owner?: string;
   time?: number = 0;
   pointCost?: number = 0;
