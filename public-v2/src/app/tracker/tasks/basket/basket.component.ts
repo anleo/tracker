@@ -12,7 +12,7 @@ import *as _ from 'lodash';
 import {ToastsManager} from "ng2-toastr";
 
 @Component({
-  selector: '[basket]',
+  selector: 'basket',
   templateUrl: './basket.component.html',
   providers: [DnDService]
 })
@@ -105,7 +105,15 @@ export class BasketComponent implements OnInit {
   }
 
   checkDropDataType(item) {
-    return item.type === 'task';
+    if (item.type && item.type === 'board') {
+      return false;
+    }
+
+    return true;
+  }
+
+  onModelChange() {
+    this.save();
   }
 
   private onDrop(dropData) {
@@ -113,8 +121,13 @@ export class BasketComponent implements OnInit {
       return;
     }
 
-    let newItem = _.pick(dropData.item, ['board', 'type', 'item']);
-    newItem['board'] = this.basket._id;
+    let item = dropData.item && dropData.item.item ? dropData.item.item : dropData.item;
+
+    let newItem = {
+      board: this.basket._id,
+      item: item,
+      type: 'task'
+    };
 
     this.boardItemService
       .save(newItem)
