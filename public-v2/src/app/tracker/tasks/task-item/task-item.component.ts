@@ -16,7 +16,8 @@ import {DnDService} from "../../dnd/dnd.service";
 
 @Component({
   selector: 'app-task-item',
-  templateUrl: 'task-item.component.html'
+  templateUrl: 'task-item.component.html',
+  providers:[DnDService]
 })
 export class TaskItemComponent implements OnInit, OnDestroy {
   task: Task|null = null;
