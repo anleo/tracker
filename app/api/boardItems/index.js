@@ -2,8 +2,7 @@ module.exports = function (app) {
     let BoardItemService = app.container.get('BoardItemService');
     let BoardService = app.container.get('BoardService');
 
-    //TODO @@@dr try move to service without lean and think about boardItemId
-    app.param('boardItem', (req, res, next, boardItemId) => {
+    app.param('boardItemId', (req, res, next, boardItemId) => {
         BoardItemService.getById(boardItemId)
             .then((boardItem) => {
                 if (!boardItem) {
@@ -63,9 +62,7 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json({error: err}));
     });
 
-    //TODO @@@dr change on boardItemId
-
-    app.put('/api/boards/:boardId/boardItems/:boardItem', function (req, res) {
+    app.put('/api/boards/:boardId/boardItems/:boardItemId', function (req, res) {
         BoardItemService
             .update(req.BoardItem, {timeLog: req.body.timeLog})
             .then((boardItem) => res.json(boardItem))

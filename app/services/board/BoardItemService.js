@@ -5,13 +5,11 @@ let BoardItemService = function (Board,
     let _ = require('lodash');
     let self = this;
 
-    //TODO @@@dr try without lean
     this.getById = function (id) {
         return new Promise((resolve, reject) => {
             BoardItem
                 .findById(id)
                 .populate('item')
-                .lean()
                 .exec()
                 .then((item) => resolve(item), (err) => reject(err));
         })
@@ -50,18 +48,14 @@ let BoardItemService = function (Board,
         });
     };
 
-    //TODO @@@dr converse update with @feya because create different
     this.update = function (boardItem, data) {
         return new Promise(function (resolve, reject) {
-            BoardItem.findById(boardItem._id)
-                .then((boardItem) => {
-                        _.assign(boardItem, data);
+                _.assign(boardItem, data);
 
-                        boardItem.save()
-                            .then((boardItem) => resolve(boardItem), (err) => reject(err))
-                    },
-                    (err) => reject(err));
-        });
+                boardItem.save()
+                    .then((boardItem) => resolve(boardItem), (err) => reject(err))
+            },
+            (err) => reject(err));
     }
 
     this.createBoardItem = function (data) {
@@ -125,7 +119,7 @@ let BoardItemService = function (Board,
         return new Promise(function (resolve, reject) {
             BoardItem.findById(id)
                 .then((boardItem) => {
-                //TODO @@@ira if !boardItem check
+                        //TODO @@@ira if !boardItem check
                         boardItem.remove()
                             .then(() => {
                                     resolve();
