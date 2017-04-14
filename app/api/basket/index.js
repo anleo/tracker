@@ -50,7 +50,7 @@ module.exports = function (app) {
 
     //TODO @@@ira check route(maybe without user?)
     app.get('/api/baskets/:userId/history', function (req, res) {
-        let query = {owner: req.user._id, type: 'basket'};
+        let query = {owner: req.user._id, type: 'basket', status: 'finished'};
 
         BoardService.getBoardsByOptions(query)
             .then((baskets) => {
