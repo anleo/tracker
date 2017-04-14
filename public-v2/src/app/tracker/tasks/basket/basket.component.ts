@@ -12,7 +12,7 @@ import *as _ from 'lodash';
 import {ToastsManager} from "ng2-toastr";
 
 @Component({
-  selector: '[basket]',
+  selector: 'basket',
   templateUrl: './basket.component.html',
   providers: [DnDService]
 })
