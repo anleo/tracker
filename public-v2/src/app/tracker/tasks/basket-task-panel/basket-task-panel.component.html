@@ -2,8 +2,7 @@
      *ngIf="task"
      [ngClass]="{
      'panel-success': task.status == 'accepted',
-     'panel-warning': task.status == 'in progress'}"
-     drop-zone [dropParams]="{parentTaskId: task._id}" drag [dragItem]="task">
+     'panel-warning': task.status == 'in progress'}">
 
   <div class="panel-heading overflow-hidden">
     <h4 class="panel-title">
