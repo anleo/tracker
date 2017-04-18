@@ -43,14 +43,6 @@ export class SimpleTaskFormComponent implements OnInit {
     this.task.parentTaskId = this.parentTask && this.parentTask._id;
   }
 
-  resetTask() {
-    this.task = new Task();
-  }
-
-  resetBoardItem() {
-    this.boardItem = new TaskBoardItem();
-  }
-
   saveBoardItem() {
     this.taskService
       .saveChildTask(this.task)
@@ -59,9 +51,8 @@ export class SimpleTaskFormComponent implements OnInit {
         this.boardItem.item = task && task._id;
 
         this.boardItemService.save(this.boardItem).toPromise()
-          .then((boardItem) => {
-            this.resetTask();
-            this.resetBoardItem();
+          .then(() => {
+            this.initBoardItem();
             this.taskSaved.emit(task);
           })
           .catch((err) => console.log(err));
