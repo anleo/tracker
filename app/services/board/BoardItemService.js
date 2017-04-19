@@ -13,7 +13,7 @@ let BoardItemService = function (Board,
                 .exec()
                 .then((item) => resolve(item), (err) => reject(err));
         })
-    }
+    };
 
     this.create = function (data) {
         let self = this;
@@ -56,7 +56,7 @@ let BoardItemService = function (Board,
                     .then((boardItem) => resolve(boardItem), (err) => reject(err))
             },
             (err) => reject(err));
-    }
+    };
 
     this.createBoardItem = function (data) {
         return new Promise(function (resolve, reject) {
@@ -87,32 +87,53 @@ let BoardItemService = function (Board,
 
     this.removeBoardItemsByItem = function (item) {
         let itemId = item && item._id ? item._id : item;
+        let boardItemsToUpdate = [];
+        let boardsToUpdate = [];
 
         return new Promise(function (resolve, reject) {
             if (!itemId) {
-                reject('No itemId during boardItems remove!')
+                return reject('No itemId during boardItems remove!')
             }
 
-            let query = {
-                $or: [
-                    {item: itemId}
-                ]
-            };
-
-            Board
-                .findById(itemId)
-                .then((board) => {
-                    if (board) {
-                        query.$or.push({
-                            board: itemId
-                        })
-                    }
-
-                    BoardItem
-                        .remove(query)
+            Promise.resolve()
+                .then(() => {
+                    return BoardItem
+                        .find({item: itemId})
+                        .lean()
                         .exec()
-                        .then(() => resolve(true), (err) => reject(err))
-                }, (err) => reject(err));
+                        .then((boardItems) => boardItemsToUpdate = boardItems.map((boardItem) => boardItem.board))
+                })
+                .then(() => {
+                    return BoardItem
+                        .find({item: {$in: boardItemsToUpdate}})
+                        .populate('item')
+                        .lean()
+                        .exec()
+                        .then((boardItems) => boardsToUpdate = boardItems.map((boardItem) => boardItem.item))
+                })
+                .then(() => {
+                    let query = {
+                        $or: [
+                            {item: itemId}
+                        ]
+                    };
+
+                    return Board
+                        .findById(itemId)
+                        .then((board) => {
+                            if (board) {
+                                query.$or.push({
+                                    board: itemId
+                                })
+                            }
+
+                            return BoardItem
+                                .remove(query)
+                                .exec()
+                                .then(() => {}, (err) => reject(err))
+                        }, (err) => reject(err));
+                })
+                .then(() => resolve(boardsToUpdate));
         });
     };
     this.removeBoardItem = function (id) {

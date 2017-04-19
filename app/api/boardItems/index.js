@@ -12,7 +12,7 @@ module.exports = function (app) {
                 req.BoardItem = boardItem;
                 next();
             })
-    })
+    });
 
     app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
         let options = {
@@ -58,7 +58,11 @@ module.exports = function (app) {
         };
 
         BoardItemService.create(data)
-            .then((boardItem) => res.json(boardItem))
+            .then((boardItem) => {
+                BoardService
+                    .updateParentsByItem(boardItem.item)
+                    .then(() => res.json(boardItem));
+            })
             .catch((err) => res.status(400).json({error: err}));
     });
 
@@ -67,7 +71,7 @@ module.exports = function (app) {
             .update(req.BoardItem, {timeLog: req.body.timeLog})
             .then((boardItem) => res.json(boardItem))
             .catch((err) => res.status(400).json({error: err}))
-    })
+    });
 
     app.get('/api/boards/:boardId/boardItems', function (req, res) {
         BoardItemService.getItemsByOptions({board: req.Board._id})

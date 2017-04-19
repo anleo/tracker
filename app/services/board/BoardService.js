@@ -35,7 +35,10 @@ let BoardService = function (Board,
                 .then((board) => {
                     BoardItemService
                         .createBoardItem({item: board, board: parentBoard})
-                        .then(() => resolve(board))
+                        .then(() => {
+                            self.updateParentsByItem(board)
+                                .then(() => resolve(board));
+                        })
                         .catch((err) => reject(err));
                 }, (err) => reject(err));
         });
@@ -72,13 +75,105 @@ let BoardService = function (Board,
     };
 
     this.updateBoard = function (board, data) {
+        let boardId = board && board._id ? board._id : board;
+
         return new Promise(function (resolve, reject) {
-            Board.findOneAndUpdate({_id: board._id}, {$set: data}, {new: true})
+            Board.findOneAndUpdate({_id: boardId}, {$set: data}, {new: true})
+                .then((board) => {
+                    if (!board) {
+                        return reject(new Error('board not found'));
+                    }
+
+                    return board;
+                })
+                .then((board) => self.updateParentsByItem(board))
                 .then((board) => resolve(board), (err) => reject(err));
         });
     };
 
-    this.hasAccess = function(board, user) {
+    this.updateParentStatus = function (parent) {
+        let parentId = parent && parent._id ? parent._id : parent;
+        return new Promise((resolve) => {
+            BoardItemService
+                .getItemsByOptions({board: parentId})
+                .then((children) => {
+                    children = children || [];
+
+                    children = children.map((child) => child.item);
+                    return new Promise((res) => {
+                        Board.findById(parentId)
+                            .lean()
+                            .exec()
+                            .then((_parent) => {
+                                if (!_parent) {
+                                    return resolve();
+                                }
+
+                                return self.setParentStatusByChildren(_parent, children);
+                            })
+                            .then((updatedParent) => res(updatedParent));
+                    })
+                })
+                .then((_parent) => {
+                    if (_parent) {
+                        return self.updateBoard(parent, _parent)
+                    }
+                })
+                .then(() => resolve());
+        });
+    };
+
+    this.updateParentsByItem = function (item) {
+        let itemId = item && item._id ? item._id : item;
+
+        return new Promise((resolve, reject) => {
+            BoardItemService
+                .getItemsByOptions({item: itemId})
+                .then((boardItems) => {
+                    if (!boardItems || !boardItems.length) {
+                        return resolve();
+                    }
+
+                    let parents = boardItems.map((boardItem) => boardItem.board);
+                    let promises = parents.map((parentBoard) => self.updateParentStatus(parentBoard));
+                    return Promise.all(promises);
+                })
+                .then(() => resolve(item));
+        });
+    };
+
+    this.setParentStatusByChildren = function (item, children) {
+        children = children || [];
+        return new Promise((resolve) => {
+            let countAccepted = 0;
+            let countNew = 0;
+
+            children.forEach(function (child) {
+                if (child.status === '') {
+                    countNew++;
+                } else if (child.status == 'accepted') {
+                    countAccepted++;
+                }
+            });
+
+            if (children.length === countAccepted) {
+                item.status = 'accepted';
+            } else if (children.length === countNew) {
+                item.status = '';
+            } else {
+                item.status = 'in progress';
+            }
+
+            // if no children tasks and boards reset it to 'new' board
+            if (!children.length) {
+                item.status = '';
+            }
+
+            return resolve(item);
+        });
+    };
+
+    this.hasAccess = function (board, user) {
         user = user && user._id ? user._id : user;
         return !!(self.isOwner(board, user) || self.hasInShared(board, user));
     };
