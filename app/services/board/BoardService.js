@@ -68,6 +68,10 @@ let BoardService = function (Board,
                 .remove({_id: board.id})
                 .then(() => {
                     BoardItemService.removeBoardItemsByItem(board)
+                        .then((boardsToUpdate) => {
+                            let promises = boardsToUpdate.map((board) => self.updateParentStatus(board));
+                            return Promise.all(promises);
+                        })
                         .then(() => resolve(true))
                         .catch((err) => reject(err));
                 }, (err) => reject(err));

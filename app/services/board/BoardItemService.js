@@ -85,14 +85,14 @@ let BoardItemService = function (Board,
         });
     };
 
-    this.removeBoardItemsByItem = function (item) {
+    this.findParentBoardsToUpdateByItem = function (item) {
         let itemId = item && item._id ? item._id : item;
         let boardItemsToUpdate = [];
         let boardsToUpdate = [];
 
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             if (!itemId) {
-                return reject('No itemId during boardItems remove!')
+                return reject('No itemId during findParentBoardsToUpdateByItem')
             }
 
             Promise.resolve()
@@ -104,13 +104,33 @@ let BoardItemService = function (Board,
                         .then((boardItems) => boardItemsToUpdate = boardItems.map((boardItem) => boardItem.board))
                 })
                 .then(() => {
-                    return BoardItem
-                        .find({item: {$in: boardItemsToUpdate}})
-                        .populate('item')
-                        .lean()
-                        .exec()
-                        .then((boardItems) => boardsToUpdate = boardItems.map((boardItem) => boardItem.item))
+                    if (!boardItemsToUpdate.length) {
+                        return boardsToUpdate;
+                    } else {
+                        return BoardItem
+                            .find({item: {$in: boardItemsToUpdate}})
+                            .populate('item')
+                            .lean()
+                            .exec()
+                            .then((boardItems) => boardsToUpdate = boardItems.map((boardItem) => boardItem.item))
+                    }
                 })
+                .then(() => resolve(boardsToUpdate));
+        });
+    };
+
+    this.removeBoardItemsByItem = function (item) {
+        let itemId = item && item._id ? item._id : item;
+        let boardsToUpdate = [];
+
+        return new Promise(function (resolve, reject) {
+            if (!itemId) {
+                return reject('No itemId during boardItems remove!')
+            }
+
+            Promise.resolve()
+                .then(() => self.findParentBoardsToUpdateByItem(item))
+                .then((boards) => boardsToUpdate = boards)
                 .then(() => {
                     let query = {
                         $or: [
@@ -136,18 +156,16 @@ let BoardItemService = function (Board,
                 .then(() => resolve(boardsToUpdate));
         });
     };
-    this.removeBoardItem = function (id) {
+
+    this.removeBoardItem = function (boardItem) {
+        let boardItemId = boardItem && boardItem._id ? boardItem._id : boardItem;
         return new Promise(function (resolve, reject) {
-            BoardItem.findById(id)
+            BoardItem.findById(boardItemId)
                 .then((boardItem) => {
-                        //TODO @@@ira if !boardItem check
-                        boardItem.remove()
-                            .then(() => {
-                                    resolve();
-                                },
-                                (err) => reject(err))
-                    },
-                    (err) => reject(err));
+                    //TODO @@@ira if !boardItem check
+                    boardItem.remove()
+                        .then(() => resolve(), (err) => reject(err))
+                }, (err) => reject(err));
         });
     };
 

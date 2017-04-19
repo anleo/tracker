@@ -81,10 +81,18 @@ module.exports = function (app) {
 
     app.delete('/api/boards/:boardId/boardItems/:boardItemId', function (req, res) {
         BoardItemService
-            .removeBoardItem(req.params.boardItemId)
-            .then(() => {
-                res.json({});
+            .findParentBoardsToUpdateByItem(req.params.boardItemId)
+            .then((boardsToUpdate) => {
+                BoardItemService
+                    .removeBoardItem(req.params.boardItemId)
+                    .then(() => {
+                        let promises = boardsToUpdate.map((board) => BoardService.updateParentStatus(board));
+                        return Promise.all(promises);
+                    })
+                    .then(() => res.json({}))
+                    .catch((err) => res.status(400).json({error: err}));
             })
             .catch((err) => res.status(400).json({error: err}));
+
     });
 };
