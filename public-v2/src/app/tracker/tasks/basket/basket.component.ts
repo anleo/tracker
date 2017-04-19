@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {BasketService} from "../../services/basket.service";
 import {TaskBoard} from "../../models/task-board";
@@ -9,7 +9,7 @@ import {BoardItemService} from "../../services/board-item.service";
 import {DnDService} from "../../dnd/dnd.service";
 
 import *as _ from 'lodash';
-import {ToastsManager} from "ng2-toastr";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'basket',
@@ -28,9 +28,7 @@ export class BasketComponent implements OnInit {
               private taskService: TaskService,
               private boardItemService: BoardItemService,
               private dndService: DnDService,
-              private toastr: ToastsManager,
-              vcr: ViewContainerRef) {
-    this.toastr.setRootViewContainerRef(vcr);
+              private toastService: ToastService) {
 
     this.basketService.basketList$
       .subscribe((taskItems) => this.taskItems = taskItems);
@@ -134,7 +132,7 @@ export class BasketComponent implements OnInit {
       .subscribe(() => {
         this.basketService.setBasketList();
       }, (err) => {
-        this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong');
+        this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong');
       });
   }
 }

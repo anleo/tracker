@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {BoardService} from "../../services/board.service";
 import {Location} from "@angular/common";
 import {CurrentTaskService} from "../../services/current-task.service";
@@ -8,11 +8,10 @@ import {BoardItemService} from "../../services/board-item.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {Task} from '../../models/task';
 
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
-
 import * as _ from 'lodash';
 import {BoardWithStatus} from "../../models/board-with-status";
 import {ActivatedRoute} from "@angular/router";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'task-boards',
@@ -53,9 +52,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
               private boardItemService: BoardItemService,
               private currentTaskService: CurrentTaskService,
               private dndService: DnDService,
-              public toastr: ToastsManager,
-              vcr: ViewContainerRef) {
-    this.toastr.setRootViewContainerRef(vcr);
+              public toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -120,8 +117,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     newBoardItem['board'] = dropData.params.parent;
 
     this.boardItemService.save(newBoardItem).toPromise()
-      .then(() => this.toastr.info('Item was added'))
+      .then(() => this.toastService.info('Item was added'))
       .then(() => this.getBoards())
-      .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+      .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
   }
 }
