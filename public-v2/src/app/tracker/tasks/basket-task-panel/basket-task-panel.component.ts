@@ -17,13 +17,8 @@ export class BasketTaskPanelComponent implements OnInit {
   @Input() pointCost: number = null;
   task: Task;
   approximateTime: string = null;
-//TODO @@@dr rethink it
-  boardItemSpentTimeTimestamp;
-  timer$ = Observable.timer(1000, 1000);
-  timerSubscription;
-  spendTime;
-  @Output() selectedTask: EventEmitter<TaskBoardItem> = new EventEmitter();
 
+  @Output() selectedTask: EventEmitter<TaskBoardItem> = new EventEmitter();
 
   constructor(private taskService: TaskService,
               private boardItemService: BoardItemService,
@@ -59,55 +54,4 @@ export class BasketTaskPanelComponent implements OnInit {
     this.selectedTask.emit(boardItem);
   }
 
-  hasTimeLog(boardItem) {
-    return (boardItem.timeLog && boardItem.timeLog.length) ? true : false;
-  }
-
-  addTimeLog(boardItem, status): TaskBoardItem {
-    let timeLogRecord = {status: status, time: Date.now()};
-
-    this.hasTimeLog(boardItem)
-      ? boardItem.timeLog.push(timeLogRecord)
-      : boardItem.timeLog = [timeLogRecord];
-
-    boardItem.item.status = status;
-
-    return boardItem;
-  }
-
-  //TODO @@@dr Maybe move to service?
-  boardItemStatusProvider(boardItem: TaskBoardItem, status: string) {
-    if (boardItem.item.status == status) {
-      return;
-    } else if (status === 'accepted') {
-      if (boardItem.item.status == 'in progress') {
-        boardItem = this.addTimeLog(boardItem, '');
-      }
-    }
-
-    boardItem = this.addTimeLog(boardItem, status);
-
-    this.boardItemService
-      .update(boardItem)
-      .switchMap(result => this.taskService.updateTask(boardItem.item))
-      .subscribe((task) => {
-        this.task = task;
-        this.countTaskSpentTime(boardItem)
-      })
-  }
-
-  countTaskSpentTime(boardItem: TaskBoardItem) {
-    this.boardItemService.getBoardItemSpendTime(boardItem)
-      .subscribe((time) => {
-        this.boardItemSpentTimeTimestamp = time;
-        this.spendTime = time.format('HH:mm:ss');
-      });
-  }
-
-  startTimer() {
-    this.timerSubscription = this.timer$
-      .subscribe(timer => {
-        this.spendTime = this.boardItemSpentTimeTimestamp.add(1, 'second').format('HH:mm:ss');
-      });
-  }
 }
