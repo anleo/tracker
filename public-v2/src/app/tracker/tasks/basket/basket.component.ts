@@ -22,6 +22,7 @@ export class BasketComponent implements OnInit {
   showBasket: boolean = false;
   editMode: boolean = false;
   basket: TaskBoard;
+  currentBI: TaskBoardItem = null;
 
 
   constructor(private basketService: BasketService,
@@ -47,6 +48,9 @@ export class BasketComponent implements OnInit {
 
   ngOnInit() {
     this.getBasket();
+
+    this.basketService.activeBoardItem$
+      .subscribe((boardItem) => this.currentBI = boardItem);
   }
 
   toggleBasket() {
@@ -136,5 +140,9 @@ export class BasketComponent implements OnInit {
       }, (err) => {
         this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong');
       });
+  }
+
+  onChangeStatus(event) {
+    this.currentBI = event;
   }
 }

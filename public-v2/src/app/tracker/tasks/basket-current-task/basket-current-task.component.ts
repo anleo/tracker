@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output} from '@angular/core';
+import {Component, OnInit, Input, OnChanges, SimpleChange} from '@angular/core';
 
 import {Task} from '../../models/task'
 import {TaskService} from "../../services/task.service";
@@ -6,23 +6,22 @@ import {BoardItemService} from "../../services/board-item.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {Observable} from "rxjs";
-import {EventEmitter} from "@angular/common/src/facade/async";
 
 @Component({
-  selector: 'basket-task-panel',
-  templateUrl: 'basket-task-panel.component.html'
+  selector: 'basket-current-task',
+  templateUrl: 'basket-current-task.component.html'
 })
-export class BasketTaskPanelComponent implements OnInit {
+export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   @Input() boardItem: TaskBoardItem = null;
   @Input() pointCost: number = null;
   task: Task;
   approximateTime: string = null;
+
 //TODO @@@dr rethink it
   boardItemSpentTimeTimestamp;
   timer$ = Observable.timer(1000, 1000);
   timerSubscription;
   spendTime;
-  @Output() selectedTask: EventEmitter<TaskBoardItem> = new EventEmitter();
 
 
   constructor(private taskService: TaskService,
@@ -30,11 +29,25 @@ export class BasketTaskPanelComponent implements OnInit {
               private basketService: BasketService) {
   }
 
-  ngOnInit() {
-    this.task = this.boardItem.item;
-    if (this.task.simple) {
-      this.calculateApproximateTime();
+  ngOnChanges(changes: { [boardItem: string]: SimpleChange }): void {
+    if (Object.keys(changes['boardItem'].previousValue).length > 1
+      && changes['boardItem'].previousValue.item.status === 'in progress') {
+
+      this.pause(changes['boardItem'].previousValue);
     }
+
+    this.task = changes['boardItem'].currentValue.item;
+
+    this.countTaskSpentTime(changes['boardItem'].currentValue);
+  }
+
+  ngOnInit() {
+    if (!this.boardItem) {
+      return;
+    }
+    this.task = this.boardItem.item;
+
+    this.countTaskSpentTime(this.boardItem);
   }
 
   edit(task: Task) {
@@ -56,7 +69,24 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   start(boardItem) {
-    this.selectedTask.emit(boardItem);
+    this.boardItemStatusProvider(boardItem, 'in progress');
+    this.startTimer();
+  }
+
+  pause(boardItem) {
+    this.boardItemStatusProvider(boardItem, '');
+
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe()
+    }
+  }
+
+  accept(boardItem) {
+    this.boardItemStatusProvider(boardItem, 'accepted');
+
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe()
+    }
   }
 
   hasTimeLog(boardItem) {
@@ -91,9 +121,8 @@ export class BasketTaskPanelComponent implements OnInit {
       .update(boardItem)
       .switchMap(result => this.taskService.updateTask(boardItem.item))
       .subscribe((task) => {
-        this.task = task;
         this.countTaskSpentTime(boardItem)
-      })
+      });
   }
 
   countTaskSpentTime(boardItem: TaskBoardItem) {
@@ -110,4 +139,20 @@ export class BasketTaskPanelComponent implements OnInit {
         this.spendTime = this.boardItemSpentTimeTimestamp.add(1, 'second').format('HH:mm:ss');
       });
   }
+
+//TODO @@@dr move it to component or directive
+  public setLabelClass(): string {
+    let className = 'label-info';
+
+    if (this.task.status === 'accepted') {
+      className = 'label-success';
+    }
+
+    if (this.task.status === 'in progress') {
+      className = 'label-warning'
+    }
+
+    return className;
+  }
+
 }

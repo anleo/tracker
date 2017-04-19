@@ -100,6 +100,7 @@ import { BasketHistoryComponent } from './tasks/basket-history/basket-history.co
 import { BasketContentComponent } from './tasks/basket-content/basket-content.component';
 import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-form.component";
 import {BoardSortPipe} from "./pipes/board-sort.pipe";
+import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-current-task.component";
 
 @NgModule({
   imports: [
@@ -199,7 +200,8 @@ import {BoardSortPipe} from "./pipes/board-sort.pipe";
     BasketComponent,
     BasketTaskPanelComponent,
     BasketHistoryComponent,
-    BasketContentComponent
+    BasketContentComponent,
+    BasketCurrentTaskComponent
   ],
   providers: [
     TaskResolver,

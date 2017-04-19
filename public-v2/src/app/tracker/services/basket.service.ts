@@ -25,6 +25,8 @@ export class BasketService {
   basketList$: BehaviorSubject<TaskBoardItem[]> = new BehaviorSubject<TaskBoardItem[]>(null);
   basket$: BehaviorSubject<TaskBoard> = new BehaviorSubject<TaskBoard>(null);
   basket: TaskBoard | null;
+
+  activeBoardItem$: BehaviorSubject<TaskBoardItem> = new BehaviorSubject<TaskBoardItem>(null);
   user: User;
 
   getUser(): void {
@@ -76,6 +78,7 @@ export class BasketService {
     this.boardItemService.getBoardItemsByBoardId(this.basket._id)
       .subscribe((boardItems) => {
         this.basketList$.next(boardItems);
+        this.activeBoardItem$.next(this.getActiveBoardItem(boardItems));
       })
   }
 
@@ -92,6 +95,11 @@ export class BasketService {
   getBasketHistory(): Observable<TaskBoard[]> {
     return this.basketResource.getBasketHistory({userId: this.user._id})
       .$observable
+  }
+
+  getActiveBoardItem(boardItems: TaskBoardItem[]): TaskBoardItem {
+    return boardItems.filter((item) => item.timeLog[item.timeLog.length - 1])
+      .find((item) => item.timeLog[item.timeLog.length - 1].status === 'in progress')
   }
 
 }
