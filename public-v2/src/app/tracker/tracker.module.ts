@@ -101,6 +101,7 @@ import { BasketContentComponent } from './tasks/basket-content/basket-content.co
 import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-form.component";
 import {BoardSortPipe} from "./pipes/board-sort.pipe";
 import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-current-task.component";
+import {BoardItemSpentTimeService} from "./services/board-item-spent-time.service";
 
 @NgModule({
   imports: [
@@ -217,7 +218,8 @@ import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-cur
     TaskStatusService,
     TaskSearchService,
     BasketResource,
-    BasketService
+    BasketService,
+    BoardItemSpentTimeService
   ]
 })
 export class TrackerModule {

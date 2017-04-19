@@ -6,6 +6,7 @@ import {BoardItemService} from "../../services/board-item.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {Observable} from "rxjs";
+import {BoardItemSpentTimeService} from "../../services/board-item-spent-time.service";
 
 @Component({
   selector: 'basket-current-task',
@@ -13,9 +14,7 @@ import {Observable} from "rxjs";
 })
 export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   @Input() boardItem: TaskBoardItem = null;
-  @Input() pointCost: number = null;
   task: Task;
-  approximateTime: string = null;
 
 //TODO @@@dr rethink it
   boardItemSpentTimeTimestamp;
@@ -23,10 +22,10 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   timerSubscription;
   spendTime;
 
-
   constructor(private taskService: TaskService,
               private boardItemService: BoardItemService,
-              private basketService: BasketService) {
+              private basketService: BasketService,
+              private boardItemSpentTimeService: BoardItemSpentTimeService) {
   }
 
   ngOnChanges(changes: { [boardItem: string]: SimpleChange }): void {
@@ -64,17 +63,21 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
         })
   }
 
-  calculateApproximateTime(): void {
-    this.approximateTime = this.pointCost ? (this.task.points * this.pointCost).toFixed(2) : null;
-  }
-
   start(boardItem) {
-    this.boardItemStatusProvider(boardItem, 'in progress');
-    this.startTimer();
+    this.boardItemSpentTimeService
+      .boardItemStatusProvider(boardItem, 'in progress')
+      .subscribe(() => {
+        this.countTaskSpentTime(boardItem);
+        this.startTimer();
+      });
   }
 
   pause(boardItem) {
-    this.boardItemStatusProvider(boardItem, '');
+    this.boardItemSpentTimeService
+      .boardItemStatusProvider(boardItem, '')
+      .subscribe(() => {
+        this.countTaskSpentTime(boardItem);
+      });
 
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe()
@@ -82,51 +85,19 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   }
 
   accept(boardItem) {
-    this.boardItemStatusProvider(boardItem, 'accepted');
+    this.boardItemSpentTimeService
+      .boardItemStatusProvider(boardItem, 'accepted')
+      .subscribe(() => {
+        this.countTaskSpentTime(boardItem);
+      });
 
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe()
     }
   }
 
-  hasTimeLog(boardItem) {
-    return (boardItem.timeLog && boardItem.timeLog.length) ? true : false;
-  }
-
-  addTimeLog(boardItem, status): TaskBoardItem {
-    let timeLogRecord = {status: status, time: Date.now()};
-
-    this.hasTimeLog(boardItem)
-      ? boardItem.timeLog.push(timeLogRecord)
-      : boardItem.timeLog = [timeLogRecord];
-
-    boardItem.item.status = status;
-
-    return boardItem;
-  }
-
-  //TODO @@@dr Maybe move to service?
-  boardItemStatusProvider(boardItem: TaskBoardItem, status: string) {
-    if (boardItem.item.status == status) {
-      return;
-    } else if (status === 'accepted') {
-      if (boardItem.item.status == 'in progress') {
-        boardItem = this.addTimeLog(boardItem, '');
-      }
-    }
-
-    boardItem = this.addTimeLog(boardItem, status);
-
-    this.boardItemService
-      .update(boardItem)
-      .switchMap(result => this.taskService.updateTask(boardItem.item))
-      .subscribe((task) => {
-        this.countTaskSpentTime(boardItem)
-      });
-  }
-
   countTaskSpentTime(boardItem: TaskBoardItem) {
-    this.boardItemService.getBoardItemSpendTime(boardItem)
+    this.boardItemSpentTimeService.getBoardItemSpendTime(boardItem)
       .subscribe((time) => {
         this.boardItemSpentTimeTimestamp = time;
         this.spendTime = time.format('HH:mm:ss');
