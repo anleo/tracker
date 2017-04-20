@@ -142,9 +142,10 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     let ifBoardToBoard = dropZone.type === 'board' && newBoardItem.type === 'board';
     let ifTaskFromBoardToBoard = dropZone.type === 'board' && newBoardItem.type === 'task' && newBoardItem.board;
     let ifTaskToBoardFromBacklog = dropZone.type === 'board' && newBoardItem.type === 'task' && !newBoardItem.board;
+    let ifTaskToTaskFromBacklog = dropZone.type === 'task' && newBoardItem.type === 'task' && !newBoardItem.board;
     let ifTaskToTaskFromBoard = dropZone.type === 'task' && newBoardItem.type === 'task' && newBoardItem.board;
 
-    if (ifTaskFromBoardToBoard) {
+    if (ifTaskFromBoardToBoard || ifTaskToBoardFromBacklog) {
       return this.boardService.checkRelations(dropZone.parent, newBoardItem.item._id)
         .toPromise()
         .then((hasRelative) => {
@@ -161,7 +162,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
         });
     }
 
-    if (ifTaskToTaskFromBoard) {
+    if (ifTaskToTaskFromBoard || ifTaskToTaskFromBacklog) {
       let newBoardItemTask = newBoardItem.item;
       newBoardItemTask.parentTaskId = dropZone.parent;
 
@@ -190,33 +191,6 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
 
     if (ifBoardToBoard) {
       newBoardItem['board'] = dropZone.parent;
-      return this.boardItemService.save(newBoardItem)
-        .toPromise()
-        .then(() => this.toastr.info('Item was added'))
-        .then(() => this.getBoards())
-        .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
-    }
-
-    if (ifTaskToBoardFromBacklog) {
-      newBoardItem['board'] = dropZone.parent;
-
-      // TODO @@@id:need to check relative
-      // return this.boardItemService.checkRelations(dropZone.board.board, newBoardItem._id)
-      //   .toPromise()
-      //   .then((hasRelative) => {
-      //     if (hasRelative) {
-      //       this.toastr.info('You have this item in current board')
-      //     }
-      //
-      //     newBoardItem['board'] = dropZone.parent;
-      //     this.boardItemService.save(newBoardItem)
-      //       .toPromise()
-      //       .then(() => this.toastr.info('Item was added'))
-      //       .then(() => this.getBoards())
-      //       .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
-      //   });
-
-
       return this.boardItemService.save(newBoardItem)
         .toPromise()
         .then(() => this.toastr.info('Item was added'))
