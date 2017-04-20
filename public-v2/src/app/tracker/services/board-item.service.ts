@@ -57,8 +57,4 @@ export class BoardItemService {
 
     return Observable.of(moment(spentTime).utc());
   }
-
-  checkRelations(boardId, boardItemId): Observable<any> {
-    return this.boardItemResource.checkRelations({boardId: boardId, boardItemId: boardItemId}).$observable;
-  }
 }

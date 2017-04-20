@@ -1,9 +1,11 @@
 module.exports = function (app) {
     let _ = require('lodash');
+    let async = require('async');
     let BoardService = app.container.get('BoardService');
     let Board = app.container.get('Board');
     let BoardItemService = app.container.get('BoardItemService');
     let SimpleMetricsService = app.container.get('SimpleMetricsService');
+    let TaskService = app.container.get('TaskService');
 
     app.param('boardId', function (req, res, next, id) {
         BoardService
@@ -70,5 +72,50 @@ module.exports = function (app) {
                     .catch((err) => res.status(400).json({error: err}));
             })
             .catch((err) => res.status(400).json({error: err}));
-    })
+    });
+
+    app.get('/api/boards/:boardId/items/:itemId/check-relations', function (req, res) {
+        let allChildren = [];
+        // TODO @@@id: move to service
+        BoardItemService
+            .getItemsByOptions({board: req.Board, type: 'task'})
+            .then((items) => {
+                async.each(items, (boardItem, callback) => {
+                    allChildren.push(boardItem.item._id);
+                    TaskService.getChildrenDeep(boardItem.item, [], (err, children) => {
+                        if (err) {
+                            return next(err);
+                        }
+
+                        children = _.map(children, (child) => {
+                            return child && child._id ? child._id : child;
+                        });
+
+                        allChildren = allChildren.concat(children);
+                        callback();
+                    });
+                }, (err) => {
+                    if (err) {
+                        return next(err);
+                    }
+
+                    allChildren = _.uniq(allChildren, (child) => {
+                        return child.toString();
+                    });
+
+                    if (hasRelatives(req.params.itemId, allChildren)) {
+                        res.json(true);
+                    } else {
+                        res.json(false);
+                    }
+                });
+            });
+    });
+
+    // TODO @@@id: move to service
+    function hasRelatives(item, children) {
+        return _.find(children, (child) => {
+            return child.toString() === item.toString();
+        });
+    }
 };

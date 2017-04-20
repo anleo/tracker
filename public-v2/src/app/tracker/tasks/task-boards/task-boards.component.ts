@@ -51,7 +51,6 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     }
   ];
 
-
   constructor(private route: ActivatedRoute,
               private location: Location,
               private boardService: BoardService,
@@ -141,12 +140,12 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type', '_id']);
 
     let ifBoardToBoard = dropZone.type === 'board' && newBoardItem.type === 'board';
-    let ifTaskToBoardFromBoard = dropZone.type === 'board' && newBoardItem.type === 'task' && newBoardItem.board;
+    let ifTaskFromBoardToBoard = dropZone.type === 'board' && newBoardItem.type === 'task' && newBoardItem.board;
     let ifTaskToBoardFromBacklog = dropZone.type === 'board' && newBoardItem.type === 'task' && !newBoardItem.board;
     let ifTaskToTaskFromBoard = dropZone.type === 'task' && newBoardItem.type === 'task' && newBoardItem.board;
 
-    if (ifTaskToBoardFromBoard) {
-      return this.boardItemService.checkRelations(dropZone.board.board, newBoardItem._id)
+    if (ifTaskFromBoardToBoard) {
+      return this.boardService.checkRelations(dropZone.parent, newBoardItem.item._id)
         .toPromise()
         .then((hasRelative) => {
           if (hasRelative) {
@@ -166,7 +165,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       let newBoardItemTask = newBoardItem.item;
       newBoardItemTask.parentTaskId = dropZone.parent;
 
-      return this.boardItemService.checkRelations(dropZone.board.board, newBoardItem._id)
+      return this.boardService.checkRelations(dropZone.board.board, newBoardItemTask._id)
         .toPromise()
         .then((hasRelative) => {
           if (hasRelative) {
@@ -177,11 +176,13 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
             .updateTask(newBoardItemTask)
             .toPromise()
             .then(() => {
-              this.boardItemService
-                .remove(newBoardItem)
-                .toPromise()
-                .then(() => this.boardItemService.getBoardItemsByBoardId(dropZone.board.board))
-                .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'))
+              if (newBoardItem && newBoardItem._id) {
+                this.boardItemService
+                  .remove(newBoardItem)
+                  .toPromise()
+                  .then(() => this.boardItemService.getBoardItemsByBoardId(dropZone.board.board))
+                  .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+              }
             })
             .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
         });
