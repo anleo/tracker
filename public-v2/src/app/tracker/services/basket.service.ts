@@ -89,8 +89,9 @@ export class BasketService {
         (err) => console.log('err', err))
   }
 
-  getBasketHistory(): Observable<TaskBoard[]> {
-    return this.basketResource.getBasketHistory({userId: this.user._id})
+  //  TODO rename method and url - it's not a history, just boards
+  getBasketHistory(query: any): Observable<TaskBoard[]> {
+    return this.basketResource.getBasketHistory({userId: this.user._id, query: query})
       .$observable
   }
 
