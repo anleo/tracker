@@ -5,7 +5,9 @@ module.exports = function (app) {
 
     // @@ IraU rethink logic
     app.get('/api/baskets/:userId', function (req, res) {
-        let query = {owner: req.params.userId, type: 'basket', status: ""};
+        //TODO @@@dr Check It
+        // let query = {owner: req.params.userId, type: 'basket', status: ""};
+        let query = {owner: req.params.userId, type: 'basket'};
         BoardService.getLastBoardByQuery(query)
             .then((basket) => {
                 if (!basket) {
