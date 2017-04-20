@@ -74,9 +74,9 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json({error: err}));
     });
 
-    app.get('/api/boards/:boardId/items/:itemId/check-relations', function (req, res) {
+    app.get('/api/boards/:boardId/items/:itemId/check-relations', function (req, res, next) {
         let allChildren = [];
-        // TODO @@@id: move to service
+
         BoardItemService
             .getItemsByOptions({board: req.Board, type: 'task'})
             .then((items) => {
@@ -87,7 +87,7 @@ module.exports = function (app) {
                             return next(err);
                         }
 
-                        children = _.map(children, (child) => {
+                        children = children.map((child) => {
                             return child && child._id ? child._id : child;
                         });
 
@@ -103,7 +103,7 @@ module.exports = function (app) {
                         return child.toString();
                     });
 
-                    if (hasRelatives(req.params.itemId, allChildren)) {
+                    if (BoardService.hasRelatives(req.params.itemId, allChildren)) {
                         res.json(true);
                     } else {
                         res.json(false);
@@ -111,11 +111,4 @@ module.exports = function (app) {
                 });
             });
     });
-
-    // TODO @@@id: move to service
-    function hasRelatives(item, children) {
-        return _.find(children, (child) => {
-            return child.toString() === item.toString();
-        });
-    }
 };
