@@ -5,7 +5,7 @@ import {Task} from "../models/task";
 
 @Pipe({name: 'tasksSort'})
 
-export class TasksSortPipe extends SortByFieldsPipe implements PipeTransform {
+export class TasksSortPipe extends SortByFieldsPipe {
   defaultSortingParams = {
     fields: ['priority', 'updatedAt'],
     orders: ['desc', 'asc']

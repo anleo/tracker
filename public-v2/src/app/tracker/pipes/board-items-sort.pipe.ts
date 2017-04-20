@@ -4,7 +4,7 @@ import {TaskBoardItem} from "../models/task-board-item";
 
 @Pipe({name: 'boardItemsSort'})
 
-export class BoardItemsSortPipe extends SortByFieldsPipe implements PipeTransform {
+export class BoardItemsSortPipe extends SortByFieldsPipe {
   defaultSortingParams = {
     fields: ['item.priority', 'item.updatedAt'],
     orders: ['desc', 'asc']
