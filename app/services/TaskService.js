@@ -803,6 +803,105 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         }
     };
 
+    this.isItMyChildren = function (task, futureParent, next) {
+        task = task && task._id ? task._id : task;
+        futureParent = futureParent && futureParent._id ? futureParent._id : futureParent;
+        return self.getTaskById(futureParent, (err, futureParent)=> {
+            if (err) {
+                return next(err);
+            }
+
+            if (!futureParent.parentTaskId) {
+                return next(null, false);
+            }
+
+            if (futureParent.parentTaskId.toString() === task.toString()) {
+                return next(null, true);
+            } else {
+                self.isItMyChildren(task, futureParent.parentTaskId, next);
+            }
+        });
+    };
+
+    this.getAllParents = function (task, allParents = [], next) {
+        self.getParent(task, (err, parent) => {
+            if (err) {
+                return next(err);
+            }
+
+            if (!parent) {
+                return next(null, allParents);
+            }
+
+            allParents.push(parent);
+
+            self.getAllParents(parent, allParents, next);
+        });
+    };
+
+    this.getChildrenDeep = function (task, next) {
+        var allChildren = [];
+
+        self.getChildren(task, (err, children) => {
+            if (err) {
+                return next(err);
+            }
+
+            if (!children.length) {
+                return next(null, allChildren);
+            }
+
+            allChildren = allChildren.concat(children);
+
+            async.each(children, (child, callback) => {
+                self.getChildren(child,(err, children)  =>{
+                    if (err) {
+                        return next(err);
+                    }
+
+                    allChildren = allChildren.concat(children);
+                    callback();
+                });
+            }, next);
+        });
+    };
+
+    this.getTaskRelatives = (task, next) => {
+        let resultRelatives = [];
+        self.getTaskById(task, (err, task) => {
+            if (err) {
+                return next(err);
+            }
+
+            let relatives = [getSiblings, getChildrenDeep, getAllParents];
+
+            function getSiblings(callback) {
+                self.getSiblings(task, callback);
+            }
+
+            function getChildrenDeep(callback) {
+                self.getChildrenDeep(task, callback);
+            }
+
+            function getAllParents(callback) {
+                self.getAllParents(task, [], callback);
+            }
+
+            async.parallel(relatives, (err, results) => {
+                if (err) {
+                    return next(err);
+                }
+
+                resultRelatives = resultRelatives.concat(results[0], results[1], results[2]);
+                resultRelatives = _.map(resultRelatives, (relative) => {
+                    return relative && relative._id ? relative._id : relative;
+                });
+
+                resultRelatives = _.uniq(resultRelatives);
+                next(null, resultRelatives);
+            });
+        });
+    };
 };
 
 module.exports = TaskService;

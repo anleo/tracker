@@ -46,4 +46,10 @@ export class BoardItemResource extends Resource {
     method: RequestMethod.Get
   })
   getRootBoardItemsByProject: ResourceMethod<{projectId: string}, TaskBoardItem[]>;
+
+  @ResourceAction({
+    url: '/api/boards/{!boardId}/boardItems/{!boardItemId}/checkRelations',
+    method: RequestMethod.Get
+  })
+  checkRelations: ResourceMethod<{boardId: string, boardItemId: string}, any>;
 }

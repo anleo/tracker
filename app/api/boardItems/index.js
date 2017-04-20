@@ -1,6 +1,10 @@
 module.exports = function (app) {
     let BoardItemService = app.container.get('BoardItemService');
     let BoardService = app.container.get('BoardService');
+    let TaskService = app.container.get('TaskService');
+
+    let _ = require('lodash');
+    let async = require('async');
 
     app.param('boardItemId', (req, res, next, boardItemId) => {
         BoardItemService.getById(boardItemId)
@@ -12,7 +16,7 @@ module.exports = function (app) {
                 req.BoardItem = boardItem;
                 next();
             })
-    })
+    });
 
     app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
         let options = {
@@ -67,7 +71,7 @@ module.exports = function (app) {
             .update(req.BoardItem, {timeLog: req.body.timeLog})
             .then((boardItem) => res.json(boardItem))
             .catch((err) => res.status(400).json({error: err}))
-    })
+    });
 
     app.get('/api/boards/:boardId/boardItems', function (req, res) {
         BoardItemService.getItemsByOptions({board: req.Board._id})
@@ -83,4 +87,45 @@ module.exports = function (app) {
             })
             .catch((err) => res.status(400).json({error: err}));
     });
+
+    app.get('/api/boards/:boardId/boardItems/:boardItemId/checkRelations', function (req, res) {
+        let allRelatives = [];
+        // TODO @@@id: move to service
+        BoardItemService
+            .getItemsByOptions({board: req.Board, type: 'task'})
+            .then((items) => {
+                async.each(items, (boardItem, callback) => {
+                    allRelatives.push(boardItem.item._id);
+                    TaskService.getTaskRelatives(boardItem.item, (err, relatives) => {
+                        if (err) {
+                            return next(err);
+                        }
+
+                        allRelatives = allRelatives.concat(relatives);
+                        callback();
+                    });
+                }, (err) => {
+                    if (err) {
+                        return next(err);
+                    }
+
+                    allRelatives = _.uniq(allRelatives, (relative) => {
+                        return relative.toString();
+                    });
+
+                    if (hasRelative(req.BoardItem.item, allRelatives)) {
+                        res.json(true);
+                    } else {
+                        res.json(false);
+                    }
+                });
+            });
+    });
+
+    // TODO @@@id: move to service
+    function hasRelative(task, relatives) {
+        return _.find(relatives, function (relative) {
+            return relative.toString() === task._id.toString();
+        });
+    }
 };

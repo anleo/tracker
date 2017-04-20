@@ -13,7 +13,7 @@ let BoardItemService = function (Board,
                 .exec()
                 .then((item) => resolve(item), (err) => reject(err));
         })
-    }
+    };
 
     this.create = function (data) {
         let self = this;
@@ -56,7 +56,7 @@ let BoardItemService = function (Board,
                     .then((boardItem) => resolve(boardItem), (err) => reject(err))
             },
             (err) => reject(err));
-    }
+    };
 
     this.createBoardItem = function (data) {
         return new Promise(function (resolve, reject) {

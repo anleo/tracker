@@ -253,6 +253,11 @@ module.exports = function (app) {
 
     app.put('/api/tasks/:taskId', TaskForm, FormService.validate, function (req, res, next) {
         var taskData = _.merge({parentTaskId: req.body.parentTaskId || null}, req.form);
+
+        if (taskData.parentTaskId.toString() === req.Task._id.toString()) {
+            return res.status(403).json({error: 'You can\'t add task into itself'});
+        }
+
         if (taskData.parentTaskId) {
             /// @@@ re-think and refactor
             TaskService.getTaskById(taskData.parentTaskId, function (err, parent) {
@@ -260,9 +265,17 @@ module.exports = function (app) {
                     if (err) return next(err);
                     if (!access) return res.sendStatus(403);
 
-                    TaskService.updateTask(req.user, req.Task, taskData, function (err, task) {
+                    TaskService.isItMyChildren(req.Task, parent, function (err, isChildren) {
                         if (err) return next(err);
-                        res.json(task);
+
+                        if (isChildren) {
+                            return res.status(403).json({error: 'You can\'t move task to his children'});
+                        }
+
+                        TaskService.updateTask(req.user, req.Task, taskData, function (err, task) {
+                            if (err) return next(err);
+                            res.json(task);
+                        });
                     });
                 });
             });

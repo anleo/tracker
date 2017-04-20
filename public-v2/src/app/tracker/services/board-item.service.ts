@@ -6,6 +6,7 @@ import {TaskBoardItem} from '../models/task-board-item';
 import {BoardItemResource} from "../resources/board-item.resource";
 import * as moment from 'moment/moment';
 import {Moment} from "moment";
+import {TaskBoard} from "../models/task-board";
 
 
 @Injectable()
@@ -52,5 +53,9 @@ export class BoardItemService {
     }
 
     return Observable.of(moment(spentTime).utc());
+  }
+
+  checkRelations(boardId, boardItemId): Observable<any> {
+    return this.boardItemResource.checkRelations({boardId: boardId, boardItemId: boardItemId}).$observable;
   }
 }
