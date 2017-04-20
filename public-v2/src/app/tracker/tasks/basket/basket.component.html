@@ -9,7 +9,7 @@
      drop-zone
      [check]="[checkDropDataType]">
   <div class="wrap text-left">
-    <h4 style="margin: 10px 0 20px; line-height: 24px;">BASKET
+    <h4 style="margin: 10px 0 20px; line-height: 24px;"  *ngIf="basket">{{basket.title}}
       <small (click)="toggleBasket()" class="text-muted pull-right" style="cursor: pointer">
         <i class="glyphicon glyphicon-remove"></i>
       </small>
@@ -37,6 +37,7 @@
                            [pointCost]="basket.pointCost"></basket-task-panel>
       </div>
       <button (click)="finish()" class="btn btn-success btn-sm">Finish</button>
+      <button (click)="clearBasket()" class="btn btn-danger btn-sm">Clear</button>
     </div>
     <div *ngIf="!taskItems?.length">No tasks yet</div>
   </div>

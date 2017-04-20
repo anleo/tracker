@@ -62,7 +62,11 @@ module.exports = function (app) {
         };
 
         BoardItemService.create(data)
-            .then((boardItem) => res.json(boardItem))
+            .then((boardItem) => {
+                BoardService
+                    .updateParentsByItem(boardItem.item)
+                    .then(() => res.json(boardItem));
+            })
             .catch((err) => res.status(400).json({error: err}));
     });
 
@@ -81,7 +85,24 @@ module.exports = function (app) {
 
     app.delete('/api/boards/:boardId/boardItems/:boardItemId', function (req, res) {
         BoardItemService
-            .removeBoardItem(req.params.boardItemId)
+            .findParentBoardsToUpdateByItem(req.BoardItem._id)
+            .then((boardsToUpdate) => {
+                BoardItemService
+                    .removeBoardItem(req.params.boardItemId)
+                    .then(() => {
+                        let promises = boardsToUpdate.map((board) => BoardService.updateParentStatus(board));
+                        return Promise.all(promises);
+                    })
+                    .then(() => res.json({}))
+                    .catch((err) => res.status(400).json({error: err}));
+            })
+            .catch((err) => res.status(400).json({error: err}));
+
+    });
+
+    app.delete('/api/boards/:boardId/boardItems', function (req, res) {
+        BoardItemService
+            .removeBoardItemsByItem(req.params.boardId)
             .then(() => {
                 res.json({});
             })

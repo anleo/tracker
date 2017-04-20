@@ -85,48 +85,83 @@ let BoardItemService = function (Board,
         });
     };
 
+    this.findParentBoardsToUpdateByItem = function (item) {
+        let itemId = item && item._id ? item._id : item;
+        let boardItemsToUpdate = [];
+        let boardsToUpdate = [];
+
+        return new Promise((resolve, reject) => {
+            if (!itemId) {
+                return reject('No itemId during findParentBoardsToUpdateByItem')
+            }
+
+            Promise.resolve()
+                .then(() => {
+                    return self.getItemsByOptions({item: itemId})
+                        .then((boardItems) => boardItemsToUpdate = boardItems.map((boardItem) => boardItem.board))
+                })
+                .then(() => {
+                    if (!boardItemsToUpdate.length) {
+                        return boardsToUpdate;
+                    } else {
+                        return Board
+                            .find({_id: {$in: boardItemsToUpdate}})
+                            .lean()
+                            .exec()
+                            .then((boards) => {
+                                boardsToUpdate = boards
+                            }, (err) => reject(err))
+                    }
+                })
+                .then(() => resolve(boardsToUpdate));
+        });
+    };
+
     this.removeBoardItemsByItem = function (item) {
         let itemId = item && item._id ? item._id : item;
+        let boardsToUpdate = [];
 
         return new Promise(function (resolve, reject) {
             if (!itemId) {
-                reject('No itemId during boardItems remove!')
+                return reject('No itemId during boardItems remove!')
             }
 
-            let query = {
-                $or: [
-                    {item: itemId}
-                ]
-            };
+            Promise.resolve()
+                .then(() => self.findParentBoardsToUpdateByItem(item))
+                .then((boards) => boardsToUpdate = boards)
+                .then(() => {
+                    let query = {
+                        $or: [
+                            {item: itemId}
+                        ]
+                    };
 
-            Board
-                .findById(itemId)
-                .then((board) => {
-                    if (board) {
-                        query.$or.push({
-                            board: itemId
-                        })
-                    }
+                    return Board
+                        .findById(itemId)
+                        .then((board) => {
+                            if (board) {
+                                query.$or.push({
+                                    board: itemId
+                                })
+                            }
 
-                    BoardItem
-                        .remove(query)
-                        .exec()
-                        .then(() => resolve(true), (err) => reject(err))
-                }, (err) => reject(err));
+                            return BoardItem
+                                .remove(query)
+                                .exec()
+                                .then(() => {
+                                }, (err) => reject(err))
+                        }, (err) => reject(err));
+                })
+                .then(() => resolve(boardsToUpdate));
         });
     };
     this.removeBoardItem = function (id) {
         return new Promise(function (resolve, reject) {
-            BoardItem.findById(id)
-                .then((boardItem) => {
-                        //TODO @@@ira if !boardItem check
-                        boardItem.remove()
-                            .then(() => {
-                                    resolve();
-                                },
-                                (err) => reject(err))
-                    },
-                    (err) => reject(err));
+            let query = {id: id};
+
+            BoardItem.remove(query)
+                .then(() => resolve(),
+                    (err) => reject(err))
         });
     };
 
