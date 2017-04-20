@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {TaskService} from "../../services/task.service";
 import {CurrentTaskService} from "../../services/current-task.service";
 
@@ -9,7 +9,7 @@ import {DnDService} from "../../dnd/dnd.service";
 
 import {isNull} from "util";
 import {TaskBoardItem} from "../../models/task-board-item";
-import {ToastsManager} from "ng2-toastr";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'task-backlog',
@@ -33,9 +33,7 @@ export class TaskBacklogComponent implements OnInit {
               private socketService: SocketService,
               private dndService: DnDService,
               private currentTaskService: CurrentTaskService,
-              private toastr: ToastsManager,
-              vcr: ViewContainerRef) {
-    this.toastr.setRootViewContainerRef(vcr);
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -108,7 +106,7 @@ export class TaskBacklogComponent implements OnInit {
       .toPromise()
       .then((task) => this.loadTasks())
       .catch((err) => {
-        this.toastr.error(err._body.toString(), 'Something was wrong');
+        this.toastService.error(err._body.toString(), 'Something was wrong');
       });
   }
 

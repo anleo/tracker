@@ -1,7 +1,7 @@
-import {Component, ViewContainerRef} from '@angular/core';
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+import {Component} from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {AuthService} from "../auth.service";
+import {ToastService} from "../../services/toast.service";
 
 @Component({
   selector: 'password-change',
@@ -14,9 +14,7 @@ export class PasswordChangeComponent {
   constructor(private authService: AuthService,
               private route: ActivatedRoute,
               private router: Router,
-              public toastr: ToastsManager,
-              vcr: ViewContainerRef) {
-    this.toastr.setRootViewContainerRef(vcr);
+              public toastService: ToastService) {
   }
 
   change(): void {
@@ -26,14 +24,14 @@ export class PasswordChangeComponent {
       this.authService
         .changePassword(this.newPassword, token)
         .then(() => {
-          this.toastr.success('Saved');
+          this.toastService.success('Saved');
           this.router.navigate(['/app/tasks']);
         })
         .catch((err: any) => {
-          this.toastr.error('Wrong password');
+          this.toastService.error('Wrong password');
         })
     } else {
-      this.toastr.error('Mismatch in new password');
+      this.toastService.error('Mismatch in new password');
     }
   }
 }

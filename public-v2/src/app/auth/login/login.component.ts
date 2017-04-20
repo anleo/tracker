@@ -1,10 +1,9 @@
-import {Component, ViewContainerRef} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 
 import {AuthUser} from "../AuthUser";
 import {AuthService} from "../auth.service";
-
+import {ToastService} from "../../services/toast.service";
 
 @Component({
   selector: 'app-login',
@@ -15,9 +14,7 @@ export class LoginComponent {
 
   constructor(private authService: AuthService,
               private router: Router,
-              public toastr: ToastsManager,
-              vcr: ViewContainerRef) {
-    this.toastr.setRootViewContainerRef(vcr);
+              public toastService: ToastService) {
   }
 
   login(): void {
@@ -25,7 +22,7 @@ export class LoginComponent {
       .login(this.user)
       .then(() => this.router.navigate(['/app/tasks']))
       .catch((err: any) => {
-        this.toastr.error(JSON.parse(err._body)[0]);
+        this.toastService.error(JSON.parse(err._body)[0]);
       });
   }
 }
