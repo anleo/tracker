@@ -60,7 +60,7 @@ exports.boards = [
     },
     {
         "_id": ObjectId("58ebdc9dda195f3c1edf6ece"),
-        "title": "Basket1",
+        "title": "Basket 1",
         "type": "basket",
         "status": "finished",
         "time": 0,
@@ -73,7 +73,7 @@ exports.boards = [
     },
     {
         "_id": ObjectId("58ebdc9dda195f3c1edf3ece"),
-        "title": "Basket2",
+        "title": "Basket 2",
         "type": "basket",
         "time": 0,
         "pointCost": 0,

@@ -29,15 +29,16 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: { [boardItem: string]: SimpleChange }): void {
-    if (Object.keys(changes['boardItem'].previousValue).length > 1
-      && changes['boardItem'].previousValue.item.status === 'in progress') {
+    let prevValue = changes['boardItem'].previousValue;
+    let currValue = changes['boardItem'].currentValue;
 
-      this.pause(changes['boardItem'].previousValue);
+    if (prevValue._id && prevValue.item.status === 'in progress') {
+      this.pause(prevValue);
     }
 
-    this.task = changes['boardItem'].currentValue.item;
+    this.task = currValue.item;
 
-    this.countTaskSpentTime(changes['boardItem'].currentValue);
+    this.countTaskSpentTime(currValue);
   }
 
   ngOnInit() {

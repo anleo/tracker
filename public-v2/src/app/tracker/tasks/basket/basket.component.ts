@@ -22,7 +22,7 @@ export class BasketComponent implements OnInit {
   showBasket: boolean = false;
   editMode: boolean = false;
   basket: TaskBoard;
-  currentBI: TaskBoardItem = null;
+  currentBoardItem: TaskBoardItem = null;
 
 
   constructor(private basketService: BasketService,
@@ -48,7 +48,7 @@ export class BasketComponent implements OnInit {
     this.getBasket();
 
     this.basketService.activeBoardItem$
-      .subscribe((boardItem) => this.currentBI = boardItem);
+      .subscribe((boardItem) => this.currentBoardItem = boardItem);
   }
 
   toggleBasket() {
@@ -149,6 +149,6 @@ export class BasketComponent implements OnInit {
   }
 
   onChangeStatus(event) {
-    this.currentBI = event;
+    this.currentBoardItem = event;
   }
 }
