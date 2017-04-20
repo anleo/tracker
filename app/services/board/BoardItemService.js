@@ -156,16 +156,13 @@ let BoardItemService = function (Board,
                 .then(() => resolve(boardsToUpdate));
         });
     };
-
-    this.removeBoardItem = function (boardItem) {
-        let boardItemId = boardItem && boardItem._id ? boardItem._id : boardItem;
+    this.removeBoardItem = function (id) {
         return new Promise(function (resolve, reject) {
-            BoardItem.findById(boardItemId)
-                .then((boardItem) => {
-                    //TODO @@@ira if !boardItem check
-                    boardItem.remove()
-                        .then(() => resolve(), (err) => reject(err))
-                }, (err) => reject(err));
+            let query = {id: id};
+
+            BoardItem.remove(query)
+                .then(() => resolve(),
+                    (err) => reject(err))
         });
     };
 

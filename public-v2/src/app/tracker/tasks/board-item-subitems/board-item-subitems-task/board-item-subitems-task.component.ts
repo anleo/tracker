@@ -10,6 +10,7 @@ import {TaskService} from "../../../services/task.service";
 export class BoardItemSubitemsTaskComponent implements OnInit, OnChanges {
   @Input() parentBoardItem: TaskBoardItem | null;
   @Input() refreshCount;
+  @Input() sortOptions;
   oldRefreshCount: number;
   boardItems: TaskBoardItem[] = [];
 
