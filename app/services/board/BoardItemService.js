@@ -1,7 +1,8 @@
 let BoardItemService = function (Board,
                                  BoardItem,
                                  BoardItemBoard,
-                                 BoardItemTask) {
+                                 BoardItemTask,
+                                 BoardItemComplex) {
     let _ = require('lodash');
     let self = this;
 
@@ -21,6 +22,10 @@ let BoardItemService = function (Board,
             const models = [{
                 type: 'task',
                 collection: BoardItemTask,
+                create: self.createTaskItem
+            },{
+                type: 'complex',
+                collection: BoardItemComplex,
                 create: self.createTaskItem
             }, {
                 type: 'board',

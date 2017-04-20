@@ -103,4 +103,25 @@ exports.boarditems = [
         "updatedAt": ISODate(moment().toDate()),
         "__v": 0
     },
+    {
+        "_id": ObjectId("58e0f679cc77795c0bfed131"),
+        "item": ObjectId("551540d7210f64444cde2346"),
+        "type": "complex",
+        'timeLog': [],
+        "board": ObjectId("58ebdc9dda195f3c1edf3ece"),
+        "createdAt": ISODate(moment().toDate()),
+        "updatedAt": ISODate(moment().toDate()),
+        "__v": 0
+    },
+    {
+        "_id": ObjectId("58e0f679cc77775c0bfed121"),
+        "item": ObjectId("551540d7210f64444cde2347"),
+        "type": "task",
+        'timeLog': [],
+        "board": ObjectId("58ebdc9dda195f3c1edf3ece"),
+        "createdAt": ISODate(moment().toDate()),
+        "updatedAt": ISODate(moment().toDate()),
+        "__v": 0
+    },
+
 ];

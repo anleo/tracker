@@ -18,6 +18,7 @@ module.exports = function (container) {
   container.register('BoardItem', require('../models/boardItem'), ['Mongoose']);
   container.register('BoardItemTask', require('../models/boardItemTask'), ['Mongoose', 'BoardItem']);
   container.register('BoardItemBoard', require('../models/boardItemBoard'), ['Mongoose', 'BoardItem']);
+  container.register('BoardItemComplex', require('../models/boardItemComplex'), ['Mongoose', 'BoardItem']);
 
     // classes
   container.register('StatusWriter', require('../historyWriters/StatusWriter'), ['TaskStatus']);
@@ -33,7 +34,7 @@ module.exports = function (container) {
   container.register('TaskService', require('../services/TaskService'), ['Task', 'FileService', 'UserService',
       'SocketService','HistoryService', 'TaskComment', 'BoardItemService']);
   container.register('UserService', require('../services/UserService'), ['User']);
-  container.register('BoardItemService', require('../services/board/BoardItemService'), ['Board', 'BoardItem', 'BoardItemBoard', 'BoardItemTask']);
+  container.register('BoardItemService', require('../services/board/BoardItemService'), ['Board', 'BoardItem', 'BoardItemBoard', 'BoardItemTask', 'BoardItemComplex']);
   container.register('BoardService', require('../services/board/BoardService'), ['Board', 'BoardItemBoard', 'BoardItemService', 'SimpleMetricsService']);
   container.register('BasketService', require('../services/board/BasketService'), ['Board', 'BoardService', 'BoardItemService']);
 
