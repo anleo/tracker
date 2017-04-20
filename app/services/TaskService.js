@@ -1,4 +1,5 @@
-var TaskService = function (Task, FileService, UserService, SocketService, HistoryService, TaskComment, BoardItemService) {
+var TaskService = function (Task, FileService, UserService, SocketService, HistoryService, TaskComment,
+                            BoardItemService, BoardService) {
     var self = this;
     var _ = require('lodash');
     var async = require('async');
@@ -598,7 +599,10 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                         HistoryService.createTaskHistory(task, function (err) {
                             if (err) return next(err);
                             wasModified && self.notifyUsers(task, 'task.save');
-                            next(null, task);
+
+                            BoardService
+                                .updateParentsByItem(task)
+                                .then(() => next(null, task));
                         });
 
                     });
@@ -653,6 +657,10 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
 
                         BoardItemService
                             .removeBoardItemsByItem(task)
+                            .then((boardsToUpdate) => {
+                                let promises = boardsToUpdate.map((board) => BoardService.updateParentStatus(board));
+                                return Promise.all(promises);
+                            })
                             .then(() => next())
                             .catch((err) => next(err));
                     });
