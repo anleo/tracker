@@ -115,18 +115,14 @@ let BoardItemService = function (Board,
                 }, (err) => reject(err));
         });
     };
+
     this.removeBoardItem = function (id) {
         return new Promise(function (resolve, reject) {
-            BoardItem.findById(id)
-                .then((boardItem) => {
-                        //TODO @@@ira if !boardItem check
-                        boardItem.remove()
-                            .then(() => {
-                                    resolve();
-                                },
-                                (err) => reject(err))
-                    },
-                    (err) => reject(err));
+            let query = {id: id};
+
+            BoardItem.remove(query)
+                .then(() => resolve(),
+                    (err) => reject(err))
         });
     };
 

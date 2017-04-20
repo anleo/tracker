@@ -6,7 +6,7 @@ import {TaskBoardItem} from '../models/task-board-item';
 import {BoardItemResource} from "../resources/board-item.resource";
 import * as moment from 'moment/moment';
 import {Moment} from "moment";
-
+import {TaskBoard} from "../models/task-board";
 
 @Injectable()
 export class BoardItemService {
@@ -31,5 +31,30 @@ export class BoardItemService {
 
   remove(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
     return this.boardItemResource.remove(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
+  }
+
+  removeBoardItemByBoard(board: TaskBoard): Observable<TaskBoard> {
+    return this.boardItemResource.removeBoardItemByBoard({boardId: board._id}).$observable;
+  }
+
+  getBoardItemSpendTime(boardItem: TaskBoardItem): Observable <Moment> {
+    let spentTime = 0;
+    let lastInProgress = null;
+
+    boardItem.timeLog.forEach(log => {
+      if (log.status === 'in progress' && !lastInProgress) {
+        lastInProgress = log.time;
+      } else if (log.status === 'in progress' && lastInProgress) {
+        lastInProgress = log.time;
+      } else if (log.status === '') {
+        spentTime += log.time - lastInProgress;
+      }
+    });
+
+    if (boardItem.item.status === 'in progress') {
+      spentTime += Date.now() - lastInProgress;
+    }
+
+    return Observable.of(moment(spentTime).utc());
   }
 }

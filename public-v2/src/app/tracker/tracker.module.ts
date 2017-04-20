@@ -12,6 +12,7 @@ import {TaskResource} from "./resources/tasks.resource";
 import {TrackerRoutingModule} from "./tracker.routing.module";
 
 import {TasksBoardFilter} from "./pipes/tasks-board.pipe";
+import {SortByFieldsPipe} from "./pipes/sort-by-fields.pipe";
 
 import {TasksComponent} from './tasks/tasks.component';
 import {TaskItemComponent} from "./tasks/task-item/task-item.component";
@@ -96,9 +97,10 @@ import {BasketComponent} from './tasks/basket/basket.component';
 import {BasketResource} from "./resources/basket.resource";
 import {BasketService} from "./services/basket.service";
 import {BasketTaskPanelComponent} from "./tasks/basket-task-panel/basket-task-panel.component";
-import { BasketHistoryComponent } from './tasks/basket-history/basket-history.component';
-import { BasketContentComponent } from './tasks/basket-content/basket-content.component';
+import {BasketHistoryComponent} from './tasks/basket-history/basket-history.component';
+import {BasketContentComponent} from './tasks/basket-content/basket-content.component';
 import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-form.component";
+import {BoardItemsSortPipe} from "./pipes/board-items-sort.pipe";
 import {BoardSortPipe} from "./pipes/board-sort.pipe";
 import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-current-task.component";
 import {BoardItemSpentTimeService} from "./services/board-item-spent-time.service";
@@ -119,7 +121,10 @@ import {BoardItemSpentTimeService} from "./services/board-item-spent-time.servic
     LinkyModule,
     LocalStorageModule.withConfig({
       prefix: '',
-      storageType: 'localStorage'
+      storageType: 'localStorage',
+      notifyOptions: {
+        setItem: true
+      }
     }),
     DragAndDropModule
   ],
@@ -140,6 +145,7 @@ import {BoardItemSpentTimeService} from "./services/board-item-spent-time.servic
     BoardItemSubitemsBoardComponent,
     BoardItemSubitemsTaskComponent,
     TasksBoardFilter,
+    SortByFieldsPipe,
     RoundPipe,
     TextLimitPipe,
     HumanizeTimePipe,
@@ -156,7 +162,7 @@ import {BoardItemSpentTimeService} from "./services/board-item-spent-time.servic
     TreeViewComponent,
     PanelTreeComponent,
     TasksSortPipe,
-    BoardSortPipe,
+    BoardItemsSortPipe,
     TaskPanelComponent,
     TaskItemComponent,
     CommonReportComponent,

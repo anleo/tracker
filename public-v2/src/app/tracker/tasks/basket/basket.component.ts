@@ -64,6 +64,14 @@ export class BasketComponent implements OnInit {
       })
   }
 
+  clearBasket() {
+    this.boardItemService.removeBoardItemByBoard(this.basket)
+      .subscribe(() => {
+          this.basketService.getBasketMetrics();
+        },
+        (err) => console.log("Err on clear basket", err))
+  }
+
   actionProvider(taskWithStatus: TaskWithStatus): void | boolean {
     if (!taskWithStatus) {
       return false;

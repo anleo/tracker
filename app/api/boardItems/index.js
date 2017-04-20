@@ -83,4 +83,13 @@ module.exports = function (app) {
             })
             .catch((err) => res.status(400).json({error: err}));
     });
+
+    app.delete('/api/boards/:boardId/boardItems', function (req, res) {
+        BoardItemService
+            .removeBoardItemsByItem(req.params.boardId)
+            .then(() => {
+                res.json({});
+            })
+            .catch((err) => res.status(400).json({error: err}));
+    });
 };
