@@ -1,5 +1,4 @@
-import {Component, OnInit, Input, ViewContainerRef, HostListener, OnDestroy} from '@angular/core';
-import {ToastsManager} from "ng2-toastr";
+import {Component, OnInit, Input, HostListener, OnDestroy} from '@angular/core';
 import {CurrentTaskService} from "../../services/current-task.service";
 
 import {Task} from '../../models/task';
@@ -8,6 +7,7 @@ import {TaskService} from "../../services/task.service";
 import {TaskStatusService} from "../../services/task-status.service";
 import {TaskPrioritiesMock} from '../../mocks/task-priorities.mock';
 import {Subject, BehaviorSubject} from "rxjs";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'app-task-edit',
@@ -31,9 +31,7 @@ export class TasksEditComponent implements OnInit, OnDestroy {
   constructor(private taskService: TaskService,
               private taskStatusService: TaskStatusService,
               private currentTaskService: CurrentTaskService,
-              public vcr: ViewContainerRef,
-              public toastr: ToastsManager) {
-    this.toastr.setRootViewContainerRef(vcr);
+              public toastService: ToastService) {
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -144,7 +142,7 @@ export class TasksEditComponent implements OnInit, OnDestroy {
     this.taskService.deleteFile(file, this.task)
       .subscribe(() => {
         this.task.files.splice(this.task.files.indexOf(file), 1);
-        this.toastr.error('Deleted');
+        this.toastService.error('Deleted');
       })
   }
 
