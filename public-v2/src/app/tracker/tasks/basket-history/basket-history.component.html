@@ -11,7 +11,7 @@
       <ul class="list-group" *ngFor="let basket of baskets">
         <li class="list-group-item">
           <div class="pull-left">
-            {{basket.title}} <span class="text-muted">({{basket.createdAt| date : 'yyyy/MM/dd'}})</span>
+            {{basket.title}}
           </div>
           <div class="pull-right">
             <a (click)="show(basket._id)" *ngIf="showBasket!==basket._id" class="pointer"><span class="caret"></span> Show</a>
@@ -23,9 +23,5 @@
       </ul>
     </div>
   </div>
-
-  <!--<div class="row">-->
-
-  <!--</div>-->
 
 </div>

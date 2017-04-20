@@ -1,24 +1,31 @@
 let BasketService = function (Board, BoardService, BoardItemService) {
     let _ = require('lodash');
     let self = this;
+    let moment = require('moment');
+
 
     this.create = function (user) {
         return new Promise(function (resolve, reject) {
-            let basket = new Board();
-            basket.owner = user._id;
-            // @@IraU change title
-            basket.title = "Basket";
-            basket.type = "basket";
-            basket
-                .save()
-                .then((basket) => {
-                    let query = {owner: user._id, type: 'basket', status: "finished"};
-                    self.prepareBoardItems(basket, query)
-                        .then(() => {
-                            resolve(basket);
-                        }, (err) => reject(err))
+            self.countUserBaskets(user)
+                .then((number) => {
+                    let basketNumber = number + 1;
+                    let basketDate = " (" + moment().utc(Date.now()).format("DD-MM-YYYY") + ')';
 
-                }, (err) => reject(err));
+                    let basket = new Board();
+                    basket.title = "#" + basketNumber + " Basket" + basketDate;
+                    basket.owner = user._id;
+                    basket.type = "basket";
+                    basket
+                        .save()
+                        .then((basket) => {
+                            let query = {owner: user._id, type: 'basket', status: "finished"};
+                            self.prepareBoardItems(basket, query)
+                                .then(() => {
+                                    resolve(basket);
+                                }, (err) => reject(err))
+
+                        }, (err) => reject(err));
+                })
         });
     };
 
@@ -45,6 +52,19 @@ let BasketService = function (Board, BoardService, BoardItemService) {
 
             });
     }
+
+    this.countUserBaskets = function (user) {
+        return new Promise(function (resolve, reject) {
+            let query = {owner: user._id, type: 'basket'};
+
+            Board
+                .count(query)
+                .exec()
+                .then((number) => resolve(number),
+                    (err) => reject(err))
+        });
+    };
+
 
 };
 module.exports = BasketService;

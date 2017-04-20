@@ -5,7 +5,7 @@ module.exports = function (app) {
     let BoardItemService = app.container.get('BoardItemService');
     let SimpleMetricsService = app.container.get('SimpleMetricsService');
 
-    app.param('boardId', function(req, res, next, id) {
+    app.param('boardId', function (req, res, next, id) {
         BoardService
             .getById(id)
             .then((board) => {
@@ -48,6 +48,10 @@ module.exports = function (app) {
     });
 
     app.delete('/api/projects/:projectId/boards/:boardId', function (req, res) {
+        if (req.Board.type === 'basket') {
+            return res.status(403).json({error: 'Basket can not be deleted'})
+        }
+
         BoardService
             .remove(req.Board)
             .then(() => res.status(200).send())

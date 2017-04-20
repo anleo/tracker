@@ -1,4 +1,6 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
+import {LocalStorageService} from "angular-2-local-storage";
+
 import {BoardService} from "../../services/board.service";
 import {Location} from "@angular/common";
 import {CurrentTaskService} from "../../services/current-task.service";
@@ -24,6 +26,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   boardItems: TaskBoardItem[] | null = [];
   project: Task | null = null;
   boardId: string;
+
+  orderByPriority: string = 'desc';
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
@@ -52,10 +56,13 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
               private boardItemService: BoardItemService,
               private currentTaskService: CurrentTaskService,
               private dndService: DnDService,
-              public toastService: ToastService) {
+              private toastService: ToastService,
+              private localStorageService: LocalStorageService) {
   }
 
   ngOnInit(): void {
+    this.getLocalConfig();
+
     this.route.data
       .subscribe((data: {board: TaskBoardItem}) => this.boardItem = data && data.board);
 
@@ -112,6 +119,18 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     }
   }
 
+  sortByPriority(): void {
+    if (this.orderByPriority === 'off') {
+      this.orderByPriority = 'asc';
+    } else if (this.orderByPriority === 'asc') {
+      this.orderByPriority = 'desc';
+    } else {
+      this.orderByPriority = 'off';
+    }
+
+    this.localStorageService.set('boardItems.orderByPriority', this.orderByPriority);
+  }
+
   private onDrop(dropData) {
     let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type']);
     newBoardItem['board'] = dropData.params.parent;
@@ -120,5 +139,9 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       .then(() => this.toastService.info('Item was added'))
       .then(() => this.getBoards())
       .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+  }
+
+  private getLocalConfig() {
+    this.orderByPriority = this.localStorageService.get('boardItems.orderByPriority') as string || 'desc';
   }
 }
