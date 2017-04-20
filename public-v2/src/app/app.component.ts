@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Router, NavigationStart} from "@angular/router";
 
 import {User} from "./user/models/user";
 import {UserService} from "./user/services/user.service";
 import {BrowserTitleService} from './services/browser-title/browser-title.service';
 import {TaskService} from "./tracker/services/task.service";
+import {ToastService} from "./services/toast.service";
 
 @Component({
   selector: 'app',
@@ -17,7 +18,10 @@ export class AppComponent implements OnInit {
 
   constructor(private router: Router,
               private browserTitleService: BrowserTitleService,
-              private userService: UserService) {
+              private userService: UserService,
+              vcr: ViewContainerRef,
+              private toastService: ToastService) {
+    this.toastService.setVcr(vcr);
   };
 
   ngOnInit(): void {

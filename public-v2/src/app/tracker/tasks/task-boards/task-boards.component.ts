@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewContainerRef} from "@angular/core";
+import {Component, OnInit, OnDestroy} from "@angular/core";
 import {LocalStorageService} from "angular-2-local-storage";
 
 import {BoardService} from "../../services/board.service";
@@ -10,12 +10,11 @@ import {BoardItemService} from "../../services/board-item.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {Task} from '../../models/task';
 
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
-
 import * as _ from 'lodash';
 import {BoardWithStatus} from "../../models/board-with-status";
 import {ActivatedRoute} from "@angular/router";
 import {TaskService} from "../../services/task.service";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'task-boards',
@@ -57,11 +56,9 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
               private boardItemService: BoardItemService,
               private currentTaskService: CurrentTaskService,
               private dndService: DnDService,
+              private toastService: ToastService,
               private taskService: TaskService,
-              public toastr: ToastsManager,
-              vcr: ViewContainerRef,
               private localStorageService: LocalStorageService) {
-    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
@@ -150,15 +147,15 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
         .toPromise()
         .then((hasRelative) => {
           if (hasRelative) {
-            this.toastr.info('You have this item in current board')
+            this.toastService.info('You have this item in current board')
           }
 
           newBoardItem['board'] = dropZone.parent;
           this.boardItemService.save(newBoardItem)
             .toPromise()
-            .then(() => this.toastr.info('Item was added'))
+            .then(() => this.toastService.info('Item was added'))
             .then(() => this.getBoards())
-            .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+            .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
         });
     }
 
@@ -170,7 +167,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
         .toPromise()
         .then((hasRelative) => {
           if (hasRelative) {
-            this.toastr.info('You have this item in current board')
+            this.toastService.info('You have this item in current board')
           }
 
           this.taskService
@@ -182,10 +179,10 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
                   .remove(newBoardItem)
                   .toPromise()
                   .then(() => this.boardItemService.getBoardItemsByBoardId(dropZone.board.board))
-                  .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+                  .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
               }
             })
-            .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+            .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
         });
     }
 
@@ -193,9 +190,9 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       newBoardItem['board'] = dropZone.parent;
       return this.boardItemService.save(newBoardItem)
         .toPromise()
-        .then(() => this.toastr.info('Item was added'))
+        .then(() => this.toastService.info('Item was added'))
         .then(() => this.getBoards())
-        .catch((err) => this.toastr.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+        .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
     }
   }
 
