@@ -1,2 +1,13 @@
-<board-item-subitems-task *ngIf="boardItem?.type === 'task'" [parentBoardItem]="boardItem" [refreshCount]="refreshCount"></board-item-subitems-task>
-<board-item-subitems-board *ngIf="boardItem?.type === 'board'" [parentBoardItem]="boardItem" [refreshCount]="refreshCount"></board-item-subitems-board>
+<board-item-subitems-task
+  *ngIf="boardItem?.type === 'task'"
+  [parentBoardItem]="boardItem"
+  [refreshCount]="refreshCount"
+  [sortOptions]="{orderByPriority: orderByPriority}">
+</board-item-subitems-task>
+
+<board-item-subitems-board
+  *ngIf="boardItem?.type === 'board'"
+  [parentBoardItem]="boardItem"
+  [refreshCount]="refreshCount"
+  [sortOptions]="{orderByPriority: orderByPriority}">
+</board-item-subitems-board>

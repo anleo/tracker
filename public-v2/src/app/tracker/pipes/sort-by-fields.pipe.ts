@@ -1,21 +1,20 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {TaskBoard} from "../models/task-board";
 
 import * as _ from "lodash";
 
-@Pipe({name: 'boardSort'})
+@Pipe({name: 'sortByFields'})
 
-export class BoardSortPipe implements PipeTransform {
-  private sortOrders: Array<string> = ['asc', 'desc', 'off'];
-  private defaultSortingParams = {
-    fields: ['item.priority', 'item.updatedAt'], // use item.$field due to internal structure of boardItem
-    orders: ['desc', 'asc']
+export class SortByFieldsPipe implements PipeTransform {
+  sortOrders: Array<string> = ['asc', 'desc', 'off'];
+  defaultSortingParams = {
+    fields: [],
+    orders: []
   };
 
   private offCount: number = 0;
   private sortingParams;
 
-  transform(boards: TaskBoard[], sortParams): any {
+  transform(items: any[], sortParams): any {
     this.resetParams();
 
     this.offCount = _.values(sortParams).filter((order) => {
@@ -28,30 +27,30 @@ export class BoardSortPipe implements PipeTransform {
       }
 
       if (order && order !== 'off') {
-        this.sortingParams.fields.push('item.' + field);
+        this.sortingParams.fields.push(field);
         this.sortingParams.orders.push(order);
       }
     });
 
     if (this.offCount !== _.values(sortParams).length) {
-      return this.sortByOrder(boards, this.sortingParams);
+      return this.sortByOrder(items, this.sortingParams);
     } else {
-      return this.sortByOrder(boards, this.defaultSortingParams)
+      return this.sortByOrder(items, this.defaultSortingParams)
     }
   }
 
-  private resetParams() {
+  resetParams() {
     this.sortingParams = {
       fields: [],
       orders: []
     }
   }
 
-  private sortByOrder(boards, params) {
+  sortByOrder(boards, params) {
     return _.orderBy(boards, params.fields, params.orders);
   }
 
-  private sortOrderExist(type): boolean {
+  sortOrderExist(type): boolean {
     return this.sortOrders.indexOf(type) >= 0;
   }
 }
