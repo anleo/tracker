@@ -97,17 +97,15 @@ let BoardService = function (Board,
 
     this.updateParentStatus = function (parent) {
         let parentId = parent && parent._id ? parent._id : parent;
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             BoardItemService
                 .getItemsByOptions({board: parentId})
                 .then((children) => {
                     children = children || [];
 
                     children = children.map((child) => child.item);
-                    return new Promise((res) => {
-                        Board.findById(parentId)
-                            .lean()
-                            .exec()
+                    return new Promise((res, rej) => {
+                        self.getById(parentId)
                             .then((_parent) => {
                                 if (!_parent) {
                                     return resolve();
@@ -115,7 +113,8 @@ let BoardService = function (Board,
 
                                 return self.setParentStatusByChildren(_parent, children);
                             })
-                            .then((updatedParent) => res(updatedParent));
+                            .then((updatedParent) => res(updatedParent))
+                            .catch((err) => rej(err));
                     })
                 })
                 .then((_parent) => {
@@ -123,7 +122,8 @@ let BoardService = function (Board,
                         return self.updateBoard(parent, _parent)
                     }
                 })
-                .then(() => resolve());
+                .then(() => resolve())
+                .catch((err) => reject(err));
         });
     };
 
@@ -142,7 +142,8 @@ let BoardService = function (Board,
                     let promises = parents.map((parentBoard) => self.updateParentStatus(parentBoard));
                     return Promise.all(promises);
                 })
-                .then(() => resolve(item));
+                .then(() => resolve(item))
+                .catch((err) => reject(err));
         });
     };
 

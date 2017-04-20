@@ -81,7 +81,7 @@ module.exports = function (app) {
 
     app.delete('/api/boards/:boardId/boardItems/:boardItemId', function (req, res) {
         BoardItemService
-            .findParentBoardsToUpdateByItem(req.params.boardItemId)
+            .findParentBoardsToUpdateByItem(req.BoardItem._id)
             .then((boardsToUpdate) => {
                 BoardItemService
                     .removeBoardItem(req.params.boardItemId)

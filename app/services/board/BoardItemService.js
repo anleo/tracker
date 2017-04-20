@@ -97,22 +97,20 @@ let BoardItemService = function (Board,
 
             Promise.resolve()
                 .then(() => {
-                    return BoardItem
-                        .find({item: itemId})
-                        .lean()
-                        .exec()
+                    return self.getItemsByOptions({item: itemId})
                         .then((boardItems) => boardItemsToUpdate = boardItems.map((boardItem) => boardItem.board))
                 })
                 .then(() => {
                     if (!boardItemsToUpdate.length) {
                         return boardsToUpdate;
                     } else {
-                        return BoardItem
-                            .find({item: {$in: boardItemsToUpdate}})
-                            .populate('item')
+                        return Board
+                            .find({_id: {$in: boardItemsToUpdate}})
                             .lean()
                             .exec()
-                            .then((boardItems) => boardsToUpdate = boardItems.map((boardItem) => boardItem.item))
+                            .then((boards) => {
+                                boardsToUpdate = boards
+                            }, (err) => reject(err))
                     }
                 })
                 .then(() => resolve(boardsToUpdate));
@@ -150,7 +148,8 @@ let BoardItemService = function (Board,
                             return BoardItem
                                 .remove(query)
                                 .exec()
-                                .then(() => {}, (err) => reject(err))
+                                .then(() => {
+                                }, (err) => reject(err))
                         }, (err) => reject(err));
                 })
                 .then(() => resolve(boardsToUpdate));
