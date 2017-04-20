@@ -53,4 +53,18 @@ export class BoardItemService {
 
     return Observable.of(moment(spentTime).utc());
   }
+
+  //TODO @@@ira move to task calculation service
+
+  getBoardItemLastSpendTime(boardItem: TaskBoardItem): Observable <Moment> {
+    let spentTime = 0;
+    let timeLogLength = boardItem.timeLog.length;
+    if (!timeLogLength) {
+      return Observable.of(moment(spentTime).utc());
+    }
+
+    spentTime = boardItem.timeLog[timeLogLength - 1].time - boardItem.timeLog[timeLogLength - 2].time;
+    return Observable.of(moment(spentTime).utc());
+  }
+
 }

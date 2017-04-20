@@ -7,6 +7,8 @@ import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {Observable} from "rxjs";
 
+import * as moment from 'moment/moment';
+
 @Component({
   selector: 'basket-task-panel',
   templateUrl: 'basket-task-panel.component.html'
@@ -59,11 +61,13 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   start(boardItem) {
+    console.log('start');
     this.boardItemStatusProvider(boardItem, 'in progress');
     this.startTimer();
   }
 
   pause(boardItem) {
+    console.log('pause');
     this.boardItemStatusProvider(boardItem, '');
 
     if (this.timerSubscription) {
@@ -97,6 +101,7 @@ export class BasketTaskPanelComponent implements OnInit {
 
   //TODO @@@dr Maybe move to service?
   boardItemStatusProvider(boardItem: TaskBoardItem, status: string) {
+
     if (boardItem.item.status == status) {
       return;
     } else if (status === 'accepted') {
@@ -109,10 +114,8 @@ export class BasketTaskPanelComponent implements OnInit {
 
     this.boardItemService
       .update(boardItem)
-      .switchMap(result => this.taskService.updateTask(boardItem.item))
-      .subscribe((task) => {
-        this.task = task;
-        this.countTaskSpentTime(boardItem)
+      .subscribe(() => {
+        this.saveSpentTime(boardItem)
       })
   }
 
@@ -121,6 +124,7 @@ export class BasketTaskPanelComponent implements OnInit {
       .subscribe((time) => {
         this.boardItemSpentTimeTimestamp = time;
         this.spendTime = time.format('HH:mm:ss');
+
       });
   }
 
@@ -130,4 +134,31 @@ export class BasketTaskPanelComponent implements OnInit {
         this.spendTime = this.boardItemSpentTimeTimestamp.add(1, 'second').format('HH:mm:ss');
       });
   }
+
+  calculateTaskSpentTime(time): Observable <number> {
+    let spentTime = moment.duration(time.format('HH:mm:ss')).asHours();
+    console.log('spentTime', spentTime);
+    let roundedSpentTime = Math.floor(spentTime * 1000) / 1000;
+    console.log('roundedSpentTime', roundedSpentTime);
+    return Observable.of(roundedSpentTime);
+  }
+
+  saveSpentTime(boardItem) {
+    this.boardItemService.getBoardItemLastSpendTime(boardItem)
+      .subscribe((time) => {
+        this.calculateTaskSpentTime(time)
+          .subscribe((time) => {
+            boardItem.item.spenttime = boardItem.item.spenttime + time;
+
+            console.log('this.task.spenttime', boardItem.item.spenttime);
+            this.taskService.updateTask(boardItem.item)
+              .subscribe((task) => {
+                console.log('task.status', task.status);
+                this.task = task;
+                this.countTaskSpentTime(boardItem)
+              });
+          });
+      });
+  }
+
 }
