@@ -170,7 +170,7 @@ let BoardItemService = function (Board,
     };
     this.removeBoardItem = function (id) {
         return new Promise(function (resolve, reject) {
-            let query = {id: id};
+            let query = {_id: id};
 
             BoardItem.remove(query)
                 .then(() => resolve(),

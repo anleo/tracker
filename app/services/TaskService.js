@@ -794,13 +794,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
     this.getChildren = function (task, next) {
         var taskId = self.getTaskId(task);
 
-        self.getTasksByQuery({parentTaskId: taskId}, function (err, tasks) {
-            if (err) {
-                return next(err);
-            }
-
-            next(null, tasks);
-        });
+        self.getTasksByQuery({parentTaskId: taskId}, next);
     };
 
     this.getParent = function (task, next) {
@@ -809,6 +803,30 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         } else {
             next();
         }
+    };
+
+    this.isItMyChildren = (task, futureParent, next) => {
+        task = task && task._id ? task._id : task;
+        futureParent = futureParent && futureParent._id ? futureParent._id : futureParent;
+        return self.getTaskById(futureParent, (err, futureParent) => {
+            if (err) {
+                return next(err);
+            }
+
+            if (!futureParent) {
+                return next(new Error('Parent was not found'));
+            }
+
+            if (!futureParent.parentTaskId) {
+                return next(null, false);
+            }
+
+            if (futureParent.parentTaskId.toString() === task.toString()) {
+                return next(null, true);
+            } else {
+                self.isItMyChildren(task, futureParent.parentTaskId, next);
+            }
+        });
     };
 
 };

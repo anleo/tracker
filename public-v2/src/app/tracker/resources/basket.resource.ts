@@ -36,9 +36,11 @@ export class BasketResource extends Resource {
 
   @ResourceAction({
     path: '/{!userId}/history',
+    params: {"query": "query"},
     isArray: true
   })
-  getBasketHistory: ResourceMethod<{userId: string}, TaskBoard[]>;
+    //  TODO rename method and url - it's not a history, just boards
+  getBasketHistory: ResourceMethod<{userId: string, query: any}, TaskBoard[]>;
 
   @ResourceAction({
     path: '/{!basketId}/boardItems',

@@ -51,11 +51,17 @@ module.exports = function (app) {
     });
 
     app.post('/api/boards/:boardId/boardItems', function (req, res) {
-        let data = {
+       let data = {
             board: req.Board,
             type: req.body.type,
             item: req.body.item
         };
+
+        let itemId = req.body.item && req.body.item._id ? req.body.item._id : req.body.item;
+
+        if (req.Board._id.toString() === itemId) {
+            return res.status(403).json({error: 'You can\'t add item into itself'});
+        }
 
         BoardItemService.create(data)
             .then((boardItem) => {

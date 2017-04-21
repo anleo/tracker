@@ -88,28 +88,6 @@ export class TaskBacklogComponent implements OnInit {
     this.taskService.setEditTaskModal(task);
   }
 
-  private onDrop(dropData) {
-    let boardItem = dropData.item;
-
-    if (!boardItem) {
-      return false;
-    }
-
-    if (!dropData.params && !dropData.params.parent) {
-      return false;
-    }
-
-    boardItem.item.parentTaskId = dropData.params.parent;
-
-    this.taskService
-      .updateTask(boardItem.item)
-      .toPromise()
-      .then((task) => this.loadTasks())
-      .catch((err) => {
-        this.toastService.error(err._body.toString(), 'Something was wrong');
-      });
-  }
-
   toggleBacklog() {
     this.showBacklog = !this.showBacklog;
   }
@@ -160,5 +138,27 @@ export class TaskBacklogComponent implements OnInit {
 
   onRemove() {
     this.loadTasks();
+  }
+
+  private onDrop(dropData) {
+    let boardItem = dropData.item;
+
+    if (!boardItem) {
+      return false;
+    }
+
+    if (!dropData.params && !dropData.params.parent) {
+      return false;
+    }
+
+    boardItem.item.parentTaskId = dropData.params.parent;
+
+    this.taskService
+      .updateTask(boardItem.item)
+      .toPromise()
+      .then((task) => this.loadTasks())
+      .catch((err) => {
+        this.toastService.error(err._body.toString(), 'Something was wrong');
+      });
   }
 }
