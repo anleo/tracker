@@ -38,8 +38,7 @@
       <div *ngFor="let taskItem of taskItems" class="text-left">
         <basket-task-panel *ngIf="taskItem.item.simple"
                            [boardItem]="taskItem"
-                           [pointCost]="basket.pointCost"
-                           (selectedTask)="onChangeStatus($event)">
+                           [pointCost]="basket.pointCost">
         </basket-task-panel>
 
         <board-item-tree *ngIf="!taskItem.item.simple"

@@ -7,14 +7,21 @@
   <div class="panel-heading overflow-hidden">
     <h4 class="panel-title">
       <a [routerLink]="['/app/tasks/', task._id]">{{task.title}}</a>
-      <span class="pointer glyphicon glyphicon-play" (click)="start(boardItem)"></span>
-      <span class="fa fa-times vcenter pull-right" (click)="remove(boardItem)" *ngIf="boardItem"></span>
+
+      <span class="pointer glyphicon glyphicon-play"
+            *ngIf="boardItem.item.simple"
+            (click)="start(boardItem)"></span>
+
+      <span class="fa fa-times vcenter pull-right"
+            (click)="remove(boardItem)"
+            *ngIf="boardItem && boardItem.item.simple"></span>
       <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
       <span class="vcenter pull-right" tooltip="Approx. planned time">
         <span class="glyphicon glyphicon-dashboard" *ngIf="approximateTime" ></span>
 
         <span style="margin-right: 5px" *ngIf="approximateTime"> {{approximateTime}} h</span>
       </span>
+      <span class="label label-info vcenter pull-right" *ngIf="!boardItem.item.simple">complex</span>
 
     </h4>
   </div>

@@ -78,7 +78,7 @@ export class BasketService {
     this.boardItemService.getBoardItemsByBoardId(this.basket._id)
       .subscribe((boardItems) => {
         this.basketList$.next(boardItems);
-        this.activeBoardItem$.next(this.getActiveBoardItem(boardItems));
+        this.setActiveBoardItem(this.getActiveBoardItem(boardItems));
       })
   }
 
@@ -131,6 +131,10 @@ export class BasketService {
 
   saveBoardItemToBasket(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
     return this.basketResource.saveBoardItem(boardItem, {basketId: boardItem.board}).$observable;
+  }
+
+  setActiveBoardItem(boardItem: TaskBoardItem) {
+    this.activeBoardItem$.next(boardItem);
   }
 
 }

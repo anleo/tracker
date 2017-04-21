@@ -51,7 +51,7 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   start(boardItem) {
-    this.selectedTask.emit(boardItem);
+    this.basketService.setActiveBoardItem(boardItem);
   }
 
 }
