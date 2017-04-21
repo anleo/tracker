@@ -269,7 +269,7 @@ module.exports = function (app) {
                         if (err) return next(err);
 
                         if (isChildren) {
-                            return res.status(403).json({error: 'You can\'t move task to his children'});
+                            return res.status(403).json({error: 'You can\'t move task to its children'});
                         }
 
                         TaskService.updateTask(req.user, req.Task, taskData, function (err, task) {

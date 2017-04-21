@@ -813,6 +813,10 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                 return next(err);
             }
 
+            if (!futureParent) {
+                return next(new Error('Parent was not found'));
+            }
+
             if (!futureParent.parentTaskId) {
                 return next(null, false);
             }
@@ -825,29 +829,6 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         });
     };
 
-    this.getChildrenDeep = (task, allChildren = [], next) => {
-        self.getChildren(task, (err, children) => {
-            if (err) {
-                return next(err);
-            }
-
-            if (!children.length) {
-                return next(null, allChildren);
-            }
-
-            allChildren = allChildren.concat(children);
-
-            async.each(children, (child, callback) => {
-                self.getChildrenDeep(child, allChildren, callback);
-            }, (err) => {
-                if (err) {
-                    return next(err);
-                }
-
-                next(null, allChildren);
-            });
-        });
-    };
 };
 
 module.exports = TaskService;

@@ -185,7 +185,9 @@ let BoardService = function (Board,
 
     this.hasRelatives = (item, children) => {
         item = item && item._id ? item._id : item;
-        children = children && children._id ? children._id : children;
+        children = children.map((child) => {
+            return child && child._id ? child._id : child;
+        });
 
         return _.find(children, (child) => {
             return child.toString() === item.toString();

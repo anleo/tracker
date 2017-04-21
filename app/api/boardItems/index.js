@@ -60,7 +60,7 @@ module.exports = function (app) {
         let itemId = req.body.item && req.body.item._id ? req.body.item._id : req.body.item;
 
         if (req.Board._id.toString() === itemId) {
-            return res.status(403).json({error: 'You can\'t added item into itself'});
+            return res.status(403).json({error: 'You can\'t add item into itself'});
         }
 
         BoardItemService.create(data)

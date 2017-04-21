@@ -135,12 +135,16 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   private onDrop(dropData) {
     let dropZone = dropData.params;
     let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type', '_id']);
+    let isBoardDropZone = dropZone.type === 'board';
+    let isTaskDropZone = dropZone.type === 'task';
+    let isBoard = newBoardItem.type === 'board';
+    let isTask = newBoardItem.type === 'task';
 
-    let ifBoardToBoard = dropZone.type === 'board' && newBoardItem.type === 'board';
-    let ifTaskFromBoardToBoard = dropZone.type === 'board' && newBoardItem.type === 'task' && newBoardItem.board;
-    let ifTaskToBoardFromBacklog = dropZone.type === 'board' && newBoardItem.type === 'task' && !newBoardItem.board;
-    let ifTaskToTaskFromBacklog = dropZone.type === 'task' && newBoardItem.type === 'task' && !newBoardItem.board;
-    let ifTaskToTaskFromBoard = dropZone.type === 'task' && newBoardItem.type === 'task' && newBoardItem.board;
+    let ifBoardToBoard = isBoardDropZone && isBoard;
+    let ifTaskFromBoardToBoard = isBoardDropZone && isTask && newBoardItem.board;
+    let ifTaskToBoardFromBacklog = isBoardDropZone && isTask && !newBoardItem.board;
+    let ifTaskToTaskFromBacklog = isTaskDropZone && isTask && !newBoardItem.board;
+    let ifTaskToTaskFromBoard = isTaskDropZone && isTask && newBoardItem.board;
 
     if (ifTaskFromBoardToBoard || ifTaskToBoardFromBacklog) {
       return this.boardService.checkRelations(dropZone.parent, newBoardItem.item._id)

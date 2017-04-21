@@ -82,7 +82,7 @@ module.exports = function (app) {
             .then((items) => {
                 async.each(items, (boardItem, callback) => {
                     allChildren.push(boardItem.item._id);
-                    TaskService.getChildrenDeep(boardItem.item, [], (err, children) => {
+                    TaskService.deepFindByQuery(boardItem.item, {}, (err, children) => {
                         if (err) {
                             return next(err);
                         }
