@@ -26,7 +26,7 @@ let BoardItemService = function (Board,
             },{
                 type: 'complex',
                 collection: BoardItemComplex,
-                create: self.createTaskItem
+                create: self.createComplexItem
             }, {
                 type: 'board',
                 collection: BoardItemBoard,
@@ -74,6 +74,14 @@ let BoardItemService = function (Board,
     this.createTaskItem = function (data) {
         return new Promise(function (resolve, reject) {
             new BoardItemTask(data)
+                .save()
+                .then((item) => resolve(item), (err) => reject(err));
+        });
+    };
+
+    this.createComplexItem = function (data) {
+        return new Promise(function (resolve, reject) {
+            new BoardItemComplex(data)
                 .save()
                 .then((item) => resolve(item), (err) => reject(err));
         });

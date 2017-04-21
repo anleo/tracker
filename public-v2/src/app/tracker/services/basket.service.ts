@@ -98,7 +98,8 @@ export class BasketService {
   }
 
   getActiveBoardItem(boardItems: TaskBoardItem[]): TaskBoardItem {
-    return boardItems.filter((item) => item.timeLog[item.timeLog.length - 1])
+    return boardItems
+      .filter((item) => item.timeLog[item.timeLog.length - 1])
       .find((item) => item.timeLog[item.timeLog.length - 1].status === 'in progress')
   }
 
@@ -127,6 +128,9 @@ export class BasketService {
     return resultBoardItems;
   }
 
+  saveBoardItemToBasket(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
+    return this.basketResource.saveBoardItem(boardItem, {basketId: boardItem.board}).$observable;
+  }
 
 }
 

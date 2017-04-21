@@ -3,6 +3,24 @@ module.exports = function (app) {
     let BoardService = app.container.get('BoardService');
     let BasketService = app.container.get('BasketService');
 
+    app.param('basketId', (req, res, next, basketId) => {
+        BoardService
+            .getById(basketId)
+            .then((board) => {
+                if (!board) {
+                    return res.status(404).json('Board was not found');
+                }
+
+                if (!BoardService.hasAccess(board, req.user)) {
+                    return res.status(403).send('You haven\'t access to this board');
+                }
+
+                req.Basket = board;
+                next();
+            })
+            .catch((err) => next(err))
+    });
+
     // @@ IraU rethink logic
     app.get('/api/baskets/:userId', function (req, res) {
         //TODO @@@dr Check It
@@ -62,4 +80,16 @@ module.exports = function (app) {
                 res.status(400).json(err)
             });
     });
+
+    app.post('/api/baskets/:basketId/boardItems', function(req, res){
+        let data = {
+            board: req.Basket,
+            type: req.body.type,
+            item: req.body.item
+        };
+
+        BasketService.addBoardItem(data)
+            .then((boardItem) => res.json())
+            .catch((err) => res.status(400).json({error: err}));
+    })
 };

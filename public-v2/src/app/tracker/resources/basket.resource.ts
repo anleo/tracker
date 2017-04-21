@@ -3,6 +3,7 @@ import {RequestMethod, Http} from '@angular/http';
 
 import {Resource, ResourceParams, ResourceAction, ResourceMethodStrict, ResourceMethod} from 'ng2-resource-rest';
 import {TaskBoard} from "../models/task-board";
+import {TaskBoardItem} from "../models/task-board-item";
 
 
 @Injectable()
@@ -38,5 +39,11 @@ export class BasketResource extends Resource {
     isArray: true
   })
   getBasketHistory: ResourceMethod<{userId: string}, TaskBoard[]>;
+
+  @ResourceAction({
+    path: '/{!basketId}/boardItems',
+    method: RequestMethod.Post
+  })
+  saveBoardItem: ResourceMethodStrict<TaskBoardItem, {basketId: string}, TaskBoardItem>;
 
 }

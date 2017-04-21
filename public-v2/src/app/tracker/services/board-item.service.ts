@@ -37,24 +37,5 @@ export class BoardItemService {
     return this.boardItemResource.removeBoardItemByBoard({boardId: board._id}).$observable;
   }
 
-  getBoardItemSpendTime(boardItem: TaskBoardItem): Observable <Moment> {
-    let spentTime = 0;
-    let lastInProgress = null;
 
-    boardItem.timeLog.forEach(log => {
-      if (log.status === 'in progress' && !lastInProgress) {
-        lastInProgress = log.time;
-      } else if (log.status === 'in progress' && lastInProgress) {
-        lastInProgress = log.time;
-      } else if (log.status === '') {
-        spentTime += log.time - lastInProgress;
-      }
-    });
-
-    if (boardItem.item.status === 'in progress') {
-      spentTime += Date.now() - lastInProgress;
-    }
-
-    return Observable.of(moment(spentTime).utc());
-  }
 }

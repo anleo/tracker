@@ -5,6 +5,7 @@ module.exports = function (mongoose, BoardItem) {
     let BoardItemTaskSchema = new mongoose.Schema(
         {
             item: {type: Schema.Types.ObjectId, ref: 'Task'},
+            timeLog: {type: Array, default: []}
         },
         options
     );

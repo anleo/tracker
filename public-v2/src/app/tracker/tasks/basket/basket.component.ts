@@ -35,7 +35,7 @@ export class BasketComponent implements OnInit {
       .subscribe((taskItems) => {
         this.taskItems = taskItems;
 
-        if(this.taskItems){
+        if (this.taskItems) {
           this.taskItems = this.basketService.buildBoardItemsTree(taskItems);
         }
       });
@@ -142,16 +142,15 @@ export class BasketComponent implements OnInit {
     let newItem = {
       board: this.basket._id,
       item: item,
-      type: 'task'
+      type: item.simple ? 'task' : 'complex'
     };
 
-    this.boardItemService
-      .save(newItem)
-      .subscribe(() => {
-        this.basketService.setBasketList();
-      }, (err) => {
-        this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong');
-      });
+    this.basketService
+      .saveBoardItemToBasket(newItem)
+      .subscribe(
+        () => this.basketService.setBasketList(),
+        (err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong')
+      );
   }
 
   onChangeStatus(event) {

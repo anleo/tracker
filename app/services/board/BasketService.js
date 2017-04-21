@@ -1,8 +1,7 @@
-let BasketService = function (Board, BoardService, BoardItemService) {
+let BasketService = function (Board, TaskService, BoardService, BoardItemService) {
     let _ = require('lodash');
     let self = this;
     let moment = require('moment');
-
 
     this.create = function (user) {
         return new Promise(function (resolve, reject) {
@@ -64,6 +63,39 @@ let BasketService = function (Board, BoardService, BoardItemService) {
                     (err) => reject(err))
         });
     };
+
+    this.addBoardItem = function (data) {
+        let self = this;
+
+        return new Promise((resolve, reject) => {
+            if (data.type == 'complex') {
+
+                BoardItemService.create(data)
+                    .then(() => {
+                        TaskService.deepFindByQuery(data.item, {}, (err, tasks) => {
+                            if (err) return reject(err);
+
+                            let promises = tasks.map((task) => {
+                                let params = {
+                                    board: data.board,
+                                    type: task.simple ? 'task' : 'complex',
+                                    item: task
+                                }
+
+                                return BoardItemService.create(params);
+                            })
+
+                            resolve(Promise.all(promises));
+                        })
+                    })
+                    .catch((err) => reject(err));
+
+
+            } else if (data.type == 'task') {
+                resolve(BoardItemService.create(data))
+            }
+        })
+    }
 
 
 };
