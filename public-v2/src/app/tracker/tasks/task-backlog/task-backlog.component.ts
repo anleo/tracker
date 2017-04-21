@@ -158,7 +158,7 @@ export class TaskBacklogComponent implements OnInit {
       .toPromise()
       .then((task) => this.loadTasks())
       .catch((err) => {
-        this.toastService.error(err._body.toString(), 'Something was wrong');
+        this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong');
       });
   }
 }
