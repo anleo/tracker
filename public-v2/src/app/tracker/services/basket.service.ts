@@ -94,5 +94,31 @@ export class BasketService {
       .$observable
   }
 
+  buildBoardItemsTree(boardItems: TaskBoardItem[] = []): TaskBoardItem[] {
+    let resultBoardItems: TaskBoardItem[] = [];
+
+    boardItems.forEach((boardItem) => {
+      if (boardItem.type == 'complex') {
+        boardItem.subBoardItems = [];
+      }
+
+      if (boardItem.item.parentTaskId) {
+        let parent = resultBoardItems
+          .find((resultBoardItem) => resultBoardItem.item._id == boardItem.item.parentTaskId);
+
+        if (parent) {
+          parent.subBoardItems.push(boardItem)
+        } else {
+          resultBoardItems.push(boardItem);
+        }
+      } else {
+        resultBoardItems.push(boardItem);
+      }
+    });
+
+    return resultBoardItems;
+  }
+
+
 }
 

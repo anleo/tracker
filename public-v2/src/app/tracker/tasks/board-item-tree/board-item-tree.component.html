@@ -1,0 +1,6 @@
+<ul>
+  <li *ngFor="let node of nodes">
+    <basket-task-panel [boardItem]="node"></basket-task-panel>
+    <board-item-tree [nodes]="node.subBoardItems"></board-item-tree>
+  </li>
+</ul>

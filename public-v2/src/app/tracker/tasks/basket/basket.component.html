@@ -33,8 +33,12 @@
     </div>
     <div *ngIf="taskItems?.length">
       <div *ngFor="let taskItem of taskItems" class="text-left">
-        <basket-task-panel [boardItem]="taskItem"
+        <basket-task-panel *ngIf="taskItem.item.simple"
+                           [boardItem]="taskItem"
                            [pointCost]="basket.pointCost"></basket-task-panel>
+
+        <board-item-tree *ngIf="!taskItem.item.simple"
+                         [nodes]="[taskItem]"></board-item-tree>
       </div>
       <button (click)="finish()" class="btn btn-success btn-sm">Finish</button>
       <button (click)="clearBasket()" class="btn btn-danger btn-sm">Clear</button>

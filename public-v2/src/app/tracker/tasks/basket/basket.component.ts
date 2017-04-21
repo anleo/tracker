@@ -33,7 +33,13 @@ export class BasketComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);
 
     this.basketService.basketList$
-      .subscribe((taskItems) => this.taskItems = taskItems);
+      .subscribe((taskItems) => {
+        this.taskItems = taskItems;
+
+        if(this.taskItems){
+          this.taskItems = this.basketService.buildBoardItemsTree(taskItems);
+        }
+      });
 
     this.basketService.basket$
       .subscribe((basket) => this.basket = basket);
