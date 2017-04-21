@@ -1,5 +1,6 @@
 <div drop-listener>
-  <h2 class="clearfix" *ngIf="boardItem" drop-zone [dropParams]="{parent: boardItem._id}">
+  <h2 class="clearfix" *ngIf="boardItem" drop-zone
+      [dropParams]="{parent: boardItem._id, type: boardItem.type|| null}">
     {{boardItem?.title}}
   </h2>
 

@@ -65,7 +65,12 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     this.getLocalConfig();
 
     this.route.data
-      .subscribe((data: {board: TaskBoardItem}) => this.boardItem = data && data.board);
+      .subscribe((data: {board: TaskBoardItem}) => {
+        this.boardItem = data && data.board;
+        if (this.boardItem) {
+          this.boardItem.type = 'board';
+        }
+      });
 
     this.currentTaskService.rootTask$
       .takeUntil(this.componentDestroyed$)
