@@ -21,7 +21,7 @@ module.exports = function (app) {
         let query = {
             owner: req.params.userId,
             type: 'basket',
-            status: {$ne: 'accepted'}
+            status: {$nin: ['accepted', 'finished']}
         };
 
         BoardService.getLastBoardByQuery(query)
