@@ -13,6 +13,7 @@ import {Task} from '../../models/task';
 import * as _ from 'lodash';
 import {BoardWithStatus} from "../../models/board-with-status";
 import {ActivatedRoute} from "@angular/router";
+import {TaskService} from "../../services/task.service";
 import {ToastService} from "../../../services/toast.service";
 
 @Component({
@@ -49,7 +50,6 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     }
   ];
 
-
   constructor(private route: ActivatedRoute,
               private location: Location,
               private boardService: BoardService,
@@ -57,6 +57,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
               private currentTaskService: CurrentTaskService,
               private dndService: DnDService,
               private toastService: ToastService,
+              private taskService: TaskService,
               private localStorageService: LocalStorageService) {
   }
 
@@ -132,13 +133,71 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
   }
 
   private onDrop(dropData) {
-    let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type']);
-    newBoardItem['board'] = dropData.params.parent;
+    let dropZone = dropData.params;
+    let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type', '_id']);
+    let isBoardDropZone = dropZone.type === 'board';
+    let isTaskDropZone = dropZone.type === 'task';
+    let isBoard = newBoardItem.type === 'board';
+    let isTask = newBoardItem.type === 'task';
 
-    this.boardItemService.save(newBoardItem).toPromise()
-      .then(() => this.toastService.info('Item was added'))
-      .then(() => this.getBoards())
-      .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+    let ifBoardToBoard = isBoardDropZone && isBoard;
+    let ifTaskFromBoardToBoard = isBoardDropZone && isTask && newBoardItem.board;
+    let ifTaskToBoardFromBacklog = isBoardDropZone && isTask && !newBoardItem.board;
+    let ifTaskToTaskFromBacklog = isTaskDropZone && isTask && !newBoardItem.board;
+    let ifTaskToTaskFromBoard = isTaskDropZone && isTask && newBoardItem.board;
+
+    if (ifTaskFromBoardToBoard || ifTaskToBoardFromBacklog) {
+      return this.boardService.checkRelations(dropZone.parent, newBoardItem.item._id)
+        .toPromise()
+        .then((hasRelative) => {
+          if (hasRelative) {
+            this.toastService.info('You have this item in current board')
+          }
+
+          newBoardItem['board'] = dropZone.parent;
+          this.boardItemService.save(newBoardItem)
+            .toPromise()
+            .then(() => this.toastService.info('Item was added'))
+            .then(() => this.getBoards())
+            .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+        });
+    }
+
+    if (ifTaskToTaskFromBoard || ifTaskToTaskFromBacklog) {
+      let newBoardItemTask = newBoardItem.item;
+      newBoardItemTask.parentTaskId = dropZone.parent;
+
+      return this.boardService.checkRelations(dropZone.board.board, newBoardItemTask._id)
+        .toPromise()
+        .then((hasRelative) => {
+          if (hasRelative) {
+            this.toastService.info('You have this item in current board')
+          }
+
+          this.taskService
+            .updateTask(newBoardItemTask)
+            .toPromise()
+            .then(() => {
+              if (newBoardItem && newBoardItem._id) {
+                this.boardItemService
+                  .remove(newBoardItem)
+                  .toPromise()
+                  .then(() => this.boardItemService.getBoardItemsByBoardId(dropZone.board.board))
+                  .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+              }
+            })
+            .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+        });
+    }
+
+    if (ifBoardToBoard) {
+      newBoardItem['board'] = dropZone.parent;
+      return this.boardItemService.save(newBoardItem)
+        .toPromise()
+        .then(() => this.toastService.info('Item was added'))
+        .then(() => this.getBoards())
+        .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
+    }
   }
 
   private getLocalConfig() {

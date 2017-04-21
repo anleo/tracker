@@ -47,5 +47,8 @@ export class BoardService {
     return this.boardResource.getboardMetrics({boardId: boardId}).$observable;
   }
 
+  checkRelations(boardId, itemId): Observable<Boolean> {
+    return this.boardResource.checkRelations({boardId: boardId, itemId: itemId}).$observable;
+  }
 }
 

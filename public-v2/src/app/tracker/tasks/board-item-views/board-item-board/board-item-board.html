@@ -2,7 +2,7 @@
      [ngClass]="{
     'panel-success': boardItem.item.status == 'accepted',
     'panel-warning': boardItem.item.status == 'in progress'}"
-     drop-zone [dropParams]="{parent: boardItem.item._id || boardItem.item}"
+     drop-zone [dropParams]="{parent: boardItem.item._id || boardItem.item, type: boardItem.type}"
      drag [dragItem]="boardItem">
 
   <div class="panel-heading overflow-hidden">

@@ -15,11 +15,11 @@ export class ToastService {
   }
 
   info(message:string, title: string = '', options?:any): Promise<Toast>{
-    return this.toastManager.warning(message, title, options);
+    return this.toastManager.info(message, title, options);
   }
 
   warning(message:string, title: string = '', options?:any): Promise<Toast>{
-    return this.toastManager.info(message, title, options);
+    return this.toastManager.warning(message, title, options);
   }
 
   error(message:string, title: string = '', options?:any): Promise<Toast>{
