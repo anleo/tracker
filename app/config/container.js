@@ -32,7 +32,7 @@ module.exports = function (container) {
   // services
   container.register('FileService', require('../services/FileService'), ['GridFS']);
   container.register('TaskService', require('../services/TaskService'), ['Task', 'FileService', 'UserService',
-      'SocketService','HistoryService', 'TaskComment', 'BoardItemService']);
+      'SocketService','HistoryService', 'TaskComment', 'BoardItemService', 'BoardService']);
   container.register('UserService', require('../services/UserService'), ['User']);
   container.register('BoardItemService', require('../services/board/BoardItemService'), ['Board', 'BoardItem', 'BoardItemBoard', 'BoardItemTask', 'BoardItemComplex']);
   container.register('BoardService', require('../services/board/BoardService'), ['Board', 'BoardItemBoard', 'BoardItemService', 'SimpleMetricsService']);

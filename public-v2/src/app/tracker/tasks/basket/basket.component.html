@@ -25,17 +25,22 @@
                  autocomplete="off"
                  min="0"
                  id="time"/>
-          <span class="input-group-btn">
-      </span>
+          <span class="input-group-btn"></span>
         </div>
 
       </form>
     </div>
+
+    <basket-current-task *ngIf="currentBoardItem" [boardItem]="currentBoardItem">
+    </basket-current-task>
+
     <div *ngIf="taskItems?.length">
       <div *ngFor="let taskItem of taskItems" class="text-left">
         <basket-task-panel *ngIf="taskItem.item.simple"
                            [boardItem]="taskItem"
-                           [pointCost]="basket.pointCost"></basket-task-panel>
+                           [pointCost]="basket.pointCost"
+                           (selectedTask)="onChangeStatus($event)">
+        </basket-task-panel>
 
         <board-item-tree *ngIf="!taskItem.item.simple"
                          [nodes]="[taskItem]"></board-item-tree>
