@@ -1,0 +1,55 @@
+<div class="row">
+
+  <div class="col-md-12">
+    <h3>Baskets </h3>
+    <a class="back-button" (click)="back()">
+      <i class="fa fa-long-arrow-left"></i>
+      Back
+    </a>
+
+    <div class="w-sm pull-left">
+      <ng-select *ngIf="team.length"
+                 [items]="team"
+                 [active]="developer"
+                 (selected)="onChangeDeveloper($event)">
+      </ng-select>
+    </div>
+
+    <h5 class="clearfix">
+      <div class="date-selector pull-left">
+        <span *ngIf="date">{{date | date:'EEE, y-MM-dd'}}</span>
+        <i class="fa fa-calendar" (click)="toggleDatePicker()"></i>
+
+        <div *ngIf="showDatePicker" style="position: absolute; z-index:10; min-height:290px;">
+          <datepicker
+            [ngModel]="date"
+            (selectionDone)="onChangeDate($event)"
+            [maxDate]="today"
+            [showWeeks]="false">
+          </datepicker>
+        </div>
+      </div>
+    </h5>
+
+    <div *ngIf="baskets?.length">
+      <ul class="list-group" *ngFor="let basket of baskets">
+        <li class="list-group-item">
+          <div class="pull-left">
+            {{basket.title}}
+          </div>
+          <div class="pull-right">
+            <a (click)="show(basket._id)" *ngIf="showBasket!==basket._id" class="pointer"><span class="caret"></span>
+              Show</a>
+            <a (click)="hide()" *ngIf="showBasket==basket._id" class="dropup pointer"><span class="caret"></span>
+              Hide</a>
+          </div>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="!baskets.length">
+      No baskets for this date.
+    </div>
+  </div>
+
+</div>

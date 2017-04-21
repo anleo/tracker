@@ -17,14 +17,25 @@ import {CanActivatePrivateGuard} from "../guards/can-activate-private.guard";
 import {TaskBoardsComponent} from "./tasks/task-boards/task-boards.component";
 import {TaskBoardResolver} from "./resolvers/task-board.resolver";
 import {BasketHistoryComponent} from "./tasks/basket-history/basket-history.component";
+import {BasketsComponent} from "./basket/baskets.component";
 
 const routes: Routes = [
   {
     path: 'app/baskets',
-    component: BasketHistoryComponent,
+    component: BlankComponent,
     resolve: {
       user: UserResolver
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: BasketsComponent
+      },
+      {
+        path: 'my/history',
+        component: BasketHistoryComponent
+      }
+    ]
   },
   {
     path: 'app/tasks',
@@ -64,7 +75,7 @@ const routes: Routes = [
           {
             path: 'boards',
             component: BlankComponent,
-            children:[
+            children: [
               {
                 path: '',
                 component: TaskBoardsComponent
