@@ -13,7 +13,7 @@ exports.boards = [
     {
         "_id": ObjectId("551540d7210f67464cde2657"),
         "title": "board 1",
-        "status": "",
+        "status": "in progress",
         "time": 8,
         "owner": ObjectId("5514462ae4eb270b4f115c2c"),
         "shared": [ObjectId("5514462ae4eb270b4f115c2c")],
@@ -37,7 +37,7 @@ exports.boards = [
     {
         "_id": ObjectId("551540d7210f67464cde2658"),
         "title": "board 2",
-        "status": "in progress",
+        "status": "",
         "time": 6,
         "owner": ObjectId("5514462ae4eb270b4f115c2c"),
         "shared": [ObjectId("5514462ae4eb270b4f115c2c")],
@@ -49,7 +49,7 @@ exports.boards = [
     {
         "_id": ObjectId("551540d7210f67464cde2666"),
         "title": "board 3",
-        "status": "accepted",
+        "status": "",
         "time": 6,
         "owner": ObjectId("5514462ae4eb270b4f115c2c"),
         "shared": [ObjectId("5514462ae4eb270b4f115c2c")],
