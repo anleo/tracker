@@ -183,6 +183,17 @@ let BoardService = function (Board,
         return !!(self.isOwner(board, user) || self.hasInShared(board, user));
     };
 
+    this.hasRelatives = (item, children) => {
+        item = item && item._id ? item._id : item;
+        children = children.map((child) => {
+            return child && child._id ? child._id : child;
+        });
+
+        return _.find(children, (child) => {
+            return child.toString() === item.toString();
+        });
+    };
+
     this.isOwner = function (board, user) {
         user = user && user._id ? user._id : user;
         return board.owner && board.owner.toString() === user.toString();

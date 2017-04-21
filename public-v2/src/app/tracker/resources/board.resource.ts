@@ -49,4 +49,10 @@ export class BoardResource extends Resource {
     url: '/api/boards/{!boardId}'
   })
   getBoard: ResourceMethod<{boardId: string}, TaskBoard>;
+
+  @ResourceAction({
+    url: '/api/boards/{!boardId}/items/{!itemId}/check-relations',
+    method: RequestMethod.Get
+  })
+  checkRelations: ResourceMethod<{boardId: string, itemId: string}, Boolean>;
 }
