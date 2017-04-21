@@ -137,17 +137,17 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     let newBoardItem = _.pick(dropData.item, ['board', 'item', 'type', '_id']);
     let isBoardDropZone = dropZone.type === 'board';
     let isTaskDropZone = dropZone.type === 'task';
-    let isBoard = newBoardItem.type === 'board';
-    let isTask = newBoardItem.type === 'task';
+    let isBoard = newBoardItem['type'] === 'board';
+    let isTask = newBoardItem['type'] === 'task';
 
     let ifBoardToBoard = isBoardDropZone && isBoard;
-    let ifTaskFromBoardToBoard = isBoardDropZone && isTask && newBoardItem.board;
-    let ifTaskToBoardFromBacklog = isBoardDropZone && isTask && !newBoardItem.board;
-    let ifTaskToTaskFromBacklog = isTaskDropZone && isTask && !newBoardItem.board;
-    let ifTaskToTaskFromBoard = isTaskDropZone && isTask && newBoardItem.board;
+    let ifTaskFromBoardToBoard = isBoardDropZone && isTask && newBoardItem['board'];
+    let ifTaskToBoardFromBacklog = isBoardDropZone && isTask && !newBoardItem['board'];
+    let ifTaskToTaskFromBacklog = isTaskDropZone && isTask && !newBoardItem['board'];
+    let ifTaskToTaskFromBoard = isTaskDropZone && isTask && newBoardItem['board'];
 
     if (ifTaskFromBoardToBoard || ifTaskToBoardFromBacklog) {
-      return this.boardService.checkRelations(dropZone.parent, newBoardItem.item._id)
+      return this.boardService.checkRelations(dropZone.parent, newBoardItem['item']._id)
         .toPromise()
         .then((hasRelative) => {
           if (hasRelative) {
@@ -164,7 +164,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     }
 
     if (ifTaskToTaskFromBoard || ifTaskToTaskFromBacklog) {
-      let newBoardItemTask = newBoardItem.item;
+      let newBoardItemTask = newBoardItem['item'];
       newBoardItemTask.parentTaskId = dropZone.parent;
 
       return this.boardService.checkRelations(dropZone.board.board, newBoardItemTask._id)
@@ -178,7 +178,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
             .updateTask(newBoardItemTask)
             .toPromise()
             .then(() => {
-              if (newBoardItem && newBoardItem._id) {
+              if (newBoardItem && newBoardItem['_id']) {
                 this.boardItemService
                   .remove(newBoardItem)
                   .toPromise()
