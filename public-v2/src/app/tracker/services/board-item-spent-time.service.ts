@@ -4,6 +4,7 @@ import {BoardItemService} from "app/tracker/services/board-item.service";
 import {TaskService} from "./task.service";
 import {Observable} from "rxjs/Observable";
 import * as moment from 'moment/moment';
+import * as _ from 'lodash';
 import {Moment} from "moment";
 
 @Injectable()
@@ -42,17 +43,10 @@ export class BoardItemSpentTimeService {
 
     return this.boardItemService
       .update(boardItem)
-      .flatMap(() => {
-        return this.getBoardItemLastSpendTime(boardItem)
-      })
+      .flatMap(() => this.getBoardItemLastSpendTime(boardItem))
+      .flatMap((time) => this.formatAndRoundTaskSpentTime(time))
       .flatMap((time) => {
-        console.log(time)
-        return this.formatTaskSpentTime(time)
-      })
-      .flatMap((time) => {
-        console.log('this.task.spenttime', boardItem.item.spenttime);
         boardItem.item.spenttime = boardItem.item.spenttime + time;
-        console.log('this.task.spenttime', boardItem.item.spenttime);
 
         return this.taskService.updateTask(boardItem.item);
       });
@@ -79,40 +73,22 @@ export class BoardItemSpentTimeService {
 
   getBoardItemLastSpendTime(boardItem: TaskBoardItem): Observable <Moment> {
     let spentTime = 0;
-    let timeLogLength = boardItem.timeLog.length;
 
-    if (timeLogLength < 2) {
+    let lastInProgressIndex = _.findLastIndex(boardItem.timeLog, (item: any) => item.status === 'in progress');
+    let checkAfterInProgressItem = !!boardItem.timeLog[lastInProgressIndex + 1];
+
+    if (lastInProgressIndex < 0 || !checkAfterInProgressItem) {
       return Observable.of(moment(spentTime).utc());
     }
 
-    spentTime = boardItem.timeLog[timeLogLength - 1].time - boardItem.timeLog[timeLogLength - 2].time;
+    spentTime = boardItem.timeLog[lastInProgressIndex + 1].time - boardItem.timeLog[lastInProgressIndex].time;
     return Observable.of(moment(spentTime).utc());
   }
 
-  formatTaskSpentTime(time): Observable <number> {
+  formatAndRoundTaskSpentTime(time): Observable <number> {
     let spentTime = moment.duration(time.format('HH:mm:ss')).asHours();
-    console.log('spentTime', spentTime);
     let roundedSpentTime = Math.floor(spentTime * 1000) / 1000;
-    console.log('roundedSpentTime', roundedSpentTime);
+
     return Observable.of(roundedSpentTime);
   }
-
-
-  // saveSpentTime(boardItem) {
-  //   this.boardItemService.getBoardItemLastSpendTime(boardItem)
-  //     .subscribe((time) => {
-  //       this.formatTaskSpentTime(time)
-  //         .subscribe((time) => {
-  //           boardItem.item.spenttime = boardItem.item.spenttime + time;
-  //
-  //           console.log('this.task.spenttime', boardItem.item.spenttime);
-  //           this.taskService.updateTask(boardItem.item)
-  //             .subscribe((task) => {
-  //               console.log('task.status', task.status);
-  //               this.task = task;
-  //               this.countTaskSpentTime(boardItem)
-  //             });
-  //         });
-  //     });
-  // }
 }
