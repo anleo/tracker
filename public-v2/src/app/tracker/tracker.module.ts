@@ -101,6 +101,8 @@ import {BasketHistoryComponent} from './tasks/basket-history/basket-history.comp
 import {BasketContentComponent} from './tasks/basket-content/basket-content.component';
 import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-form.component";
 import {BoardItemsSortPipe} from "./pipes/board-items-sort.pipe";
+import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-current-task.component";
+import {BoardItemSpentTimeService} from "./services/board-item-spent-time.service";
 
 @NgModule({
   imports: [
@@ -204,7 +206,8 @@ import {BoardItemsSortPipe} from "./pipes/board-items-sort.pipe";
     BasketComponent,
     BasketTaskPanelComponent,
     BasketHistoryComponent,
-    BasketContentComponent
+    BasketContentComponent,
+    BasketCurrentTaskComponent
   ],
   providers: [
     TaskResolver,
@@ -220,7 +223,8 @@ import {BoardItemsSortPipe} from "./pipes/board-items-sort.pipe";
     TaskStatusService,
     TaskSearchService,
     BasketResource,
-    BasketService
+    BasketService,
+    BoardItemSpentTimeService
   ]
 })
 export class TrackerModule {
