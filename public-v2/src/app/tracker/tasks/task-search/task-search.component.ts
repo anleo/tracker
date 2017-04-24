@@ -11,6 +11,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 import {SocketService} from "../../../services/socket.service";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
 import {DnDService} from "../../dnd/dnd.service";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'app-task-search',
@@ -34,7 +35,8 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
               private busyLoaderService: BusyLoaderService,
               private router: Router,
               private browserTitleService: BrowserTitleService,
-              private dndService: DnDService) {
+              private dndService: DnDService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -135,7 +137,10 @@ export class TaskSearchComponent implements OnInit, OnDestroy {
       dropData.item.status = status;
     }
 
-    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.search())
+    this.taskService.updateTask(dropData.item)
+      .toPromise()
+      .then((task) => this.search())
+      .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
   }
 
 }
