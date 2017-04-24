@@ -764,6 +764,31 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         }
     };
 
+    this.getRootTasksByQuery = function (query) {
+        let _query = {
+            $or: [
+                {
+                    parentTaskId: {$exists: false}
+                },
+                {
+                    parentTaskId: null,
+                }
+            ]
+        };
+
+        if (query) {
+            _query.$and = query;
+        }
+
+        return new Promise(function (resolve, reject) {
+            Task.find(_query)
+                .then(
+                    (roots) => resolve(roots),
+                    (err) => reject(err)
+                )
+        });
+    };
+
     this.getTaskId = function (task) {
         if (!task) return '';
         return task._id ? task._id : task || '';

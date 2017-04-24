@@ -9,7 +9,7 @@ module.exports = {
         "uri": "mongodb://localhost/tracker_dev"
     },
     "fixtures": {
-        "load": true
+        "load": false
     },
     "facebookAuth": {
         "clientID": "423090387878355",

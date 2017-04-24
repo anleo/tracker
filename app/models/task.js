@@ -15,6 +15,7 @@ module.exports = function (mongoose) {
         points: {type: Number, default: 0},
         velocity: Number,
         parentTaskId: {type: Schema.Types.ObjectId, ref: "Task", default: null},
+        root: {type: Schema.Types.ObjectId, ref: "Task", default: null},
         date: {type: Date, default: Date.now, index: true},
         updatedAt: {type: Date, default: null, index: true},
         simple: {type: Boolean, default: true},
@@ -27,7 +28,7 @@ module.exports = function (mongoose) {
         tags: [String],
         tagsList: [String],
         archived: {type: Boolean, default: false},
-        commentsCounter:{type: Number, default: 0},
+        commentsCounter: {type: Number, default: 0},
         updatedBy: {type: Schema.Types.ObjectId, ref: "User", default: null}
     });
 

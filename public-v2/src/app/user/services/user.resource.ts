@@ -39,4 +39,11 @@ export class UserResource extends Resource {
     isArray: true,
   })
   getUsers: ResourceMethod <any, User[]>;
+
+  @ResourceAction({
+    path: '/me/projects',
+    method: RequestMethod.Get,
+    isArray: true,
+  })
+  getUsersByProjectsTeams: ResourceMethod <any, User[]>;
 }

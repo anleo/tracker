@@ -2,8 +2,11 @@ module.exports = function (app) {
     let Board = app.container.get('Board');
     let BoardService = app.container.get('BoardService');
     let BasketService = app.container.get('BasketService');
+    let BoardItemService = app.container.get('BoardItemService');
+    let TaskService = app.container.get('TaskService');
 
     let moment = require('moment');
+    let async = require('async');
 
     function getStartDate(date) {
         return moment(date).startOf('day').toDate()
@@ -91,5 +94,69 @@ module.exports = function (app) {
             .catch((err) => {
                 res.status(400).json(err)
             });
+    });
+
+    app.get('/api/baskets', function (req, res) {
+        let results = [];
+        let _query = JSON.parse(req.query.query);
+
+        let query = {
+            owner: {$in: _query.users},
+            type: 'basket'
+        };
+
+        let date = _query.date;
+        date = Date.parse(date);
+
+        if (date) {
+            query.createdAt = {$gte: getStartDate(date), $lte: getEndDate(date)}
+        }
+
+        async.parallel({
+            projectsIds: (cb) => {
+                TaskService
+                    .getRootsByQuery({
+                        $or: [
+                            {
+                                owner: req.user._id,
+                            },
+                            {
+                                team: req.user._id,
+                            }
+                        ]
+                    })
+                    .then((tasks) => cb(null, tasks.map((task) => task._id)))
+                    .catch((err) => cb(err));
+            },
+            baskets: (cb) => {
+                BoardService.getBoardsByOptions(query)
+                    .then((baskets) => cb(null, baskets))
+                    .catch((err) => cb(err));
+            }
+        }, (err, result) => {
+            if (err) {
+                return next(err);
+            }
+
+            async.eachSeries(result.baskets, (basket, cb) => {
+                BoardItemService
+                    .getItemsByOptions({
+                        board: basket._id
+                    })
+                    .then((basketItems) => {
+                        results.push({
+                            basket: basket,
+                            items: basketItems.filter((basketItem) => result.projectsIds.indexOf(basketItem.item.root) >= 0)
+                        })
+                    })
+                    .catch((err) => cb(err));
+            }, (err) => {
+                if (err) {
+                    return next(err);
+                }
+
+                res.json(results);
+            })
+        });
     });
 };
