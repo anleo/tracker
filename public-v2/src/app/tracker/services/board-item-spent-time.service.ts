@@ -14,7 +14,7 @@ export class BoardItemSpentTimeService {
   }
 
   hasTimeLog(boardItem) {
-    return (boardItem.timeLog && boardItem.timeLog.length) ? true : false;
+    return !!(boardItem.timeLog && boardItem.timeLog.length);
   }
 
   addTimeLog(boardItem, status): TaskBoardItem {

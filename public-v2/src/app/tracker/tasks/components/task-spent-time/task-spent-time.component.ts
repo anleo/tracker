@@ -42,7 +42,7 @@ export class TaskSpentTimeComponent implements OnInit, OnDestroy {
 
   resetTime() {
     this.flag = 0;
-    this.task.spenttime = this.oldSpentTime;
+    this.task.spenttime = 0;
     this.addedSpentTime = null;
     this.taskMetricsService.task$.next(this.task);
   }
