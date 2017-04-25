@@ -48,9 +48,9 @@ export class TaskTeamComponent implements OnInit {
   }
 
   removed(user: {id: string, text: string}): void {
-    this.team.filter((member, index) => {
+    this.team.forEach((member, index) => {
       if (member === user.id) {
-        delete this.team[index];
+        this.team.splice(index, 1);
         this.updateTeam();
       }
     });
@@ -65,9 +65,9 @@ export class TaskTeamComponent implements OnInit {
     let teamFullArray = [];
     let teamArray = [];
 
-    team.map(member => {
+    team.forEach(member => {
       this.task.team
-        .filter(memberId => {
+        .forEach(memberId => {
           if (memberId === member.id) {
             teamFullArray.push(member);
             teamArray.push(member.id)
