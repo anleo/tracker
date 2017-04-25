@@ -25,16 +25,16 @@ export class BoardItemSpentTimeService {
       ? boardItem.timeLog.push(timeLogRecord)
       : boardItem.timeLog = [timeLogRecord];
 
-    boardItem.item.status = status;
-
     return boardItem;
   }
 
   boardItemStatusProvider(boardItem: TaskBoardItem, status: string) {
-    if (boardItem.item.status == status) {
+    let lastTimeLog = this.getLastTimeLog(boardItem);
+
+    if (lastTimeLog && lastTimeLog['status'] == status) {
       return;
     } else if (status === 'accepted') {
-      if (boardItem.item.status == 'in progress') {
+      if (lastTimeLog['status'] == 'in progress') {
         boardItem = this.addTimeLog(boardItem, '');
       }
     }
@@ -55,6 +55,7 @@ export class BoardItemSpentTimeService {
   getBoardItemSpendTime(boardItem: TaskBoardItem): Observable <Moment> {
     let spentTime = 0;
     let lastInProgress = null;
+    let lastTimeLog = this.getLastTimeLog(boardItem);
 
     boardItem.timeLog.forEach(log => {
       if (log.status === 'in progress') {
@@ -64,7 +65,7 @@ export class BoardItemSpentTimeService {
       }
     });
 
-    if (boardItem.item.status === 'in progress') {
+    if (lastTimeLog && lastTimeLog['status'] === 'in progress') {
       spentTime += Date.now() - lastInProgress;
     }
 
@@ -90,5 +91,18 @@ export class BoardItemSpentTimeService {
     let roundedSpentTime = Math.floor(spentTime * 1000) / 1000;
 
     return Observable.of(roundedSpentTime);
+  }
+
+  getLastTimeLog(boardItem) {
+    if (!boardItem || !boardItem.timeLog || !boardItem.timeLog.length) {
+      return null;
+    }
+
+    return _.last(boardItem.timeLog);
+  }
+
+  getLastStatus(boardItem) {
+    let item = this.getLastTimeLog(boardItem);
+    return item ? item['status'] : '';
   }
 }

@@ -10,15 +10,19 @@
 
   <div class="panel-body">
     <div>
-      <span class="label" [ngClass]="[setLabelClass()]">{{task.status || 'new'}}</span>
+      <span class="label" [ngClass]="[setLabelClass()]">{{getLastStatus(boardItem) || 'new'}}</span>
 
       <span class="glyphicon glyphicon-play"
-            *ngIf="task.status == 'accepted' || task.status == ''"
+            *ngIf="getLastStatus(boardItem) == 'accepted' || getLastStatus(boardItem) == ''"
             (click)="start(boardItem)"></span>
+
       <span class="glyphicon glyphicon-pause"
-            *ngIf="task.status == 'in progress'"
+            *ngIf="getLastStatus(boardItem) == 'in progress'"
             (click)="pause(boardItem)"></span>
-      <span class="glyphicon glyphicon-check" (click)="accept(boardItem)"></span>
+
+      <span class="glyphicon glyphicon-check"
+            *ngIf="getLastStatus(boardItem) !== 'accepted'"
+            (click)="accept(boardItem)"></span>
 
       <span class="pull-right">{{spendTime}}</span>
 
