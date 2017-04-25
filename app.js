@@ -75,4 +75,3 @@ var server = app.listen(app.config.get('app:port'), function () {
 });
 
 app.container.get('SocketService').create(server);
-
