@@ -24,7 +24,9 @@ exports.up = function (next) {
                     return next();
                 }
 
-                Task.update({_id: task._id}, {$set: {root: root._id}}, function (err) {
+                let rootId = task.parentTaskId ? root._id : null;
+
+                Task.update({_id: task._id}, {$set: {root: rootId}}, function (err) {
                     if (err) {
                         ps.resume();
                         console.log('>> err', err, err.stack);
