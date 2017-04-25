@@ -10,6 +10,7 @@ import {TaskWithStatus} from "../../models/task-with-status";
 import {SocketService} from "../../../services/socket.service";
 import {BusyLoaderService} from "../../../services/busy-loader.service";
 import {DnDService} from "../../dnd/dnd.service";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   templateUrl: 'task-tags-search.component.html',
@@ -34,7 +35,8 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private router: Router,
               private browserTitleService: BrowserTitleService,
-              private dndService: DnDService) {
+              private dndService: DnDService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -183,6 +185,9 @@ export class TaskTagsSearchComponent implements OnInit, OnDestroy {
       dropData.item.status = status;
     }
 
-    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.reinit())
+    this.taskService.updateTask(dropData.item)
+      .toPromise()
+      .then((task) => this.reinit())
+      .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
   }
 }
