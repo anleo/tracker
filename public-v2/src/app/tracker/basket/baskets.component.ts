@@ -17,6 +17,8 @@ export class BasketsComponent implements OnInit {
   baskets: TaskBoard[] = [];
   developers: Array<{id: string, text: string}> = [];
   selectedDevelopers: Array<{id: string, text: string}> = [];
+  showBasket: string = null;
+
 
   date: Date = new Date();
   today: Date = new Date();
@@ -31,11 +33,16 @@ export class BasketsComponent implements OnInit {
     this.userService
       .getUsersByProjectsTeams()
       .map(users => this.prepareUsers(users))
-      .subscribe((users) => this.developers = users);
+      .subscribe((users) => this.developers = this.developers.concat(users));
 
     this.userService.get()
       .map(user => this.prepareUsers([user]))
-      .map(user => this.selectedDevelopers = user)
+      .map((user) => {
+        this.selectedDevelopers = user;
+        this.developers = this.developers.concat(user);
+
+        return user;
+      })
       .subscribe(() => this.getBaskets(this.today, this.selectedDevelopers));
   }
 
@@ -54,8 +61,20 @@ export class BasketsComponent implements OnInit {
     this.showDatePicker = !this.showDatePicker;
   }
 
+  show(basketId): void {
+    this.showBasket = basketId;
+  }
+
+  hide(): void {
+    this.showBasket = null;
+  }
+
   onClose(): void {
     this.showDatePicker = false;
+  }
+
+  showStatus(status) {
+    return status == '' ? 'new' : status;
   }
 
   onChangeDate(date): void {
