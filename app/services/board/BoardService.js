@@ -98,6 +98,7 @@ let BoardService = function (Board,
     this.updateParentStatus = function (parent) {
         let parentId = parent && parent._id ? parent._id : parent;
         return new Promise((resolve, reject) => {
+            // TODO @@@id: check parentId
             BoardItemService
                 .getItemsByOptions({board: parentId})
                 .then((children) => {
