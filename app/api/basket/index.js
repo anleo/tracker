@@ -96,7 +96,7 @@ module.exports = function (app) {
             });
     });
 
-    app.get('/api/baskets', function (req, res) {
+    app.get('/api/baskets', function (req, res, next) {
         let results = [];
         let _query = JSON.parse(req.query.query);
 
@@ -115,7 +115,7 @@ module.exports = function (app) {
         async.parallel({
             projectsIds: (cb) => {
                 TaskService
-                    .getRootsByQuery({
+                    .getRootTasksByQuery({
                         $or: [
                             {
                                 owner: req.user._id,
@@ -125,7 +125,7 @@ module.exports = function (app) {
                             }
                         ]
                     })
-                    .then((tasks) => cb(null, tasks.map((task) => task._id)))
+                    .then((tasks) => cb(null, tasks.map((task) => task._id.toString())))
                     .catch((err) => cb(err));
             },
             baskets: (cb) => {
@@ -144,10 +144,18 @@ module.exports = function (app) {
                         board: basket._id
                     })
                     .then((basketItems) => {
+                        let items = basketItems.filter((basketItem) => {
+                            let root = basketItem.item.root ? basketItem.item.root : basketItem.item._id;
+
+                            return result.projectsIds.indexOf(root.toString()) >= 0;
+                        });
+
                         results.push({
                             basket: basket,
-                            items: basketItems.filter((basketItem) => result.projectsIds.indexOf(basketItem.item.root) >= 0)
-                        })
+                            items: items
+                        });
+
+                        cb();
                     })
                     .catch((err) => cb(err));
             }, (err) => {

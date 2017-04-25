@@ -1,7 +1,9 @@
 var express = require('express');
 
 var app = express();
+
 require('./app/config/application').wrap(app);
+app.container.set('app', app);
 
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');

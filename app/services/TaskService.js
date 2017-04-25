@@ -528,36 +528,43 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                 return next(err);
             }
 
-            task.save(function (err) {
-                if (err) return next(err);
-                Task.findById(task._id)
-                    .populate('owner', '-local.passwordHashed -local.passwordSalt')
-                    .populate('developer', '-local.passwordHashed -local.passwordSalt')
-                    .lean()
-                    .exec(function (err, task) {
-                        if (err) return next(err);
+            self.getParent(task, (err, parent) => {
+                if (err) {
+                    return next(err);
+                }
 
-                        FileService.connectFiles(task.files);
-                        self.updateRootTags(task);
+                task.root = parent ? parent._id : null;
 
-                        self.updateParentByTask(task, function (err) {
-                            if (err) {
-                                return next(err);
-                            }
+                task.save(function (err) {
+                    if (err) return next(err);
+                    Task.findById(task._id)
+                        .populate('owner', '-local.passwordHashed -local.passwordSalt')
+                        .populate('developer', '-local.passwordHashed -local.passwordSalt')
+                        .lean()
+                        .exec(function (err, task) {
+                            if (err) return next(err);
 
-                            self.getEstimatedTask(task, function (err, task) {
-                                if (err) return next(err);
+                            FileService.connectFiles(task.files);
+                            self.updateRootTags(task);
 
-                                HistoryService.createTaskHistory(task, function (err) {
+                            self.updateParentByTask(task, function (err) {
+                                if (err) {
+                                    return next(err);
+                                }
+
+                                self.getEstimatedTask(task, function (err, task) {
                                     if (err) return next(err);
-                                    self.notifyUsers(task, 'task.save');
-                                    next(null, task);
+
+                                    HistoryService.createTaskHistory(task, function (err) {
+                                        if (err) return next(err);
+                                        self.notifyUsers(task, 'task.save');
+                                        next(null, task);
+                                    });
                                 });
                             });
                         });
-                    });
-            })
-
+                });
+            });
         });
     };
 
@@ -777,7 +784,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         };
 
         if (query) {
-            _query.$and = query;
+            _query.$and = _query.$and ? _query.$and.push(query) : [query];
         }
 
         return new Promise(function (resolve, reject) {
