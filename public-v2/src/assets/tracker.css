@@ -996,10 +996,10 @@ hr {
   position: fixed;
   height: 100vH;
   width: 40vW;
-  right: -40vW;
+  top: 0;
+  left: -40vW;
   text-align: center;
   background: #fff;
-  top: 0;
   transition: all 400ms ease;
   box-shadow: 0 0 0 0 #000;
   overflow-y: auto;
@@ -1010,17 +1010,17 @@ hr {
 }
 
 .backlog.show {
-  right: 0;
+  left: 0;
   box-shadow: 0 0 100px -30px #000;
 }
 
 .btn-backlog {
   z-index: 9;
   position: fixed;
-  right: -20px;
-  top: 80px;
+  left: -20px;
+  top: 160px;
   padding: 5px 10px;
-  border-radius: 10px 10px 0 0;
+  border-radius: 0 0 10px 10px;
   width: 70px;
   transform: rotate(-90deg);
   border: none;

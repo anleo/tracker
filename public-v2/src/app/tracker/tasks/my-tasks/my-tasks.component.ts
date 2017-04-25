@@ -10,6 +10,7 @@ import {BusyLoaderService} from "../../../services/busy-loader.service";
 import {SocketService} from "../../../services/socket.service";
 import {Location} from "@angular/common";
 import {DnDService} from "../../dnd/dnd.service";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   templateUrl: 'my-tasks.component.html'
@@ -28,7 +29,8 @@ export class MyTasksComponent implements OnInit, OnDestroy {
               private taskService: TaskService,
               private socketService: SocketService,
               private busyLoaderService: BusyLoaderService,
-              private dndService: DnDService) {
+              private dndService: DnDService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -119,6 +121,9 @@ export class MyTasksComponent implements OnInit, OnDestroy {
       dropData.item.status = status;
     }
 
-    this.taskService.updateTask(dropData.item).toPromise().then((task) => this.getTasks())
+    this.taskService.updateTask(dropData.item)
+      .toPromise()
+      .then((task) => this.getTasks())
+      .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
   }
 }
