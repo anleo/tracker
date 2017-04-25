@@ -24,11 +24,24 @@
           <li><a [routerLink]="['/app/tasks']">Projects</a></li>
           <li><a [routerLink]="['/app/tasks/reports']">Report</a></li>
           <li><a [routerLink]="['/app/tasks/my']">My tasks</a></li>
-          <li><a [routerLink]="['/app/baskets/my/history']">My baskets</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle"
+                 id="dropdownMenu1"
+                 data-toggle="dropdown"
+                 aria-haspopup="true"
+                 aria-expanded="true">
+              Baskets
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu"
+                aria-labelledby="dropdownMenu1">
+              <li><a [routerLink]="['/app/baskets/my/history']">My baskets</a></li>
+              <li><a [routerLink]="['/app/baskets']">Baskets</a></li>
+            </ul>
+          </li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-
           <li *ngIf="user">
             <a [routerLink]="['/app/users/me']" class="profileLink"><i class="fa fa-user"></i>
               <span class="hidden-xs hidden-sm">{{user.first? (user.first+ ' ' +user.last): user.local.username}}</span>
