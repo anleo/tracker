@@ -23,7 +23,7 @@ import {ToastService} from "../../../services/toast.service";
 })
 
 export class TaskBoardsComponent implements OnInit, OnDestroy {
-  boardItem: TaskBoardItem | null;
+  board: TaskBoardItem | null;
   boardItems: TaskBoardItem[] | null = [];
   project: Task | null = null;
   boardId: string;
@@ -66,10 +66,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
 
     this.route.data
       .subscribe((data: {board: TaskBoardItem}) => {
-        this.boardItem = data && data.board;
-        if (this.boardItem) {
-          this.boardItem.type = 'board';
-        }
+        this.board = data && data.board;
       });
 
     this.currentTaskService.rootTask$
@@ -182,15 +179,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
           this.taskService
             .updateTask(newBoardItemTask)
             .toPromise()
-            .then(() => {
-              if (newBoardItem && newBoardItem['_id']) {
-                this.boardItemService
-                  .remove(newBoardItem)
-                  .toPromise()
-                  .then(() => this.boardItemService.getBoardItemsByBoardId(dropZone.board.board))
-                  .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
-              }
-            })
+            .then(() => this.toastService.info('Item was added'))
             .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
         });
     }
