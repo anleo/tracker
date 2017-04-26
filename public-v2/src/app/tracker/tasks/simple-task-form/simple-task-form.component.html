@@ -9,7 +9,8 @@
                 type="submit">
           <i class="fa fa-check"></i>
         </button>
-        <button class="btn btn-default btn-sm" type="reset" (click)="reset()">
+        <button *ngIf="task?.title?.length"
+          class="btn btn-default btn-sm" type="reset" (click)="reset()">
           <i class="fa fa-close"></i>
         </button>
       </span>
