@@ -3,6 +3,7 @@ let BoardService = function (Board,
                              BoardItemService,
                              SimpleMetricsService) {
     let _ = require('lodash');
+    let asyncP = require('async-promises');
     let self = this;
 
     this.get = function (project) {
@@ -36,8 +37,12 @@ let BoardService = function (Board,
                     BoardItemService
                         .createBoardItem({item: board, board: parentBoard})
                         .then(() => {
-                            self.updateParentsByItem(board)
-                                .then(() => resolve(board));
+                            if (parentBoard) {
+                                self.updateParentsBoards(parentBoard)
+                                    .then(() => resolve(board));
+                            }
+
+                            resolve(board);
                         })
                         .catch((err) => reject(err));
                 }, (err) => reject(err));
@@ -90,15 +95,23 @@ let BoardService = function (Board,
 
                     return board;
                 })
-                .then((board) => self.updateParentsByItem(board))
-                .then((board) => resolve(board), (err) => reject(err));
+                .then((board) => {
+                    let boardId = board && board._id ? board._id : board;
+                    let query = {item: boardId};
+                    self.findAndUpdateBoardParents(query)
+                        .then(() => resolve(board))
+                        .catch((err) => reject(err));
+                }, (err) => reject(err));
         });
     };
 
     this.updateParentStatus = function (parent) {
         let parentId = parent && parent._id ? parent._id : parent;
         return new Promise((resolve, reject) => {
-            // TODO @@@id: check parentId
+            if (!parentId) {
+                return resolve();
+            }
+
             BoardItemService
                 .getItemsByOptions({board: parentId})
                 .then((children) => {
@@ -146,6 +159,88 @@ let BoardService = function (Board,
                 .then(() => resolve(item))
                 .catch((err) => reject(err));
         });
+    };
+
+    this.updateParentsBoards = (board) => {
+        return new Promise((resolve, reject) => {
+            self.getItemsByBoard(board)
+                .then((items) => {
+                    self.setParentStatusByChildren(board, items)
+                        .then((updatedBoard) => {
+                            Board.findOneAndUpdate({_id: updatedBoard._id},
+                                {$set: {status: updatedBoard.status}},
+                                {new: true})
+                                .then((updatedBoard) => {
+                                    updatedBoard = updatedBoard && updatedBoard._id ? updatedBoard._id : updatedBoard;
+                                    let query = {item: updatedBoard};
+
+                                    self.findAndUpdateBoardParents(query)
+                                        .then(() => resolve())
+                                        .catch((err) => reject(err));
+                                }, (err) => reject(err));
+                        });
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    };
+
+    this.updateParentsBoardsByTask = (task) => {
+        task = task && task._id ? task._id : task;
+        let query = {item: task};
+
+        return new Promise((resolve, reject) => {
+            self.findAndUpdateBoardParents(query)
+                .then(() => resolve())
+                .catch((err) => reject(err));
+        });
+    };
+
+    this.findAndUpdateBoardParents = (query) => {
+        query.board = {$ne: null};
+        return new Promise((resolve, reject) => {
+            BoardItemService.getItemsByOptions(query)
+                .then((boardItems) => {
+                    if (!boardItems.length) {
+                        return resolve()
+                    }
+
+                    let boards = boardItems.map((boardItem) => {
+                        return boardItem.board;
+                    });
+
+                    return asyncP.each(boards, (board) => {
+                        return new Promise((resolve) => {
+                            self.updateParentsBoards(board)
+                                .then(() => resolve());
+                        });
+                    })
+                        .then(() => {
+                            resolve();
+                        });
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    };
+
+    this.getItemsByBoard = (board) => {
+        let options = {board: board};
+        return BoardItemService.getItemsByOptions(options).then((boardItems) => {
+            if (!boardItems.length) {
+                return Promise.resolve(boardItems);
+            }
+
+            let items = boardItems.map((boardItem) => {
+                return boardItem.item;
+            });
+
+            return Promise.resolve(items);
+        }).catch((err) => {
+            return Promise.reject(err);
+        })
     };
 
     this.setParentStatusByChildren = function (item, children) {

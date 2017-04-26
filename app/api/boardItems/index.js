@@ -70,10 +70,11 @@ module.exports = function (app) {
                 }
 
                 BoardItemService.create(data)
-                    .then((boardItem) => res.json(boardItem))
-                    // BoardService
-                    //     .updateParentsByItem(boardItem.item)
-                    //     .then(() => res.json(boardItem));
+                    .then((boardItem) => {
+                        BoardService
+                            .updateParentsBoards(req.Board)
+                            .then(() => res.json(boardItem));
+                    })
                     .catch((err) => res.status(400).json({error: err}));
             })
             .catch((err) => res.status(404).json({error: err}));

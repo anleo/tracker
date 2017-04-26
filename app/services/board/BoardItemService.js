@@ -80,6 +80,7 @@ let BoardItemService = function (Board,
             BoardItem
                 .find(options)
                 .populate('item')
+                .populate('board')
                 .lean()
                 .exec()
                 .then((boardItems) => resolve(boardItems), (err) => reject(err))
