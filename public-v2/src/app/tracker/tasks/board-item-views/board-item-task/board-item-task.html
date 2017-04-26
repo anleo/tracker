@@ -2,7 +2,8 @@
      [ngClass]="{
     'panel-success': boardItem.item.status == 'accepted',
     'panel-warning': boardItem.item.status == 'in progress'}"
-     drop-zone [dropParams]="{parent: boardItem.item._id || boardItem.item, type: boardItem.type, board: boardItem}" [check]="[checkType]"
+     drop-zone [dropParams]="{parent: boardItem.item._id || boardItem.item, type: boardItem.type, board: boardItem}"
+     [check]="[checkType]"
      drag [dragItem]="boardItem">
 
   <div class="panel-heading overflow-hidden">
@@ -13,7 +14,11 @@
       <span class="fa vcenter pull-right pointer"
             (click)="toggleSubitems()"
             [ngClass]="showSubitems ? 'fa-angle-up' : 'fa-angle-down'"></span>
-      <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(boardItem.item)"></span>
+      <span *ngIf="boardItem && boardItem._id"
+            (click)="removeBoardItem(boardItem)"
+            class="fa fa-times-circle-o text-muted vcenter pull-right"></span>
+      <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton"
+            (click)="edit(boardItem.item)"></span>
       <span class="fa fa-arrows text-muted vcenter drag-button pull-right"></span>
 
       <span class="label label-info vcenter pull-right" *ngIf="!boardItem.item.simple">complex</span>
