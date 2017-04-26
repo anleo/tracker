@@ -1,5 +1,5 @@
 <div *ngIf="boardItems.length">
   <div *ngFor="let boardItem of boardItems | boardItemsSort: {'item.priority': sortOptions?.orderByPriority || 'desc'}">
-    <board-item-view [boardItem]="boardItem"></board-item-view>
+    <board-item-view [boardItem]="boardItem" (boardItemUpdate)="updateHandler()"></board-item-view>
   </div>
 </div>

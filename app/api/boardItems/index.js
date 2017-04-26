@@ -3,6 +3,7 @@ module.exports = function (app) {
     let BoardService = app.container.get('BoardService');
 
     app.param('boardItemId', (req, res, next, boardItemId) => {
+        //TODO check access
         BoardItemService.getById(boardItemId)
             .then((boardItem) => {
                 if (!boardItem) {
@@ -12,6 +13,10 @@ module.exports = function (app) {
                 req.BoardItem = boardItem;
                 next();
             })
+    });
+
+    app.get('/api/boardItems/:boardItemId', function (req, res) {
+        res.json(req.BoardItem);
     });
 
     app.get('/api/projects/:projectId/boardItems/root', function (req, res) {
@@ -51,7 +56,7 @@ module.exports = function (app) {
     });
 
     app.post('/api/boards/:boardId/boardItems', function (req, res) {
-       let data = {
+        let data = {
             board: req.Board,
             type: req.body.type,
             item: req.body.item
