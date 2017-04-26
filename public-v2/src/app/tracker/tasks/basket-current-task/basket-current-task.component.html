@@ -1,36 +1,29 @@
-<div *ngIf="task" style="border: solid #ccc 1px;
-border-radius: 4px; top:20%;">
-  <h4 style="font-weight: bold; padding: 0 10px; text-align: left">{{task.title}}</h4>
+<div *ngIf="task" class="current-basket">
+  <h4 class="current-basket-title">{{task.title}}</h4>
 
-
-  <div class="overflow-hidden" style="padding: 0 10px; border: solid #ccc 1px; margin: 10px;">
-    <div style="text-align: center; font-size: 3em">
-      <div class="">{{spendTime}}</div>
-    </div>
+  <div class="overflow-hidden current-basket-spent-time">
+      <div>{{spendTime}}</div>
   </div>
 
-  <div style="text-align: center; display: block; margin-bottom: 10px">
+  <div class="timer-controls-wrapper">
     <a *ngIf="getLastStatus(boardItem) == 'accepted' || getLastStatus(boardItem) == ''"
        (click)="start(boardItem)"
-       class="fa fa-play fa-2x text-center pointer"
-       style="text-decoration:none; color: #666; padding: 10px">
+       class="fa fa-play fa-2x text-center pointer timer-controls">
     </a>
 
     <a *ngIf="getLastStatus(boardItem) == 'in progress'"
        (click)="pause(boardItem)"
-       class="fa fa-pause fa-2x text-center pointer"
-       style="text-decoration:none; color: #666; padding: 10px">
+       class="fa fa-pause fa-2x text-center pointer timer-controls">
     </a>
 
     <a *ngIf="getLastStatus(boardItem) !== 'accepted'"
        (click)="accept(boardItem)"
-       class="fa fa-check fa-2x text-center pointer"
-       style="text-decoration:none; color: #666; padding: 10px">
+       class="fa fa-check fa-2x text-center pointer timer-controls">
     </a>
 
     <a (click)="edit(task)"
-       class="fa fa-pencil-square-o fa-2x pointer"
-       style="text-decoration: none; color: #666; padding: 10px"></a>
+       class="fa fa-pencil-square-o fa-2x pointer timer-controls">
+    </a>
   </div>
 </div>
 
