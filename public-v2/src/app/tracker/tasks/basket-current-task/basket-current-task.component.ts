@@ -52,7 +52,6 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
 
     this.countTaskSpentTime(this.boardItem);
 
-
     if (this.getLastStatus(this.boardItem) === 'in progress') {
       this.startTimer();
     }
@@ -96,6 +95,10 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   accept(boardItem) {
     this.boardItemSpentTimeService
       .boardItemStatusProvider(boardItem, 'accepted')
+      .flatMap(() => {
+        boardItem.item.status = 'accepted';
+        return this.taskService.updateTask(boardItem.item);
+      })
       .subscribe(() => {
         this.countTaskSpentTime(boardItem);
       });

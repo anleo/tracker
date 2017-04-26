@@ -1,32 +1,36 @@
-<div class="panel panel-default" *ngIf="task">
-  <div class="panel-heading overflow-hidden">
-    <h4 class="panel-title">
-      <a [routerLink]="['/app/tasks/', task._id]"><span style="font-weight: bold">{{task.title}}</span> </a>
+<div *ngIf="task" style="border: solid #ccc 1px;
+border-radius: 4px; top:20%;">
+  <h4 style="font-weight: bold; padding: 0 10px; text-align: left">{{task.title}}</h4>
 
-      <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
-      <span class="vcenter pull-right" *ngIf="approximateTime">{{approximateTime}} h</span>
-    </h4>
+
+  <div class="overflow-hidden" style="padding: 0 10px; border: solid #ccc 1px; margin: 10px;">
+    <div style="text-align: center; font-size: 3em">
+      <div class="">{{spendTime}}</div>
+    </div>
   </div>
 
-  <div class="panel-body">
-    <div>
-      <span class="label" [ngClass]="[setLabelClass()]">{{getLastStatus(boardItem) || 'new'}}</span>
+  <div style="text-align: center; display: block; margin-bottom: 10px">
+    <a *ngIf="getLastStatus(boardItem) == 'accepted' || getLastStatus(boardItem) == ''"
+       (click)="start(boardItem)"
+       class="fa fa-play fa-2x text-center pointer"
+       style="text-decoration:none; color: #666; padding: 10px">
+    </a>
 
-      <span class="glyphicon glyphicon-play"
-            *ngIf="getLastStatus(boardItem) == 'accepted' || getLastStatus(boardItem) == ''"
-            (click)="start(boardItem)"></span>
+    <a *ngIf="getLastStatus(boardItem) == 'in progress'"
+       (click)="pause(boardItem)"
+       class="fa fa-pause fa-2x text-center pointer"
+       style="text-decoration:none; color: #666; padding: 10px">
+    </a>
 
-      <span class="glyphicon glyphicon-pause"
-            *ngIf="getLastStatus(boardItem) == 'in progress'"
-            (click)="pause(boardItem)"></span>
+    <a *ngIf="getLastStatus(boardItem) !== 'accepted'"
+       (click)="accept(boardItem)"
+       class="fa fa-check fa-2x text-center pointer"
+       style="text-decoration:none; color: #666; padding: 10px">
+    </a>
 
-      <span class="glyphicon glyphicon-check"
-            *ngIf="getLastStatus(boardItem) !== 'accepted'"
-            (click)="accept(boardItem)"></span>
-
-      <span class="pull-right">{{spendTime}}</span>
-
-    </div>
+    <a (click)="edit(task)"
+       class="fa fa-pencil-square-o fa-2x pointer"
+       style="text-decoration: none; color: #666; padding: 10px"></a>
   </div>
 </div>
 
