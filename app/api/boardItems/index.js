@@ -77,7 +77,7 @@ module.exports = function (app) {
                     })
                     .catch((err) => res.status(400).json({error: err}));
             })
-            .catch((err) => res.status(404).json({error: err}));
+            .catch((err) => res.status(400).json({error: err}));
     });
 
     app.put('/api/boards/:boardId/boardItems/:boardItemId', function (req, res) {
