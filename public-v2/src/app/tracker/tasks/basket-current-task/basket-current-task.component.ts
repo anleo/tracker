@@ -95,10 +95,6 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   accept(boardItem) {
     this.boardItemSpentTimeService
       .boardItemStatusProvider(boardItem, 'accepted')
-      .flatMap(() => {
-        boardItem.item.status = 'accepted';
-        return this.taskService.updateTask(boardItem.item);
-      })
       .subscribe(() => {
         this.countTaskSpentTime(boardItem);
       });
@@ -124,6 +120,7 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   }
 
 //TODO @@@dr move it to component or directive
+  // TODO @@@id: not used now
   public setLabelClass(): string {
     let lastStatus = this.getLastStatus(this.boardItem);
 
