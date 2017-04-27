@@ -1,19 +1,19 @@
 <div drop-listener>
-  <h2 class="clearfix" *ngIf="boardItem" drop-zone
-      [dropParams]="{parent: boardItem._id, type: boardItem.type|| null}">
-    {{boardItem?.title}}
+  <h2 class="clearfix" *ngIf="board" drop-zone
+      [dropParams]="{parent: board._id, type: board.type|| null}">
+    {{board?.title}}
   </h2>
 
-  <a *ngIf="project && !boardItem" class="back-button" [routerLink]="['/app/tasks', project?._id]">
+  <a *ngIf="project && !board" class="back-button" [routerLink]="['/app/tasks', project?._id]">
     <i class="fa fa-long-arrow-left"></i>
     {{project.title ? 'Back to: ' + project.title : 'Back to project'}}
   </a>
 
-  <a *ngIf="boardItem" class="back-button" (click)="back()"><i class="fa fa-long-arrow-left"></i> Back</a>
+  <a *ngIf="board" class="back-button" (click)="back()"><i class="fa fa-long-arrow-left"></i> Back</a>
 
   <task-backlog></task-backlog>
 
-  <board-edit [parentBoard]="boardItem"></board-edit>
+  <board-edit [parentBoard]="board"></board-edit>
 
   <div class="board-view boards" *ngIf="boardItems && boardItems.length">
     <div class="clearfix">
