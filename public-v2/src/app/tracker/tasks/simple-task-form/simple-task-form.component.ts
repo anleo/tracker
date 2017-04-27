@@ -22,6 +22,10 @@ export class SimpleTaskFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.init();
+  }
+
+  init(): void {
     if (this.parentTask) {
       this.initTask();
     } else if (this.parentBoard) {
@@ -91,6 +95,6 @@ export class SimpleTaskFormComponent implements OnInit {
   }
 
   reset(): void {
-    setTimeout(() => this.initTask(), 0);
+    setTimeout(() => this.init(), 0);
   }
 }

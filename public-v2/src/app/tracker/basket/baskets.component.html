@@ -1,0 +1,83 @@
+<div class="row">
+
+  <div class="col-md-12">
+    <h3>Baskets </h3>
+    <div>
+      <a class="back-button" (click)="back()">
+        <i class="fa fa-long-arrow-left"></i>
+        Back
+      </a>
+    </div>
+
+    <div class="w-sm pull-left">
+      <ng-select *ngIf="developers.length"
+                 [items]="developers"
+                 [active]="selectedDevelopers"
+                 (selected)="onChangeDeveloper($event)">
+      </ng-select>
+    </div>
+
+    <div class="clearfix">
+      <div class="date-selector pull-left">
+        <span *ngIf="date">{{date | date:'EEE, y-MM-dd'}}</span>
+        <i class="fa fa-calendar" (click)="toggleDatePicker()"></i>
+
+        <div *ngIf="showDatePicker" style="position: absolute; z-index:10; min-height:290px;">
+          <datepicker
+            [ngModel]="date"
+            (selectionDone)="onChangeDate($event)"
+            [maxDate]="today"
+            [showWeeks]="false">
+          </datepicker>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="baskets?.length">
+      <ul class="list-group" *ngFor="let basket of baskets">
+        <li class="list-group-item">
+          <div class="pull-left">
+            {{basket.basket.title}}
+          </div>
+          <div class="pull-right">
+            <a (click)="show(basket.basket._id)" *ngIf="showBasket !== basket.basket._id" class="pointer"><span
+              class="caret"></span>
+              Show</a>
+            <a (click)="hide()" *ngIf="showBasket == basket.basket._id" class="dropup pointer"><span
+              class="caret"></span>
+              Hide</a>
+          </div>
+          <div class="clearfix"></div>
+
+          <div *ngIf="showBasket === basket.basket._id">
+            <div *ngIf="!basket.items.length"
+                 style="margin: 10px 0 0; padding: 10px 0 0 20px; border-top: 1px solid #ccc">
+              <ul class="list-group" style="margin: 0;">
+                <li>
+                  <span>Basket is empty.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div *ngIf="basket.items.length"
+                 style="margin: 10px 0 0; padding: 10px 0 0 20px; border-top: 1px solid #ccc">
+
+              <ul class="list-group" *ngFor="let basketItem of basket.items" style="margin: 0;">
+                <li>
+                  <span class="pull-left">{{basketItem.item.title}}</span> &nbsp;
+                  <span class="text-muted">
+                    ({{showStatus(basketItem.item.status)}})
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="!baskets.length">
+      No baskets for this date.
+    </div>
+  </div>
+
+</div>

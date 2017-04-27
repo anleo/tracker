@@ -93,6 +93,8 @@ import {SimpleTaskFormComponent} from "./tasks/simple-task-form/simple-task-form
 import {TaskBoardResolver} from "./resolvers/task-board.resolver";
 import {BoardEditComponent} from "./tasks/board-edit/board-edit.component";
 import {BoardTeamComponent} from "./tasks/components/board-team/board-team.component";
+
+import {BasketsComponent} from "./basket/baskets.component";
 import {BasketComponent} from './tasks/basket/basket.component';
 import {BasketResource} from "./resources/basket.resource";
 import {BasketService} from "./services/basket.service";
@@ -204,6 +206,7 @@ import {BoardItemSpentTimeService} from "./services/board-item-spent-time.servic
     TaskSearchDirective,
     TaskSearchComponent,
     BasketComponent,
+    BasketsComponent,
     BasketTaskPanelComponent,
     BasketHistoryComponent,
     BasketContentComponent,

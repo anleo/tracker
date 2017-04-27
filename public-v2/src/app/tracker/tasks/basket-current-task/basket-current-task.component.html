@@ -1,28 +1,29 @@
-<div class="panel panel-default" *ngIf="task">
-  <div class="panel-heading overflow-hidden">
-    <h4 class="panel-title">
-      <a [routerLink]="['/app/tasks/', task._id]"><span style="font-weight: bold">{{task.title}}</span> </a>
+<div *ngIf="task" class="current-basket">
+  <h4 class="current-basket-title">{{task.title}}</h4>
 
-      <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
-      <span class="vcenter pull-right" *ngIf="approximateTime">{{approximateTime}} h</span>
-    </h4>
+  <div class="overflow-hidden current-basket-spent-time">
+      <div>{{spendTime}}</div>
   </div>
 
-  <div class="panel-body">
-    <div>
-      <span class="label" [ngClass]="[setLabelClass()]">{{task.status || 'new'}}</span>
+  <div class="timer-controls-wrapper">
+    <a *ngIf="getLastStatus(boardItem) == 'accepted' || getLastStatus(boardItem) == ''"
+       (click)="start(boardItem)"
+       class="fa fa-play fa-2x text-center pointer timer-controls">
+    </a>
 
-      <span class="glyphicon glyphicon-play"
-            *ngIf="task.status == 'accepted' || task.status == ''"
-            (click)="start(boardItem)"></span>
-      <span class="glyphicon glyphicon-pause"
-            *ngIf="task.status == 'in progress'"
-            (click)="pause(boardItem)"></span>
-      <span class="glyphicon glyphicon-check" (click)="accept(boardItem)"></span>
+    <a *ngIf="getLastStatus(boardItem) == 'in progress'"
+       (click)="pause(boardItem)"
+       class="fa fa-pause fa-2x text-center pointer timer-controls">
+    </a>
 
-      <span class="pull-right">{{spendTime}}</span>
+    <a *ngIf="getLastStatus(boardItem) !== 'accepted'"
+       (click)="accept(boardItem)"
+       class="fa fa-check fa-2x text-center pointer timer-controls">
+    </a>
 
-    </div>
+    <a (click)="edit(task)"
+       class="fa fa-pencil-square-o fa-2x pointer timer-controls">
+    </a>
   </div>
 </div>
 
