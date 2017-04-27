@@ -4,19 +4,18 @@ let ps = es.pause();
 
 let app = require('./common');
 
-
 let Task = app.container.get('Task');
 let TaskService = app.container.get('TaskService');
 
-exports.up = function (next) {
+exports.up = (next) => {
     Task.find({})
         .lean()
         .stream()
         .pipe(ps)
-        .pipe(es.map(function (task, next) {
+        .pipe(es.map((task, next) => {
             ps.pause();
 
-            TaskService.getRoot(task, function (err, root) {
+            TaskService.getRoot(task, (err, root) => {
                 if (err) {
                     console.log('>> err', err, err.stack);
                     ps.resume();
@@ -26,7 +25,7 @@ exports.up = function (next) {
 
                 let rootId = task.parentTaskId ? root._id : null;
 
-                Task.update({_id: task._id}, {$set: {root: rootId}}, function (err) {
+                Task.update({_id: task._id}, {$set: {root: rootId}}, (err) => {
                     if (err) {
                         ps.resume();
                         console.log('>> err', err, err.stack);
@@ -38,13 +37,13 @@ exports.up = function (next) {
                 })
             });
         }))
-        .on('error', function (err) {
-            console.log('err', err);
+        .on('error', (err) => {
+            console.log('err in [001-add-root-to-tasks]', err);
         })
         .on('end', next);
 
 };
 
-exports.down = function (next) {
+exports.down = (next) => {
     next();
 };
