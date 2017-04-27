@@ -837,6 +837,47 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         }
     };
 
+    this.getMyColleagues = function (user, next) {
+        let users = [];
+
+        let query = {
+            $or: [
+                {owner: user._id},
+                {team: user._id}
+            ],
+            $and: [
+                {
+                    $or: [
+                        {
+                            parentTaskId: {$exists: false}
+                        },
+                        {
+                            parentTaskId: null,
+                        }
+                    ]
+                }
+            ]
+        };
+
+        Task.find(query)
+            .lean()
+            .exec()
+            .then((tasks) => {
+                let usersIds = [];
+
+                tasks.forEach((task) => {
+                    usersIds = usersIds.concat(task.team);
+                    _.uniq(usersIds, (user) => user.toString());
+                });
+
+                if (!usersIds.length) {
+                    return next(null, users);
+                }
+
+                UserService.getUsers(usersIds, next);
+            }, (err) => next(err));
+    };
+
     this.isItMyChildren = (task, futureParent, next) => {
         task = task && task._id ? task._id : task;
         futureParent = futureParent && futureParent._id ? futureParent._id : futureParent;
