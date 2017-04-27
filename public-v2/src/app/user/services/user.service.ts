@@ -47,4 +47,10 @@ export class UserService {
       .getUsers()
       .$observable;
   }
+
+  getUsersByProjectsTeams(): Observable <User[]> {
+    return this.userResource
+      .getUsersByProjectsTeams()
+      .$observable;
+  }
 }

@@ -41,4 +41,12 @@ export class BasketResource extends Resource {
     //  TODO rename method and url - it's not a history, just boards
   getBasketHistory: ResourceMethod<{userId: string, query: any}, TaskBoard[]>;
 
+  @ResourceAction({
+    path: '/',
+    method: RequestMethod.Get,
+    params: {"query": "query"},
+    isArray: true
+  })
+  getBaskets: ResourceMethod<{query: any}, TaskBoard[]>;
+
 }

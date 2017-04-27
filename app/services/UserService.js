@@ -7,7 +7,12 @@ var UserService = function (User) {
         User
             .find({_id: {$in: users}}, '-local.passwordHashed -local.passwordSalt')
             .exec(next);
-    }
+    };
+
+    this.getUserById = function (id, next) {
+        User.findById(id, '-local.passwordHashed -local.passwordSalt', next);
+    };
+
 };
 
 module.exports = UserService;

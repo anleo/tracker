@@ -528,36 +528,43 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                 return next(err);
             }
 
-            task.save(function (err) {
-                if (err) return next(err);
-                Task.findById(task._id)
-                    .populate('owner', '-local.passwordHashed -local.passwordSalt')
-                    .populate('developer', '-local.passwordHashed -local.passwordSalt')
-                    .lean()
-                    .exec(function (err, task) {
-                        if (err) return next(err);
+            self.getParent(task, (err, parent) => {
+                if (err) {
+                    return next(err);
+                }
 
-                        FileService.connectFiles(task.files);
-                        self.updateRootTags(task);
+                task.root = parent ? parent._id : null;
 
-                        self.updateParentByTask(task, function (err) {
-                            if (err) {
-                                return next(err);
-                            }
+                task.save(function (err) {
+                    if (err) return next(err);
+                    Task.findById(task._id)
+                        .populate('owner', '-local.passwordHashed -local.passwordSalt')
+                        .populate('developer', '-local.passwordHashed -local.passwordSalt')
+                        .lean()
+                        .exec(function (err, task) {
+                            if (err) return next(err);
 
-                            self.getEstimatedTask(task, function (err, task) {
-                                if (err) return next(err);
+                            FileService.connectFiles(task.files);
+                            self.updateRootTags(task);
 
-                                HistoryService.createTaskHistory(task, function (err) {
+                            self.updateParentByTask(task, function (err) {
+                                if (err) {
+                                    return next(err);
+                                }
+
+                                self.getEstimatedTask(task, function (err, task) {
                                     if (err) return next(err);
-                                    self.notifyUsers(task, 'task.save');
-                                    next(null, task);
+
+                                    HistoryService.createTaskHistory(task, function (err) {
+                                        if (err) return next(err);
+                                        self.notifyUsers(task, 'task.save');
+                                        next(null, task);
+                                    });
                                 });
                             });
                         });
-                    });
-            })
-
+                });
+            });
         });
     };
 
@@ -764,6 +771,31 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         }
     };
 
+    this.getRootTasksByQuery = function (query) {
+        let _query = {
+            $or: [
+                {
+                    parentTaskId: {$exists: false}
+                },
+                {
+                    parentTaskId: null,
+                }
+            ]
+        };
+
+        if (query) {
+            _query.$and = _query.$and ? _query.$and.push(query) : [query];
+        }
+
+        return new Promise(function (resolve, reject) {
+            Task.find(_query)
+                .then(
+                    (roots) => resolve(roots),
+                    (err) => reject(err)
+                )
+        });
+    };
+
     this.getTaskId = function (task) {
         if (!task) return '';
         return task._id ? task._id : task || '';
@@ -803,6 +835,47 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
         } else {
             next();
         }
+    };
+
+    this.getMyColleagues = function (user, next) {
+        let users = [];
+
+        let query = {
+            $or: [
+                {owner: user._id},
+                {team: user._id}
+            ],
+            $and: [
+                {
+                    $or: [
+                        {
+                            parentTaskId: {$exists: false}
+                        },
+                        {
+                            parentTaskId: null,
+                        }
+                    ]
+                }
+            ]
+        };
+
+        Task.find(query)
+            .lean()
+            .exec()
+            .then((tasks) => {
+                let usersIds = [];
+
+                tasks.forEach((task) => {
+                    usersIds = usersIds.concat(task.team);
+                    _.uniq(usersIds, (user) => user.toString());
+                });
+
+                if (!usersIds.length) {
+                    return next(null, users);
+                }
+
+                UserService.getUsers(usersIds, next);
+            }, (err) => next(err));
     };
 
     this.isItMyChildren = (task, futureParent, next) => {
