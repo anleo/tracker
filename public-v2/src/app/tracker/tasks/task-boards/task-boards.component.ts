@@ -169,7 +169,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       let newBoardItemTask = newBoardItem['item'];
       newBoardItemTask.parentTaskId = dropZone.parent;
 
-      return this.boardService.checkRelations(dropZone.board.board, newBoardItemTask._id)
+      let board = dropZone.board.board && dropZone.board.board._id ? dropZone.board.board._id : dropZone.board.board;
+      return this.boardService.checkRelations(board, newBoardItemTask._id)
         .toPromise()
         .then((hasRelative) => {
           if (hasRelative) {

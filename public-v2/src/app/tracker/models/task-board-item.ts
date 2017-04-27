@@ -1,6 +1,6 @@
 export class TaskBoardItem {
   _id?: string;
-  board?: string;
+  board?: any;
   type?: string;
   item?: any;
   createdAt?: string;

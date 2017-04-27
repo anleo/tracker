@@ -3,6 +3,7 @@ let BoardItemService = function (Board,
                                  BoardItemBoard,
                                  BoardItemTask) {
     let _ = require('lodash');
+    let asyncP = require('async-promises');
     let self = this;
 
     this.getById = function (id) {
@@ -79,6 +80,7 @@ let BoardItemService = function (Board,
             BoardItem
                 .find(options)
                 .populate('item')
+                .populate('board')
                 .lean()
                 .exec()
                 .then((boardItems) => resolve(boardItems), (err) => reject(err))
@@ -175,8 +177,59 @@ let BoardItemService = function (Board,
 
                 },
                 (err) => Promise.reject(err))
-    }
+    };
 
+    this.getChildrenDeepByBoard = (item) => {
+        item = item && item._id ? item._id : item;
+        let options = {board: item};
+
+        return new Promise((resolve, reject) => {
+            self.getItemsByOptions(options)
+                .then((children) => {
+                    let allChildrenItems = [];
+                    return asyncP.each(children, (child) => {
+                        return new Promise((resolve) => {
+                            allChildrenItems.push(child);
+                            self.getChildrenDeepByBoard(child)
+                                .then((children) => {
+                                    allChildrenItems = allChildrenItems.concat(children);
+                                    resolve();
+                                });
+                        });
+                    })
+                        .then(() => {
+                            resolve(allChildrenItems);
+                        });
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    };
+
+    this.hasInBoardChildrenItems = (board, item) => {
+        return self.getChildrenDeepByBoard(board)
+            .then((boardItems) => {
+                item = item && item._id ? item._id : item;
+
+                if (!boardItems.length) {
+                    return Promise.resolve(false);
+                }
+
+                let items = boardItems.map((boardItem) => {
+                    return boardItem.item && boardItem.item._id ? boardItem.item._id : boardItem.item;
+                });
+
+                let hasInChildren = items.find((aItem) => {
+                    return item.toString() === aItem.toString();
+                });
+
+                return Promise.resolve(!!hasInChildren)
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    };
 };
 
 module.exports = BoardItemService;

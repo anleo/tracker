@@ -608,7 +608,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                             wasModified && self.notifyUsers(task, 'task.save');
 
                             BoardService
-                                .updateParentsByItem(task)
+                                .updateParentsBoardsByTask(task)
                                 .then(() => next(null, task));
                         });
 
