@@ -21,6 +21,7 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   timer$ = Observable.timer(1000, 1000);
   timerSubscription;
   spendTime;
+  wasStarted: boolean = false;
 
   constructor(private taskService: TaskService,
               private boardItemService: BoardItemService,
@@ -81,6 +82,10 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   }
 
   pause(boardItem) {
+    if (!this.wasStarted) {
+      return;
+    }
+
     this.boardItemSpentTimeService
       .boardItemStatusProvider(boardItem, '')
       .subscribe(() => {
@@ -88,7 +93,8 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
       });
 
     if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe()
+      this.timerSubscription.unsubscribe();
+      this.wasStarted = false;
     }
   }
 
@@ -100,7 +106,8 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
       });
 
     if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe()
+      this.timerSubscription.unsubscribe();
+      this.wasStarted = false;
     }
   }
 
@@ -113,9 +120,14 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
   }
 
   startTimer() {
+    if (this.wasStarted) {
+      return;
+    }
+
+    this.wasStarted = true;
     this.timerSubscription = this.timer$
       .subscribe(timer => {
-        this.spendTime = this.boardItemSpentTimeTimestamp.add(1, 'second').format('HH:mm:ss');
+          this.spendTime = this.boardItemSpentTimeTimestamp.add(1, 'second').format('HH:mm:ss');
       });
   }
 
@@ -137,7 +149,7 @@ export class BasketCurrentTaskComponent implements OnInit, OnChanges {
     return className;
   }
 
-  getLastStatus(boardItem){
+  getLastStatus(boardItem) {
     return this.boardItemSpentTimeService.getLastStatus(boardItem);
   }
 }
