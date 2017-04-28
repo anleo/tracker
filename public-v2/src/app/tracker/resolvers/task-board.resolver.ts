@@ -11,6 +11,9 @@ export class TaskBoardResolver implements Resolve<TaskBoard> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<TaskBoard> {
     let boardId = route.params['boardId'] || route.parent.params['boardId'] || null;
-    return this.boardService.getBoard(boardId);
+    return this.boardService.getBoard(boardId).map((board) => {
+      board.type = 'board';
+      return board;
+    });
   }
 }

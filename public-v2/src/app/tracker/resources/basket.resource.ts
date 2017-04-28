@@ -43,6 +43,14 @@ export class BasketResource extends Resource {
   getBasketHistory: ResourceMethod<{userId: string, query: any}, TaskBoard[]>;
 
   @ResourceAction({
+    path: '/',
+    method: RequestMethod.Get,
+    params: {"query": "query"},
+    isArray: true
+  })
+  getBaskets: ResourceMethod<{query: any}, TaskBoard[]>;
+
+  @ResourceAction({
     path: '/{!basketId}/boardItems',
     method: RequestMethod.Post
   })

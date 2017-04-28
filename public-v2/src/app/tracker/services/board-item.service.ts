@@ -22,15 +22,21 @@ export class BoardItemService {
   }
 
   save(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
-    return this.boardItemResource.save(boardItem, {boardId: boardItem.board}).$observable;
+    return this.boardItemResource.save(boardItem, {boardId: boardItem.board._id || boardItem.board}).$observable;
   }
 
   update(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
-    return this.boardItemResource.update(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
+    return this.boardItemResource.update(boardItem, {
+      boardId: boardItem.board._id || boardItem.board,
+      boardItemId: boardItem._id
+    }).$observable;
   }
 
   remove(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
-    return this.boardItemResource.remove(boardItem, {boardId: boardItem.board, boardItemId: boardItem._id}).$observable;
+    return this.boardItemResource.remove(boardItem, {
+      boardId: boardItem.board._id || boardItem.board,
+      boardItemId: boardItem._id
+    }).$observable;
   }
 
   removeBoardItemByBoard(board: TaskBoard): Observable<TaskBoard> {

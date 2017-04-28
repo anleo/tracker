@@ -98,6 +98,11 @@ export class BasketService {
       .$observable
   }
 
+  getBaskets(query: any): Observable<TaskBoard[]> {
+    return this.basketResource.getBaskets({query: query})
+      .$observable
+  }
+
   getActiveBoardItem(boardItems: TaskBoardItem[]): TaskBoardItem {
     return boardItems
       .filter((item) => item.timeLog[item.timeLog.length - 1])

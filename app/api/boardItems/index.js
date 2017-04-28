@@ -51,7 +51,7 @@ module.exports = function (app) {
     });
 
     app.post('/api/boards/:boardId/boardItems', function (req, res) {
-       let data = {
+        let data = {
             board: req.Board,
             type: req.body.type,
             item: req.body.item
@@ -63,11 +63,19 @@ module.exports = function (app) {
             return res.status(403).json({error: 'You can\'t add item into itself'});
         }
 
-        BoardItemService.create(data)
-            .then((boardItem) => {
-                BoardService
-                    .updateParentsByItem(boardItem.item)
-                    .then(() => res.json(boardItem));
+        BoardItemService.hasInBoardChildrenItems(req.body.item, req.Board)
+            .then((hasInBoardChildrenItems) => {
+                if (hasInBoardChildrenItems) {
+                    return res.status(403).json({error: 'You can\'t move this item to current place'});
+                }
+
+                BoardItemService.create(data)
+                    .then((boardItem) => {
+                        BoardService
+                            .updateParentsBoards(req.Board)
+                            .then(() => res.json(boardItem));
+                    })
+                    .catch((err) => res.status(400).json({error: err}));
             })
             .catch((err) => res.status(400).json({error: err}));
     });

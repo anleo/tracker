@@ -11,6 +11,9 @@
       <a [routerLink]="['..', boardItem?.item?._id]">{{boardItem.item.title}}</a>
 
       <span class="fa fa-angle-down vcenter pull-right pointer" (click)="toggleSubitems()"></span>
+      <span *ngIf="boardItem && boardItem._id"
+            (click)="removeBoardItem(boardItem)"
+            class="fa fa-times-circle-o text-muted vcenter pull-right"></span>
       <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton"
             (click)="edit(boardItem?.item)"></span>
       <span class="fa fa-arrows text-muted vcenter drag-button pull-right"></span>

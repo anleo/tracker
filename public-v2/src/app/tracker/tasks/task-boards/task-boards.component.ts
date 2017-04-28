@@ -23,7 +23,7 @@ import {ToastService} from "../../../services/toast.service";
 })
 
 export class TaskBoardsComponent implements OnInit, OnDestroy {
-  boardItem: TaskBoardItem | null;
+  board: TaskBoardItem | null;
   boardItems: TaskBoardItem[] | null = [];
   project: Task | null = null;
   boardId: string;
@@ -65,7 +65,9 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
     this.getLocalConfig();
 
     this.route.data
-      .subscribe((data: {board: TaskBoardItem}) => this.boardItem = data && data.board);
+      .subscribe((data: {board: TaskBoardItem}) => {
+        this.board = data && data.board;
+      });
 
     this.currentTaskService.rootTask$
       .takeUntil(this.componentDestroyed$)
@@ -167,7 +169,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       let newBoardItemTask = newBoardItem['item'];
       newBoardItemTask.parentTaskId = dropZone.parent;
 
-      return this.boardService.checkRelations(dropZone.board.board, newBoardItemTask._id)
+      let board = dropZone.board.board && dropZone.board.board._id ? dropZone.board.board._id : dropZone.board.board;
+      return this.boardService.checkRelations(board, newBoardItemTask._id)
         .toPromise()
         .then((hasRelative) => {
           if (hasRelative) {
@@ -177,15 +180,7 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
           this.taskService
             .updateTask(newBoardItemTask)
             .toPromise()
-            .then(() => {
-              if (newBoardItem && newBoardItem['_id']) {
-                this.boardItemService
-                  .remove(newBoardItem)
-                  .toPromise()
-                  .then(() => this.boardItemService.getBoardItemsByBoardId(dropZone.board.board))
-                  .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
-              }
-            })
+            .then(() => this.toastService.info('Item was added'))
             .catch((err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong'));
         });
     }

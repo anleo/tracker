@@ -104,6 +104,9 @@ export class BasketComponent implements OnInit {
     this.basketService.updateBasket(this.basket)
       .subscribe(() => {
           this.basketService.createBasket()
+            .map(() => {
+              this.toastService.info('Current basket was finished and created new basket');
+            })
             .subscribe(() => {
                 this.basketService.setBasketList();
               },

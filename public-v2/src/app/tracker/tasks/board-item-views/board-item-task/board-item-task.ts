@@ -4,6 +4,7 @@ import {TaskBoardItem} from "../../../models/task-board-item";
 import {TaskService} from "../../../services/task.service";
 import {Subject} from "rxjs";
 import {TaskWithStatus} from "../../../models/task-with-status";
+import {BoardItemService} from "../../../services/board-item.service";
 
 @Component({
   selector: 'board-item-task',
@@ -18,7 +19,9 @@ export class BoardItemTaskComponent implements OnInit {
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,
+              private boardItemService: BoardItemService) {
+  }
 
   ngOnInit(): void {
     this.taskService.editTaskUpdated$
@@ -65,4 +68,8 @@ export class BoardItemTaskComponent implements OnInit {
   checkType(item) {
     return item.type === 'task';
   }
+
+  removeBoardItem(boardItem: TaskBoardItem): void {
+    this.boardItemService.remove(boardItem);
+  };
 }
