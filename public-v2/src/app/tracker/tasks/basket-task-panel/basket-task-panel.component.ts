@@ -21,6 +21,7 @@ export class BasketTaskPanelComponent implements OnInit {
 
   task: Task;
   approximateTime: string = null;
+
   show: boolean = false;
   subtask: any = {};
 

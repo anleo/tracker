@@ -121,8 +121,7 @@ export class BasketService {
       }
 
       if (boardItem.item.parentTaskId) {
-        let parent = resultBoardItems
-          .find((resultBoardItem) => resultBoardItem.item._id == boardItem.item.parentTaskId);
+        let parent = this.findDeepParent(boardItem, resultBoardItems);
 
         if (parent) {
           parent.subBoardItems.push(boardItem)
@@ -143,6 +142,26 @@ export class BasketService {
 
   setActiveBoardItem(boardItem: TaskBoardItem) {
     this.activeBoardItem$.next(boardItem);
+  }
+
+  findDeepParent(boardItem: TaskBoardItem, searchableBoardItems: TaskBoardItem[]): TaskBoardItem {
+    let parent = searchableBoardItems
+      .find((resultBoardItem) => resultBoardItem.item._id == boardItem.item.parentTaskId);
+
+    if (!parent && searchableBoardItems.length) {
+
+      searchableBoardItems.forEach((item) => {
+        if (item.subBoardItems && item.subBoardItems.length) {
+          parent = this.findDeepParent(boardItem, item.subBoardItems);
+
+          if (parent) {
+            return parent;
+          }
+        }
+      });
+    }
+
+    return parent;
   }
 
   addSubitem(item: TaskBoardItem, boardItem: TaskBoardItem) {

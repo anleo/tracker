@@ -918,3 +918,23 @@ hr {
   min-height: 52px;
   overflow-y: auto !important;
 }
+
+ /*Converse with anleo*/
+ .basket-tree, .basket-tree ul, .basket-tree li {
+   position: relative;
+ }
+
+.basket-tree ul {
+  list-style: none;
+  padding-left: 16px;
+}
+
+.basket-tree li::before, .basket-tree li::after {
+  content: "";
+  position: absolute;
+  left: -12px;
+}
+
+.basket-tree ul > li:last-child::after {
+  height: 8px;
+}

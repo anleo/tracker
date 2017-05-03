@@ -40,9 +40,11 @@
                            [boardItem]="taskItem"
                            [pointCost]="basket.pointCost">
         </basket-task-panel>
+        <div class="basket-tree">
+          <board-item-tree *ngIf="!taskItem.item.simple"
+                           [nodes]="[taskItem]"></board-item-tree>
+        </div>
 
-        <board-item-tree *ngIf="!taskItem.item.simple"
-                         [nodes]="[taskItem]"></board-item-tree>
       </div>
       <button (click)="finish()" class="btn btn-success btn-sm">Finish</button>
       <button (click)="clearBasket()" class="btn btn-danger btn-sm">Clear</button>
