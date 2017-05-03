@@ -18,8 +18,6 @@ export class BasketTaskPanelComponent implements OnInit {
   task: Task;
   approximateTime: string = null;
 
-  @Output() selectedTask: EventEmitter<TaskBoardItem> = new EventEmitter();
-
   constructor(private taskService: TaskService,
               private boardItemService: BoardItemService,
               private basketService: BasketService) {
