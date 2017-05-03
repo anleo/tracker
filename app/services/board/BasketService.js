@@ -50,7 +50,7 @@ let BasketService = function (Board, TaskService, BoardService, BoardItemService
                     }, (err) => Promise.reject(err))
 
             });
-    }
+    };
 
     this.countUserBaskets = function (user) {
         return new Promise(function (resolve, reject) {
@@ -80,13 +80,13 @@ let BasketService = function (Board, TaskService, BoardService, BoardItemService
                                     board: data.board,
                                     type: task.simple ? 'task' : 'complex',
                                     item: task
-                                }
+                                };
 
                                 return BoardItemService.create(params);
-                            })
+                            });
 
                             resolve(Promise.all(promises));
-                        })
+                        });
                     })
                     .catch((err) => reject(err));
 
@@ -95,7 +95,7 @@ let BasketService = function (Board, TaskService, BoardService, BoardItemService
                 resolve(BoardItemService.create(data))
             }
         })
-    }
+    };
 
 
 };

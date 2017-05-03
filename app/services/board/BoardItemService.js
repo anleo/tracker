@@ -243,6 +243,10 @@ let BoardItemService = function (Board,
                 return Promise.reject(err);
             });
     };
+
+    this.isComplex = (boardItem) => {
+        return boardItem.type === 'complex';
+    };
 };
 
 module.exports = BoardItemService;

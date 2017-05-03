@@ -5,18 +5,21 @@ import {BasketResource} from "../resources/basket.resource";
 import {User} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
 import {TaskBoard} from "../models/task-board";
+import {Task} from "../models/task";
 import {BehaviorSubject} from "rxjs";
 import {TaskBoardItem} from "../models/task-board-item";
 import {BoardItemService} from "./board-item.service";
 import {BoardService} from "./board.service";
+import {TaskService} from "./task.service";
 
 
 @Injectable()
 export class BasketService {
   constructor(private basketResource: BasketResource,
               private userService: UserService,
-              private  boardItemService: BoardItemService,
-              private boardService: BoardService) {
+              private boardItemService: BoardItemService,
+              private boardService: BoardService,
+              private taskService: TaskService) {
     this.getUser();
     this.basket$
       .subscribe((basket) => this.basket = basket);
@@ -135,12 +138,32 @@ export class BasketService {
   }
 
   saveBoardItemToBasket(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
-    return this.basketResource.saveBoardItem(boardItem, {basketId: boardItem.board}).$observable;
+    return this.basketResource.saveBoardItem(boardItem, {basketId: boardItem.board._id || boardItem.board}).$observable;
   }
 
   setActiveBoardItem(boardItem: TaskBoardItem) {
     this.activeBoardItem$.next(boardItem);
   }
+
+  addSubitem(item: TaskBoardItem, boardItem: TaskBoardItem) {
+    return this.basketResource.addSubitem(item, {
+      basketId: boardItem.board._id || boardItem.board,
+      boardItemId: boardItem._id
+    }).$observable;
+  };
+
+  createAndAddTask(task: Task, boardItem): Observable<TaskBoardItem> {
+    return this.taskService.saveChildTask(task)
+      .map((task) => {
+        let newBoardItem = {
+          item: task._id,
+          type: 'task',
+          board: boardItem.board._id || boardItem.board
+        };
+
+        return this.addSubitem(newBoardItem, boardItem);
+      });
+  };
 
 }
 

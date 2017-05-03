@@ -56,4 +56,10 @@ export class BasketResource extends Resource {
   })
   saveBoardItem: ResourceMethodStrict<TaskBoardItem, {basketId: string}, TaskBoardItem>;
 
+  @ResourceAction({
+    path: '/{!basketId}/boardItems/{!boardItemId}',
+    method: RequestMethod.Post
+  })
+  addSubitem: ResourceMethodStrict<TaskBoardItem, {basketId: string, boardItemId: string}, TaskBoardItem>;
+
 }
