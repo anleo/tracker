@@ -1,4 +1,4 @@
-let BasketService = function (Board, TaskService, BoardService, BoardItemService) {
+let BasketService = function (Board, BoardItem, TaskService, BoardService, BoardItemService) {
     let _ = require('lodash');
     let self = this;
     let moment = require('moment');
@@ -97,6 +97,46 @@ let BasketService = function (Board, TaskService, BoardService, BoardItemService
         })
     }
 
+    this.removeSimpleBoardItem = function (boardItem) {
+        return new Promise((resolve, reject) => {
+            let query = {_id: boardItem._id};
+
+            BoardItem.remove(query)
+                .then(() => resolve(), (err) => reject(err))
+        });
+    }
+
+    this.removeComplexBoardItem = function (boardItem, basketBoardItems) {
+        let self = this;
+
+        return this.boardItemChildrenDeepFind(boardItem, basketBoardItems)
+            .then((boardItems) => {
+                let promises = [];
+                boardItems.push(boardItem);
+                boardItems.forEach((item) => promises.push(self.removeSimpleBoardItem(item)));
+
+                return Promise.all(promises);
+            });
+    }
+
+    this.boardItemChildrenDeepFind = function (boardItem, searchableBoardItems) {
+        let self = this;
+        return new Promise((resolve, reject) => {
+
+            let boardItems = searchableBoardItems
+                .filter((item) => item.item.parentTaskId && item.item.parentTaskId.toString() == boardItem.item._id.toString())
+
+            boardItems.forEach((item) => {
+                if (item.type == 'complex') {
+                    self.boardItemChildrenDeepFind(item, searchableBoardItems)
+                        .then((resultBoardItems) => boardItems.push.apply(boardItems, resultBoardItems))
+                        .catch((err) => reject(err));
+                }
+            });
+
+            resolve(boardItems);
+        });
+    }
 
 };
 module.exports = BasketService;

@@ -13,8 +13,7 @@
             (click)="start(boardItem)"></span>
 
       <span class="fa fa-times vcenter pull-right"
-            (click)="remove(boardItem)"
-            *ngIf="boardItem && boardItem.item.simple"></span>
+            (click)="remove(boardItem)"></span>
       <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
       <span class="vcenter pull-right" tooltip="Approx. planned time">
         <span class="glyphicon glyphicon-dashboard" *ngIf="approximateTime" ></span>

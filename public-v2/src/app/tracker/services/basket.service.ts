@@ -161,5 +161,13 @@ export class BasketService {
     return parent;
   }
 
+  removeBasketItem(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
+    return this.basketResource.removeBasketItem({
+      basketId: boardItem.board._id || boardItem.board,
+      boardItemId: boardItem._id
+    })
+      .$observable;
+  }
+
 }
 

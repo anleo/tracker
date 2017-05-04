@@ -36,7 +36,7 @@ module.exports = function (container) {
   container.register('UserService', require('../services/UserService'), ['User']);
   container.register('BoardItemService', require('../services/board/BoardItemService'), ['Board', 'BoardItem', 'BoardItemBoard', 'BoardItemTask', 'BoardItemComplex']);
   container.register('BoardService', require('../services/board/BoardService'), ['Board', 'BoardItemBoard', 'BoardItemService', 'SimpleMetricsService']);
-  container.register('BasketService', require('../services/board/BasketService'), ['Board', 'TaskService', 'BoardService', 'BoardItemService']);
+  container.register('BasketService', require('../services/board/BasketService'), ['Board', 'BoardItem', 'TaskService', 'BoardService', 'BoardItemService']);
 
   container.register('SimpleMetricsService', require('../services/SimpleMetricsService'), ['BoardItemService']);
 

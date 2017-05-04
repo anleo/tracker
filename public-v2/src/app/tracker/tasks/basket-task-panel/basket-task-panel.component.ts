@@ -2,11 +2,8 @@ import {Component, OnInit, Input, Output} from '@angular/core';
 
 import {Task} from '../../models/task'
 import {TaskService} from "../../services/task.service";
-import {BoardItemService} from "../../services/board-item.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
-import {Observable} from "rxjs";
-import {EventEmitter} from "@angular/common/src/facade/async";
 
 @Component({
   selector: 'basket-task-panel',
@@ -19,7 +16,6 @@ export class BasketTaskPanelComponent implements OnInit {
   approximateTime: string = null;
 
   constructor(private taskService: TaskService,
-              private boardItemService: BoardItemService,
               private basketService: BasketService) {
   }
 
@@ -35,13 +31,11 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   remove(boardItem: TaskBoardItem) {
-    this.boardItemService.remove(boardItem)
-      .subscribe(() => {
-          this.basketService.getBasketMetrics();
-        },
-        (err) => {
-          console.log('err', err);
-        })
+    this.basketService.removeBasketItem(boardItem)
+      .subscribe(
+        () => this.basketService.getBasketMetrics(),
+        (err) => console.log('err', err)
+      );
   }
 
   calculateApproximateTime(): void {

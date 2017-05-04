@@ -56,4 +56,10 @@ export class BasketResource extends Resource {
   })
   saveBoardItem: ResourceMethodStrict<TaskBoardItem, {basketId: string}, TaskBoardItem>;
 
+  @ResourceAction({
+    path: '/{!basketId}/boardItems/{!boardItemId}',
+    method: RequestMethod.Delete
+  })
+  removeBasketItem: ResourceMethod<{basketId: string, boardItemId: string}, any>;
+
 }

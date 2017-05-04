@@ -114,7 +114,7 @@ module.exports = function (app) {
             });
     });
 
-    app.post('/api/baskets/:basketId/boardItems', function(req, res){
+    app.post('/api/baskets/:basketId/boardItems', function (req, res) {
         let data = {
             board: req.Basket,
             type: req.body.type,
@@ -123,6 +123,24 @@ module.exports = function (app) {
 
         BasketService.addBoardItem(data)
             .then((boardItem) => res.json())
+            .catch((err) => res.status(400).json({error: err}));
+    });
+
+    app.delete('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res, next) {
+        BoardItemService.getById(req.params.boardItemId)
+            .then((boardItem) => {
+
+                if (boardItem.type == 'task') {
+                    BasketService
+                        .removeSimpleBoardItem(boardItem)
+                        .then(() => res.json());
+                } else {
+                    BoardItemService.getItemsByOptions({board: req.Basket._id})
+                        .then((basketBoardItems) => BasketService.removeComplexBoardItem(boardItem, basketBoardItems))
+                        .then(() => res.json())
+                        .catch((err) => next(err));
+                }
+            })
             .catch((err) => res.status(400).json({error: err}));
     });
 
