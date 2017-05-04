@@ -97,7 +97,7 @@ let BasketService = function (Board, BoardItem, TaskService, BoardService, Board
         })
     }
 
-    this.removeSimpleBoardItem = function (boardItem) {
+    this.removeBoardItem = function (boardItem) {
         return new Promise((resolve, reject) => {
             let query = {_id: boardItem._id};
 
@@ -113,7 +113,7 @@ let BasketService = function (Board, BoardItem, TaskService, BoardService, Board
             .then((boardItems) => {
                 let promises = [];
                 boardItems.push(boardItem);
-                boardItems.forEach((item) => promises.push(self.removeSimpleBoardItem(item)));
+                boardItems.forEach((item) => promises.push(self.removeBoardItem(item)));
 
                 return Promise.all(promises);
             });
@@ -124,7 +124,7 @@ let BasketService = function (Board, BoardItem, TaskService, BoardService, Board
         return new Promise((resolve, reject) => {
 
             let boardItems = searchableBoardItems
-                .filter((item) => item.item.parentTaskId && item.item.parentTaskId.toString() == boardItem.item._id.toString())
+                .filter((item) => item.item.parentTaskId && item.item.parentTaskId.toString() == boardItem.item._id.toString());
 
             boardItems.forEach((item) => {
                 if (item.type == 'complex') {
@@ -136,6 +136,13 @@ let BasketService = function (Board, BoardItem, TaskService, BoardService, Board
 
             resolve(boardItems);
         });
+    }
+
+    this.boardItemParent = function (boardItem, searchableBoardItems) {
+        let foundBoardItem = searchableBoardItems
+            .find((item) => item.item._id.toString() === boardItem.item.parentTaskId.toString());
+
+        return Promise.resolve(foundBoardItem);
     }
 
 };

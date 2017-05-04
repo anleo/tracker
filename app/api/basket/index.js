@@ -129,10 +129,9 @@ module.exports = function (app) {
     app.delete('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res, next) {
         BoardItemService.getById(req.params.boardItemId)
             .then((boardItem) => {
-
                 if (boardItem.type == 'task') {
                     BasketService
-                        .removeSimpleBoardItem(boardItem)
+                        .removeBoardItem(boardItem)
                         .then(() => res.json());
                 } else {
                     BoardItemService.getItemsByOptions({board: req.Basket._id})
