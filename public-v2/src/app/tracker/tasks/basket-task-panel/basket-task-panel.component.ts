@@ -18,7 +18,7 @@ export class BasketTaskPanelComponent implements OnInit {
   approximateTime: string = null;
 
   show: boolean = false;
-  subtask: any = {};
+  subTask: any = {};
 
   constructor(private taskService: TaskService,
               private basketService: BasketService,
@@ -54,14 +54,14 @@ export class BasketTaskPanelComponent implements OnInit {
     this.basketService.setActiveBoardItem(boardItem);
   }
 
-  save() {
-    if (!this.subtask.title.length) {
+  addSubBoardItem() {
+    if (!this.subTask.title.length) {
       this.toastService.error('Title is a required', 'Something was wrong');
     }
 
-    this.subtask.parentTaskId = this.task._id;
+    this.subTask.parentTaskId = this.task._id;
 
-    this.basketService.createAndAddTask(this.subtask, this.boardItem)
+    this.basketService.createAndAddTask(this.subTask, this.boardItem)
       .subscribe(() => {
         this.toastService.info('', 'Item was created');
         this.initSubTask();
@@ -74,8 +74,8 @@ export class BasketTaskPanelComponent implements OnInit {
 
   private initSubTask() {
     if (this.task && this.task._id) {
-      this.subtask.parentTaskId = this.task._id;
-      this.subtask.title = '';
+      this.subTask.parentTaskId = this.task._id;
+      this.subTask.title = '';
     }
   }
 }

@@ -28,9 +28,9 @@
   </div>
 
 
-  <form (submit)="save()" *ngIf="show" class="form-inline">
+  <form (submit)="addSubBoardItem()" *ngIf="show" class="form-inline">
     <div class="input-group" style="width: 100%">
-      <input [(ngModel)]="subtask.title"
+      <input [(ngModel)]="subTask.title"
              class="form-control input-sm" placeholder="Add Task"
              name="title" type="text" id="title" autocomplete="off"/>
       <span class="input-group-btn">

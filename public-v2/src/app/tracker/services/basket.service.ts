@@ -77,7 +77,7 @@ export class BasketService {
       })
   }
 
-  setBasketList() {
+  setBasketBoardItems() {
     this.boardItemService.getBoardItemsByBoardId(this.basket._id)
       .subscribe((boardItems) => {
         this.basketList$.next(boardItems);
@@ -90,7 +90,7 @@ export class BasketService {
     this.boardService.getboardMetrics(this.basket._id)
       .subscribe((basket) => {
           this.setBasket(basket);
-          this.setBasketList();
+          this.setBasketBoardItems();
         },
         (err) => console.log('err', err))
   }

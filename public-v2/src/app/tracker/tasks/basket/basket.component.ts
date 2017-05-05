@@ -24,7 +24,6 @@ export class BasketComponent implements OnInit {
   basket: TaskBoard;
   currentBoardItem: TaskBoardItem = null;
 
-
   constructor(private basketService: BasketService,
               private taskService: TaskService,
               private boardItemService: BoardItemService,
@@ -64,7 +63,7 @@ export class BasketComponent implements OnInit {
   getBasket() {
     this.basketService.get()
       .subscribe(() => {
-        this.basketService.setBasketList();
+        this.basketService.setBasketBoardItems();
       })
   }
 
@@ -108,7 +107,7 @@ export class BasketComponent implements OnInit {
               this.toastService.info('Current basket was finished and created new basket');
             })
             .subscribe(() => {
-                this.basketService.setBasketList();
+                this.basketService.setBasketBoardItems();
               },
               (err) => console.log('err', err))
         },
@@ -118,7 +117,7 @@ export class BasketComponent implements OnInit {
   save(): void {
     this.basketService.updateBasket(this.basket)
       .subscribe(() => {
-          this.basketService.setBasketList();
+          this.basketService.setBasketBoardItems();
         },
         (err) => console.log('err', err))
   }
@@ -151,7 +150,7 @@ export class BasketComponent implements OnInit {
     this.basketService
       .saveBoardItemToBasket(newItem)
       .subscribe(
-        () => this.basketService.setBasketList(),
+        () => this.basketService.setBasketBoardItems(),
         (err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong')
       );
   }
