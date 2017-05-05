@@ -105,6 +105,7 @@ import {SimpleBoardFormComponent} from "./tasks/simple-board-form/simple-board-f
 import {BoardItemsSortPipe} from "./pipes/board-items-sort.pipe";
 import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-current-task.component";
 import {BoardItemSpentTimeService} from "./services/board-item-spent-time.service";
+import {BasketBacklogService} from "./services/basket-backlog.service";
 import {BoardItemTreeComponent} from "./tasks/board-item-tree/board-item-tree.component";
 
 @NgModule({
@@ -229,7 +230,8 @@ import {BoardItemTreeComponent} from "./tasks/board-item-tree/board-item-tree.co
     TaskSearchService,
     BasketResource,
     BasketService,
-    BoardItemSpentTimeService
+    BoardItemSpentTimeService,
+    BasketBacklogService
   ]
 })
 export class TrackerModule {
