@@ -32,6 +32,10 @@ export class BasketComponent implements OnInit {
               private dndService: DnDService,
               private toastService: ToastService,
               private basketBacklogService: BasketBacklogService) {
+  }
+
+  ngOnInit() {
+    this.getBasket();
 
     this.basketService.basketList$
       .subscribe((taskItems) => {
@@ -53,10 +57,6 @@ export class BasketComponent implements OnInit {
 
     this.basketBacklogService.backlogToggle$
       .subscribe((backlogToggle) => this.backlogToggle = backlogToggle);
-  }
-
-  ngOnInit() {
-    this.getBasket();
 
     this.basketService.activeBoardItem$
       .subscribe((boardItem) => this.currentBoardItem = boardItem);
@@ -110,13 +110,11 @@ export class BasketComponent implements OnInit {
     this.basketService.updateBasket(this.basket)
       .subscribe(() => {
           this.basketService.createBasket()
-            .map(() => {
-              this.toastService.info('Current basket was finished and created new basket');
-            })
-            .subscribe(() => {
-                this.basketService.setBasketBoardItems();
-              },
-              (err) => console.log('err', err))
+            .map(() => this.toastService.info('Current basket was finished and created new basket'))
+            .subscribe(
+              () => this.basketService.setBasketBoardItems(),
+              (err) => console.log('err', err)
+            );
         },
         (err) => console.log('err', err))
   }

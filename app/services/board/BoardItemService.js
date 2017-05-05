@@ -24,7 +24,7 @@ let BoardItemService = function (Board,
                 type: 'task',
                 collection: BoardItemTask,
                 create: self.createTaskItem
-            },{
+            }, {
                 type: 'complex',
                 collection: BoardItemComplex,
                 create: self.createComplexItem
@@ -74,8 +74,9 @@ let BoardItemService = function (Board,
 
     this.createTaskItem = function (data) {
         return new Promise(function (resolve, reject) {
-            new BoardItemTask(data)
-                .save()
+            let boardItem = data.item.simple ? new BoardItemTask(data) : new BoardItemComplex(data);
+
+            boardItem.save()
                 .then((item) => resolve(item), (err) => reject(err));
         });
     };
