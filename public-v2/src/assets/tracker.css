@@ -1059,17 +1059,17 @@ simple-task-form > board-item-subitems {
 }
 
 .basket {
+  z-index: 10;
   display: block;
   position: fixed;
   height: 100vH;
   width: 30vW;
+  top: 0;
+  right: -30vW;
   text-align: center;
   background: #fff;
-  top: 0;
-  right: -100%;
   transition: all 400ms ease;
   box-shadow: 0 0 100px -50px #000;
-  z-index: 10;
   overflow-y: auto;
 }
 
@@ -1097,6 +1097,7 @@ simple-task-form > board-item-subitems {
   color: #fff;
   transition: all 400ms ease;
 }
+
 .btn-basket.backlogActive {
   right: calc(30vW - 20px);
 }
