@@ -14,7 +14,7 @@ import {TaskComplexity} from "../../models/task-complexity";
 })
 export class BasketTaskPanelComponent implements OnInit {
   @Input() boardItem: TaskBoardItem = null;
-  @Input() pointCost: number = null;
+  pointCost: number = null;
   task: Task;
   approximateTime: string = null;
   complexities: TaskComplexity[] = TaskComplexities;
@@ -28,6 +28,8 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.basketService.basket$.subscribe((basket) => this.pointCost = basket.pointCost);
+
     this.task = this.boardItem.item;
     if (this.task.simple) {
       this.calculateApproximateTime();
