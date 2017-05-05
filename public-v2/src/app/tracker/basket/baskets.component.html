@@ -8,30 +8,38 @@
         Back
       </a>
     </div>
+  </div>
 
-    <div class="w-sm pull-left">
-      <ng-select *ngIf="developers.length"
-                 [items]="developers"
-                 [active]="selectedDevelopers"
-                 (selected)="onChangeDeveloper($event)">
-      </ng-select>
-    </div>
+</div>
+<div class="row">
 
-    <div class="clearfix">
-      <div class="date-selector pull-left">
-        <span *ngIf="date">{{date | date:'EEE, y-MM-dd'}}</span>
-        <i class="fa fa-calendar" (click)="toggleDatePicker()"></i>
+  <div class="col-md-4 w-sm" style="margin: 0px 0px 5px">
+    <ng-select *ngIf="developers.length"
+               [items]="developers"
+               [active]="selectedDevelopers"
+               (selected)="onChangeDeveloper($event)">
+    </ng-select>
+  </div>
 
-        <div *ngIf="showDatePicker" style="position: absolute; z-index:10; min-height:290px;">
-          <datepicker
-            [ngModel]="date"
-            (selectionDone)="onChangeDate($event)"
-            [maxDate]="today"
-            [showWeeks]="false">
-          </datepicker>
-        </div>
+  <div class="col-md-4" style="padding: 3px">
+    <div class="date-selector">
+      <span *ngIf="date">{{date | date:'EEE, y-MM-dd'}}</span>
+      <i class="fa fa-calendar" (click)="toggleDatePicker()"></i>
+
+      <div *ngIf="showDatePicker" style="position: absolute; z-index:10; min-height:290px;">
+        <datepicker
+          [ngModel]="date"
+          (selectionDone)="onChangeDate($event)"
+          [maxDate]="today"
+          [showWeeks]="false">
+        </datepicker>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
 
     <div *ngIf="baskets?.length">
       <ul class="list-group" *ngFor="let basket of baskets">
