@@ -90,9 +90,8 @@ let BasketService = function (Board, BoardItem, TaskService, BoardService, Board
                     })
                     .catch((err) => reject(err));
 
-
             } else if (data.type == 'task') {
-                resolve(BoardItemService.create(data))
+                resolve(BoardItemService.create(data));
             }
         })
     };
