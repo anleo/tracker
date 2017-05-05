@@ -77,7 +77,7 @@ export class BasketService {
       })
   }
 
-  setBasketBoardItems() {
+  setBasketBoardItems(): void {
     this.boardItemService.getBoardItemsByBoardId(this.basket._id)
       .subscribe((boardItems) => {
         this.basketList$.next(boardItems);
@@ -173,7 +173,7 @@ export class BasketService {
 
   createAndAddTask(task: Task, boardItem): Observable<TaskBoardItem> {
     return this.taskService.saveChildTask(task)
-      .map((task) => {
+      .switchMap((task) => {
         let newBoardItem = {
           item: task._id,
           type: 'task',
