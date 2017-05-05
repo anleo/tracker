@@ -1,11 +1,12 @@
-<a (click)="toggleBasket()" class="btn btn-success btn-basket" [ngClass]="{active:showBasket}">
+<a (click)="toggleBasket()" class="btn btn-success btn-basket"
+   [ngClass]="{active:showBasket, backlogActive: backlogToggle}">
   Basket
 </a>
 
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
 <div class="basket"
-     [ngClass]="{show: showBasket}"
+     [ngClass]="{show: showBasket, backlogActive: backlogToggle}"
      drop-zone
      [check]="[checkDropDataType]">
   <div class="wrap text-left">
