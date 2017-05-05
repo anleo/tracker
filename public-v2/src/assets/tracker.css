@@ -1019,7 +1019,10 @@ hr {
 
 .backlog.show {
   right: 0;
-  box-shadow: 0 0 100px -30px #000;
+}
+
+.backlog.show.backlogActive {
+  right: 30vW;
 }
 
 .btn-backlog {
@@ -1033,6 +1036,7 @@ hr {
   transform: rotate(-90deg);
   border: none;
   color: #fff;
+  transition: all 400ms ease;
 }
 
 .sub-item-wrap {
@@ -1076,6 +1080,9 @@ simple-task-form > board-item-subitems {
 .basket.show {
   right: 0;
 }
+.basket.show.backlogActive {
+  right: 30vW;
+}
 
 .btn-basket {
   z-index: 9;
@@ -1088,6 +1095,13 @@ simple-task-form > board-item-subitems {
   transform: rotate(-90deg);
   border: none;
   color: #fff;
+  transition: all 400ms ease;
+}
+.btn-basket.backlogActive {
+  right: calc(30vW - 20px);
+}
+.btn-backlog.basketActive {
+  right: calc(30vW - 20px);
 }
 
 .tb-ico {

@@ -10,6 +10,7 @@ import {DnDService} from "../../dnd/dnd.service";
 
 import *as _ from 'lodash';
 import {ToastService} from "../../../services/toast.service";
+import {BasketBacklogService} from "../../services/basket-backlog.service";
 
 @Component({
   selector: 'basket',
@@ -20,6 +21,7 @@ export class BasketComponent implements OnInit {
 
   taskItems: TaskBoardItem[] = [];
   showBasket: boolean = false;
+  backlogToggle: boolean;
   editMode: boolean = false;
   basket: TaskBoard;
   currentBoardItem: TaskBoardItem = null;
@@ -29,7 +31,8 @@ export class BasketComponent implements OnInit {
               private taskService: TaskService,
               private boardItemService: BoardItemService,
               private dndService: DnDService,
-              private toastService: ToastService) {
+              private toastService: ToastService,
+              private basketBacklogService: BasketBacklogService) {
 
     this.basketService.basketList$
       .subscribe((taskItems) => this.taskItems = taskItems);
@@ -42,6 +45,9 @@ export class BasketComponent implements OnInit {
 
     this.dndService.onDrop$
       .subscribe((dropData) => this.onDrop(dropData));
+
+    this.basketBacklogService.backlogToggle$
+      .subscribe((backlogToggle) => this.backlogToggle = backlogToggle);
   }
 
   ngOnInit() {
@@ -53,6 +59,7 @@ export class BasketComponent implements OnInit {
 
   toggleBasket() {
     this.showBasket = !this.showBasket;
+    this.basketBacklogService.basketToggle$.next(this.showBasket);
   }
 
   getBasket() {
