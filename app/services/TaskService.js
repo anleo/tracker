@@ -536,8 +536,7 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                 if (!parent) {
                     task.root = null;
                 } else {
-                    let root = parent && parent.root ? parent.root : parent._id;
-                    task.root = root;
+                    task.root = parent && parent.root ? parent.root : parent._id;
                 }
 
                 task.save(function (err) {
