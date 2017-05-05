@@ -5,18 +5,21 @@ import {BasketResource} from "../resources/basket.resource";
 import {User} from "../../user/models/user";
 import {UserService} from "../../user/services/user.service";
 import {TaskBoard} from "../models/task-board";
+import {Task} from "../models/task";
 import {BehaviorSubject} from "rxjs";
 import {TaskBoardItem} from "../models/task-board-item";
 import {BoardItemService} from "./board-item.service";
 import {BoardService} from "./board.service";
+import {TaskService} from "./task.service";
 
 
 @Injectable()
 export class BasketService {
   constructor(private basketResource: BasketResource,
               private userService: UserService,
-              private  boardItemService: BoardItemService,
-              private boardService: BoardService) {
+              private boardItemService: BoardItemService,
+              private boardService: BoardService,
+              private taskService: TaskService) {
     this.getUser();
     this.basket$
       .subscribe((basket) => this.basket = basket);
@@ -74,11 +77,11 @@ export class BasketService {
       })
   }
 
-  setBasketList() {
+  setBasketBoardItems(): void {
     this.boardItemService.getBoardItemsByBoardId(this.basket._id)
       .subscribe((boardItems) => {
         this.basketList$.next(boardItems);
-        this.activeBoardItem$.next(this.getActiveBoardItem(boardItems));
+        this.setActiveBoardItem(this.getActiveBoardItem(boardItems));
       })
   }
 
@@ -87,7 +90,7 @@ export class BasketService {
     this.boardService.getboardMetrics(this.basket._id)
       .subscribe((basket) => {
           this.setBasket(basket);
-          this.setBasketList();
+          this.setBasketBoardItems();
         },
         (err) => console.log('err', err))
   }
@@ -104,8 +107,89 @@ export class BasketService {
   }
 
   getActiveBoardItem(boardItems: TaskBoardItem[]): TaskBoardItem {
-    return boardItems.filter((item) => item.timeLog[item.timeLog.length - 1])
+    return boardItems
+      .filter((item) => item.timeLog[item.timeLog.length - 1])
       .find((item) => item.timeLog[item.timeLog.length - 1].status === 'in progress')
+  }
+
+  buildBoardItemsTree(boardItems: TaskBoardItem[] = []): TaskBoardItem[] {
+    let resultBoardItems: TaskBoardItem[] = [];
+
+    boardItems.forEach((boardItem) => {
+      if (boardItem.type == 'complex') {
+        boardItem.subBoardItems = [];
+      }
+
+      if (boardItem.item.parentTaskId) {
+        let parent = this.findDeepParent(boardItem, resultBoardItems);
+
+        if (parent) {
+          parent.subBoardItems.push(boardItem)
+        } else {
+          resultBoardItems.push(boardItem);
+        }
+      } else {
+        resultBoardItems.push(boardItem);
+      }
+    });
+
+    return resultBoardItems;
+  }
+
+  saveBoardItemToBasket(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
+    return this.basketResource.saveBoardItem(boardItem, {basketId: boardItem.board._id || boardItem.board}).$observable;
+  }
+
+  setActiveBoardItem(boardItem: TaskBoardItem) {
+    this.activeBoardItem$.next(boardItem);
+  }
+
+  findDeepParent(boardItem: TaskBoardItem, searchableBoardItems: TaskBoardItem[]): TaskBoardItem {
+    let parent = searchableBoardItems
+      .find((resultBoardItem) => resultBoardItem.item._id == boardItem.item.parentTaskId);
+
+    if (!parent && searchableBoardItems.length) {
+
+      searchableBoardItems.forEach((item) => {
+        if (item.subBoardItems && item.subBoardItems.length) {
+          parent = this.findDeepParent(boardItem, item.subBoardItems);
+
+          if (parent) {
+            return parent;
+          }
+        }
+      });
+    }
+
+    return parent;
+  }
+
+  addSubItem(item: TaskBoardItem, boardItem: TaskBoardItem) {
+    return this.basketResource.addSubItem(item, {
+      basketId: boardItem.board._id || boardItem.board,
+      boardItemId: boardItem._id
+    }).$observable;
+  };
+
+  createAndAddTask(task: Task, boardItem): Observable<TaskBoardItem> {
+    return this.taskService.saveChildTask(task)
+      .switchMap((task) => {
+        let newBoardItem = {
+          item: task._id,
+          type: 'task',
+          board: boardItem.board._id || boardItem.board
+        };
+
+        return this.addSubItem(newBoardItem, boardItem);
+      });
+  };
+
+  removeBasketItem(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
+    return this.basketResource.removeBasketItem({
+      basketId: boardItem.board._id || boardItem.board,
+      boardItemId: boardItem._id
+    })
+      .$observable;
   }
 
 }

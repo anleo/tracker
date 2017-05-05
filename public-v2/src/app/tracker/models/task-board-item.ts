@@ -6,4 +6,5 @@ export class TaskBoardItem {
   createdAt?: string;
   updatedAt?: string;
   timeLog?: any = [];
+  subBoardItems?: TaskBoardItem[] = [];
 }

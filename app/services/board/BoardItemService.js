@@ -1,7 +1,8 @@
 let BoardItemService = function (Board,
                                  BoardItem,
                                  BoardItemBoard,
-                                 BoardItemTask) {
+                                 BoardItemTask,
+                                 BoardItemComplex) {
     let _ = require('lodash');
     let asyncP = require('async-promises');
     let self = this;
@@ -23,6 +24,10 @@ let BoardItemService = function (Board,
                 type: 'task',
                 collection: BoardItemTask,
                 create: self.createTaskItem
+            }, {
+                type: 'complex',
+                collection: BoardItemComplex,
+                create: self.createComplexItem
             }, {
                 type: 'board',
                 collection: BoardItemBoard,
@@ -69,7 +74,16 @@ let BoardItemService = function (Board,
 
     this.createTaskItem = function (data) {
         return new Promise(function (resolve, reject) {
-            new BoardItemTask(data)
+            let boardItem = data.item.simple ? new BoardItemTask(data) : new BoardItemComplex(data);
+
+            boardItem.save()
+                .then((item) => resolve(item), (err) => reject(err));
+        });
+    };
+
+    this.createComplexItem = function (data) {
+        return new Promise(function (resolve, reject) {
+            new BoardItemComplex(data)
                 .save()
                 .then((item) => resolve(item), (err) => reject(err));
         });
@@ -229,6 +243,10 @@ let BoardItemService = function (Board,
             .catch((err) => {
                 return Promise.reject(err);
             });
+    };
+
+    this.isComplex = (boardItem) => {
+        return boardItem.type === 'complex';
     };
 };
 

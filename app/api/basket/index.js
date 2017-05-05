@@ -8,6 +8,24 @@ module.exports = function (app) {
     let moment = require('moment');
     let async = require('async');
 
+    app.param('basketId', (req, res, next, basketId) => {
+        BoardService
+            .getById(basketId)
+            .then((board) => {
+                if (!board) {
+                    return res.status(404).json('Board was not found');
+                }
+
+                if (!BoardService.hasAccess(board, req.user)) {
+                    return res.status(403).send('You haven\'t access to this board');
+                }
+
+                req.Basket = board;
+                next();
+            })
+            .catch((err) => next(err))
+    });
+
     function getStartDate(date) {
         return moment(date).startOf('day').toDate()
     }
@@ -94,6 +112,66 @@ module.exports = function (app) {
             .catch((err) => {
                 res.status(400).json(err)
             });
+    });
+
+    app.post('/api/baskets/:basketId/boardItems', function (req, res) {
+        let data = {
+            board: req.Basket,
+            type: req.body.type,
+            item: req.body.item
+        };
+
+        BasketService.addBoardItem(data)
+            .then((boardItem) => res.json())
+            .catch((err) => res.status(400).json({error: err}));
+    });
+
+    app.post('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res) {
+        let boardItem = {
+            board: req.Basket,
+            type: req.body.type,
+            item: req.body.item
+        };
+
+        BoardItemService.getById(req.params.boardItemId)
+            .then((aBoardItem) => {
+                if (!BoardItemService.isComplex(aBoardItem)) {
+                    let complexBoardItem = {
+                        type: 'complex',
+                        item: aBoardItem.item,
+                        board: aBoardItem.board
+                    };
+
+                    BoardItemService.removeBoardItem(aBoardItem._id)
+                        .then(() => BoardItemService.create(complexBoardItem))
+                        .then(() => {
+                            BasketService.addBoardItem(boardItem)
+                                .then((boardItem) => res.json())
+                                .catch((err) => res.status(400).json({error: err}));
+                        });
+                } else {
+                    BasketService.addBoardItem(boardItem)
+                        .then((boardItem) => res.json())
+                        .catch((err) => res.status(400).json({error: err}));
+                }
+            });
+    });
+
+    app.delete('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res, next) {
+        BoardItemService.getById(req.params.boardItemId)
+            .then((boardItem) => {
+                if (boardItem.type == 'task') {
+                    BasketService
+                        .removeBoardItem(boardItem)
+                        .then(() => res.json());
+                } else {
+                    BoardItemService.getItemsByOptions({board: req.Basket._id})
+                        .then((basketBoardItems) => BasketService.removeComplexBoardItem(boardItem, basketBoardItems))
+                        .then(() => res.json())
+                        .catch((err) => next(err));
+                }
+            })
+            .catch((err) => res.status(400).json({error: err}));
     });
 
     app.get('/api/baskets', function (req, res, next) {

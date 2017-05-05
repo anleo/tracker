@@ -26,16 +26,25 @@ export class BasketComponent implements OnInit {
   basket: TaskBoard;
   currentBoardItem: TaskBoardItem = null;
 
-
   constructor(private basketService: BasketService,
               private taskService: TaskService,
               private boardItemService: BoardItemService,
               private dndService: DnDService,
               private toastService: ToastService,
               private basketBacklogService: BasketBacklogService) {
+  }
+
+  ngOnInit() {
+    this.getBasket();
 
     this.basketService.basketList$
-      .subscribe((taskItems) => this.taskItems = taskItems);
+      .subscribe((taskItems) => {
+        this.taskItems = taskItems;
+
+        if (this.taskItems) {
+          this.taskItems = this.basketService.buildBoardItemsTree(taskItems);
+        }
+      });
 
     this.basketService.basket$
       .subscribe((basket) => this.basket = basket);
@@ -48,10 +57,6 @@ export class BasketComponent implements OnInit {
 
     this.basketBacklogService.backlogToggle$
       .subscribe((backlogToggle) => this.backlogToggle = backlogToggle);
-  }
-
-  ngOnInit() {
-    this.getBasket();
 
     this.basketService.activeBoardItem$
       .subscribe((boardItem) => this.currentBoardItem = boardItem);
@@ -65,7 +70,7 @@ export class BasketComponent implements OnInit {
   getBasket() {
     this.basketService.get()
       .subscribe(() => {
-        this.basketService.setBasketList();
+        this.basketService.setBasketBoardItems();
       })
   }
 
@@ -105,13 +110,11 @@ export class BasketComponent implements OnInit {
     this.basketService.updateBasket(this.basket)
       .subscribe(() => {
           this.basketService.createBasket()
-            .map(() => {
-              this.toastService.info('Current basket was finished and created new basket');
-            })
-            .subscribe(() => {
-                this.basketService.setBasketList();
-              },
-              (err) => console.log('err', err))
+            .map(() => this.toastService.info('Current basket was finished and created new basket'))
+            .subscribe(
+              () => this.basketService.setBasketBoardItems(),
+              (err) => console.log('err', err)
+            );
         },
         (err) => console.log('err', err))
   }
@@ -119,7 +122,7 @@ export class BasketComponent implements OnInit {
   save(): void {
     this.basketService.updateBasket(this.basket)
       .subscribe(() => {
-          this.basketService.setBasketList();
+          this.basketService.setBasketBoardItems();
         },
         (err) => console.log('err', err))
   }
@@ -146,16 +149,15 @@ export class BasketComponent implements OnInit {
     let newItem = {
       board: this.basket._id,
       item: item,
-      type: 'task'
+      type: item.simple ? 'task' : 'complex'
     };
 
-    this.boardItemService
-      .save(newItem)
-      .subscribe(() => {
-        this.basketService.setBasketList();
-      }, (err) => {
-        this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong');
-      });
+    this.basketService
+      .saveBoardItemToBasket(newItem)
+      .subscribe(
+        () => this.basketService.setBasketBoardItems(),
+        (err) => this.toastService.error(JSON.parse(err._body).error.toString(), 'Something was wrong')
+      );
   }
 
   onChangeStatus(event) {

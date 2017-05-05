@@ -2,11 +2,11 @@ import {Component, OnInit, Input, Output} from '@angular/core';
 
 import {Task} from '../../models/task'
 import {TaskService} from "../../services/task.service";
-import {BoardItemService} from "../../services/board-item.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
-import {Observable} from "rxjs";
-import {EventEmitter} from "@angular/common/src/facade/async";
+import {ToastService} from "../../../services/toast.service";
+import {TaskComplexities} from "../components/complexity/task-complexities";
+import {TaskComplexity} from "../../models/task-complexity";
 
 @Component({
   selector: 'basket-task-panel',
@@ -14,22 +14,28 @@ import {EventEmitter} from "@angular/common/src/facade/async";
 })
 export class BasketTaskPanelComponent implements OnInit {
   @Input() boardItem: TaskBoardItem = null;
-  @Input() pointCost: number = null;
+  pointCost: number = null;
   task: Task;
   approximateTime: string = null;
+  complexities: TaskComplexity[] = TaskComplexities;
 
-  @Output() selectedTask: EventEmitter<TaskBoardItem> = new EventEmitter();
+  show: boolean = false;
+  subTask: any = {};
 
   constructor(private taskService: TaskService,
-              private boardItemService: BoardItemService,
-              private basketService: BasketService) {
+              private basketService: BasketService,
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
+    this.basketService.basket$.subscribe((basket) => this.pointCost = basket.pointCost);
+
     this.task = this.boardItem.item;
     if (this.task.simple) {
       this.calculateApproximateTime();
     }
+
+    this.initSubTask();
   }
 
   edit(task: Task) {
@@ -37,13 +43,11 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   remove(boardItem: TaskBoardItem) {
-    this.boardItemService.remove(boardItem)
-      .subscribe(() => {
-          this.basketService.getBasketMetrics();
-        },
-        (err) => {
-          console.log('err', err);
-        })
+    this.basketService.removeBasketItem(boardItem)
+      .subscribe(
+        () => this.basketService.getBasketMetrics(),
+        (err) => console.log('err', err)
+      );
   }
 
   calculateApproximateTime(): void {
@@ -51,7 +55,33 @@ export class BasketTaskPanelComponent implements OnInit {
   }
 
   start(boardItem) {
-    this.selectedTask.emit(boardItem);
+    this.basketService.setActiveBoardItem(boardItem);
   }
 
+  addSubBoardItem() {
+    if (!this.subTask.title.length) {
+      this.toastService.error('Title is a required', 'Something was wrong');
+    }
+
+    this.subTask.parentTaskId = this.task._id;
+
+    this.basketService.createAndAddTask(this.subTask, this.boardItem)
+      .subscribe(() => {
+        this.toastService.info('', 'Item was created');
+        this.basketService.setBasketBoardItems();
+        this.initSubTask();
+      });
+  }
+
+  showForm() {
+    this.show = !this.show;
+  }
+
+  private initSubTask() {
+    if (this.task && this.task._id) {
+      this.subTask.parentTaskId = this.task._id;
+      this.subTask.title = '';
+      this.subTask.complexity = 0;
+    }
+  }
 }

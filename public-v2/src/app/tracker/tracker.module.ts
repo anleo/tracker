@@ -106,6 +106,7 @@ import {BoardItemsSortPipe} from "./pipes/board-items-sort.pipe";
 import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-current-task.component";
 import {BoardItemSpentTimeService} from "./services/board-item-spent-time.service";
 import {BasketBacklogService} from "./services/basket-backlog.service";
+import {BoardItemTreeComponent} from "./tasks/board-item-tree/board-item-tree.component";
 
 @NgModule({
   imports: [
@@ -211,7 +212,8 @@ import {BasketBacklogService} from "./services/basket-backlog.service";
     BasketTaskPanelComponent,
     BasketHistoryComponent,
     BasketContentComponent,
-    BasketCurrentTaskComponent
+    BasketCurrentTaskComponent,
+    BoardItemTreeComponent
   ],
   providers: [
     TaskResolver,
