@@ -1003,13 +1003,13 @@ hr {
   display: block;
   position: fixed;
   height: 100vH;
-  width: 40vW;
+  width: 30vW;
   top: 0;
-  left: -40vW;
+  right: -30vW;
   text-align: center;
   background: #fff;
   transition: all 400ms ease;
-  box-shadow: 0 0 0 0 #000;
+  box-shadow: 0 0 100px -50px #000;
   overflow-y: auto;
 }
 
@@ -1018,21 +1018,25 @@ hr {
 }
 
 .backlog.show {
-  left: 0;
-  box-shadow: 0 0 100px -30px #000;
+  right: 0;
+}
+
+.backlog.show.backlogActive {
+  right: 30vW;
 }
 
 .btn-backlog {
   z-index: 9;
   position: fixed;
-  left: -20px;
-  top: 160px;
+  right: -20px;
+  top: 235px;
   padding: 5px 10px;
-  border-radius: 0 0 10px 10px;
+  border-radius: 10px 10px 0 0;
   width: 70px;
   transform: rotate(-90deg);
   border: none;
   color: #fff;
+  transition: all 400ms ease;
 }
 
 .sub-item-wrap {
@@ -1055,17 +1059,17 @@ simple-task-form > board-item-subitems {
 }
 
 .basket {
+  z-index: 10;
   display: block;
   position: fixed;
   height: 100vH;
-  width: 40vW;
+  width: 30vW;
+  top: 0;
+  right: -30vW;
   text-align: center;
   background: #fff;
-  top: 0;
-  right: -100%;
   transition: all 400ms ease;
   box-shadow: 0 0 100px -50px #000;
-  z-index: 10;
   overflow-y: auto;
 }
 
@@ -1075,6 +1079,9 @@ simple-task-form > board-item-subitems {
 
 .basket.show {
   right: 0;
+}
+.basket.show.backlogActive {
+  right: 30vW;
 }
 
 .btn-basket {
@@ -1088,6 +1095,14 @@ simple-task-form > board-item-subitems {
   transform: rotate(-90deg);
   border: none;
   color: #fff;
+  transition: all 400ms ease;
+}
+
+.btn-basket.backlogActive {
+  right: calc(30vW - 20px);
+}
+.btn-backlog.basketActive {
+  right: calc(30vW - 20px);
 }
 
 .tb-ico {

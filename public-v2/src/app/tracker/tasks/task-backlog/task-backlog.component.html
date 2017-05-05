@@ -1,10 +1,11 @@
 <app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
 
-<a (click)="toggleBacklog()" class="btn btn-primary btn-backlog" [ngClass]="{active: showBacklog}">
+<a (click)="toggleBacklog()" class="btn btn-primary btn-backlog"
+   [ngClass]="{active: showBacklog, basketActive: basketToggle}">
   Backlog
 </a>
 
-<div class="backlog" [ngClass]="{show: showBacklog}">
+<div class="backlog" [ngClass]="{show: showBacklog, basketActive: basketToggle}">
   <div class="wrap text-left">
     <h4 style="margin: 10px 0 20px; line-height: 24px;">BACKLOG
       <small (click)="toggleBacklog()" class="pointer pull-right" style="line-height: 24px;">
