@@ -2,8 +2,10 @@ import {Component, OnInit, Input, Output} from '@angular/core';
 
 import {Task} from '../../models/task'
 import {TaskService} from "../../services/task.service";
+import {BoardItemService} from "../../services/board-item.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'basket-task-panel',
@@ -15,8 +17,12 @@ export class BasketTaskPanelComponent implements OnInit {
   task: Task;
   approximateTime: string = null;
 
+  show: boolean = false;
+  subtask: any = {};
+
   constructor(private taskService: TaskService,
-              private basketService: BasketService) {
+              private basketService: BasketService,
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
@@ -24,6 +30,8 @@ export class BasketTaskPanelComponent implements OnInit {
     if (this.task.simple) {
       this.calculateApproximateTime();
     }
+
+    this.initSubTask();
   }
 
   edit(task: Task) {
@@ -46,4 +54,28 @@ export class BasketTaskPanelComponent implements OnInit {
     this.basketService.setActiveBoardItem(boardItem);
   }
 
+  save() {
+    if (!this.subtask.title.length) {
+      this.toastService.error('Title is a required', 'Something was wrong');
+    }
+
+    this.subtask.parentTaskId = this.task._id;
+
+    this.basketService.createAndAddTask(this.subtask, this.boardItem)
+      .subscribe(() => {
+        this.toastService.info('', 'Item was created');
+        this.initSubTask();
+      });
+  }
+
+  showForm() {
+    this.show = !this.show;
+  }
+
+  private initSubTask() {
+    if (this.task && this.task._id) {
+      this.subtask.parentTaskId = this.task._id;
+      this.subtask.title = '';
+    }
+  }
 }

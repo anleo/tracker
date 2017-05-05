@@ -533,7 +533,8 @@ var TaskService = function (Task, FileService, UserService, SocketService, Histo
                     return next(err);
                 }
 
-                task.root = parent ? parent._id : null;
+                let root = parent && parent.root ? parent.root : parent._id;
+                task.root = parent ? root : null;
 
                 task.save(function (err) {
                     if (err) return next(err);

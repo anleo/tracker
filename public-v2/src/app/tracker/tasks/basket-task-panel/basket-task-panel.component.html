@@ -15,8 +15,10 @@
       <span class="fa fa-times vcenter pull-right"
             (click)="remove(boardItem)"></span>
       <span class="fa fa-pencil-square-o vcenter pull-right pointer editTaskButton" (click)="edit(task)"></span>
+      <span class="fa fa-plus-square-o vcenter pull-right pointer editTaskButton"
+            (click)="showForm()"></span>
       <span class="vcenter pull-right" tooltip="Approx. planned time">
-        <span class="glyphicon glyphicon-dashboard" *ngIf="approximateTime" ></span>
+        <span class="glyphicon glyphicon-dashboard" *ngIf="approximateTime"></span>
 
         <span style="margin-right: 5px" *ngIf="approximateTime"> {{approximateTime}} h</span>
       </span>
@@ -24,4 +26,18 @@
 
     </h4>
   </div>
+
+
+  <form (submit)="save()" *ngIf="show" class="form-inline">
+    <div class="input-group" style="width: 100%">
+      <input [(ngModel)]="subtask.title"
+             class="form-control input-sm" placeholder="Add Task"
+             name="title" type="text" id="title" autocomplete="off"/>
+      <span class="input-group-btn">
+        <button class="btn btn-success btn-sm" style="width: 100%"
+                type="submit">Save</button>
+      </span>
+    </div>
+  </form>
+
 </div>

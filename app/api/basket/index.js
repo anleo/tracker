@@ -126,6 +126,37 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json({error: err}));
     });
 
+    app.post('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res) {
+        let boardItem = {
+            board: req.Basket,
+            type: req.body.type,
+            item: req.body.item
+        };
+
+        BoardItemService.getById(req.params.boardItemId)
+            .then((aBoardItem) => {
+                if (!BoardItemService.isComplex(aBoardItem)) {
+                    let complexBoardItem = {
+                        type: 'complex',
+                        item: aBoardItem.item,
+                        board: aBoardItem.board
+                    };
+
+                    BoardItemService.removeBoardItem(aBoardItem._id)
+                        .then(() => BoardItemService.create(complexBoardItem))
+                        .then(() => {
+                            BasketService.addBoardItem(boardItem)
+                                .then((boardItem) => res.json())
+                                .catch((err) => res.status(400).json({error: err}));
+                        });
+                } else {
+                    BasketService.addBoardItem(boardItem)
+                        .then((boardItem) => res.json())
+                        .catch((err) => res.status(400).json({error: err}));
+                }
+            });
+    });
+
     app.delete('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res, next) {
         BoardItemService.getById(req.params.boardItemId)
             .then((boardItem) => {
