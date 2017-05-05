@@ -27,12 +27,22 @@
     </h4>
   </div>
 
-
   <form (submit)="addSubBoardItem()" *ngIf="show" class="form-inline">
     <div class="input-group" style="width: 100%">
       <input [(ngModel)]="subTask.title"
              class="form-control input-sm" placeholder="Add Task"
              name="title" type="text" id="title" autocomplete="off"/>
+
+      <span class="input-group-btn">
+        <select [(ngModel)]="subTask.complexity"
+                class="form-control input-sm"
+                name="points" id="points">
+          <option *ngFor="let complexity of complexities" [value]="complexity.value">
+            {{complexity.name}}
+          </option>
+        </select>
+      </span>
+
       <span class="input-group-btn">
         <button class="btn btn-success btn-sm" style="width: 100%"
                 type="submit">Save</button>

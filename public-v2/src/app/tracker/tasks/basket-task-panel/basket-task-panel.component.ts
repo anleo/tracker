@@ -2,10 +2,11 @@ import {Component, OnInit, Input, Output} from '@angular/core';
 
 import {Task} from '../../models/task'
 import {TaskService} from "../../services/task.service";
-import {BoardItemService} from "../../services/board-item.service";
 import {BasketService} from "../../services/basket.service";
 import {TaskBoardItem} from "../../models/task-board-item";
 import {ToastService} from "../../../services/toast.service";
+import {TaskComplexities} from "../components/complexity/task-complexities";
+import {TaskComplexity} from "../../models/task-complexity";
 
 @Component({
   selector: 'basket-task-panel',
@@ -16,6 +17,7 @@ export class BasketTaskPanelComponent implements OnInit {
   @Input() pointCost: number = null;
   task: Task;
   approximateTime: string = null;
+  complexities: TaskComplexity[] = TaskComplexities;
 
   show: boolean = false;
   subTask: any = {};
@@ -77,6 +79,7 @@ export class BasketTaskPanelComponent implements OnInit {
     if (this.task && this.task._id) {
       this.subTask.parentTaskId = this.task._id;
       this.subTask.title = '';
+      this.subTask.complexity = 0;
     }
   }
 }
