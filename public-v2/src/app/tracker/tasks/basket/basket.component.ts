@@ -22,7 +22,6 @@ export class BasketComponent implements OnInit {
   taskItems: TaskBoardItem[] = [];
   showBasket: boolean = false;
   backlogToggle: boolean;
-  editMode: boolean = false;
   basket: TaskBoard;
   currentBoardItem: TaskBoardItem = null;
 

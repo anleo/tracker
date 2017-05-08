@@ -3,14 +3,12 @@
   Basket
 </a>
 
-<app-task-edit class="edit-form" [ngClass]="editMode ? 'show' : 'hide'"></app-task-edit>
-
 <div class="basket"
      [ngClass]="{show: showBasket, backlogActive: backlogToggle}"
      drop-zone
      [check]="[checkDropDataType]">
   <div class="wrap text-left">
-    <h4 style="margin: 10px 0 20px; line-height: 24px;"  *ngIf="basket">{{basket.title}}
+    <h4 style="margin: 10px 0 20px; line-height: 24px;" *ngIf="basket">{{basket.title}}
       <small (click)="toggleBasket()" class="text-muted pull-right" style="cursor: pointer">
         <i class="glyphicon glyphicon-remove"></i>
       </small>
