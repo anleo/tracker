@@ -66,6 +66,7 @@ export class BasketTaskPanelComponent implements OnInit {
     this.subTask.parentTaskId = this.task._id;
 
     this.basketService.createAndAddTask(this.subTask, this.boardItem)
+      .map(() => this.basketService.reloadBasket())
       .subscribe(() => {
         this.toastService.info('', 'Item was created');
         this.basketService.setBasketBoardItems();

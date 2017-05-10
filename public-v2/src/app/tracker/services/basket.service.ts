@@ -192,5 +192,9 @@ export class BasketService {
       .$observable;
   }
 
+  reloadBasket(): void {
+    this.getBasket()
+      .subscribe((basket) => this.setBasket(basket));
+  }
 }
 
