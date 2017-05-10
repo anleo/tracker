@@ -27,11 +27,8 @@ let SimpleMetricsService = function (BoardItemService) {
     this.calculatePointCostByBoard = function (board) {
         return new Promise(function (resolve, reject) {
             self.calculatePointsByBoard(board._id)
-                .then((points) => {
-                        let pointCost = board.time && points ? (board.time / points) : 0;
-                        resolve(pointCost);
-                    },
-                    (err) => reject(err))
+                .then((points) => resolve(board.time && points ? (board.time / points) : 0))
+                .catch((err) => reject(err));
         })
     }
 

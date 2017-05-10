@@ -116,7 +116,7 @@ module.exports = function (app) {
             .catch((err) => res.status(400).json({error: err}));
     });
 
-    app.post('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res) {
+    app.post('/api/baskets/:basketId/boardItems/:boardItemId', function (req, res, next) {
         let boardItem = {
             board: req.Basket,
             type: req.body.type,
@@ -134,15 +134,15 @@ module.exports = function (app) {
 
                     BoardItemService.removeBoardItem(aBoardItem._id)
                         .then(() => BoardItemService.create(complexBoardItem))
-                        .then(() => {
-                            BasketService.addBoardItem(boardItem)
-                                .then((boardItem) => res.json())
-                                .catch((err) => res.status(400).json({error: err}));
-                        });
+                        .then(() => BasketService.addBoardItem(boardItem))
+                        .then(() => BoardService.update(req.Basket))
+                        .then(() => res.json())
+                        .catch((err) => next(err));
                 } else {
                     BasketService.addBoardItem(boardItem)
-                        .then((boardItem) => res.json())
-                        .catch((err) => res.status(400).json({error: err}));
+                        .then(() => BoardService.update(req.Basket))
+                        .then(() => res.json())
+                        .catch((err) => next(err));
                 }
             });
     });
@@ -161,7 +161,7 @@ module.exports = function (app) {
                         .catch((err) => next(err));
                 }
             })
-            .catch((err) => res.status(400).json({error: err}));
+            .catch((err) => next(err));
     });
 
     app.get('/api/baskets', function (req, res, next) {
