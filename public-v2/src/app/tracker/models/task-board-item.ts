@@ -3,6 +3,7 @@ export class TaskBoardItem {
   board?: any;
   type?: string;
   item?: any;
+  status?: string;
   createdAt?: string;
   updatedAt?: string;
   timeLog?: any = [];

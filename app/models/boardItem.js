@@ -4,6 +4,7 @@ module.exports = function (mongoose) {
 
     let BoardItemSchema = new Schema({
         board: {type: Schema.Types.ObjectId, ref: 'Board'},
+        status: {type: String, default: ''},
         createdAt: {type: Date, default: Date.now, index: true},
         updatedAt: {type: Date, default: Date.now, index: true}
     }, options);

@@ -1,4 +1,4 @@
-let BasketService = function (Board, BoardItem, TaskService, BoardService, BoardItemService) {
+let BasketService = function (Board, BoardItem, TaskService, BoardService, BoardItemService, SimpleMetricsService) {
     let _ = require('lodash');
     let self = this;
     let moment = require('moment');
@@ -18,37 +18,45 @@ let BasketService = function (Board, BoardItem, TaskService, BoardService, Board
                         .save()
                         .then((basket) => {
                             let query = {owner: user._id, type: 'basket', status: "finished"};
-                            self.prepareBoardItems(basket, query)
-                                .then(() => {
-                                    resolve(basket);
-                                }, (err) => reject(err))
+                            self.createBoardItemsForNewBasket(basket, query)
+                                .then(() => resolve(basket), (err) => reject(err))
 
                         }, (err) => reject(err));
                 })
         });
     };
 
-    this.prepareBoardItems = function (newBoard, query) {
+    this.createBoardItemsForNewBasket = function (newBoard, query) {
+        let self = this;
+
         return BoardService.getLastBoardByQuery(query)
             .then((board) => {
                 if (!board) {
                     //TODO @@@ira check this case
                     return Promise.resolve();
                 }
-                return BoardItemService.getUnfinishedBoardItems(board._id)
+
+                return self.getUnfinishedBoardItems(board._id)
                     .then((boardItems) => {
                         if (boardItems && !boardItems.length) {
                             return Promise.resolve();
                         }
-                        return Promise.all(_.map(boardItems, (boardItem) => {
-                            let item = {};
-                            item.board = newBoard._id;
-                            item.item = boardItem.item;
-                            return BoardItemService.createTaskItem(item)
 
-                        }));
-                    }, (err) => Promise.reject(err))
+                        let promises = boardItems.map((boardItem) => {
+                            let item = {
+                                board: newBoard._id,
+                                item: boardItem.item,
+                                status: boardItem.item.status
+                            };
 
+                            return boardItem.item.simple
+                                ? BoardItemService.createTaskItem(item)
+                                : BoardItemService.createComplexItem(item);
+                        });
+
+                        return Promise.all(promises);
+                    })
+                    .catch((err) => Promise.reject(err));
             });
     };
 
@@ -143,6 +151,37 @@ let BasketService = function (Board, BoardItem, TaskService, BoardService, Board
 
         return Promise.resolve(foundBoardItem);
     }
+
+    this.update = function (basket, data) {
+        return new Promise(function (resolve, reject) {
+            SimpleMetricsService.calculatePointCostByBoard(basket)
+                .then((pointCost) => {
+                    data.pointCost = pointCost;
+                    return data;
+                })
+                .then((data) => {
+                    BoardService.getById(basket._id)
+                        .then((board) => _.assign(board, data))
+                        .then((board) => board.save())
+                        .then((board) => resolve(board), (err) => reject(err));
+                });
+        });
+
+    };
+
+    this.getUnfinishedBoardItems = function (boardId) {
+        return new Promise((resolve, reject) => {
+            let query = {board: boardId};
+
+            return BoardItemService.getItemsByOptions(query)
+                .then((boardItems) => {
+                    let unFinishedBoardItems = boardItems.filter((boardItem) => boardItem.item.status !== "accepted");
+
+                    resolve(unFinishedBoardItems);
+                })
+                .catch((err) => reject(err));
+        });
+    };
 
 };
 module.exports = BasketService;

@@ -74,7 +74,8 @@ let BoardItemService = function (Board,
 
     this.createTaskItem = function (data) {
         return new Promise(function (resolve, reject) {
-            let boardItem = data.item.simple ? new BoardItemTask(data) : new BoardItemComplex(data);
+            // let boardItem = data.item.simple ? new BoardItemTask(data) : new BoardItemComplex(data);
+            let boardItem = new BoardItemTask(data);
 
             boardItem.save()
                 .then((item) => resolve(item), (err) => reject(err));
@@ -179,18 +180,6 @@ let BoardItemService = function (Board,
                 .then(() => resolve(),
                     (err) => reject(err))
         });
-    };
-
-    this.getUnfinishedBoardItems = function (boardId) {
-        let query = {board: boardId};
-        return self.getItemsByOptions(query)
-            .then((boardItems) => {
-                    return Promise.all(_.filter(boardItems, (boardItem) => {
-                        return boardItem.item.status !== "accepted";
-                    }));
-
-                },
-                (err) => Promise.reject(err))
     };
 
     this.getChildrenDeepByBoard = (item) => {
