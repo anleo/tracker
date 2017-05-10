@@ -12,7 +12,7 @@ import {TaskComplexity} from "../../models/task-complexity";
   selector: 'basket-task-panel',
   templateUrl: 'basket-task-panel.component.html'
 })
-export class BasketTaskPanelComponent implements OnInit, OnChanges {
+export class BasketTaskPanelComponent implements OnInit {
   @Input() boardItem: TaskBoardItem = null;
   pointCost: number = null;
   task: Task;
@@ -36,20 +36,6 @@ export class BasketTaskPanelComponent implements OnInit, OnChanges {
     }
 
     this.initSubTask();
-  }
-
-  ngOnChanges(changes: {[boardItem: string]: SimpleChange}): void {
-    console.log('changes');
-    console.log(changes);
-    console.log('Cur', changes['boardItem'].currentValue.status);
-    console.log('Prev', changes['boardItem'].previousValue.status);
-
-    changes['boardItem'].currentValue.status = changes['boardItem'].currentValue.item.status;
-
-    console.log('Cur', changes['boardItem'].currentValue.status);
-
-    // console.log(changes);
-    // if(changes.boa)
   }
 
   edit(task: Task) {
