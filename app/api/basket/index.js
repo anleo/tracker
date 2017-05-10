@@ -65,26 +65,16 @@ module.exports = function (app) {
             });
     });
 
-// @@ IraU need to check
-    app.put('/api/baskets/:basketId', function (req, res) {
-        BoardService.update(req.body)
-            .then((board) => {
-                res.json(board);
-            })
-            .catch((err) => {
-                res.status(400).json({error: err})
-            });
-
+    app.put('/api/baskets/:basketId', function (req, res, next) {
+        BasketService.update(req.Basket, req.body)
+            .then((board) => res.json(board))
+            .catch((err) => next(err));
     });
 
-    app.post('/api/baskets', function (req, res) {
+    app.post('/api/baskets', function (req, res, next) {
         BasketService.create(req.user)
-            .then((basket) => {
-                res.json(basket);
-            })
-            .catch((err) => {
-                res.status(400).json(err)
-            });
+            .then((basket) => res.json(basket))
+            .catch((err) => next(err));
     });
 
     //TODO @@@ira check route(maybe without user?)

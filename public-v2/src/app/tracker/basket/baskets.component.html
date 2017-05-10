@@ -70,11 +70,11 @@
             <div *ngIf="basket.items.length"
                  style="margin: 10px 0 0; padding: 10px 0 0 20px; border-top: 1px solid #ccc">
 
-              <ul class="list-group" *ngFor="let basketItem of basket.items" style="margin: 0;">
+              <ul class="list-group" *ngFor="let basketItem of basket.items" style="margin: 0; list-style: none">
                 <li>
                   <span class="pull-left">{{basketItem.item.title}}</span> &nbsp;
                   <span class="text-muted">
-                    ({{showStatus(basketItem.item.status)}})
+                    ({{showStatus(basketItem.status)}})
                   </span>
                 </li>
               </ul>
