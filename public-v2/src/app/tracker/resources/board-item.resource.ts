@@ -23,7 +23,7 @@ export class BoardItemResource extends Resource {
   getBoardItemsByBoardId: ResourceMethod<{boardId: string}, TaskBoardItem[]>;
 
   @ResourceAction({
-    path: '/',
+    url: '/api/boardItems/{!boardItemId}',
     method: RequestMethod.Get
   })
   getBoardItemById: ResourceMethod<{boardItemId: string}, TaskBoardItem>;

@@ -87,28 +87,40 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       this.boardService.editBoardUpdated$.subscribe((res: BoardWithStatus) => res && this.afterBoardUpdate(res));
     });
 
-    this.refreshBoardItemService.refreshRoot$.subscribe((boardItem) => {
-      console.log('refreshRoot$', boardItem.item);
-      console.log('boardItems', this.boardItems);
-
-      // TODO @@@id: if i'm on board page need to compare with root board
-
-      let foundBoardItem = this.boardItems.find((boardItem) => {
-        return boardItem.item._id === boardItem.item._id
+    this.refreshBoardItemService.onChangeItem$
+      .subscribe(() => {
+        if (this.boardId) {
+          this.getBoards();
+          return;
+        }
       });
 
-      // console.log('foundBoardItem', foundBoardItem);
+    this.refreshBoardItemService.refreshRoot$
+      .subscribe((boardItem) => {
+        console.log('refresh root', boardItem);
+        let foundBoardItem = this.boardItems.find((aBoardItem) => {
+          return boardItem.item._id === aBoardItem.item._id
+        });
 
-      if (foundBoardItem) {
-        this.boardItemService.getBoardItemById(foundBoardItem._id)
-          .subscribe((boardItem) => {
-            foundBoardItem = boardItem;
-          })
-      }
-    });
+        if (foundBoardItem) {
+          this.boardItemService.getBoardItemById(foundBoardItem._id)
+            .subscribe((boardItem) => {
+              console.log('board item', boardItem);
+
+              this.boardItems.map((aBoardItem) => {
+                if (aBoardItem._id === boardItem._id) {
+                  boardItem = aBoardItem;
+                }
+              });
+            });
+        }
+      });
   }
 
   ngOnDestroy(): void {
+    // TODO @@@id: stupid shit, need to update
+    this.boardId = null;
+    this.board = null;
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
   }

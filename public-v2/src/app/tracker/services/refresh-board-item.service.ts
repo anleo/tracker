@@ -5,9 +5,4 @@ import {Subject} from "rxjs";
 export class RefreshBoardItemService {
   onChangeItem$: Subject<any> = new Subject<any>();
   refreshRoot$: Subject<any> = new Subject<any>();
-
-  constructor() {
-
-  }
-
 }
