@@ -21,6 +21,10 @@ export class BoardItemService {
     return this.boardItemResource.getBoardItemsByBoardId({boardId: boardId}).$observable;
   }
 
+  getBoardItemById(boardItemId: string): Observable<TaskBoardItem> {
+    return this.boardItemResource.getBoardItemById({boardItemId: boardItemId}).$observable;
+  }
+
   save(boardItem: TaskBoardItem): Observable<TaskBoardItem> {
     return this.boardItemResource.save(boardItem, {boardId: boardItem.board._id || boardItem.board}).$observable;
   }

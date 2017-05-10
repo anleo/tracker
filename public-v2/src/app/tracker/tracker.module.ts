@@ -107,6 +107,7 @@ import {BasketCurrentTaskComponent} from "./tasks/basket-current-task/basket-cur
 import {BoardItemSpentTimeService} from "./services/board-item-spent-time.service";
 import {BasketBacklogService} from "./services/basket-backlog.service";
 import {BoardItemTreeComponent} from "./tasks/board-item-tree/board-item-tree.component";
+import {RefreshBoardItemService} from "./services/refresh-board-item.service";
 
 @NgModule({
   imports: [
@@ -231,7 +232,8 @@ import {BoardItemTreeComponent} from "./tasks/board-item-tree/board-item-tree.co
     BasketResource,
     BasketService,
     BoardItemSpentTimeService,
-    BasketBacklogService
+    BasketBacklogService,
+    RefreshBoardItemService
   ]
 })
 export class TrackerModule {

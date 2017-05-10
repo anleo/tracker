@@ -5,6 +5,7 @@ import {TaskService} from "../../../services/task.service";
 import {Subject} from "rxjs";
 import {TaskWithStatus} from "../../../models/task-with-status";
 import {BoardItemService} from "../../../services/board-item.service";
+import {RefreshBoardItemService} from "../../../services/refresh-board-item.service";
 
 @Component({
   selector: 'board-item-task',
@@ -20,7 +21,8 @@ export class BoardItemTaskComponent implements OnInit {
   componentDestroyed$: Subject<boolean> = new Subject();
 
   constructor(private taskService: TaskService,
-              private boardItemService: BoardItemService) {
+              private boardItemService: BoardItemService,
+              private refreshBoardItemService: RefreshBoardItemService) {
   }
 
   ngOnInit(): void {
@@ -45,31 +47,58 @@ export class BoardItemTaskComponent implements OnInit {
     this.showSubitems = !this.showSubitems;
   }
 
-  private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
-    if (!taskWithStatus) {
-      return false;
-    }
-
-    if (taskWithStatus.status === 'update') {
-      if (this.boardItem.item._id === taskWithStatus.task._id) {
-        this.boardItem.item = taskWithStatus.task;
-      }
-
-      this.taskSaveHandler();
-    } else if (taskWithStatus.status === 'move') {
-      this.taskSaveHandler();
-    } else if (taskWithStatus.status === 'remove') {
-      this.taskSaveHandler();
-    } else if (taskWithStatus.status === 'close') {
-      this.editMode = false;
-    }
-  }
-
   checkType(item) {
     return item.type === 'task';
   }
 
   removeBoardItem(boardItem: TaskBoardItem): void {
     this.boardItemService.remove(boardItem);
+    this.refreshBoardItemService.onChangeItem$.next(this.boardItem);
   };
+
+  private actionProvider(taskWithStatus: TaskWithStatus): void|boolean {
+    if (!taskWithStatus) {
+      return false;
+    }
+
+    if (taskWithStatus.status === 'update') {
+      this.onUpdate(taskWithStatus);
+    } else if (taskWithStatus.status === 'move') {
+      this.onMove(taskWithStatus);
+    } else if (taskWithStatus.status === 'remove') {
+      this.onRemove(taskWithStatus);
+    } else if (taskWithStatus.status === 'close') {
+      this.editMode = false;
+    }
+  }
+
+  private onRemove(taskWithStatus: TaskWithStatus) {
+    if (this.amI(taskWithStatus)) {
+      this.refreshBoardItemService.onChangeItem$.next(this.boardItem);
+    }
+
+    this.taskSaveHandler();
+  }
+
+  private onMove(taskWithStatus: TaskWithStatus) {
+    if (this.amI(taskWithStatus)) {
+      this.refreshBoardItemService.onChangeItem$.next(this.boardItem);
+    }
+
+    this.taskSaveHandler();
+  }
+
+  private onUpdate(taskWithStatus: TaskWithStatus) {
+    if (this.amI(taskWithStatus)) {
+      this.boardItem.item = taskWithStatus.task;
+      this.refreshBoardItemService.onChangeItem$.next(this.boardItem);
+    }
+
+    this.taskSaveHandler();
+  }
+
+  private amI(taskWithStatus: TaskWithStatus) {
+    return this.boardItem.item._id === taskWithStatus.task._id;
+  }
+
 }

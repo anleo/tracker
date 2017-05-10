@@ -118,4 +118,16 @@ module.exports = function (app) {
             })
             .catch((err) => res.status(400).json({error: err}));
     });
+
+    app.get('/api/boardItems/:boardItemId', function (req, res, next) {
+        BoardItemService.getById(req.params.boardItemId)
+            .then((boardItem) => {
+                if (!boardItem) {
+                    return res.status(404).json();
+                }
+
+                req.BoardItem = boardItem;
+                next();
+            });
+    });
 };

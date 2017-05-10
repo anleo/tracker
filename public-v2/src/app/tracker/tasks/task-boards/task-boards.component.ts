@@ -15,6 +15,7 @@ import {BoardWithStatus} from "../../models/board-with-status";
 import {ActivatedRoute} from "@angular/router";
 import {TaskService} from "../../services/task.service";
 import {ToastService} from "../../../services/toast.service";
+import {RefreshBoardItemService} from "../../services/refresh-board-item.service";
 
 @Component({
   selector: 'task-boards',
@@ -58,7 +59,8 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
               private dndService: DnDService,
               private toastService: ToastService,
               private taskService: TaskService,
-              private localStorageService: LocalStorageService) {
+              private localStorageService: LocalStorageService,
+              private refreshBoardItemService: RefreshBoardItemService) {
   }
 
   ngOnInit(): void {
@@ -83,6 +85,26 @@ export class TaskBoardsComponent implements OnInit, OnDestroy {
       this.boardId = params['boardId'];
       this.getBoards();
       this.boardService.editBoardUpdated$.subscribe((res: BoardWithStatus) => res && this.afterBoardUpdate(res));
+    });
+
+    this.refreshBoardItemService.refreshRoot$.subscribe((boardItem) => {
+      console.log('refreshRoot$', boardItem.item);
+      console.log('boardItems', this.boardItems);
+
+      // TODO @@@id: if i'm on board page need to compare with root board
+
+      let foundBoardItem = this.boardItems.find((boardItem) => {
+        return boardItem.item._id === boardItem.item._id
+      });
+
+      // console.log('foundBoardItem', foundBoardItem);
+
+      if (foundBoardItem) {
+        this.boardItemService.getBoardItemById(foundBoardItem._id)
+          .subscribe((boardItem) => {
+            foundBoardItem = boardItem;
+          })
+      }
     });
   }
 
